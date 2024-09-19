@@ -1,0 +1,298 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap');
+
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
+.carousel {
+    margin-top: -200px;
+    z-index: index -35;
+   
+}
+
+* {
+    font-family: 'Montserrat';
+    font-family: 'Montserrat', sans-serif;
+}
+
+p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    letter-spacing: 2px;
+
+}
+
+.navbar-toggler {
+    color: #fff;
+}
+
+.carousel-caption h5 {
+    font-size: 45px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 25px;
+    text-align: left;
+}
+
+.carousel-caption p {
+    font-size: 18px;
+
+    width: 60%;
+    line-height: 1.6;
+    text-align: left;
+
+}
+
+.carousel-caption .know a {
+    text-decoration: none;
+    text-transform: uppercase;
+    background-color: darkblue;
+    padding: 10px 30px;
+    display: inherit-block;
+    color: #fff;
+    margin-top: 20px;
+    border-radius: 50px;
+    height: 40px;
+    text-align: left;
+    
+
+}
+/*
+.carousel-control-prev {
+      z-index: 1;
+}
+
+.carousel-control-prev-icon {
+    z-index: 1;
+}
+
+carousel-control-next-icon {
+      z-index: 1;
+}
+
+.carousel-control-next {
+      z-index: 1;
+}
+
+*/
+
+.nav_nice {
+    background: transparent !important;
+    z-index:500;
+}
+
+
+
+.navbar-nav a {
+    font-size: 19px;
+    text-transform: uppercase;
+    font-weight: 500;
+    display: block;
+
+}
+
+.dropdown-menu{
+    background-color: #002147;
+    
+}
+.dropdown-menu:hover {
+     background-color: #002147;
+}
+
+.dropdown-menu a {
+    color: white;
+    
+}
+.navbar-nav a:hover {
+    background-color: #002147;
+}
+.dropdown-menu a:hover {
+       color: white;
+    
+}
+
+.navbar-light .navbar-brand {
+    color: #fff;
+    font-size: 22px;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.navbar-light .navbar-brand:hover,
+.navbar-light .navbar-brand:focus{
+
+    color: #fff;
+}
+
+
+.navbar-light .navbar-nav .nav-link {
+    color: #fff;
+}
+
+.navbar-light .navbar-nav .nav-link:focus,
+.navbar-light .navbar-nav .nav-link:hover {
+    color: #fff;
+}
+
+.navbar-toggler {
+    padding: 1px 5px;
+    font-size: 18px;
+    line-height: 0.3px;
+    background: #fff;
+
+}
+
+@media only screen and (max-width:767px) {
+
+    .navbar-nav {
+        text-align: center;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 20px;
+    }
+
+    .carousel {
+        margin-top: 40px;
+    }
+
+    .logo {
+        color: black;
+        background-color: black;
+        padding: 10px;
+        margin-left: -10px;
+    }
+
+
+    .tagline_nice:hover {
+        background-color: blue;
+        color: red;
+    }
+
+    .logo:hover {
+        background-color: blue;
+        color: red;
+    }
+
+    .navbar-brand:hover {
+        background-color: blue;
+        color: red;
+    }
+    
+    .carousel-caption h5 {
+        font-size: 17px;
+        
+    }
+
+    .carousel-caption a .know {
+        
+padding: 10px 15px;
+        font-size: 12px;
+    }
+
+
+   
+}
+
+
+.topbar {
+    background-color: #002147;
+    z-index:700;
+}
+
+
+.topbar a {
+   text-decoration: none;
+    color: white;
+    margin-left: 10px;
+   font-size: 12px;
+   z-index:999;
+}
+
+.topbar a:hover {
+    text-decoration: none;
+     color:black;
+     background-color:white;
+ }
+
+.tagline_nice {
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+}
+
+.tagline_nice:hover {
+    color: #fff;
+}
+
+
+footer {
+    background-color: #002147;
+    color: white;
+}
+
+a .social {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    background-color: #334355;
+    text-align: center;
+    vertical-align: center;
+    text-decoration: none;
+    color: aliceblue;
+}
+
+.social:hover {
+    background-color: slategray;
+}
+
+p .footer-copy{
+    text-decoration: none;
+    color: white;
+}
+
+.copyright {
+    text-decoration: none;
+    color: white;
+}
+.copyright:hover {
+    color: yellow;
+}
+
+.top-button {
+ 
+     margin-left: auto;
+     margin-right: auto;
+ 
+}
+
+.iconbtn {
+    background-color:#002147;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.breadcrumb {
+	text-decoration: none;
+}
+
+/* assets/css/style.css */
+.banner {
+    width: 100%;
+    height: 300px; /* Adjust height as needed */
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -170px;
+    
+}
+
+header::after {
+    content: "";
+    display: table;
+    clear: both;
+}
