@@ -28,12 +28,13 @@
             </div>
             <div class="col-md-4">
                 <h1 class="display-5">Ongoing Classes</h1>
-                <p><i class="fa fa-check-square"></i> Busy Classes</p>
-                <p><i class="fa fa-check-square"></i> AutoCAD Classes</p>
-                <p><i class="fa fa-check-square"></i> IP Classes</p>
-                <p><i class="fa fa-check-square"></i> Tally Classes</p>
-                <p><i class="fa fa-check-square"></i> Web Design Classes</p>
-                <p><i class="fa fa-check-square"></i> Advance Excel Classes</p>
+                <p><a href="https://posts.gle/N5Mb85" style="color:white"><i class="fa fa-check-square"></i> Busy Classes</a></p>
+                <p><a href="https://posts.gle/3R2QHu" style="color:white"><i class="fa fa-check-square"></i> Python Classes</a></p>
+                <p><a href="https://posts.gle/3R2QHu" style="color:white"><i class="fa fa-check-square"></i>IP Classes</a></p>
+                <p><a href="https://posts.gle/x7nyjU" style="color:white"><i class="fa fa-check-square"></i>Web Design & Web Devlopement</a></p>
+                <p><a href="https://posts.gle/FNLZ6g" style="color:white"><i class="fa fa-check-square"></i>Marg Classes(Accounting Software)</a></p>
+                <p><a href="https://posts.gle/hZyL2 " style="color:white"i class="fa fa-check-square"></i>Advance Excel Classes</a></p>
+                
             </div>
         </div>
         <hr>

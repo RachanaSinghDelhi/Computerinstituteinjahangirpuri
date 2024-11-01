@@ -22,6 +22,7 @@ Route::get('/', function () {
 
 
 Route::get('/about', [PageController::class, 'about'])->name('about');
+Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 
 
 // routes/web.php

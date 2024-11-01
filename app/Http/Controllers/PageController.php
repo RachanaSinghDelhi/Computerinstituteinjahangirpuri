@@ -16,4 +16,13 @@ class PageController extends Controller
     
     
     }
+    public function contact()
+    {
+      
+        // Fetch all courses from the database
+         
+            return view('contact');
+    
+    
+    }
 }
