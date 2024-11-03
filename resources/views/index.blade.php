@@ -8,7 +8,7 @@
 <main>
         <!-- About 1 - Bootstrap Brain Component -->
         <section1 class="py-3 py-md-5 py-xl-8">
-            <h1 class="display-2 text-center py-4">Introduction</h1>
+            <h1 class="display-2 text-center py-4">Introductionssss</h1>
 
             <hr>
 
@@ -22,7 +22,7 @@
                         <div class="row justify-content-xl-center">
                             <div class="col-12 col-xl-11">
                                 <h2 class="h1 py-4 mb-3">Who Are We?</h2>
-                                <p class="lead fs-4 text-secondary mb-3 ">Nice Computer Institute is one of the best since 2001.Some of the computer courses offered are graphic design, Marg Tally,Adv.Exl,Web Design & development,Basic,busy and many more.At Computer Institute In Jahangirpuri Nice Computer Institute, we are more than just a computer institute; we are a dynamic community dedicated to empowering individuals with cutting-edge digital skills. </p>
+                                <p class="lead fs-4 text-secondary mb-3 ">Nice  Institute is one of the best since 2001.Some of the computer courses offered are graphic design, Marg Tally,Adv.Exl,Web Design & development,Basic,busy and many more.At Computer Institute In Jahangirpuri Nice Computer Institute, we are more than just a computer institute; we are a dynamic community dedicated to empowering individuals with cutting-edge digital skills. </p>
                                 <p class="mb-5"> As a premier destination for technology education, we take pride in fostering a learning environment that combines innovation, expertise, and hands-on experience.</p>
 
                             </div>
