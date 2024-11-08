@@ -48,8 +48,8 @@
                          Posts
                         </a>
                         <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item dash" href="/dashboard/create-post">Add Post</a></li>
-                            <li><a class="dropdown-item dash" href="/dashboard/new-posts">Post List</a></li>
+                            <li><a class="dropdown-item dash" href="/dashboard/create-post" style="color:white">Add Post</a></li>
+                            <li><a class="dropdown-item dash" href="/dashboard/new-posts" style="color:white">Post List</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
