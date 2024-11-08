@@ -126,4 +126,8 @@ public function showCourses()
 
         return view('about', compact('courses')); // Adjust view name as necessary
     }
+
+
+
+    
 }

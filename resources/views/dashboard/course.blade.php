@@ -1,6 +1,7 @@
 <!-- dashboard/course.blade.php -->
 @extends('dashboard.app')
-
+@section('title', 'Courses')
+@section('content')
 <div class="container body_cont">
     <div class="row justify-content-center">
                 <br>
@@ -8,7 +9,7 @@
         <div class="col-md-6">
         
 <br>
-        <h1 class="display-4">Insert Courses</h1>
+        
             <form method="POST" action="{{ route('courses.store') }}" enctype="multipart/form-data">
                 @csrf
 
@@ -58,5 +59,5 @@
 
 
 
-
+@endsection
 

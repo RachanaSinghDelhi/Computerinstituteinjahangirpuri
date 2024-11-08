@@ -289,3 +289,5 @@ main {
     margin: 0 auto;
     padding: 20px; /* Adjust as needed */
 }
+ul .dash  { color:white}
+ ul .dash:hover { color:aqua}

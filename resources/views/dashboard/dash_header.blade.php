@@ -33,20 +33,24 @@
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="/dashboard">Courses</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/pages">Pages</a>
-                    </li>
+                
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Courses
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="/dashboard/course">Add Course</a></li>
-                            <li><a class="dropdown-item" href="/dashboard">Course List</a></li>
+                        <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item dash" href="/dashboard/course">Add Course</a></li>
+                            <li><a class="dropdown-item dash" href="/dashboard">Course List</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">News</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                         Posts
+                        </a>
+                        <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item dash" href="/dashboard/create-post">Add Post</a></li>
+                            <li><a class="dropdown-item dash" href="/dashboard/new-posts">Post List</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="contact.php">Contact</a>

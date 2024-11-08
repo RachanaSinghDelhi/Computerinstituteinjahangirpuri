@@ -1,7 +1,6 @@
 @extends('dashboard.app')
-
+@section('title', 'Courses')
 @section('content')
-<body>
 <div class="container">
     <div id="addCourse"></div>
     <div id="EditCourse"></div>
@@ -59,6 +58,7 @@
         </tbody>
     </table>
 </div>
-</body>
+
+@endsection
 
 
