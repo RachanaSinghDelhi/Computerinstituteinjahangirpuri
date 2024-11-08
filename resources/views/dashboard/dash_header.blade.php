@@ -39,8 +39,8 @@
                             Courses
                         </a>
                         <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item dash" href="/dashboard/course">Add Course</a></li>
-                            <li><a class="dropdown-item dash" href="/dashboard">Course List</a></li>
+                            <li><a class="dropdown-item dash" href="/dashboard/course" style="color:white;">Add Course</a></li>
+                            <li><a class="dropdown-item dash" href="/dashboard" style="color:white;">Course List</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -48,7 +48,7 @@
                          Posts
                         </a>
                         <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item dash" href="/dashboard/create-post" style="color:white">Add Post</a></li>
+                            <li><a class="dropdown-item dash" href="/dashboard/create-post" style="color:white;">Add Post</a></li>
                             <li><a class="dropdown-item dash" href="/dashboard/new-posts" style="color:white">Post List</a></li>
                         </ul>
                     </li>
