@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title>@yield('title', 'Nice Computer Institute')</title>
-    <link rel="icon" href="{{ asset('images/logo_new_icon_nice_computer_institute_jahangirpuri.png') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('assets/images/logo_new_icon_nice_computer_institute_jahangirpuri.png') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('assets/bootstrap5/bootstrap-5.0.2-dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style2.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -53,17 +53,12 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="contact.php">Contact</a>
+                    <form action="{{ route('admin.logout') }}" method="POST">
+    @csrf
+    <button type="submit" class="btn btn-danger">Logout</button>
+</form>
                     </li>
-                    <li class="nav-item">
-                        <button class="btn btn-light">
-                            <span class="whatsapp">
-                                <a href="https://wa.me/9312945741">
-                                    <i class="fa fa-whatsapp" style="font-size:48px;color:green;"></i>
-                                </a>
-                            </span>
-                        </button>
-                    </li>
+                    
                 </ul>
             </div>
         </div>
