@@ -11,7 +11,7 @@ use App\Http\Controllers\AdminLoginController;
 Route::get('admin/login', [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
 Route::post('admin/login', [AdminLoginController::class, 'login']);
 Route::post('admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
-
+Route::get('/blogs', [PostController::class, 'blogs'])->name('blogs');
 # Dashboard and Authenticated Routes
 Route::middleware(['auth'])->group(function () {
 
@@ -20,7 +20,7 @@ Route::middleware(['auth'])->group(function () {
 
     # Post Routes
     Route::resource('posts', PostController::class);  // This will automatically generate the necessary routes
-    Route::get('/blogs', [PostController::class, 'blogs'])->name('blogs');
+   
     Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
     Route::get('/dashboard/create-post', [PostController::class, 'create'])->name('dashboard.create_post');
     Route::post('/dashboard/store-post', [PostController::class, 'store'])->name('dashboard.store_post');
