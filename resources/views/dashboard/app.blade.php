@@ -11,4 +11,5 @@
 </main>
 <footer>
    @include('partials.footer') <!-- Include your footer Blade file -->
+   @stack('scripts')
 </footer>

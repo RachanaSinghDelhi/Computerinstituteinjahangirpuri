@@ -21,7 +21,7 @@
         <div class="container container-fluid">
             <img src="{{ asset('assets/images/logo1_3D_half.png') }}" width="150" height="100" alt="Logo">
             <p class="logo">
-                <a class="navbar-brand brand_nice" href="#">Nice Computer Institute</a>
+                <a class="navbar-brand brand_nice" href="/">Nice Computer Institute</a>
                 <br>
                 <a class="tagline_nice" href="#">Be a Part Of I.T.</a>
             </p>

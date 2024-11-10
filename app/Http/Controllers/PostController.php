@@ -19,7 +19,7 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg',
         ]);
 
         $post = new Post();
@@ -76,7 +76,7 @@ class PostController extends Controller
      $request->validate([
          'title' => 'required|max:255',
          'content' => 'required',
-         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
      ]);
 
      if ($request->hasFile('image')) {

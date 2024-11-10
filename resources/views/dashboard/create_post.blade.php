@@ -1,7 +1,6 @@
 @extends('dashboard.app')
 
 @section('content')
-
 <div class="container mt-4">
     <h2>Create New Post</h2>
 
@@ -33,7 +32,8 @@
 
         <div class="mb-3">
             <label for="content" class="form-label">Content:</label>
-            <textarea name="content" class="form-control" rows="4" required></textarea>
+            <div id="quill-editor"></div>
+            <input type="hidden" name="content" id="content">
         </div>
 
         <div class="mb-3">
@@ -45,3 +45,34 @@
     </form>
 </div>
 @endsection
+
+{{-- Add Quill scripts and styles --}}
+@push('scripts')
+    <!-- Quill Stylesheet -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <!-- Quill JS -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    
+    <script>
+        // Initialize Quill editor
+        var quill = new Quill('#quill-editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['bold', 'italic', 'underline'],
+                    [{ 'align': [] }],
+                    ['link'],
+                    ['image']
+                ]
+            }
+        });
+
+        // Handle form submission to get content from Quill
+        $('form').submit(function() {
+            var content = quill.root.innerHTML;
+            $('#content').val(content); // Set the content to the hidden field
+        });
+    </script>
+@endpush
