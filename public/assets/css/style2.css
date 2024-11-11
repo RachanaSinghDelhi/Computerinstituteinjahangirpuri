@@ -291,3 +291,7 @@ main {
 }
 ul .dash  { color:white}
  ul .dash:hover { color:aqua}
+
+ #quill-editor {
+    height: 400px;
+ }

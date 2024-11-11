@@ -23,7 +23,7 @@
         @endif
     </div>
      <div>
-        <a href="#" id="addcourse" cid="cid">  
+        <a href="/dashboard/course" >  
                         <button class="btn btn-sm btn-success">Add</button>
                     </a>
                    
