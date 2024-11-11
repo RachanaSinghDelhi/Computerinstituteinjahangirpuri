@@ -3,7 +3,6 @@
 @section('title', 'Blogs')
 
 @section('content')
-
 <div class="container">
     <h2 class="my-4">Our Blog Posts</h2>
 
@@ -15,7 +14,7 @@
 
     <div class="row">
         @forelse ($posts as $post)
-            <div class="col-md-4 mb-4">
+            <div class="col-md-4 col-12 mb-4">
                 <div class="card">
                     <!-- Post Image Wrapper with Fixed Height -->
                     <div class="image-wrapper" style="height: 250px; overflow: hidden;">
@@ -29,7 +28,7 @@
                     <!-- Card Body with Content -->
                     <div class="card-body">
                         <h5 class="card-title">{{ $post->title }}</h5>
-                        <p class="card-text">{!! Str::limit($post->content, 100) !!}</p>
+                        <p class="card-text">{{ Str::limit(strip_tags($post->content), 100) }}</p>
                         <a href="{{ route('posts.show', $post->id) }}" class="btn btn-primary">Read More</a>
                     </div>
                 </div>
@@ -39,5 +38,4 @@
         @endforelse
     </div>
 </div>
-
 @endsection

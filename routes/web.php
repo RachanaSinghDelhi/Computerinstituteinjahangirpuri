@@ -11,17 +11,16 @@ use App\Http\Controllers\AdminLoginController;
 Route::get('admin/login', [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
 Route::post('admin/login', [AdminLoginController::class, 'login']);
 Route::post('admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
-Route::get('/blogs', [PostController::class, 'blogs'])->name('blogs');
+
 # Dashboard and Authenticated Routes
 Route::middleware(['auth'])->group(function () {
 
     # Dashboard Routes
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
-    # Post Routes
-    Route::resource('posts', PostController::class);  // This will automatically generate the necessary routes
-   
-    Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
+    # Post Routes (using resource route)
+    Route::resource('posts', PostController::class);  // Automatically generates the necessary routes
+
     Route::get('/dashboard/create-post', [PostController::class, 'create'])->name('dashboard.create_post');
     Route::post('/dashboard/store-post', [PostController::class, 'store'])->name('dashboard.store_post');
     Route::get('/dashboard/new-posts', [PostController::class, 'index'])->name('dashboard.new_posts');
@@ -44,7 +43,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/courses/{id}', [CourseController::class, 'update'])->name('courses.update');
     Route::delete('/courses/{id}', [CourseController::class, 'destroy'])->name('courses.destroy');
     Route::get('/course/{id}', [CourseController::class, 'show'])->name('course.show');
-
 });
 
 # Public Routes
@@ -54,3 +52,4 @@ Route::get('/', function () {
 
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+Route::get('/blogs', [PostController::class, 'blogs'])->name('blogs');
