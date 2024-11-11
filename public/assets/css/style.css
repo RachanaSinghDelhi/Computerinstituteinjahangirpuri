@@ -80,6 +80,7 @@ carousel-control-next-icon {
 .nav_nice {
     background: transparent !important;
     z-index:500;
+    margin-top:-70px;
 }
 
 
@@ -287,7 +288,7 @@ p .footer-copy{
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: -170px;
+    margin-top: -130px;
     
 }
 
