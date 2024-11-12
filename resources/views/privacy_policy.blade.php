@@ -1,10 +1,10 @@
 
+
+
 @extends('layout')
 
 @section('title', 'Privacy Policy')
 @section('content')
-
-
 <div class="container py-5">
     <h1 class="text-center mb-4">Privacy Policy</h1>
     <p><strong>Last Updated:</strong> November 12, 2024</p>
@@ -89,3 +89,4 @@
         <li><strong>Address:</strong> A1-9/10, A Block Rd, near Da Pizza Palace, Bhalswa Jahangirpuri, Jahangirpuri, Delhi, 110033</li>
     </ul>
 </div>
+@endsection

@@ -164,15 +164,3 @@ configureBredcrumbs();
 
 */
 
-   $(document).ready(function() {
-    $('#course_content').summernote({
-
-        height: 200,
-    });
-   });
-   $(document).ready(function() {
-    $('#post_content').summernote({
-
-        height: 200,
-    });
-   });

@@ -61,5 +61,5 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::get('/privacy-policy', function () {
-    return view('privacy-policy');
+    return view('privacy_policy');
 });

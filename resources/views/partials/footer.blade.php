@@ -43,6 +43,18 @@
         <p class="footer-copy">Copyright © Computer Institute in Jahangirpuri (Nice Computer Institute) 2024 | All Rights Reserved by <a class="copyright" href="https://www.nicewebtechnologies.com">Nice Web Technologies</a></p>
     </div>
 </footer>
+
+<script>
+ document.addEventListener('DOMContentLoaded', function() {
+    var spinner = document.getElementById('spinner');
+    if (spinner) {
+        console.log('Spinner found');
+        spinner.style.visibility = 'hidden'; // Hide spinner using visibility
+        // Or alternatively:
+        // spinner.style.opacity = '0'; // Hide spinner using opacity
+    }
+});
+</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="{{ asset('assets/bootstrap5/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js') }}"></script>
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>-->

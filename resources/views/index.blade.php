@@ -7,7 +7,7 @@
 
 <main>
         <!-- About 1 - Bootstrap Brain Component -->
-        <section1 class="py-3 py-md-5 py-xl-8">
+        <section1 class=" py-xl-8">
             <h1 class="display-2 text-center py-4">Introductions</h1>
 
             <hr>
