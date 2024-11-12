@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Computer Institute in Jahangirpuri | Nice Web Technologies</title>
     <meta name="description" content="Join Nice Computer Institute in Jahangirpuri, Delhi, to boost your IT skills with courses in Advanced Excel, Tally, Python, Graphic Design, and more. Enroll today and start your career journey!" />
-    <link rel="icon" href="https://webdesign.nicewebtech.com/assets/images/logo_new_icon_nice_computer_institute_jahangirpuri.png" type="image/x-icon">
+    <link rel="icon" href="https://www.computerinstituteindelhijahangirpuri.com/assets/images/logo_new_icon_nice_computer_institute_jahangirpuri.png" type="image/x-icon">
     <link rel="canonical" href="https://www.computerinstituteindelhijahangirpuri.com/" />
     <meta name="robots" content="index, follow" />
 

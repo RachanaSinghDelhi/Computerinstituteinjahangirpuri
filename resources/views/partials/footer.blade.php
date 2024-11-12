@@ -26,6 +26,7 @@
     @empty
         <p>No recent posts available.</p>
     @endforelse
+ <p>   <a  style="color:white" href="{{ url('/privacy-policy') }}">Privacy Policy</a></p>
             </div>
             <div class="col-md-4">
                 <h1 class="display-5">Ongoing Classes</h1>

@@ -58,3 +58,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/courses/{id}', [CourseController::class, 'destroy'])->name('courses.destroy');
     Route::get('/course/{id}', [CourseController::class, 'show'])->name('course.show');
 });
+
+
+Route::get('/privacy-policy', function () {
+    return view('privacy-policy');
+});

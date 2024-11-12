@@ -1,2 +1,20 @@
+# Allow all bots to crawl everything
 User-agent: *
 Disallow:
+
+# Block a specific bot (example: Bingbot)
+User-agent: Bingbot
+Disallow: /
+
+# Allow Googlebot to access everything
+User-agent: Googlebot
+Disallow:
+
+# Block access to certain directories or files
+User-agent: *
+Disallow: /admin/
+Disallow: /private/
+Disallow: /login/
+
+# Sitemap location (make sure to use the correct URL for your sitemap)
+Sitemap: https://www.computerinstituteindelhijahangirpuri.com/sitemap.xml
