@@ -7,8 +7,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Computer Institute in Jahangirpuri | Nice Computer Institute</title>
-    <meta name="description" content="Join Nice Computer Institute, Jahangirpuri, to enhance your IT skills in Advanced Excel, Tally, Python, Graphic Design, and more. Enroll today to start your career journey!" />
+    <title>Computer Institute in Jahangirpuri | Nice Web Technologies</title>
+    <meta name="description" content="Join Nice Computer Institute in Jahangirpuri, Delhi, to boost your IT skills with courses in Advanced Excel, Tally, Python, Graphic Design, and more. Enroll today and start your career journey!" />
     <link rel="icon" href="https://webdesign.nicewebtech.com/assets/images/logo_new_icon_nice_computer_institute_jahangirpuri.png" type="image/x-icon">
     <link rel="canonical" href="https://www.computerinstituteindelhijahangirpuri.com/" />
     <meta name="robots" content="index, follow" />
@@ -20,7 +20,7 @@
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://webdesign.nicewebtech.com/assets/images/logo_new_icon_nice_computer_institute_jahangirpuri.png">
     <meta property="og:site_name" content="Nice Computer Institute">
-    
+
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Computer Institute in Jahangirpuri">
@@ -42,7 +42,20 @@
             "https://x.com/nicewebtechno",
             "https://www.youtube.com/nicewebtechnologies",
             "https://www.instagram.com/nicewebtechnologies"
-          ]
+          ],
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "A1-9/10, A Block Rd, near Da Pizza Palace, Bhalswa Jahangirpuri",
+            "addressLocality": "Jahangirpuri",
+            "addressRegion": "Delhi",
+            "postalCode": "110033",
+            "addressCountry": "IN"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+91-9312945741",
+            "contactType": "Customer Service"
+          }
         }
     </script>
 
@@ -53,7 +66,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link href="{{ asset('assets/bootstrap5/bootstrap-5.0.2-dist/fonts/font.woff2') }}" rel="stylesheet">
 </head>
-
 
 <body>
     <!---topbar-->
