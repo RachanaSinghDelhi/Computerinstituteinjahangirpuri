@@ -53,7 +53,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link href="{{ asset('assets/bootstrap5/bootstrap-5.0.2-dist/fonts/font.woff2') }}" rel="stylesheet">
 
-
+   
     
 </head>
 
