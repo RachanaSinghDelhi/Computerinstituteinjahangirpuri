@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
@@ -11,6 +12,19 @@ use App\Http\Controllers\AdminLoginController;
 Route::get('admin/login', [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
 Route::post('admin/login', [AdminLoginController::class, 'login']);
 Route::post('admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
+
+# Homepage Route
+Route::get('/', [PostController::class, 'showHomepage']);
+
+# Public Routes (Access without Authentication)
+Route::get('/about', [PageController::class, 'about'])->name('about');
+Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+Route::get('/blogs', [PostController::class, 'blogs'])->name('blogs');
+
+# Updated Post Route (Public - Not Inside Auth Middleware)
+Route::get('posts/{id}', [PostController::class, 'show'])->name('posts.show');
+
+
 
 # Dashboard and Authenticated Routes
 Route::middleware(['auth'])->group(function () {
@@ -44,12 +58,3 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/courses/{id}', [CourseController::class, 'destroy'])->name('courses.destroy');
     Route::get('/course/{id}', [CourseController::class, 'show'])->name('course.show');
 });
-
-# Public Routes
-Route::get('/', function () {
-    return view('index');
-});
-
-Route::get('/about', [PageController::class, 'about'])->name('about');
-Route::get('/contact', [PageController::class, 'contact'])->name('contact');
-Route::get('/blogs', [PostController::class, 'blogs'])->name('blogs');

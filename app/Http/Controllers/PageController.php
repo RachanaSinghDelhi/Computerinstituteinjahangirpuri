@@ -25,4 +25,10 @@ class PageController extends Controller
     
     
     }
+
+    public function showHomepage()
+{
+    $latestPosts = Post::latest()->take(4)->get();
+    return view('index', compact('latestPosts'));
+}
 }

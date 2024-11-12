@@ -111,4 +111,12 @@ class PostController extends Controller
  }
 
 
+ public function showHomepage()
+ {
+     $latestPosts = Post::latest()->take(4)->get(); // Fetch the 4 most recent posts
+     return view('index', compact('latestPosts')); // Pass posts to the index view
+ }
+ 
+
+
 }

@@ -21,10 +21,11 @@
             </div>
             <div class="col-md-4">
                 <h1 class="display-5">Recent Posts</h1>
-                <p>Autocad Course at Nice Computer Institute, Jahangirpuri Top</p>
-                <p>10 Trending Computer Courses: Nice Computer Institute</p>
-                <p>Elevate Your Accounting Skills with Busy Software Training!</p>
-                <p>Computer Institute In Jahangirpuri</p>
+                @forelse ($latestPosts as $post)
+        <p><a  style="color:white" href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a></p>
+    @empty
+        <p>No recent posts available.</p>
+    @endforelse
             </div>
             <div class="col-md-4">
                 <h1 class="display-5">Ongoing Classes</h1>
