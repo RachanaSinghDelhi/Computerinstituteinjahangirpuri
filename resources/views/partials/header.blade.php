@@ -13,7 +13,6 @@
     <meta name="keywords" content="computer institute in Jahangirpuri,nice computer insitute,computer institute in Delhi, computer institute in Rohini,computer center reviews, computer institute reviews,good review comments for institute, Computer institute in Jahangirpuri,computer institute near me, National computer institute Delhi, Delhi computer institute,computer institute shalimar bagh,computer institute certificate, Government computer institute in Delhi,nice computer institute">
     <link rel="icon" href="https://www.computerinstituteindelhijahangirpuri.com/assets/images/logo_new_icon_nice_computer_institute_jahangirpuri.png" type="image/x-icon">
     <link rel="canonical" href="{{ url()->current() }}" />
-
     <meta name="robots" content="index, follow" />
 
     <!-- Open Graph (OG) Meta Tags for Social Media -->
@@ -31,6 +30,7 @@
     <meta name="twitter:image" content="http://www.computerinstituteindelhijahangirpuri.com/assets/images/manager_computer-institute-in-jahangirpuri.jpeg">
     <meta name="twitter:site" content="@nicewebtechno">
     <meta name="google-site-verification" content="k_wn2HhZyY74S3ieDOBGbjRIaVSmTuNit2gClOSDbgU"/>
+
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
         {
@@ -61,6 +61,50 @@
           }
         }
     </script>
+
+    <!-- Conditional FAQ Schema for FAQ Page -->
+    @if(Request::is('faq'))
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What courses does Nice Web Technologies offer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We offer a variety of computer courses including Basic Excel, Advanced Excel, Tally, Web Design, Digital Marketing, Graphic Design, Python, and more."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can I enroll in a course?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can enroll in a course through our website or by visiting the institute in person."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are the timings of the classes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Our classes run from 9 AM to 7 PM, Monday to Saturday. You can choose the timing that suits you best."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where is Nice Web Technologies located?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We are located at A1- 9/10, A Block Rd, near Da Pizza Palace, Bhalswa Jahangirpuri, Jahangirpuri, Delhi."
+          }
+        }
+      ]
+    }
+    </script>
+    @endif
 
     <!-- CSS Links -->
     <link rel="stylesheet" href="{{ asset('assets/bootstrap5/bootstrap-5.0.2-dist/css/bootstrap.min.css') }}">
