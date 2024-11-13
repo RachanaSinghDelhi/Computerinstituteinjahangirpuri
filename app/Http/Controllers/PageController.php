@@ -42,5 +42,16 @@ class PageController extends Controller
         // Return the FAQ page view and pass the breadcrumbs to it
         return view('faq', compact('breadcrumbs'));
     }
+
+    public function privacyPolicy()
+{
+    // Define breadcrumbs for Privacy Policy page
+    $breadcrumbs = [
+        ['name' => 'Home', 'url' => url('/')],
+        ['name' => 'Privacy Policy', 'url' => route('privacy-policy')]
+    ];
+
+    return view('privacy_policy', compact('breadcrumbs'));
+}
     
 }

@@ -65,13 +65,9 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/course/{id}', [CourseController::class, 'show'])->name('course.show');
 
 
-Route::get('/privacy-policy', function () {
-    $breadcrumbs = [
-        ['name' => 'Home', 'url' => route('home')], // Replace 'home' with your actual home route name
-        ['name' => 'Privacy Policy', 'url' => route('privacy-policy')]
-    ];
-    return view('privacy_policy', compact('breadcrumbs'));
-});
+# Privacy Policy Route
+Route::get('/privacy-policy', [PageController::class, 'privacyPolicy'])->name('privacy-policy');
+
 
 # Updates Route for Blog Posts
 Route::get('/updates', [PostController::class, 'blogs'])->name('posts.blogs');
