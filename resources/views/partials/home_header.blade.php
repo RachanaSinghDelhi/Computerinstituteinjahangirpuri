@@ -90,6 +90,48 @@
     }
     </script>
 
+<!-- FAQ JSON-LD Structured Data -->
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What courses does Nice Computer Institute offer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nice Computer Institute offers courses in Graphic Design, Marg, Tally, Advanced Excel, Web Design & Development, Basic Computing, C, C++, Python, and more."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where is Nice Computer Institute located?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nice Computer Institute is located in Jahangirpuri, Delhi, India. The exact address is A1-9/10, A Block Rd, near Da Pizza Palace, Bhalswa Jahangirpuri."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are the eligibility criteria for enrolling in courses?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "There are no specific eligibility criteria to enroll in most of the courses at Nice Computer Institute. Basic knowledge of computers is helpful for certain advanced courses like Advanced Excel, Python, etc."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can I contact Nice Computer Institute for inquiries?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can contact Nice Computer Institute by calling +91-9312945741 or emailing nicewebtechnologies@gmail.com."
+          }
+        }
+      ]
+    }
+</script>
+
     <!-- CSS Links -->
     <link rel="stylesheet" href="{{ asset('assets/bootstrap5/bootstrap-5.0.2-dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
