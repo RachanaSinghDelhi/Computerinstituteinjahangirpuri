@@ -6,43 +6,59 @@
     <!-- Primary Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Computer Courses in Jahangirpuri - Web Design, Tally, Excel, and More | Nice Computer Institute</title>
-    <meta name="description" content="Explore our wide range of computer courses in Jahangirpuri, including Web Design, Tally, Advanced Excel, and Programming Languages. Learn from experts at Nice Computer Institute." />
-    <link rel="icon" href="https://webdesign.nicewebtech.com/assets/images/logo_new_icon_nice_computer_institute_jahangirpuri.png" type="image/x-icon">
-    <link rel="canonical" href="https://www.computerinstituteindelhijahangirpuri.com/courses" />
+    <title>>Nice Computer Institute - Computer Institute in Jahangirpuri</title>
+    <meta name="description" content="Nice Computer is one of the best since 2001 & courses offered are Grph. Design, Marg,Tally,Adv.Exl,Web & Digt.Mkt,Basic,C,C++,Python..">
+    <meta name="keywords" content="computer institute in Jahangirpuri,nice computer insitute,computer institute in Delhi, computer institute in Rohini,computer center reviews, computer institute reviews,good review comments for institute, Computer institute in Jahangirpuri,computer institute near me, National computer institute Delhi, Delhi computer institute,computer institute shalimar bagh,computer institute certificate, Government computer institute in Delhi,nice computer institute">
+    <link rel="icon" href="https://www.computerinstituteindelhijahangirpuri.com/assets/images/logo_new_icon_nice_computer_institute_jahangirpuri.png" type="image/x-icon">
+    <link rel="canonical" href="{{ url()->current() }}" />
+
     <meta name="robots" content="index, follow" />
 
     <!-- Open Graph (OG) Meta Tags for Social Media -->
-    <meta property="og:title" content="Computer Courses in Jahangirpuri - Web Design, Tally, Excel, and More | Nice Computer Institute">
-    <meta property="og:description" content="Discover a variety of computer courses including Web Design, Basic & Advanced Excel, Tally, and Programming Languages at Nice Computer Institute in Jahangirpuri. Start your career today.">
-    <meta property="og:url" content="https://www.computerinstituteindelhijahangirpuri.com/courses">
+    <meta property="og:title" content="Computer Institute in Jahangirpuri">
+    <meta property="og:description" content="Nice Computer Institute offers courses in Advanced Excel, Tally, Python, and Graphic Design. Located in Jahangirpuri, Delhi.">
+    <meta property="og:url" content="https://www.computerinstituteindelhijahangirpuri.com/">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="https://webdesign.nicewebtech.com/assets/images/logo_new_icon_nice_computer_institute_jahangirpuri.png">
+    <meta property="og:image" content="http://www.computerinstituteindelhijahangirpuri.com/assets/images/manager_computer-institute-in-jahangirpuri.jpeg">
     <meta property="og:site_name" content="Nice Computer Institute">
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Computer Courses in Jahangirpuri - Web Design, Tally, Excel, and More | Nice Computer Institute">
-    <meta name="twitter:description" content="Learn computer skills like Web Design, Tally, Advanced Excel, and more at Nice Computer Institute in Jahangirpuri. Join now and boost your career.">
-    <meta name="twitter:image" content="https://webdesign.nicewebtech.com/assets/images/logo_new_icon_nice_computer_institute_jahangirpuri.png">
+    <meta name="twitter:title" content="Computer Institute in Jahangirpuri">
+    <meta name="twitter:description" content="Enroll in Nice Computer Institute for IT courses in Advanced Excel, Tally, Python, and Webdesign Des....">
+    <meta name="twitter:image" content="http://www.computerinstituteindelhijahangirpuri.com/assets/images/manager_computer-institute-in-jahangirpuri.jpeg">
     <meta name="twitter:site" content="@nicewebtechno">
-
-    <!-- JSON-LD Structured Data for Courses -->
+    <meta name="google-site-verification" content="k_wn2HhZyY74S3ieDOBGbjRIaVSmTuNit2gClOSDbgU"/>
+    <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
         {
           "@context": "https://schema.org",
-          "@type": "CollegeOrUniversity",
+          "@type": "EducationalOrganization",
           "name": "Nice Computer Institute",
-          "url": "https://www.computerinstituteindelhijahangirpuri.com/courses",
-          "logo": "https://webdesign.nicewebtech.com/assets/images/logo_new_icon_nice_computer_institute_jahangirpuri.png",
-          "description": "Nice Computer Institute offers a variety of computer courses such as Web Design, Tally, Advanced Excel, and Programming Languages to help students enhance their skills and prepare for their career.",
+          "url": "https://www.computerinstituteindelhijahangirpuri.com/",
+          "logo": "http://www.computerinstituteindelhijahangirpuri.com/assets/images/manager_computer-institute-in-jahangirpuri.jpeg",
+          "description": "Located in Jahangirpuri, Delhi, Nice Computer Institute provides courses in Advanced Excel, Tally, Python, Graphic Design, and more.",
           "sameAs": [
             "https://www.facebook.com/nicewebtechnologies",
             "https://x.com/nicewebtechno",
             "https://www.youtube.com/nicewebtechnologies",
             "https://www.instagram.com/nicewebtechnologies"
-          ]
+          ],
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "A1-9/10, A Block Rd, near Da Pizza Palace, Bhalswa Jahangirpuri",
+            "addressLocality": "Jahangirpuri",
+            "addressRegion": "Delhi",
+            "postalCode": "110033",
+            "addressCountry": "IN"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+91-9312945741",
+            "contactType": "Customer Service"
+          }
         }
     </script>
 
@@ -54,7 +70,6 @@
     <link href="{{ asset('assets/bootstrap5/bootstrap-5.0.2-dist/fonts/font.woff2') }}" rel="stylesheet">
 </head>
 
-
 <body>
     <!---topbar-->
     <div class="main-top" style="z-index: index 1000;">
@@ -64,5 +79,6 @@
        
         <!---crousel starts -->
         <!-- Banner section -->
+         
     
     </header1>

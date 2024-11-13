@@ -6,11 +6,14 @@
     <!-- Primary Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Computer Institute in Jahangirpuri | Nice Web Technologies</title>
-    <meta name="description" content="Join Nice Computer Institute in Jahangirpuri, Delhi, to boost your IT skills with courses in Advanced Excel, Tally, Python, Graphic Design, and more. Enroll today and start your career journey!" />
+    <title>Nice Computer Institute - Computer Institute in Jahangirpuri</title>
+    <meta name="description" content="Nice Computer is one of the best since 2001 & courses offered are Grph. Design, Marg,Tally,Adv.Exl,Web & Digt.Mkt,Basic,C,C++,Python..">
+    <meta name="keywords" content="computer institute in Jahangirpuri,nice computer insitute,computer institute in Delhi, computer institute in Rohini,computer center reviews, computer institute reviews,good review comments for institute, Computer institute in Jahangirpuri,computer institute near me, National computer institute Delhi, Delhi computer institute,computer institute shalimar bagh,computer institute certificate, Government computer institute in Delhi,nice computer institute">
     <link rel="icon" href="https://www.computerinstituteindelhijahangirpuri.com/assets/images/logo_new_icon_nice_computer_institute_jahangirpuri.png" type="image/x-icon">
     <link rel="canonical" href="{{ url()->current() }}" />
+
     <meta name="robots" content="index, follow" />
 
     <!-- Open Graph (OG) Meta Tags for Social Media -->
@@ -18,15 +21,16 @@
     <meta property="og:description" content="Nice Computer Institute offers courses in Advanced Excel, Tally, Python, and Graphic Design. Located in Jahangirpuri, Delhi.">
     <meta property="og:url" content="https://www.computerinstituteindelhijahangirpuri.com/">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="https://webdesign.nicewebtech.com/assets/images/logo_new_icon_nice_computer_institute_jahangirpuri.png">
+    <meta property="og:image" content="http://www.computerinstituteindelhijahangirpuri.com/assets/images/manager_computer-institute-in-jahangirpuri.jpeg">
     <meta property="og:site_name" content="Nice Computer Institute">
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Computer Institute in Jahangirpuri">
-    <meta name="twitter:description" content="Enroll in Nice Computer Institute for IT courses in Advanced Excel, Tally, Python, and Graphic Design.">
-    <meta name="twitter:image" content="https://webdesign.nicewebtech.com/assets/images/logo_new_icon_nice_computer_institute_jahangirpuri.png">
+    <meta name="twitter:description" content="Enroll in Nice Computer Institute for IT courses in Advanced Excel, Tally, Python, and Webdesign Des....">
+    <meta name="twitter:image" content="http://www.computerinstituteindelhijahangirpuri.com/assets/images/manager_computer-institute-in-jahangirpuri.jpeg">
     <meta name="twitter:site" content="@nicewebtechno">
+    <meta name="google-site-verification" content="k_wn2HhZyY74S3ieDOBGbjRIaVSmTuNit2gClOSDbgU"/>
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
@@ -35,7 +39,7 @@
           "@type": "EducationalOrganization",
           "name": "Nice Computer Institute",
           "url": "https://www.computerinstituteindelhijahangirpuri.com/",
-          "logo": "https://webdesign.nicewebtech.com/assets/images/logo_new_icon_nice_computer_institute_jahangirpuri.png",
+          "logo": "http://www.computerinstituteindelhijahangirpuri.com/assets/images/manager_computer-institute-in-jahangirpuri.jpeg",
           "description": "Located in Jahangirpuri, Delhi, Nice Computer Institute provides courses in Advanced Excel, Tally, Python, Graphic Design, and more.",
           "sameAs": [
             "https://www.facebook.com/nicewebtechnologies",
@@ -57,6 +61,34 @@
             "contactType": "Customer Service"
           }
         }
+    </script>
+
+    <!-- Breadcrumb JSON-LD for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.computerinstituteindelhijahangirpuri.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Courses",
+          "item": "https://www.computerinstituteindelhijahangirpuri.com/courses"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Advanced Excel",
+          "item": "https://www.computerinstituteindelhijahangirpuri.com/course/advanced-excel"
+        }
+      ]
+    }
     </script>
 
     <!-- CSS Links -->
@@ -146,14 +178,17 @@
   
 
 <!-- Breadcrumb Section - Insert this right below the carousel -->
-<div class="container-fluid bg-breadcrumb">
-    <div class="container text-center py-5" style="max-width: 900px;">
-        <h4 class="text-white display-4 mb-4 wow fadeInDown" data-wow-delay="0.1s">@yield('title')</h4>
-        <ol class="breadcrumb d-flex justify-content-center mb-0 wow fadeInDown" data-wow-delay="0.3s">
-           
-            <li class="breadcrumb-item active ">@yield('title')</li>
+ 
+<div class="container-fluid bg-breadcrumb" style=" display: flex; justify-content: center; align-items: center;margin-top:50px;">
+<nav aria-label="breadcrumb">
+ <ol class="breadcrumb">
+            @foreach ($breadcrumbs as $breadcrumb)
+                <li class="breadcrumb-item" >
+               <a href="{{ $breadcrumb['url'] }}"   style=" color:black" >{{ $breadcrumb['name'] }}</a>
+                </li>
+            @endforeach
         </ol>
-    </div>
-</div>
-      
+       
+    </nav>
+            </div>
     

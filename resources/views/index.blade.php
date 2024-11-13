@@ -7,7 +7,7 @@
 
 <main>
         <!-- About 1 - Bootstrap Brain Component -->
-        <section1>
+        <section1 style="margin-top:50px;">
             <h1 class="display-2 text-center">Introductions</h1>
 
             <hr>

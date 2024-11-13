@@ -10,7 +10,7 @@ class PostController extends Controller
     // Show the form to create a new post
     public function create()
     {
-        return view('dashboard.create_post'); // Displays the post creation form
+        return view('dashboard.create_post');
     }
 
     // Store a new post in the database
@@ -36,87 +36,59 @@ class PostController extends Controller
         return redirect()->route('dashboard.new_posts')->with('success', 'Post created successfully.');
     }
 
-    // Display the list of posts in tabular format
+    // Display the list of posts
     public function index()
     {
-        $posts = Post::latest()->get(); // Fetch all posts for display in the new_post view
-        return view('dashboard.new_post', compact('posts'));
+        $posts = Post::latest()->get();
+        
+        // Breadcrumbs for the 'Updates' page
+        $breadcrumbs = [
+            ['name' => 'Home', 'url' => url('/')],
+            ['name' => 'Updates', 'url' => route('posts.index')],
+        ];
+
+        return view('dashboard.new_post', compact('posts', 'breadcrumbs'));
     }
 
-
+    // Display posts on the "Updates" (blogs) page
     public function blogs()
     {
-        $posts = Post::latest()->get(); // Fetch posts in descending order
-        return view('blogs', compact('posts'));
+        $posts = Post::latest()->get();
+        
+        // Breadcrumbs for the main 'Updates' page
+        $breadcrumbs = [
+            ['name' => 'Home', 'url' => url('/')],
+            ['name' => 'Updates', 'url' => route('posts.blogs')],
+        ];
+
+        return view('blogs', compact('posts', 'breadcrumbs'));
     }
 
-
+    // Display a single post
     public function show($id)
-{
-    $post = Post::findOrFail($id);
-    return view('single_post', compact('post'));
-}
+    {
+        $post = Post::findOrFail($id);
 
+        // Breadcrumbs for a specific post in 'Updates'
+        $breadcrumbs = [
+            ['name' => 'Home', 'url' => url('/')],
+            ['name' => 'Updates', 'url' => route('posts.blogs')],
+            ['name' => $post->title, 'url' => route('posts.show', $id)],
+        ];
 
+        return view('single_post', compact('post', 'breadcrumbs'));
+    }
 
+    // Show homepage with latest posts
+    public function showHomepage()
+    {
+        $latestPosts = Post::latest()->take(4)->get();
 
+        // Breadcrumbs for the homepage
+        $breadcrumbs = [
+            ['name' => 'Home', 'url' => url('/')],
+        ];
 
- // Show form to edit a post
- public function edit($id)
- {
-     $post = Post::findOrFail($id);
-     return view('dashboard.edit_post', compact('post'));
- }
-
- // Update a post
- public function update(Request $request, $id)
- {
-     $post = Post::findOrFail($id);
-
-     $request->validate([
-         'title' => 'required|max:255',
-         'content' => 'required',
-         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
-     ]);
-
-     if ($request->hasFile('image')) {
-         // Delete the old image if exists
-         if ($post->image && file_exists(storage_path('app/public/' . $post->image))) {
-             unlink(storage_path('app/public/' . $post->image));
-         }
-
-         // Save the new image
-         $imagePath = $request->file('image')->store('posts', 'public');
-         $post->image = $imagePath;
-     }
-
-     $post->title = $request->input('title');
-     $post->content = $request->input('content');
-     $post->save();
-
-     return redirect()->route('posts.index')->with('success', 'Post updated successfully!');
- }
-
- // Delete a post
- public function destroy($id)
- {
-     $post = Post::findOrFail($id);
-     // Delete the post image if exists
-     if ($post->image && file_exists(storage_path('app/public/' . $post->image))) {
-         unlink(storage_path('app/public/' . $post->image));
-     }
-     $post->delete();
-
-     return redirect()->route('posts.index')->with('success', 'Post deleted successfully!');
- }
-
-
- public function showHomepage()
- {
-     $latestPosts = Post::latest()->take(4)->get(); // Fetch the 4 most recent posts
-     return view('index', compact('latestPosts')); // Pass posts to the index view
- }
- 
-
-
+        return view('index', compact('latestPosts', 'breadcrumbs'));
+    }
 }
