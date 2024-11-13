@@ -61,6 +61,32 @@
           }
         }
     </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.computerinstituteindelhijahangirpuri.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Courses",
+          "item": "https://www.computerinstituteindelhijahangirpuri.com/courses"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Webdesign",
+          "item": "https://www.computerinstituteindelhijahangirpuri.com/course/webdesign"
+        }
+      ]
+    }
+    </script>
 
     <!-- Conditional FAQ Schema for FAQ Page -->
     @if(Request::is('faq'))
@@ -82,7 +108,7 @@
           "name": "How can I enroll in a course?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "You can enroll in a course through our website or by visiting the institute in person."
+            "text": "You can enroll in a course by visiting the institute in person or call at 9312945741"
           }
         },
         {
@@ -90,7 +116,7 @@
           "name": "What are the timings of the classes?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Our classes run from 9 AM to 7 PM, Monday to Saturday. You can choose the timing that suits you best."
+            "text": "Our classes run from 8 AM to 8 PM, Monday to Saturday. You can choose the timing that suits you best."
           }
         },
         {
