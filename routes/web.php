@@ -7,6 +7,12 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AdminLoginController;
 
+
+
+
+Route::get('/faq', [PageController::class, 'faq'])->name('faq');
+
+
 # Admin Login Routes
 Route::get('admin/login', [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
 Route::post('admin/login', [AdminLoginController::class, 'login']);

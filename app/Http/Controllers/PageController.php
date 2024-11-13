@@ -31,6 +31,16 @@ class PageController extends Controller
         return view('contact', compact('breadcrumbs'));
     }
 
+    public function faq()
+    {
+        // Define breadcrumbs for FAQ page
+        $breadcrumbs = [
+            ['name' => 'Home', 'url' => url('/')],
+            ['name' => 'FAQ', 'url' => route('faq')],
+        ];
 
+        // Return the FAQ page view and pass the breadcrumbs to it
+        return view('faq', compact('breadcrumbs'));
+    }
     
 }
