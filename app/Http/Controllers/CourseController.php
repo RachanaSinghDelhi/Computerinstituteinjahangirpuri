@@ -50,4 +50,14 @@ class CourseController extends Controller
     }
 
     // Other methods would follow a similar pattern
+
+    public function edit($id)
+{
+    // Fetch the course by its ID
+    $course = Course::findOrFail($id);
+    
+    // Return the edit view with the course data
+    return view('dashboard.course_edit', compact('course'));
+}
+
 }
