@@ -78,7 +78,7 @@ class PageController extends Controller
         ];
     
         // Load the view for the Introduction page and pass breadcrumbs to the view
-        return view('introduction', compact('breadcrumbs', 'latestPosts'));
+        return view('Introduction', compact('breadcrumbs', 'latestPosts'));
     }
     
 }
