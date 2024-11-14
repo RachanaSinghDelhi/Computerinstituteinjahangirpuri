@@ -23,6 +23,20 @@
         </p>
     </div>
 </section>
+<!-- Introduction Section with YouTube Video -->
+<section class="py-5">
+    <div class="container text-center">
+        <h2>Learn More About Us</h2>
+        <p class="mt-4">
+            Watch this video to get a quick overview of Nice Computer Institute and the courses we offer.
+        </p>
+
+        <!-- Responsive YouTube Embed -->
+        <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item" src="https://youtu.be/_IQokUduuh4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</section>
 
 <!-- About Section with Scroll Animation -->
 <section class="bg-light py-5" data-aos="fade-in">
