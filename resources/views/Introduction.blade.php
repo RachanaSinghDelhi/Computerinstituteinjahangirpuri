@@ -28,12 +28,12 @@
     <div class="container text-center">
         <h2>Learn More About Us</h2>
         <p class="mt-4">
-            Watch this video to get a quick overview of Nice Computer Institute and the courses we offer.
+            Watch this video to get a quick overview of Nice Computer Institute.
         </p>
 
         <!-- Responsive YouTube Embed -->
         <div class="embed-responsive embed-responsive-16by9">
-            <iframe class="embed-responsive-item" src="https://youtu.be/_IQokUduuh4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/_IQokUduuh4?si=u5UizUlH8LWYefMS&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
     </div>
 </section>
