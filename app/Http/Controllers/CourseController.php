@@ -63,7 +63,7 @@ class CourseController extends Controller
      
 
         // Return the edit view with the course data
-        return view('dashboard.course_edit', compact('course', 'breadcrumbs'));
+        return view('dashboard.course_edit', compact('course'));
     }
 
     // Update the course
