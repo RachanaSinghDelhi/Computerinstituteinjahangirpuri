@@ -5,22 +5,6 @@
 
 
 
-<section class="about">
-
-
-<div class="container container-fluid py-5" >
-
-  <nav style="--bs-breadcrumb-divider: '>'; color:#fff" aria-label="breadcrumb">
-  <ol class="breadcrumb" >
-      
-            <li class="breadcrumb-item" id="breadcrumbs"></li>
-           
-        </ol>
-    </nav>
- 
-
-   <div class="row" >
-     <div class="col-md-8" id="get_about_content" >
      <p class="animate__animated animate__fadeInDown">
                 <b>Nice Computer Institute is one of the best since 2001.</b>Some of the computer courses offered are graphic design, Marg Tally,Adv.Exl,Web Design & development,Basic,busy and many more.​
             </p>
@@ -102,13 +86,9 @@ are:</p>
             
 
 
-            </div> 
+        
         
        
-<div class="col-md-4" id="get_sidebar"></div>
 
-    </div>
 
-</div>
-</section>
 @endsection

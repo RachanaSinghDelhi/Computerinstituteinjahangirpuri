@@ -7,24 +7,27 @@
 
 <main>
         <!-- About 1 - Bootstrap Brain Component -->
+        <div class="container container-fluid">
+        <h1 class="display-3 text-center">Unlock Your Potential
+        Nice Computer Institute in Jahangirpuri</h1>
         <section1 style="margin-top:50px;">
-            <h1 class="display-2 text-center">Introductions</h1>
+            <h1 class=" text-center"><b>Introduction</b></h1>
 
             <hr>
 
-            <div class="container">
+         
                 <div class="row gy-3 gy-md-4 gy-lg-0 align-items-lg-center">
                     <div class="col-12 col-lg-6 col-xl-5">
-                    <img class="img-fluid" src="{{ asset('assets/images/manager_computer-institute-in-jahangirpuri.jpeg') }}" alt="Manager at Computer Institute in Jahangirpuri">
+                    <img class="img-fluid img-thumbnail" src="{{ asset('assets/images/manager_computer-institute-in-jahangirpuri.jpeg') }}"  alt="Manager at Computer Institute in Jahangirpuri">
 
                     </div>
                     <div class="col-12 col-lg-6 col-xl-7 bg-light">
                         <div class="row justify-content-xl-center">
                             <div class="col-12 col-xl-11">
                                 <h2 class="h1 py-4 mb-3">Who Are We?</h2>
-                                <p class="lead fs-4 text-secondary mb-3 ">Nice Computer Institute is one of the best since 2001.Some of the computer courses offered are graphic design, Marg Tally,Adv.Exl,Web Design & development,Basic,busy and many more.At Computer Institute In Jahangirpuri Nice Computer Institute, we are more than just a computer institute; we are a dynamic community dedicated to empowering individuals with cutting-edge digital skills. </p>
-                                <p class="mb-5"> As a premier destination for technology education, we take pride in fostering a learning environment that combines innovation, expertise, and hands-on experience.</p>
-
+                                <p class="lead fs-4 text-secondary mb-3 ">Best Computer Training in Jahangirpuri </p>
+                                <p class="mb-5">Best Computer Training in Jahangirpuri at Nice Computer Institute Nice Computer Institute also provides you with the best Computer Training in Jahangirpuri welcomes you ​​​​​​​​ ​​​​​​​​to explore the unlimited boundaries..</p>
+                                 <p ><a href="{{ route('introduction.page') }}" class="btn btn-btn-primary">Read more</a></p>
                             </div>
                         </div>
                     </div>
@@ -36,7 +39,7 @@
     <section4>
 
         <div class="bg-danger text-center">
-            <h1 class="fw-bolder text-white p-5 ">THE BEST PRICING WE OFFERED &nbsp;&nbsp; &nbsp;<button class="btn btn-outline-light btn-lg" style="border-radius:50px;">Call Now 9312945741</button></h1>
+            <h1 class="fw-bolder text-white p-5 ">THE BEST PRICING WE OFFER &nbsp;&nbsp; &nbsp;<a href="tel:9312945741"><button class="btn btn-outline-light btn-lg" style="border-radius:50px;">Call Now 9312945741</button></a></h1>
 
         </div>
 

@@ -12,7 +12,7 @@
     <meta name="description" content="Nice Computer is one of the best since 2001 & courses offered are Grph. Design, Marg,Tally,Adv.Exl,Web & Digt.Mkt,Basic,C,C++,Python..">
     <meta name="keywords" content="computer institute in Jahangirpuri,nice computer insitute,computer institute in Delhi, computer institute in Rohini,computer center reviews, computer institute reviews,good review comments for institute, Computer institute in Jahangirpuri,computer institute near me, National computer institute Delhi, Delhi computer institute,computer institute shalimar bagh,computer institute certificate, Government computer institute in Delhi,nice computer institute">
     <link rel="icon" href="https://www.computerinstituteindelhijahangirpuri.com/assets/images/logo_new_icon_nice_computer_institute_jahangirpuri.png" type="image/x-icon">
-    <link rel="canonical" href="{{ url()->current() }}" />
+    <link rel="canonical" href="https://www.computerinstituteindelhijahangirpuri.com" />
 
     <meta name="robots" content="index, follow" />
 

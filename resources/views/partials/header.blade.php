@@ -12,7 +12,7 @@
     <meta name="description" content="Nice Computer is one of the best since 2001 & courses offered are Grph. Design, Marg,Tally,Adv.Exl,Web & Digt.Mkt,Basic,C,C++,Python..">
     <meta name="keywords" content="computer institute in Jahangirpuri,nice computer insitute,computer institute in Delhi, computer institute in Rohini,computer center reviews, computer institute reviews,good review comments for institute, Computer institute in Jahangirpuri,computer institute near me, National computer institute Delhi, Delhi computer institute,computer institute shalimar bagh,computer institute certificate, Government computer institute in Delhi,nice computer institute">
     <link rel="icon" href="https://www.computerinstituteindelhijahangirpuri.com/assets/images/logo_new_icon_nice_computer_institute_jahangirpuri.png" type="image/x-icon">
-    <link rel="canonical" href="{{ url()->current() }}" />
+    <link rel="canonical" href="https://www.computerinstituteindelhijahangirpuri.com" />
     <meta name="robots" content="index, follow" />
 
     <!-- Open Graph (OG) Meta Tags for Social Media -->
@@ -81,7 +81,7 @@
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "Webdesign",
+          "name": "",
           "item": "https://www.computerinstituteindelhijahangirpuri.com/course/webdesign"
         }
       ]
@@ -138,6 +138,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link href="{{ asset('assets/bootstrap5/bootstrap-5.0.2-dist/fonts/font.woff2') }}" rel="stylesheet">
+    <!-- AOS CSS -->
+<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 1000,  // Duration of the animation (in ms)
+        once: true,       // Whether animation should happen only once
+        easing: 'ease-in-out',  // Easing function for animations
+    });
+</script>
+
+
+
 </head>
 
 <body>
@@ -177,6 +190,9 @@
 
         </div>
     </div>
+
+    
+
         <!---crousel starts -->
         <!-- Banner section -->
     

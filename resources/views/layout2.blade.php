@@ -17,9 +17,22 @@
         </div>
     </div>
     <!-- Main content -->
-    <div class="container">
+
+
+    <div class="container container-fluid py-5" >
+    <div class="row" >
+   
         @yield('content') <!-- This is where your page-specific content will go -->
-    </div>
+    
+   
+
+    @include('partials.sidebar')
+</div>
+
+</div>
+
+
+
 
     <!-- Footer -->
     @include('partials.footer')

@@ -71,3 +71,8 @@ Route::get('/privacy-policy', [PageController::class, 'privacyPolicy'])->name('p
 
 # Updates Route for Blog Posts
 Route::get('/updates', [PostController::class, 'blogs'])->name('posts.blogs');
+
+Route::get('/about', [PostController::class, 'showSidebar'])->name('posts.about');
+
+
+Route::get('/introduction', [PageController::class, 'showIntroductionPage'])->name('introduction.page');

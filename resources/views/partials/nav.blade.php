@@ -71,7 +71,7 @@
                             <a class="nav-link" href="/contact">Contact</a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="{{ route('faq') }}">FAQ</a>
+                              <a class="nav-link" href="{{ route('faq') }}">FAQ</a>
                         </li>
                         <li class="nav-item">
                             <button class="btn btn-light"> <span class="whatsapp"><a href="https://wa.me/9312945741"><i class="fa fa-whatsapp" style="font-size:48px;color:green;"></i></a></span></button>

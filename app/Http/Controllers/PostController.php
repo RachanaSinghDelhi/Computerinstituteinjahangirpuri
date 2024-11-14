@@ -91,4 +91,23 @@ class PostController extends Controller
 
         return view('index', compact('latestPosts', 'breadcrumbs'));
     }
+
+
+    // In your controller (e.g., PostController.php)
+
+    public function showSidebar()
+    {
+        // Fetch the latest posts
+        $latestPosts = Post::latest()->take(5)->get(); // Adjust the number of posts as needed
+    
+        // Define breadcrumbs for the 'about' page
+        $breadcrumbs = [
+            ['name' => 'Home', 'url' => url('/')],
+            ['name' => 'About', 'url' => route('posts.about')],
+        ];
+    
+        // Pass both latestPosts and breadcrumbs to the view
+        return view('about', compact('latestPosts', 'breadcrumbs'));
+    }
+    
 }
