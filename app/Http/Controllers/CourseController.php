@@ -60,11 +60,7 @@ class CourseController extends Controller
         $course = Course::findOrFail($id);
 
         // Breadcrumb for Home > Courses > Edit Course
-        $breadcrumbs = [
-            ['title' => 'Home', 'url' => url('/')],
-            ['title' => 'Courses', 'url' => route('courses.index')],
-            ['title' => 'Edit Course', 'url' => route('course.edit', $id)],
-        ];
+     
 
         // Return the edit view with the course data
         return view('dashboard.course_edit', compact('course', 'breadcrumbs'));
