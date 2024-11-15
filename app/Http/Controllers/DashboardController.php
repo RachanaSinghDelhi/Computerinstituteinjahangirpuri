@@ -10,13 +10,11 @@ class DashboardController extends Controller
     {
        
         $courses = Course::paginate(10); // Use paginate, not get
-        $orderedCourses = Course::orderByDesc('created_at')->get();
+       
         return view('dashboard.index', ['courses' => $orderedCourses]);
 
        // return view('dashboard.index', compact('courses'));
       
     }
-
-    
 
 }

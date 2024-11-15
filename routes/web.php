@@ -8,6 +8,9 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\AdminLoginController;
 
 
+use App\Http\Controllers\IndexController;
+
+Route::get('/', [IndexController::class, 'index'])->name('home');
 
 
 Route::get('/faq', [PageController::class, 'faq'])->name('faq');
@@ -19,7 +22,7 @@ Route::post('admin/login', [AdminLoginController::class, 'login']);
 Route::post('admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 
 # Homepage Route
-Route::get('/', [PostController::class, 'showHomepage']);
+
 
 # Public Routes (Access without Authentication)
 Route::get('/about', [PageController::class, 'about'])->name('about');
