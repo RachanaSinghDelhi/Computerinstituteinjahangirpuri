@@ -7,6 +7,7 @@
     <!-- Form for updating course using POST -->
     <form action="{{ route('courses.update', $course->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
+        @method('PUT')
 
         <!-- Course Image Field -->
         <div class="form-group">
@@ -18,18 +19,27 @@
                     <img src="{{ asset('storage/' . $course->course_image) }}" alt="Course Image" width="100">
                 </div>
             @endif
+            @error('course_image')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
         </div>
 
         <!-- Course Title Field -->
         <div class="form-group">
             <label for="course_title">Course Title</label>
             <input type="text" class="form-control" name="course_title" id="course_title" value="{{ old('course_title', $course->course_title) }}">
+            @error('course_title')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
         </div>
 
         <!-- Course Description Field -->
         <div class="form-group">
             <label for="course_desc">Course Description</label>
             <textarea class="form-control" name="course_desc" id="course_desc">{{ old('course_desc', $course->course_desc) }}</textarea>
+            @error('course_desc')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
         </div>
 
         <!-- Course Content Field with Quill Editor -->
@@ -39,6 +49,9 @@
             <textarea class="form-control d-none" name="course_content" id="course_content">{{ old('course_content', $course->course_content) }}</textarea>
             <!-- Div for Quill Editor -->
             <div id="quill_editor" style="height: 300px;">{!! old('course_content', $course->course_content) !!}</div>
+            @error('course_content')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
         </div>
 
         <!-- Course URL Field -->
@@ -63,7 +76,7 @@
         placeholder: 'Edit course content...',
         modules: {
             toolbar: [
-                [{ 'header': '1'}, { 'header': '2' }, { 'font': [] }],
+                [{ 'header': '1'}, { 'header': '2' }, { 'font': [] }], 
                 [{ 'list': 'ordered'}, { 'list': 'bullet' }],
                 ['bold', 'italic', 'underline'],
                 ['link', 'image', 'video'],

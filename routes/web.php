@@ -47,18 +47,19 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/news', [NewsController::class, 'index'])->name('dashboard.news.index');
         Route::post('/news', [NewsController::class, 'store'])->name('dashboard.news.store');
     });
-
-    # Course Routes under Dashboard Prefix
     Route::prefix('dashboard')->group(function () {
+        // Create Course Routes
         Route::get('/course', [CourseController::class, 'create'])->name('course.create');
         Route::post('/course', [CourseController::class, 'store'])->name('courses.store');
+        
+        // Additional Course CRUD Routes
+        Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
+        Route::get('/courses/{id}/edit', [CourseController::class, 'edit'])->name('courses.edit');
+        
+        Route::put('/courses/{id}', [CourseController::class, 'update'])->name('courses.update'); 
+        Route::delete('/course/{id}', [CourseController::class, 'destroy'])->name('course.destroy');
     });
-
-    # Additional Course CRUD Routes
-    Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
-    Route::get('/courses/{id}/edit', [CourseController::class, 'edit'])->name('courses.edit');
-    Route::post('/courses/{id}', [CourseController::class, 'update'])->name('courses.update');
-    Route::delete('/courses/{id}', [CourseController::class, 'destroy'])->name('courses.destroy');
+    
 });
 
 # Public Course Detail Route
@@ -76,3 +77,5 @@ Route::get('/about', [PostController::class, 'showSidebar'])->name('posts.about'
 
 
 Route::get('/introduction', [PageController::class, 'showIntroductionPage'])->name('introduction.page');
+
+

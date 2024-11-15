@@ -8,7 +8,8 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $courses = Course::all();
+       
+        $courses = Course::paginate(10); // Use paginate, not get
         $orderedCourses = Course::orderByDesc('created_at')->get();
         return view('dashboard.index', ['courses' => $orderedCourses]);
 

@@ -4,103 +4,138 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Str;
 class CourseController extends Controller
 {
-    // Show a list of courses (index)
+
+
     public function index()
     {
-        // Fetch the latest 7 courses
-        $courses = Course::limit(7)->get();
+        // Paginate results with 10 courses per page
+    $courses = Course::paginate(10);
 
-        // Breadcrumb for Home > Courses
-        $breadcrumbs = [
-            ['title' => 'Home', 'url' => url('/')],
-            ['title' => 'Courses', 'url' => route('courses.index')],
-        ];
-
-        return view('index', compact('courses', 'breadcrumbs'));
+    return view('dashboard.index', compact('courses'));
+        // Paginate and order courses by the latest created_at
+        
     }
-
-    // Show a single course detail
-    public function show($id)
+    /**
+     * Show the form for creating a new course.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function create()
     {
-        // Fetch course details by id
-        $course = Course::findOrFail($id);
-        $courses = Course::limit(7)->get();
-
-        // Breadcrumb for Home > Courses > Course Detail
-        $breadcrumbs = [
-            ['title' => 'Home', 'url' => url('/')],
-            ['title' => 'Courses', 'url' => route('courses.index')],
-            ['title' => $course->course_title, 'url' => route('course.show', $id)],
-        ];
-
-        return view('show', compact('course', 'courses', 'breadcrumbs'));
+        // Return the view for adding a new course
+        return view('dashboard.course'); // Ensure this view file exists in the correct location
     }
 
-    // Show the 'about' page with all courses
-    public function about()
+    /**
+     * Store a newly created course in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request)
     {
-        $courses = Course::all();
+        // Validate the incoming request
+        $request->validate([
+            'course_title' => 'required|string|max:255',
+            'course_desc' => 'required|string',
+            'course_content' => 'required|string',
+            'course_url' => 'nullable',
+            'course_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
 
-        // Breadcrumb for Home > About
-        $breadcrumbs = [
-            ['title' => 'Home', 'url' => url('/')],
-            ['title' => 'About', 'url' => route('about')],
-        ];
+        // Handle the image upload (if any)
+        $imagePath = null;
+        if ($request->hasFile('course_image')) {
+            // Generate a random name for the image
+            $imageName = Str::random(10) . '.' . $request->file('course_image')->getClientOriginalExtension();
+            
+            // Store the image in the 'courses' folder
+            $imagePath = $request->file('course_image')->storeAs('courses', $imageName, 'public');
+            
+            // Update the request with the new image path (optional)
+            $request->course_image = $imagePath;
+        }
 
-        return view('about', compact('courses', 'breadcrumbs'));
+        // Create the new course
+        Course::create([
+            'course_title' => $request->course_title,
+            'course_desc' => $request->course_desc,
+            'course_content' => $request->course_content,
+            'course_url' => $request->course_url,
+            'course_image' => $imagePath,
+        ]);
+
+        // Redirect back to the main dashboard with a success message
+        return redirect()->route('dashboard.index')->with('success', 'Course created successfully!');
     }
 
-    // Edit a specific course
     public function edit($id)
     {
-        // Fetch the course by its ID
-        $course = Course::findOrFail($id);
-
-        // Breadcrumb for Home > Courses > Edit Course
-     
-
+        // Find the course by ID
+        $course = Course::findOrFail($id); // This will return a 404 error if the course is not found
+        
         // Return the edit view with the course data
         return view('dashboard.course_edit', compact('course'));
     }
 
-    // Update the course
-    public function update(Request $request, $id)
-    {
-        // Validate incoming data
-        $validated = $request->validate([
-            'course_title' => 'required|string|max:255',
-            'description' => 'required|string',
-            // Add any other fields to be updated
-        ]);
+   
+   public function update(Request $request, Course $course)
+{
+    // Validate the incoming request
+    $request->validate([
+        'course_title' => 'required|string|max:255',
+        'course_desc' => 'required|string',
+        'course_content' => 'required|string',
+        'course_url' => 'nullable|url',
+        'course_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ]);
 
-        // Find the course by ID
-        $course = Course::findOrFail($id);
+    // Handle the image upload (if any)
+    if ($request->hasFile('course_image')) {
+        // Delete the old image if a new one is uploaded
+        if ($course->course_image) {
+            \Storage::delete($course->course_image);
+        }
 
-        // Update the course's attributes
-        $course->course_title = $validated['course_title'];
-        $course->description = $validated['description'];
-        // Update other fields as necessary
+        // Generate a random name for the image
+        $imageName = Str::random(10) . '.' . $request->file('course_image')->getClientOriginalExtension();
 
-        // Save the updated course
-        $course->save();
-
-        // Redirect with a success message
-        return redirect()->route('courses.index')->with('success', 'Course updated successfully');
+        // Store the image in the 'courses' folder
+        $imagePath = $request->file('course_image')->storeAs('courses', $imageName, 'public');
+    } else {
+        // If no new image is uploaded, keep the existing image
+        $imagePath = $course->course_image;
     }
 
-    // Delete a course
-    public function destroy($id)
-    {
-        // Find the course by ID
-        $course = Course::findOrFail($id);
+    // Update the course details
+    $course->update([
+        'course_title' => $request->course_title,
+        'course_desc' => $request->course_desc,
+        'course_content' => $request->course_content,
+        'course_url' => $request->course_url,
+        'course_image' => $imagePath,
+    ]);
 
-        // Delete the course
+    // Redirect back to the main dashboard with a success message
+    return redirect()->route('dashboard.index')->with('success', 'Course updated successfully!');
+}
+
+public function destroy($id)
+{
+    $course = Course::find($id);
+
+    if ($course) {
         $course->delete();
-
-        // Redirect with a success message
-        return redirect()->route('courses.index')->with('success', 'Course deleted successfully');
+        return redirect()->back()->with('success', 'Course deleted successfully.');
     }
+
+    return redirect()->back()->with('error', 'Course not found.');
+}
+
+
+
+
 }
