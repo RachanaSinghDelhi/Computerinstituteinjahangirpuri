@@ -89,7 +89,7 @@ class CourseController extends Controller
         'course_title' => 'required|string|max:255',
         'course_desc' => 'required|string',
         'course_content' => 'required|string',
-        'course_url' => 'nullable|url',
+        'course_url' => 'nullable',
         'course_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
     ]);
 

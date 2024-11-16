@@ -33,6 +33,17 @@
             @enderror
         </div>
 
+
+        @if ($errors->any())
+    <div>
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
         <!-- Course Description Field -->
         <div class="form-group">
             <label for="course_desc">Course Description</label>
