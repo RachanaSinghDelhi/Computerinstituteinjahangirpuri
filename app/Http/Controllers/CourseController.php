@@ -11,13 +11,13 @@ class CourseController extends Controller
 
     public function index()
     {
-        // Paginate results with 10 courses per page
-    $courses = Course::paginate(10);
+        // Add pagination here, e.g., 10 courses per page
+        $courses = Course::paginate(10); // Adjust the number of items per page as needed
 
-    return view('dashboard.index', compact('courses'));
-        // Paginate and order courses by the latest created_at
-        
+        // Return the view with paginated courses
+        return view('dashboard.index', compact('courses'));
     }
+
     /**
      * Show the form for creating a new course.
      *

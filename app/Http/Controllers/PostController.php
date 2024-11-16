@@ -80,17 +80,7 @@ class PostController extends Controller
     }
 
     // Show homepage with latest posts
-    public function showHomepage()
-    {
-        $latestPosts = Post::latest()->take(4)->get();
-
-        // Breadcrumbs for the homepage
-        $breadcrumbs = [
-            ['name' => 'Home', 'url' => url('/')],
-        ];
-
-        return view('index', compact('latestPosts', 'breadcrumbs'));
-    }
+    
 
 
     // In your controller (e.g., PostController.php)

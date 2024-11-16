@@ -66,34 +66,6 @@
     </table>
 
     <!-- Pagination Links -->
-    <div class="d-flex justify-content-center">
-        {{ $courses->links() }}
-    </div>
+   
 </div>
-@endsection
-
-@section('scripts')
-    <!-- Include DataTables CSS and JS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            $('#coursesTable').DataTable({
-                "paging": true,        // Enable pagination
-                "ordering": true,      // Enable column ordering
-                "searching": true,     // Enable search
-                "pageLength": 10,      // Default items per page
-                "lengthChange": true,  // Allow users to change items per page
-                "responsive": true,    // Make table responsive
-                "language": {
-                    "paginate": {
-                        "previous": "<i class='fa fa-chevron-left'></i>",
-                        "next": "<i class='fa fa-chevron-right'></i>"
-                    }
-                }
-            });
-        });
-    </script>
 @endsection
