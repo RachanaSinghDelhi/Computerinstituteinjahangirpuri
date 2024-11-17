@@ -56,7 +56,7 @@
                             <!-- Display course image -->
                             @if($course->course_image)
                             <img 
-                                    src="{{ asset('storage/' . $course->course_image) }}" 
+                                    src="{{ asset('storage/courses/' . $course->course_image) }}" 
                                     alt="{{ $course->course_title }}" 
                                     class="img-fluid mb-3" 
                                     style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;">
