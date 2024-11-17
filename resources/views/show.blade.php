@@ -1,7 +1,7 @@
 
 
 @include('partials.course_header',['courses' => $courses])
-<div class="banner" style="background-image: url('{{ asset('storage/courses' . $course->course_image) }}'); height: 400px; background-size: cover; background-position: center;">
+<div class="banner" style="background-image: url('{{ asset('storage/courses/' . $course->course_image) }}'); height: 400px; background-size: cover; background-position: center;">
         <div class="overlay" style="background-color: rgba(0, 0, 0, 0.5); height: 100%; display: flex; justify-content: center; align-items: center;">
         <div class="container-fluid bg-breadcrumb">
 <nav aria-label="breadcrumb">
