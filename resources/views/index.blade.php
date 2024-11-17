@@ -89,7 +89,7 @@
                 <div class="col-md-6 bg-light p-5">
                     <h2 class="display-5">About Us</h2>
                     <p class="blockquote py-4">Nice Computer Institute is one of the best since 2001.Some of the computer courses offered are graphic design, Marg Tally,Adv.Exl,Web Design & development,Basic,busy and many more.​ Our education process facilitates ...</p>
-                    <p class="btn btn-success">Learn More</p>
+                    <p class="btn btn-success"><a href="/about">Learn More</p>
                 </div>
             </div>
         </div>
