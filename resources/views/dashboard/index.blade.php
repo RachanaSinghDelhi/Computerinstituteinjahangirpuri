@@ -47,7 +47,7 @@
             @foreach ($courses as $course)
             <tr id="course-row-{{ $course->id }}">
                 <td>
-                    <img src="{{ asset('storage/'.$course->course_image) }}" alt="{{ $course->course_title }}" style="max-width: 100px; height:100px;">
+                    <img src="{{ asset('storage/courses/'.$course->course_image) }}" alt="{{ $course->course_title }}" style="max-width: 100px; height:100px;">
                 </td>
                 <td>{{ $course->course_title }}</td>
                 <td>{{ \Illuminate\Support\Str::limit($course->course_desc, 150, '...') }}</td>

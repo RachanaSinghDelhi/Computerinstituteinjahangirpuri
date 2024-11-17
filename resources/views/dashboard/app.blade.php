@@ -9,8 +9,16 @@
 <main>
    @yield('content')
 </main>
-<footer>
+
    @include('partials.footer') <!-- Include your footer Blade file -->
-   @yield('scripts')
+
    @stack('scripts')
-</footer>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="{{ asset('assets/bootstrap5/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js') }}"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>-->
+    <script src="{{ asset('assets/js/script.js') }}"></script>
+</body>
+
+</html>
+  
+

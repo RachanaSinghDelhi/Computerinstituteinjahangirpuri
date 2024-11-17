@@ -4,7 +4,7 @@
 <div class="container">
     <h1>Edit Course</h1>
 
-    <!-- Form for updating course using POST -->
+    <!-- Form for updating course using PUT method -->
     <form action="{{ route('courses.update', $course->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -16,7 +16,7 @@
             <!-- Show the existing image if available -->
             @if ($course->course_image)
                 <div>
-                    <img src="{{ asset('storage/' . $course->course_image) }}" alt="Course Image" width="100">
+                    <img src="{{ asset('storage/courses/' . $course->course_image) }}" alt="Course Image" width="100">
                 </div>
             @endif
             @error('course_image')
@@ -33,17 +33,6 @@
             @enderror
         </div>
 
-
-        @if ($errors->any())
-    <div>
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
         <!-- Course Description Field -->
         <div class="form-group">
             <label for="course_desc">Course Description</label>
@@ -54,16 +43,20 @@
         </div>
 
         <!-- Course Content Field with Quill Editor -->
-        <div class="form-group">
-            <label for="course_content">Course Content</label>
-            <!-- Hidden Textarea for storing Quill content -->
-            <textarea class="form-control d-none" name="course_content" id="course_content">{{ old('course_content', $course->course_content) }}</textarea>
-            <!-- Div for Quill Editor -->
-            <div id="quill_editor" style="height: 300px;">{!! old('course_content', $course->course_content) !!}</div>
-            @error('course_content')
-                <div class="text-danger">{{ $message }}</div>
-            @enderror
-        </div>
+       <div class="form-group">
+    <label for="course_content">Course Content</label>
+    <!-- Div for Quill Editor -->
+    <div id="quill_editor">{!! old('course_content', $course->course_content) !!}</div>
+    
+  <!-- Hidden Input Field for storing Quill content -->
+  <input type="hidden" name="course_content" id="course_content" value="{{ old('course_content', $course->course_content) }}">
+
+    <!-- Error Message -->
+    @error('course_content')
+        <div class="text-danger">{{ $message }}</div>
+    @enderror
+</div>
+
 
         <!-- Course URL Field -->
         <div class="form-group">
@@ -81,28 +74,32 @@
 <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
 <script>
-    // Initialize Quill editor for the content field
-    var quill = new Quill('#quill_editor', {
-        theme: 'snow',
-        placeholder: 'Edit course content...',
-        modules: {
-            toolbar: [
-                [{ 'header': '1'}, { 'header': '2' }, { 'font': [] }], 
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                ['bold', 'italic', 'underline'],
-                ['link', 'image', 'video'],
-                [{ 'align': [] }]
-            ]
-        }
-    });
+   // Initialize Quill editor
+var quill = new Quill('#quill_editor', {
+    theme: 'snow',
+    placeholder: 'Edit course content...',
+    modules: {
+        toolbar: [
+            [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            ['bold', 'italic', 'underline'],
+            ['link', 'image', 'video'],
+            [{ 'align': [] }]
+        ]
+    }
+});
 
-    // Set initial content in Quill editor
-    quill.root.innerHTML = {!! json_encode($course->course_content) !!};
+// Event listener to update hidden textarea
+quill.on('text-change', function() {
+    // Update hidden textarea with the HTML content of the editor
+    document.querySelector('#course_content').value = quill.root.innerHTML;
+});
 
-    // Update hidden textarea with Quill content before submitting
-    document.querySelector('form').onsubmit = function() {
-        document.querySelector('#course_content').value = quill.root.innerHTML;
-    };
+// Ensure textarea content is updated on form submit
+document.querySelector('form').onsubmit = function() {
+    document.querySelector('#course_content').value = quill.root.innerHTML;
+};
+
 </script>
 @endpush
 @endsection

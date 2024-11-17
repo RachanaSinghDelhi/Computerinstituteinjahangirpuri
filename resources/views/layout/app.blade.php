@@ -139,7 +139,7 @@
      <!---topbar-->
      <div class="main-top" style="z-index: index 1000;">
 
-@include("partials.nav")
+     @include("partials.nav")
    
     <!---crousel starts -->
 
@@ -220,6 +220,24 @@
     <!-- Footer Section -->
     @include('partials.footer')
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> <!-- Bootstrap JS -->
+    <script>
+ document.addEventListener('DOMContentLoaded', function() {
+    var spinner = document.getElementById('spinner');
+    if (spinner) {
+        console.log('Spinner found');
+        spinner.style.visibility = 'hidden'; // Hide spinner using visibility
+        // Or alternatively:
+        // spinner.style.opacity = '0'; // Hide spinner using opacity
+    }
+});
+</script>
+<!-- AOS JS -->
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="{{ asset('assets/bootstrap5/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js') }}"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>-->
+    <script src="{{ asset('assets/js/script.js') }}"></script>
 </body>
+
 </html>

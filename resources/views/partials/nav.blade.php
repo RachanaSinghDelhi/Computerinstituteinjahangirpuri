@@ -57,18 +57,16 @@
                             <a class="nav-link" href="/about">About Us</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" id="course" data-bs-toggle="dropdown" aria-expanded="false">
-                                Courses
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown" id="get_course">
-                           @foreach($courses as $course)
-                                <li><a class="dropdown-item" href="{{  route('course.show', $course->id)  }}">{{ $course->course_title }}</a></li>
-                            @endforeach
-                                <!--   <li><a class="dropdown-item " href="#">Baic</a></li> -->
-                            </ul>
-                           
-                             
-                        </li>
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Courses
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        @foreach($courses as $course)
+            <li><a class="dropdown-item" href="{{ route('course.show', $course->id) }}">{{ $course->course_title }}</a></li>
+        @endforeach
+        <!-- <li><a class="dropdown-item" href="#">Basic</a></li> -->
+    </ul>
+</li>
                         <li class="nav-item">
                             <a class="nav-link " href="/blogs">Updates</a>
                         </li>
