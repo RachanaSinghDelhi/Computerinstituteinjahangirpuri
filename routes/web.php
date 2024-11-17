@@ -28,7 +28,7 @@ Route::post('admin/logout', [AdminLoginController::class, 'logout'])->name('admi
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/blogs', [PageController::class, 'blogs'])->name('blogs');
-Route::get('/courses',[PageController::class,'courses'])->name('courses');
+Route::get('/courses_list',[PageController::class,'courses'])->name('courses');
 # Single Post Route
 Route::get('posts/{id}', [PostController::class, 'show'])->name('posts.show');
 
