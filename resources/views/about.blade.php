@@ -77,12 +77,12 @@ are:</p>
             
             <h1 class="display-6" class="animate__animated animate__fadeInDown">Which is the nearest landmark ?</h1> 
 
-    <p class="animate__animated animate__fadeInDown">Besides being nearby pizza palace, behind SBI bank on Jahangirpuri main road in A-Block.</p>  
+    <p class="animate__animated animate__fadeInDown">Nearby pizza palace, behind SBI bank on Jahangirpuri main road in A-Block.</p>  
             
             
             <h1 class="display-6">What are its hours of operation ?</h1> 
 
-    <p class="animate__animated animate__fadeInDown">7AM-8PM EVERYDAY, MONDAY to SATURDAY, SUNDAY OFF.</p>
+    <p class="animate__animated animate__fadeInDown">8AM-8PM EVERYDAY, MONDAY to SATURDAY, SUNDAY OFF.</p>
             
 
 

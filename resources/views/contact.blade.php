@@ -35,7 +35,7 @@
         <div class="text-center mt-4">
             <p><strong>Find Us:</strong> 8 AM - 9 PM, Monday – Saturday</p>
             <p><strong>Phone:</strong> 9312945741</p>
-            <p><strong>Email:</strong> nicewebtechnologies@gmail.com</p>
+            <p><strong>Email:</strong> admin@computerinstituteindelhijahangirpuri.com</p>
         </div>
     </div>
 @endsection

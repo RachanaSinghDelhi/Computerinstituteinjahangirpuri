@@ -6,7 +6,7 @@
                 <div class="collapse navbar-collapse" id="topbar">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0  menu_list">
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="#"> <i class="fa fa-clock-o " style="color:#fff;"></i>Mon - Fri 7AM-8PM</a>
+                            <a class="nav-link" aria-current="page" href="#"> <i class="fa fa-clock-o " style="color:#fff;"></i>Mon - Fri 8AM-8PM</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#"><i class="fa fa-phone" style="color:#fff;"> 9312945741 </i></a>
