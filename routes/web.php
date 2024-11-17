@@ -27,8 +27,8 @@ Route::post('admin/logout', [AdminLoginController::class, 'logout'])->name('admi
 # Public Routes (Access without Authentication)
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
-Route::get('/blogs', [PostController::class, 'blogs'])->name('blogs');
-
+Route::get('/blogs', [PageController::class, 'blogs'])->name('blogs');
+Route::get('/courses',[PageController::class,'courses'])->name('courses');
 # Single Post Route
 Route::get('posts/{id}', [PostController::class, 'show'])->name('posts.show');
 
@@ -72,9 +72,6 @@ Route::get('/course/{course_url}', [CourseController::class, 'show'])->name('cou
 # Privacy Policy Route
 Route::get('/privacy-policy', [PageController::class, 'privacyPolicy'])->name('privacy-policy');
 
-
-# Updates Route for Blog Posts
-Route::get('/updates', [PostController::class, 'blogs'])->name('posts.blogs');
 
 Route::get('/about', [PostController::class, 'showSidebar'])->name('posts.about');
 
