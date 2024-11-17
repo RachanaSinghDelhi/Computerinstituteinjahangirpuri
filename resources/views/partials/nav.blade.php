@@ -70,9 +70,7 @@
                         <li class="nav-item">
                             <a class="nav-link " href="/blogs">Updates</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="/courses_list">Courses</a>
-                        </li>
+                     
                         <li class="nav-item">
                             <a class="nav-link" href="/contact">Contact</a>
                         </li>

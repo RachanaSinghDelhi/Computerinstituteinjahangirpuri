@@ -36,6 +36,7 @@
                 <p><a href="https://posts.gle/x7nyjU" style="color:white"><i class="fa fa-check-square"></i>Web Design & Web Devlopement</a></p>
                 <p><a href="https://posts.gle/FNLZ6g" style="color:white"><i class="fa fa-check-square"></i>Marg Classes(Accounting Software)</a></p>
                 <p><a href="https://posts.gle/hZyL2 " style="color:white"i class="fa fa-check-square"></i>Advance Excel Classes</a></p>
+                <p><a href="/courses_list " style="color:white"i class="fa fa-check-square"></i>Courses</a></p>
                 
             </div>
         </div>
