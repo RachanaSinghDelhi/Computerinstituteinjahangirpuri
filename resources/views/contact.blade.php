@@ -6,10 +6,14 @@
 <div class="container mt-5">
         <h1 class="text-center">Contact Us</h1>
         <p class="text-center">Discover a world of possibilities in technology education with Nice Computer Institute in Jahangirpuri!</p>
-
+        @if(session('success'))
+    <div class="alert alert-success mt-3">
+        {{ session('success') }}
+    </div>
+@endif
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <form action="#" method="POST">
+            <form action="{{ route('contact.submit') }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
@@ -24,7 +28,7 @@
                         <input type="tel" class="form-control" id="phone" name="phone" required>
                     </div>
                     <div class="mb-3">
-                        <label for="message" class="form-label">Message</label>
+                        <label for="message" class="form-label">Enquiry</label>
                         <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Submit</button>

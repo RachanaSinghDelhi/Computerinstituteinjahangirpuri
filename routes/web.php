@@ -6,6 +6,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AdminLoginController;
+use App\Http\Controllers\ContactController;
 
 
 use App\Http\Controllers\IndexController;
@@ -27,6 +28,7 @@ Route::post('admin/logout', [AdminLoginController::class, 'logout'])->name('admi
 # Public Routes (Access without Authentication)
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
 Route::get('/blogs', [PageController::class, 'blogs'])->name('blogs');
 Route::get('/courses_list',[PageController::class,'courses'])->name('courses');
 # Single Post Route
