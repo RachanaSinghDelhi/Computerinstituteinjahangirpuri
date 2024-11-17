@@ -130,17 +130,19 @@ public function destroy($id)
     return redirect()->back()->with('error', 'Course not found.');
 }
 
-public function show($id)
+public function show($course_url)
 {
-    // Find the course by ID or return a 404 error if not found
-    $course = Course::findOrFail($id);
+    // Find the course by its course_url or return a 404 error if not found
+    $course = Course::where('course_url', $course_url)->firstOrFail();
+
+    // Prepare breadcrumbs with course_url
     $breadcrumbs = [
         ['title' => 'Home', 'url' => url('/')],
-     
-        ['title' => $course->course_title, 'url' => url('show', $course->id)]
+        ['title' => $course->course_title, 'url' => url('/course/' . $course->course_url)]  // Use course_url in the URL
     ];
-    // Return the view for displaying the course details, passing the course data
-    return view('show', compact('course','breadcrumbs'));  // 'show' corresponds to resources/views/show.blade.php
+
+    // Return the view for displaying the course details, passing the course data and breadcrumbs
+    return view('show', compact('course', 'breadcrumbs'));  // 'show' corresponds to resources/views/show.blade.php
 }
 
 

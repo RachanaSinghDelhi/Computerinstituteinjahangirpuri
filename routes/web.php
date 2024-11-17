@@ -66,7 +66,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 # Public Course Detail Route
-Route::get('/course/{id}', [CourseController::class, 'show'])->name('course.show');
+Route::get('/course/{course_url}', [CourseController::class, 'show'])->name('course.show');
 
 
 # Privacy Policy Route

@@ -38,6 +38,7 @@
             <tr>
                 <th>Image</th>
                 <th>Title</th>
+                <th>Course URL</th>
                 <th>Description</th>
                 <th>Content</th>
                 <th>Actions</th>
@@ -50,6 +51,7 @@
                     <img src="{{ asset('storage/courses/'.$course->course_image) }}" alt="{{ $course->course_title }}" style="max-width: 100px; height:100px;">
                 </td>
                 <td>{{ $course->course_title }}</td>
+                <td>{{ $course->course_url }}</td>
                 <td>{{ \Illuminate\Support\Str::limit($course->course_desc, 150, '...') }}</td>
                 <td>{{ \Illuminate\Support\Str::limit($course->course_content, 150, '...') }}</td>
                 <td>
