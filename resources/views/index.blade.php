@@ -55,7 +55,12 @@
                         <div class="card-body text-center">
                             <!-- Display course image -->
                             @if($course->course_image)
-                                <img src="{{ asset('storage/courses/' . $course->course_image) }}" alt="{{ $course->course_title }}" class="img-fluid mb-3" style="max-height: 200px;">
+                            <img 
+                                    src="{{ asset('storage/' . $course->course_image) }}" 
+                                    alt="{{ $course->course_title }}" 
+                                    class="img-fluid mb-3" 
+                                    style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;">
+                                    
                             @else
                                 <h5 class="card-title"><i class="fa fa-book" style="font-size:48px;"></i></h5>
                             @endif
