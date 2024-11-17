@@ -45,94 +45,34 @@
 
     </section4>
     <section2>
-        <h1 class="display-2 text-center py-5">World Class Education</h1>
+    <h1 class="display-2 text-center py-5">World Class Education</h1>
 
-
-        <div class="container">
-            <div class="row">
+    <div class="container">
+        <div class="row">
+            @foreach ($courses as $course)
                 <div class="col-md-4 p-4">
                     <div class="page-section bg-light" style="width: 24rem;">
                         <div class="card-body text-center">
-                            <h5 class="card-title"><i class="fa fa-comments-o" style="font-size:48px;"></i></h5>
-                            <h2 class="card-subtitle mb-2 text-muted">Best MARG Academy In Jahangirpuri</h2>
-                            <p class="blockquote">Nice Computer Institute is the best MARG Academy in Jahangirpuri of Most Advanced Inventory </p>
-                            <a href="#" class="btn btn-primary">Read More</a>
+                            <!-- Display course image -->
+                            @if($course->course_image)
+                                <img src="{{ asset('storage/courses/' . $course->course_image) }}" alt="{{ $course->course_title }}" class="img-fluid mb-3" style="max-height: 200px;">
+                            @else
+                                <h5 class="card-title"><i class="fa fa-book" style="font-size:48px;"></i></h5>
+                            @endif
+                            <!-- Course Title -->
+                            <h2 class="card-subtitle mb-2 text-muted">{{ $course->course_title }}</h2>
+                            <!-- Course Description -->
+                            <p class="blockquote">{{ \Illuminate\Support\Str::limit($course->course_desc, 100) }}</p>
+                            <!-- Read More Button -->
+                            <a href="{{ url('/course/' . $course->course_url) }}" class="btn btn-primary">Read More</a>
                         </div>
                     </div>
                 </div>
-
-
-
-                <div class="col-md-4 p-4">
-                    <div class="page-section bg-light" style="width: 24rem;">
-                        <div class="card-body text-center">
-                            <h5 class="card-title"><i class="fa fa-bar-chart" style="font-size:48px;"></i></h5>
-                            <h2 class="card-subtitle mb-2 text-muted">Best Graphic Design Institute</h2>
-                            <p class="blockquote">
-                                Graphic Design Concepts & Practices Elements of design Typography Color Layout Create the industry standard... </p>
-                            <a href="#" class="btn btn-primary">Read More</a>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="col-md-4 p-4">
-                    <div class="page-section bg-light" style="width: 24rem;">
-                        <div class="card-body text-center">
-                            <h5 class="card-title"><i class="fa fa-camera-retro" style="font-size:48px;"></i></h5>
-                            <h2 class="card-subtitle mb-2 text-muted">Tally Institute In Jahangirpuri</h2>
-                            <p class="blockquote">Tally Institute in Jahangirpuri Tally Institute in Jahangirpuri course at Nice Web Technologies module contain:...</p>
-                            <a href="#" class="btn btn-primary">Read More</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br><br>
-            <div class="row my-5">
-                <div class="col-md-4 p-4">
-                    <div class="page-section bg-light" style="width: 24rem;">
-                        <div class="card-body text-center">
-                            <h5 class="card-title"><i class="fa fa-code" style="font-size:48px;"></i></h5>
-                            <h2 class="card-subtitle mb-2 text-muted">AutoCAD Training At Nice Computer Institute In Jahangirpuri</h2>
-                            <p class="blockquote">
-                                What is AutoCAD? AutoCad training at Nice Computer Institute in Jahangirpuri. AutoCAD is computer-aided design (CAD)...</p>
-                            <a href="#" class="btn btn-primary">Read More</a>
-                        </div>
-                    </div>
-                </div>
-
-
-
-                <div class="col-md-4 p-4">
-                    <div class="page-section bg-light" style="width: 24rem;">
-                        <div class="card-body text-center">
-                            <h5 class="card-title"><i class="fa fa-area-chart" style="font-size:48px;"></i></h5>
-                            <h2 class="card-subtitle mb-2 text-muted">Advance Excel Institute In Jahangirpuri</h2>
-                            <p class="blockquote">
-                                Advanced Excel Essentials is the only for experienced Excel developers who want to channel their... </p>
-                            <a href="#" class="btn btn-primary">Read More</a>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="col-md-4 p-4">
-                    <div class="page-section bg-light" style="width: 24rem;">
-                        <div class="card-body text-center">
-                            <h5 class="card-title"><i class="fa fa-bolt" style="font-size:48px;"></i></h5>
-                            <h2 class="card-subtitle mb-2 text-muted">Busy Training Institute (Business Accounting Software)</h2>
-                            <p class="blockquote">
-                                Accelerate your proficiency in Busy Accounting Software with specialized training at Nice Computer Institute –.. </p>
-                            <a href="#" class="btn btn-primary">Read More</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
+            @endforeach
         </div>
+    </div>
+</section2>
 
-    </section2>
 
 
     <section3 py-4>
