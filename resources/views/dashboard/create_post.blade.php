@@ -23,7 +23,8 @@
     @endif
 
     {{-- Post creation form --}}
-    <form action="{{ route('dashboard.store_post') }}" method="POST" enctype="multipart/form-data" class="mt-4">
+    <form id="form" action="{{ route('dashboard.store_post') }}" method="POST" enctype="multipart/form-data" class="mt-4">
+
         @csrf
         <div class="mb-3">
             <label for="title" class="form-label">Title:</label>
@@ -34,7 +35,7 @@
                     <label for="content" class="form-label">Content:</label>
                     <div id="quill-editor"></div>
                     <input type="hidden" id="content" name="content">
-                    @error('course_content')
+                    @error('content')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </div>
@@ -49,33 +50,38 @@
 </div>
 @endsection
 
-{{-- Add Quill scripts and styles --}}
 @push('scripts')
-    <!-- Quill Stylesheet -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <!-- Quill JS -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     
-    <script>
-        // Initialize Quill editor
-        var quill = new Quill('#quill-editor', {
-            theme: 'snow',
-            modules: {
-                toolbar: [
-                    [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    ['bold', 'italic', 'underline'],
-                    [{ 'align': [] }],
-                    ['link'],
-                    ['image']
-                ]
-            }
-        });
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
+<script>
+    var quillContent = new Quill('#quill-editor', {
+        theme: 'snow',
+        placeholder: 'Write the course content...',
+        modules: {
+            toolbar: [
+                [{ 'header': '1'}, { 'header': '2' }, { 'font': [] }],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                ['bold', 'italic', 'underline'],
+                ['link'],
+                [{ 'align': [] }],
+                ['image', 'video']
+            ]
+        }
+    });
 
-        // Handle form submission to get content from Quill
-        $('form').submit(function() {
-            var content = quill.root.innerHTML;
-            $('#content').val(content); // Set the content to the hidden field
-        });
+        document.getElementById('form').onsubmit = function(event) {
+        const content = quillContent.root.innerHTML.trim();
+        if (content === '<p><br></p>' || content === '') {
+            alert('Please write some content before submitting.');
+            event.preventDefault();
+            return false;
+        }
+
+        // Sanitize and update hidden input
+        const sanitizedContent = DOMPurify.sanitize(content);
+        document.getElementById('content').value = sanitizedContent;
+    };
     </script>
 @endpush
