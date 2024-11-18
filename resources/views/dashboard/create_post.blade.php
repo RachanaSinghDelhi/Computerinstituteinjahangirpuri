@@ -31,10 +31,13 @@
         </div>
 
         <div class="mb-3">
-            <label for="content" class="form-label">Content:</label>
-            <div id="quill-editor"></div>
-            <input type="hidden" name="content" id="content">
-        </div>
+                    <label for="content" class="form-label">Content:</label>
+                    <div id="quill-editor"></div>
+                    <input type="hidden" id="content" name="content">
+                    @error('course_content')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
 
         <div class="mb-3">
             <label for="image" class="form-label">Image:</label>
