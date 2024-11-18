@@ -36,6 +36,37 @@ class PostController extends Controller
         return redirect()->route('dashboard.new_posts')->with('success', 'Post created successfully.');
     }
 
+
+    public function edit($id){
+
+        $post = Post::findOrfail($id);
+        return view('dashboard.edit_post', compact('post'));
+
+    }
+
+    public function update(Request $request, $id){
+        $request->validate([
+            'title' =>'required|string|max:255',
+            'content' =>'required',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg',
+        ]);
+
+        $post = Post::find($id);
+        $post->title = $request->title;
+        $post->content = $request->content;
+
+        if ($request->file('image')) {
+            $imagePath = $request->file('image')->store('post_images', 'public');
+            $post->image = $imagePath;
+        }
+
+        $post->save();
+
+        return redirect()->route('dashboard.new_posts')->with('success', 'Post updated successfully.');
+    }
+    
+
+
     // Display the list of posts
     public function index()
     {
@@ -54,21 +85,21 @@ class PostController extends Controller
     public function blogs()
     {
         $posts = Post::latest()->get();
-        
+        $latestPosts = Post::latest()->take(5)->get();
         // Breadcrumbs for the main 'Updates' page
         $breadcrumbs = [
             ['name' => 'Home', 'url' => url('/')],
             ['name' => 'Updates', 'url' => route('posts.blogs')],
         ];
 
-        return view('blogs', compact('posts', 'breadcrumbs'));
+        return view('blogs', compact('posts', 'breadcrumbs','latestPosts'));
     }
 
     // Display a single post
     public function show($id)
     {
         $post = Post::findOrFail($id);
-
+        $latestPosts = Post::latest()->take(5)->get();
         // Breadcrumbs for a specific post in 'Updates'
         $breadcrumbs = [
             ['name' => 'Home', 'url' => url('/')],
@@ -76,7 +107,7 @@ class PostController extends Controller
             ['name' => $post->title, 'url' => route('posts.show', $id)],
         ];
 
-        return view('single_post', compact('post', 'breadcrumbs'));
+        return view('single_post', compact('post', 'breadcrumbs','latestPosts'));
     }
 
     // Show homepage with latest posts
@@ -99,5 +130,6 @@ class PostController extends Controller
         // Pass both latestPosts and breadcrumbs to the view
         return view('about', compact('latestPosts', 'breadcrumbs'));
     }
+    
     
 }

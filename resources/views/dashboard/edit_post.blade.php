@@ -31,8 +31,9 @@
             <div id="editor">
                 {!! old('content', $post->content) !!}
             </div>
-            <!-- Hidden textarea field to store the Quill content -->
-            <textarea name="content" id="content" style="display: none;" required>{{ old('content', $post->content) }}</textarea>
+            
+             <!-- Hidden Input Field for storing Quill content -->
+  <input type="hidden" name="content" id="content" value="{{ old('content', $post->content) }}">
         </div>
 
         <div class="form-group">

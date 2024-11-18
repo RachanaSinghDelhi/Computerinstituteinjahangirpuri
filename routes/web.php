@@ -33,6 +33,9 @@ Route::get('/blogs', [PageController::class, 'blogs'])->name('blogs');
 Route::get('/courses_list',[PageController::class,'courses'])->name('courses');
 # Single Post Route
 Route::get('posts/{id}', [PostController::class, 'show'])->name('posts.show');
+Route::get('/updates', [PostController::class, 'blogs'])->name('posts.blogs');
+Route::get('/updates/{id}', [PostController::class, 'show'])->name('posts.show');
+Route::get('/about', [PostController::class, 'showSidebar'])->name('posts.about');
 
 # Authenticated Routes
 Route::middleware(['auth'])->group(function () {
@@ -46,6 +49,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard/create-post', [PostController::class, 'create'])->name('dashboard.create_post');
     Route::post('/dashboard/store-post', [PostController::class, 'store'])->name('dashboard.store_post');
     Route::get('/dashboard/new-posts', [PostController::class, 'index'])->name('dashboard.new_posts');
+    Route::get('/posts/{id}/edit', [PostController::class, 'edit'])->name('dashboard.edit_edit');
+    Route::get('/dashboard/edit_posts', [PostController::class, 'update'])->name('dashboard.update_post');
+    
 
     # News Routes under Dashboard Prefix
     Route::prefix('dashboard')->group(function () {
@@ -79,5 +85,7 @@ Route::get('/about', [PostController::class, 'showSidebar'])->name('posts.about'
 
 
 Route::get('/introduction', [PageController::class, 'showIntroductionPage'])->name('introduction.page');
+
+
 
 
