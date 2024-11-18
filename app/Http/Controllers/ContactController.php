@@ -18,8 +18,8 @@ class ContactController extends Controller
         ]);
 
         // Send the email
-        Mail::send('emails.contact', $validated, function ($message) use ($request) {
-            $message->to('admin@computerinstituteindelhijahangirpuri.com')
+        Mail::send('emails.contact', $validated, function ($messages) use ($request) {
+            $messages->to('admin@computerinstituteindelhijahangirpuri.com')
                     ->subject('New Contact Form Submission')
                     ->from($request->email, $request->name);
         });
