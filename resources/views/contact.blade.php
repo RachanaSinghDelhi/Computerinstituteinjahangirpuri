@@ -29,7 +29,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="message" class="form-label">Enquiry</label>
-                        <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                        <textarea class="form-control" id="messages" name="messages" rows="4" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Submit</button>
                 </form>
