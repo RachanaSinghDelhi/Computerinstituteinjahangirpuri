@@ -43,6 +43,16 @@
                 <p>Current Image: <img src="{{ asset('storage/' . $post->image) }}" alt="Current Image" width="100"></p>
             @endif
         </div>
+        
+        <div class="form-group">
+            <label for="url">Post URL</label>
+            <input type="text" name="url" id="url" class="form-control" value="{{ old('url', $post->url) }}" required>
+        </div>
+
+<div class="form-group">
+            <label for="tags">Tags</label>
+            <input type="text" name="tags" id="tags" class="form-control" value="{{ old('tags', $post->tags) }}" placeholder="Comma separated tags">
+        </div>
 
         <button type="submit" class="btn btn-primary">Update Post</button>
     </form>

@@ -45,6 +45,16 @@
             <input type="file" name="image" class="form-control">
         </div>
 
+        <div class="mb-3">
+        <label for="tags" class="form-label">Tags:</label>
+        <input type="text" name="tags" class="form-control" placeholder="Enter tags separated by commas">
+    </div>
+
+    <div class="mb-3">
+        <label for="url" class="form-label">URL:</label>
+        <input type="text" name="url" class="form-control" placeholder="Enter an optional URL">
+    </div>
+
         <button type="submit" class="btn btn-primary">Create Post</button>
     </form>
 </div>

@@ -19,13 +19,19 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required',
+         
+            'tags' => 'nullable|string',
+            'url' => 'nullable',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg',
         ]);
 
         $post = new Post();
         $post->title = $request->title;
         $post->content = $request->content;
-
+        $post->tags = $request->tags;
+         $post->url = $request->url;
+        
+        $post->user_id = auth()->id();
         if ($request->file('image')) {
             $imagePath = $request->file('image')->store('post_images', 'public');
             $post->image = $imagePath;
@@ -48,12 +54,16 @@ class PostController extends Controller
         $request->validate([
             'title' =>'required|string|max:255',
             'content' =>'required',
+            'tags' => 'nullable|string',
+            'url' => 'nullable',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg',
         ]);
 
         $post = Post::find($id);
         $post->title = $request->title;
         $post->content = $request->content;
+        $post->tags = $request->tags;
+        $post->url = $request->url;
 
         if ($request->file('image')) {
             $imagePath = $request->file('image')->store('post_images', 'public');
@@ -96,20 +106,28 @@ class PostController extends Controller
     }
 
     // Display a single post
-    public function show($id)
+    public function show($url)
     {
-        $post = Post::findOrFail($id);
+        // Fetch the specific post by URL (slug), including the author relation
+        $post = Post::with('author')->where('url', $url)->firstOrFail();
+    
+        // Fetch latest 9 posts for pagination (excluding the current post)
+        $posts = Post::latest()->where('id', '!=', $post->id)->paginate(9);
+    
+        // Get the latest 5 posts
         $latestPosts = Post::latest()->take(5)->get();
+    
         // Breadcrumbs for a specific post in 'Updates'
         $breadcrumbs = [
             ['name' => 'Home', 'url' => url('/')],
             ['name' => 'Updates', 'url' => route('posts.blogs')],
-            ['name' => $post->title, 'url' => route('posts.show', $id)],
+            ['name' => $post->title, 'url' => route('posts.show', $post->url)], // Use post URL here
         ];
-
-        return view('single_post', compact('post', 'breadcrumbs','latestPosts'));
+    
+        // Return the single post view with necessary data
+        return view('single_post', compact('post', 'posts', 'breadcrumbs', 'latestPosts'));
     }
-
+    
     // Show homepage with latest posts
     
 

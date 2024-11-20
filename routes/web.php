@@ -32,7 +32,7 @@ Route::post('/contact', [ContactController::class, 'submit'])->name('contact.sub
 Route::get('/blogs', [PageController::class, 'blogs'])->name('blogs');
 Route::get('/courses_list',[PageController::class,'courses'])->name('courses');
 # Single Post Route
-Route::get('posts/{id}', [PostController::class, 'show'])->name('posts.show');
+Route::get('/posts/{url}', [PostController::class, 'show'])->name('posts.show');
 Route::get('/updates', [PostController::class, 'blogs'])->name('posts.blogs');
 Route::get('/updates/{id}', [PostController::class, 'show'])->name('posts.show');
 Route::get('/about', [PostController::class, 'showSidebar'])->name('posts.about');
