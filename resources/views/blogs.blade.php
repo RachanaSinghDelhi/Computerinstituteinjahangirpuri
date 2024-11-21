@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container mt-5">
-    <h2 class="text-center mb-5">Our Blog Posts</h2>
+    <h2 class="text-center mb-5">Updates</h2>
 
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
