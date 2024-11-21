@@ -21,7 +21,7 @@
         <!-- Back to Blog Posts -->
         <div class="row mt-4">
             <div class="col-12">
-                <a href="{{ route('blogs') }}" class="btn btn-primary">Back to Blog</a>
+                <a href="/blogs" class="btn btn-primary">Back to Blog</a>
             </div>
         </div>
     </div>

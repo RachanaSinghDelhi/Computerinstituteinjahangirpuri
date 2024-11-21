@@ -39,7 +39,7 @@
                             </p>
                         @endif
 
-                        <a href="{{ url('/posts/' . $post->url) }}" class="btn btn-primary mt-auto">Read More</a>
+                        <a href="{{ url('/posts/'. $post->url) }}" class="btn btn-primary mt-auto">Read More</a>
                     </div>
                 </div>
             </div>
