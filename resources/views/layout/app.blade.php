@@ -9,8 +9,9 @@
     <title>Nice Computer Institute - Computer Institute in Jahangirpuri</title>
     <meta name="description" content="Nice Computer Institute, one of the best institutes since 2001, offers courses in Graphic Design, Advanced Excel, Tally, Marg, Python, Web Design, Digital Marketing, and more. Join us for expert training in Jahangirpuri, Delhi.">
     <meta name="keywords" content="computer institute in Jahangirpuri, nice computer institute, computer institute in Delhi, computer institute in Rohini, computer center reviews, computer institute reviews, best reviews for computer institute, computer courses, graphic design, advanced excel, tally, python, web design, digital marketing, job-oriented computer training">
-    <link rel="icon" href="https://www.computerinstituteindelhijahangirpuri.com/assets/images/logo_new_icon_nice_computer_institute_jahangirpuri.png" type="image/x-icon">
-    <link rel="canonical" href="https://www.computerinstituteindelhijahangirpuri.com" />
+    <link rel="icon" type="image/png" href="{{ asset('nice.png') }}">
+    <link rel="shortcut icon" href="{{ asset('nice.ico') }}"  type="image/x-icon">
+    <link rel="canonical" href="{{ url('/') }}" />
     <meta name="robots" content="index, follow" />
 
     <!-- Open Graph (OG) Meta Tags for Social Media -->
@@ -129,6 +130,100 @@
       ]
     }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+        "@type": "Course",
+        "name": "Advanced Excel",
+        "description": "Comprehensive training in Advanced Excel, including formulas, pivot tables, and dashboard creation for professionals.",
+        "provider": {
+          "@type": "EducationalOrganization",
+          "name": "Nice Computer Institute",
+          "sameAs": "https://www.computerinstituteindelhijahangirpuri.com/"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@type": "Course",
+        "name": "Graphic Design",
+        "description": "Learn CorelDRAW, Photoshop, Illustrator, and InDesign to become a professional graphic designer.",
+        "provider": {
+          "@type": "EducationalOrganization",
+          "name": "Nice Computer Institute",
+          "sameAs": "https://www.computerinstituteindelhijahangirpuri.com/"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "item": {
+        "@type": "Course",
+        "name": "Python Programming",
+        "description": "Master Python programming from basics to advanced, including data analysis and automation.",
+        "provider": {
+          "@type": "EducationalOrganization",
+          "name": "Nice Computer Institute",
+          "sameAs": "https://www.computerinstituteindelhijahangirpuri.com/"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "item": {
+        "@type": "Course",
+        "name": "Tally Prime",
+        "description": "Learn Tally Prime with GST, TDS, and payroll management for professional accounting.",
+        "provider": {
+          "@type": "EducationalOrganization",
+          "name": "Nice Computer Institute",
+          "sameAs": "https://www.computerinstituteindelhijahangirpuri.com/"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "item": {
+        "@type": "Course",
+        "name": "Web Design and Development",
+        "description": "Learn HTML, CSS, JavaScript, and responsive design techniques to create professional websites.",
+        "provider": {
+          "@type": "EducationalOrganization",
+          "name": "Nice Computer Institute",
+          "sameAs": "https://www.computerinstituteindelhijahangirpuri.com/"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "item": {
+        "@type": "Course",
+        "name": "Digital Marketing",
+        "description": "Master SEO, social media marketing, and Google Ads to excel in digital marketing.",
+        "provider": {
+          "@type": "EducationalOrganization",
+          "name": "Nice Computer Institute",
+          "sameAs": "https://www.computerinstituteindelhijahangirpuri.com/"
+        }
+      }
+    }
+  ]
+}
+</script>
+
+
      <link rel="stylesheet" href="{{ asset('assets/bootstrap5/bootstrap-5.0.2-dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
