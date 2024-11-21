@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'Our Blog Posts')
+@section('title', 'Updates')
 
 @section('content')
 <div class="container mt-5">

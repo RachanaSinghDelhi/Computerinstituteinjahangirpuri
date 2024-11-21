@@ -7,10 +7,11 @@
     
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title')</title>
-    <meta name="description" content="Nice Computer Institute - one of the best institutes since 2001, offers courses in Graphic Design, Advanced Excel, Tally, Marg, Python, Web Design, Digital Marketing, and more. Join us for expert training in Jahangirpuri, Delhi.">
+    <meta name="description" content="Nice Computer Institute - One of the best institutes since 2001, offers courses in Graphic Design, Advanced Excel, Tally, Marg, Python, Web Design, Digital Marketing, and more. Join us for expert training in Jahangirpuri, Delhi.">
     <meta name="keywords" content="computer institute in Jahangirpuri, nice computer institute, computer institute in Delhi, computer institute in Rohini, computer center reviews, computer institute reviews, best reviews for computer institute, computer courses, graphic design, advanced excel, tally, python, web design, digital marketing, job-oriented computer training">
-    <link rel="icon" href="https://www.computerinstituteindelhijahangirpuri.com/assets/images/nice.ico" type="image/x-icon">
-    <link rel="canonical" href="https://www.computerinstituteindelhijahangirpuri.com" />
+    <link rel="icon" type="image/png" href="{{ asset('nice.png') }}">
+    <link rel="shortcut icon" href="{{ asset('nice.ico') }}"  type="image/x-icon">
+    <link rel="canonical" href="{{ url('/') }}" />
     <meta name="robots" content="index, follow" />
 
     <!-- Open Graph (OG) Meta Tags for Social Media -->
@@ -137,15 +138,36 @@
 </head>
 <body>
     
-    @include('partials.header', ['courses' => $courses])
-
- 
-   <!--<div class="banner" style="background-image: url('{{  asset('assets/images/Sliders_image/medal1_nice_computer_institute_jahangirpuri.jpg')}}'); height: 400px; background-size: cover; background-position: center;">
+    @include('partials.nav', ['courses' => $courses])
+       <!-- Spinner Start -->
+       <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!--- navabr ends -->
+        <div class="banner" style="background-image: url('{{  asset('assets/images/Sliders_image/medal1_nice_computer_institute_jahangirpuri.jpg')}}'); height: 400px; background-size: cover; background-position: center;">
         <div class="overlay" style="background-color: rgba(0, 0, 0, 0.5); height: 100%; display: flex; justify-content: center; align-items: center;">
           
+                  <!-- Spinner Start -->
+
+        <!-- Spinner End -->
+
+<div class="container-fluid bg-breadcrumb">
+<nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            @foreach ($breadcrumbs as $breadcrumb)
+                <li class="breadcrumb-item">
+                    <a href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['name'] }}</a>
+                </li>
+            @endforeach
+        </ol>
+    </nav>
+            </div>
+
         </div>
-    </div>-->
-   
+    </div>
+
 
     <div class="container container-fluid py-4">
         <div class="row">
