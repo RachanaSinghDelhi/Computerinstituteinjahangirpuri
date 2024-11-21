@@ -94,7 +94,7 @@ class PostController extends Controller
     // Display posts on the "Updates" (blogs) page
     public function blogs()
     {
-        $posts = Post::latest()->paginate(4);
+        $posts = Post::latest()->paginate(8);
         $latestPosts = Post::latest()->take(5)->get();
         // Breadcrumbs for the main 'Updates' page
         $breadcrumbs = [
