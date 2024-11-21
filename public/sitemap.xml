@@ -19,7 +19,7 @@
 
     <!-- Courses Page -->
     <url>
-        <loc>https://www.computerinstituteindelhijahangirpuri.com/courses</loc>
+        <loc>https://www.computerinstituteindelhijahangirpuri.com/courses_list</loc>
         <lastmod>2024-11-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
@@ -51,7 +51,7 @@
     
     <!-- Privacy Policy -->
     <url>
-        <loc>https://www.computerinstituteindelhijahangirpuri.com/privacy-policy</loc>
+        <loc>https://www.computerinstituteindelhijahangirpuri.com/course/web-designing-course</loc>
         <lastmod>2024-11-12</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.4</priority>

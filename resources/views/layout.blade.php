@@ -7,9 +7,9 @@
     
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title')</title>
-    <meta name="description" content="Nice Computer Institute, one of the best institutes since 2001, offers courses in Graphic Design, Advanced Excel, Tally, Marg, Python, Web Design, Digital Marketing, and more. Join us for expert training in Jahangirpuri, Delhi.">
+    <meta name="description" content="Nice Computer Institute - one of the best institutes since 2001, offers courses in Graphic Design, Advanced Excel, Tally, Marg, Python, Web Design, Digital Marketing, and more. Join us for expert training in Jahangirpuri, Delhi.">
     <meta name="keywords" content="computer institute in Jahangirpuri, nice computer institute, computer institute in Delhi, computer institute in Rohini, computer center reviews, computer institute reviews, best reviews for computer institute, computer courses, graphic design, advanced excel, tally, python, web design, digital marketing, job-oriented computer training">
-    <link rel="icon" href="https://www.computerinstituteindelhijahangirpuri.com/assets/images/logo_new_icon_nice_computer_institute_jahangirpuri.png" type="image/x-icon">
+    <link rel="icon" href="https://www.computerinstituteindelhijahangirpuri.com/assets/images/nice.ico" type="image/x-icon">
     <link rel="canonical" href="https://www.computerinstituteindelhijahangirpuri.com" />
     <meta name="robots" content="index, follow" />
 
