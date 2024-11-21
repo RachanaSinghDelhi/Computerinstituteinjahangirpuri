@@ -29,11 +29,11 @@ Route::post('admin/logout', [AdminLoginController::class, 'logout'])->name('admi
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
-Route::get('/blogs', [PageController::class, 'blogs'])->name('blogs');
+Route::get('/blogs', [PostController::class, 'blogs'])->name('posts.blogs');
 Route::get('/courses_list',[PageController::class,'courses'])->name('courses');
 # Single Post Route
 Route::get('/posts/{url}', [PostController::class, 'show'])->name('posts.show');
-Route::get('/updates', [PostController::class, 'blogs'])->name('posts.blogs');
+
 Route::get('/updates/{id}', [PostController::class, 'show'])->name('posts.show');
 Route::get('/about', [PostController::class, 'showSidebar'])->name('posts.about');
 

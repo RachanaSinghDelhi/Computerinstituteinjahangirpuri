@@ -81,21 +81,7 @@ class PageController extends Controller
         return view('Introduction', compact('breadcrumbs', 'latestPosts'));
     }
 
-    public function blogs()
-    {
-        // Fetch the latest posts for sidebar
-        $latestPosts = Post::latest()->take(5)->get();
-        $posts = Post::latest()->get();
-
-        // Define breadcrumbs for FAQ page
-        $breadcrumbs = [
-            ['name' => 'Home', 'url' => url('/')],
-            ['name' => 'FAQ', 'url' => route('faq')],
-        ];
-
-        return view('blogs', compact('latestPosts', 'breadcrumbs','posts'));
-    }
-
+    
 
     public function courses() 
     {

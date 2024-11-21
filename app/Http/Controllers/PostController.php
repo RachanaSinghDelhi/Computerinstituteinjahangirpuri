@@ -94,7 +94,7 @@ class PostController extends Controller
     // Display posts on the "Updates" (blogs) page
     public function blogs()
     {
-        $posts = Post::latest()->get();
+        $posts = Post::latest()->paginate(9);
         $latestPosts = Post::latest()->take(5)->get();
         // Breadcrumbs for the main 'Updates' page
         $breadcrumbs = [
@@ -113,7 +113,7 @@ class PostController extends Controller
     
         // Fetch latest 9 posts for pagination (excluding the current post)
         $posts = Post::latest()->where('id', '!=', $post->id)->paginate(9);
-    
+        dd($posts);
         // Get the latest 5 posts
         $latestPosts = Post::latest()->take(5)->get();
     
@@ -130,8 +130,7 @@ class PostController extends Controller
     
     // Show homepage with latest posts
     
-
-
+ 
     // In your controller (e.g., PostController.php)
 
     public function showSidebar()
