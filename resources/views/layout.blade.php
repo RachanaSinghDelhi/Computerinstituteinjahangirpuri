@@ -146,6 +146,21 @@
           "@type": "EducationalOrganization",
           "name": "Nice Computer Institute",
           "sameAs": "https://www.computerinstituteindelhijahangirpuri.com/"
+        },
+        "hasCourseInstance": {
+          "@type": "CourseInstance",
+          "courseMode": "In-Person",
+          "startDate": "2024-11-22",
+          "endDate": "2025-01-02"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "4000",
+          "priceCurrency": "INR",
+          "discount": "20%",
+          "availability": "https://schema.org/InStock",
+          "validFrom": "2024-11-22",
+          "validThrough": "2025-01-02"
         }
       }
     },
@@ -160,6 +175,21 @@
           "@type": "EducationalOrganization",
           "name": "Nice Computer Institute",
           "sameAs": "https://www.computerinstituteindelhijahangirpuri.com/"
+        },
+        "hasCourseInstance": {
+          "@type": "CourseInstance",
+          "courseMode": "In-Person",
+          "startDate": "2024-11-22",
+          "endDate": "2025-01-02"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "6000",
+          "priceCurrency": "INR",
+          "discount": "15%",
+          "availability": "https://schema.org/InStock",
+          "validFrom": "2024-11-22",
+          "validThrough": "2025-01-02"
         }
       }
     },
@@ -174,6 +204,21 @@
           "@type": "EducationalOrganization",
           "name": "Nice Computer Institute",
           "sameAs": "https://www.computerinstituteindelhijahangirpuri.com/"
+        },
+        "hasCourseInstance": {
+          "@type": "CourseInstance",
+          "courseMode": "In-Person",
+          "startDate": "2024-11-22",
+          "endDate": "2025-01-02"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "7000",
+          "priceCurrency": "INR",
+          "discount": "10%",
+          "availability": "https://schema.org/InStock",
+          "validFrom": "2024-11-22",
+          "validThrough": "2025-01-02"
         }
       }
     },
@@ -188,6 +233,21 @@
           "@type": "EducationalOrganization",
           "name": "Nice Computer Institute",
           "sameAs": "https://www.computerinstituteindelhijahangirpuri.com/"
+        },
+        "hasCourseInstance": {
+          "@type": "CourseInstance",
+          "courseMode": "In-Person",
+          "startDate": "2024-11-22",
+          "endDate": "2025-01-02"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "5000",
+          "priceCurrency": "INR",
+          "discount": "20%",
+          "availability": "https://schema.org/InStock",
+          "validFrom": "2024-11-22",
+          "validThrough": "2025-01-02"
         }
       }
     },
@@ -202,6 +262,21 @@
           "@type": "EducationalOrganization",
           "name": "Nice Computer Institute",
           "sameAs": "https://www.computerinstituteindelhijahangirpuri.com/"
+        },
+        "hasCourseInstance": {
+          "@type": "CourseInstance",
+          "courseMode": "In-Person",
+          "startDate": "2024-11-22",
+          "endDate": "2025-01-02"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "8000",
+          "priceCurrency": "INR",
+          "discount": "25%",
+          "availability": "https://schema.org/InStock",
+          "validFrom": "2024-11-22",
+          "validThrough": "2025-01-02"
         }
       }
     },
@@ -216,12 +291,28 @@
           "@type": "EducationalOrganization",
           "name": "Nice Computer Institute",
           "sameAs": "https://www.computerinstituteindelhijahangirpuri.com/"
+        },
+        "hasCourseInstance": {
+          "@type": "CourseInstance",
+          "courseMode": "In-Person",
+          "startDate": "2024-11-22",
+          "endDate": "2025-01-02"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "9000",
+          "priceCurrency": "INR",
+          "discount": "30%",
+          "availability": "https://schema.org/InStock",
+          "validFrom": "2024-11-22",
+          "validThrough": "2025-01-02"
         }
       }
     }
   ]
 }
 </script>
+
 
      <link rel="stylesheet" href="{{ asset('assets/bootstrap5/bootstrap-5.0.2-dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
