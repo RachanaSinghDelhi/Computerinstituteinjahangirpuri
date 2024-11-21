@@ -2,7 +2,7 @@
     
     <h1 class="display-5">Courses</h1>
     @forelse ($courses as $course)
-        <p><a  href="{{ url('/courses_list', $course->course_url) }}">{{ $course->course_title }}</a></p>
+        <p><a  href="{{url('/course/' . $course->course_url)}}">{{ $course->course_title }}</a></p>
     @empty
         <p>No recent posts available.</p>
     @endforelse
