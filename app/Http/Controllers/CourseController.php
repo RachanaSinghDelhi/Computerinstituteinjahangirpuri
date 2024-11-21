@@ -143,6 +143,7 @@ class CourseController extends Controller
         // Prepare breadcrumbs with course_url
         $breadcrumbs = [
             ['title' => 'Home', 'url' => url('/')],
+            ['title' => 'Courses', 'url' => url('/courses')],  // Use route('courses.index') in the URL
             ['title' => $course->course_title, 'url' => url('/course/' . $course->course_url)]  // Use course_url in the URL
         ];
 
