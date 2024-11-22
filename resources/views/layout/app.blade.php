@@ -149,18 +149,17 @@
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
-          "courseMode": "In-Person",
+          "courseMode": "full-time",
+          "courseWorkload": "10 hours per week",
           "startDate": "2024-11-22",
           "endDate": "2025-01-02"
         },
         "offers": {
           "@type": "Offer",
-          "price": "4000",
+          "price": "4999",
           "priceCurrency": "INR",
-          "discount": "20%",
           "availability": "https://schema.org/InStock",
-          "validFrom": "2024-11-22",
-          "validThrough": "2025-01-02"
+          "category": "Microsoft Office Training"
         }
       }
     },
@@ -178,18 +177,17 @@
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
-          "courseMode": "In-Person",
+          "courseMode": "full-time",
+          "courseWorkload": "15 hours per week",
           "startDate": "2024-11-22",
           "endDate": "2025-01-02"
         },
         "offers": {
           "@type": "Offer",
-          "price": "6000",
+          "price": "8999",
           "priceCurrency": "INR",
-          "discount": "15%",
           "availability": "https://schema.org/InStock",
-          "validFrom": "2024-11-22",
-          "validThrough": "2025-01-02"
+          "category": "Design and Creativity"
         }
       }
     },
@@ -207,18 +205,17 @@
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
-          "courseMode": "In-Person",
+          "courseMode": "full-time",
+          "courseWorkload": "12 hours per week",
           "startDate": "2024-11-22",
           "endDate": "2025-01-02"
         },
         "offers": {
           "@type": "Offer",
-          "price": "7000",
+          "price": "5999",
           "priceCurrency": "INR",
-          "discount": "10%",
           "availability": "https://schema.org/InStock",
-          "validFrom": "2024-11-22",
-          "validThrough": "2025-01-02"
+          "category": "Programming and Development"
         }
       }
     },
@@ -236,18 +233,17 @@
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
-          "courseMode": "In-Person",
+          "courseMode": "full-time",
+          "courseWorkload": "8 hours per week",
           "startDate": "2024-11-22",
           "endDate": "2025-01-02"
         },
         "offers": {
           "@type": "Offer",
-          "price": "5000",
+          "price": "3999",
           "priceCurrency": "INR",
-          "discount": "20%",
           "availability": "https://schema.org/InStock",
-          "validFrom": "2024-11-22",
-          "validThrough": "2025-01-02"
+          "category": "Accounting and Finance"
         }
       }
     },
@@ -265,18 +261,17 @@
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
-          "courseMode": "In-Person",
+          "courseMode": "full-time",
+          "courseWorkload": "20 hours per week",
           "startDate": "2024-11-22",
           "endDate": "2025-01-02"
         },
         "offers": {
           "@type": "Offer",
-          "price": "8000",
+          "price": "9999",
           "priceCurrency": "INR",
-          "discount": "25%",
           "availability": "https://schema.org/InStock",
-          "validFrom": "2024-11-22",
-          "validThrough": "2025-01-02"
+          "category": "Web Development"
         }
       }
     },
@@ -294,24 +289,24 @@
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
-          "courseMode": "In-Person",
+          "courseMode": "full-time",
+          "courseWorkload": "10 hours per week",
           "startDate": "2024-11-22",
           "endDate": "2025-01-02"
         },
         "offers": {
           "@type": "Offer",
-          "price": "9000",
+          "price": "6999",
           "priceCurrency": "INR",
-          "discount": "30%",
           "availability": "https://schema.org/InStock",
-          "validFrom": "2024-11-22",
-          "validThrough": "2025-01-02"
+          "category": "Marketing"
         }
       }
     }
   ]
 }
 </script>
+
 
 
 
