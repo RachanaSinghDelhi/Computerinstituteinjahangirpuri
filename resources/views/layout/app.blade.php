@@ -82,12 +82,12 @@
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "Advanced Excel",
-          "item": "https://www.computerinstituteindelhijahangirpuri.com/course/advanced-excel"
+          "name": "Web Design",
+          "item": "https://www.computerinstituteindelhijahangirpuri.com/course/web-designing-course"
         }
       ]
     }
-    </script>
+ </script>
 
 <!-- FAQ JSON-LD Structured Data -->
 <script type="application/ld+json">
@@ -156,7 +156,7 @@
         },
         "offers": {
           "@type": "Offer",
-          "price": "4999",
+          "price": "7000",
           "priceCurrency": "INR",
           "availability": "https://schema.org/InStock",
           "category": "Microsoft Office Training"
@@ -184,7 +184,7 @@
         },
         "offers": {
           "@type": "Offer",
-          "price": "8999",
+          "price": "10000",
           "priceCurrency": "INR",
           "availability": "https://schema.org/InStock",
           "category": "Design and Creativity"
@@ -240,7 +240,7 @@
         },
         "offers": {
           "@type": "Offer",
-          "price": "3999",
+          "price": "6999",
           "priceCurrency": "INR",
           "availability": "https://schema.org/InStock",
           "category": "Accounting and Finance"
@@ -268,7 +268,7 @@
         },
         "offers": {
           "@type": "Offer",
-          "price": "9999",
+          "price": "29999",
           "priceCurrency": "INR",
           "availability": "https://schema.org/InStock",
           "category": "Web Development"
@@ -296,7 +296,7 @@
         },
         "offers": {
           "@type": "Offer",
-          "price": "6999",
+          "price": "39999",
           "priceCurrency": "INR",
           "availability": "https://schema.org/InStock",
           "category": "Marketing"
