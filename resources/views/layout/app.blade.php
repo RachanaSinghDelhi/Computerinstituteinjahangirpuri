@@ -149,9 +149,9 @@
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
-          "courseMode": "full-time",
-          "courseWorkload": "10 hours per week",
-          "startDate": "2024-11-22",
+          "courseMode": "blended",
+         "courseWorkload": "PT5H",
+       "startDate": "2024-11-22",
           "endDate": "2025-01-02"
         },
         "offers": {
@@ -177,9 +177,9 @@
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
-          "courseMode": "full-time",
-          "courseWorkload": "15 hours per week",
-          "startDate": "2024-11-22",
+          "courseMode": "blended",
+           "courseWorkload": "PT7H",
+       "startDate": "2024-11-22",
           "endDate": "2025-01-02"
         },
         "offers": {
@@ -205,9 +205,9 @@
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
-          "courseMode": "full-time",
-          "courseWorkload": "12 hours per week",
-          "startDate": "2024-11-22",
+          "courseMode": "blended",
+          "courseWorkload": "PT7H",
+       "startDate": "2024-11-22",
           "endDate": "2025-01-02"
         },
         "offers": {
@@ -233,9 +233,9 @@
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
-          "courseMode": "full-time",
-          "courseWorkload": "8 hours per week",
-          "startDate": "2024-11-22",
+          "courseMode": "blended",
+          "courseWorkload": "PT7H",
+       "startDate": "2024-11-22",
           "endDate": "2025-01-02"
         },
         "offers": {
@@ -261,9 +261,9 @@
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
-          "courseMode": "full-time",
-          "courseWorkload": "20 hours per week",
-          "startDate": "2024-11-22",
+          "courseMode": "blended",
+          "courseWorkload": "PT7H",
+       "startDate": "2024-11-22",
           "endDate": "2025-01-02"
         },
         "offers": {
@@ -289,9 +289,9 @@
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
-          "courseMode": "full-time",
-          "courseWorkload": "10 hours per week",
-          "startDate": "2024-11-22",
+          "courseMode": "blended",
+         "courseWorkload": "PT5H",
+       "startDate": "2024-11-22",
           "endDate": "2025-01-02"
         },
         "offers": {
