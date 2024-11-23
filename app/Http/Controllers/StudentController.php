@@ -62,22 +62,91 @@ public function index()
     return view('dashboard.display_students', compact('students'));
 }
 
+// Show the form for editing the specified student.
 public function edit($id)
 {
-    $student = Student::findOrFail($id); // Find the student by ID
-    return view('dashboard.edit_student', compact('student')); // Return the edit view
+    // Find the student by their ID
+    $student = Student::findOrFail($id);
+
+    // Get all courses to populate the dropdown
+    $courses = Course::all();
+
+
+   
+    // Return the 'edit' view with the student and courses data
+    return view('dashboard.edit_student', compact('student', 'courses'));
 }
 
+// Update the specified student in storage.
 public function update(Request $request, $id)
 {
-    $student = Student::findOrFail($id); // Find the student by ID
-    $student->update($request->all()); // Update student with the provided data
+    // Validate the incoming data
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'father_name' => 'required|string|max:255',
+        'doa' => 'required|date',
+        'course_id' => 'nullable|exists:courses,id',
+        'batch' => 'required|string|max:255',
+        'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
+
+    // Find the student by ID
+    $student = Student::findOrFail($id);
+
+    // Update student information
+    $student->name = $validatedData['name'];
+    $student->father_name = $validatedData['father_name'];
+    $student->doa = $validatedData['doa'];
+    $student->course_id = $validatedData['course_id'];
+    $student->batch = $validatedData['batch'];
+
+    // Handle file upload if a photo is provided
+    if ($request->hasFile('photo')) {
+        $photoPath = $request->file('photo')->storeAs('students', $request->file('photo')->getClientOriginalName(), 'public');
+        $student->photo = $photoPath;
+    }
+
+    // Save the student data to the database
+    $student->save();
+
+    // Redirect to a success page or back to the student list with a success message
+    return redirect()->route('students.index')->with('success', 'Student updated successfully.');
 }
+
 
 
 public function destroy($id)
 {
     $student = Student::findOrFail($id); // Find the student by ID
     $student->delete(); // Delete the student record
+    return redirect()->route('students.index')->with('success', 'Student deleted successfully.');
 }
+
+
+ public function showIdCards()
+    {
+        // Fetch all students
+        $students = Student::all();
+        
+        // Return the view with the students data
+        return view('dashboard.id-cards', compact('students'));
+    }
+
+    public function downloadIdCard($id)
+    {
+        // Fetch the student data
+        $student = Student::findOrFail($id);
+        
+        // Assuming ID cards are stored in the 'public' directory
+        $filePath = storage_path('app/public/id-cards/' . $student->id . '-id-card.pdf');
+        
+        // Check if the file exists
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
+        } else {
+            return redirect()->route('dahsboard.id-cards')->with('error', 'ID Card not found.');
+        }
+    }
+
+
 }

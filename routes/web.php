@@ -109,4 +109,10 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
     
     // Delete a Student
     Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('students.destroy');
+
+  
+
+Route::get('/students/id-cards', [StudentController::class, 'showIdCards'])->name('students.id-cards');
+Route::get('/students/{id}/download-id-card', [StudentController::class, 'downloadIdCard'])->name('students.download-id-card');
+
 });
