@@ -52,6 +52,15 @@
                             <li><a class="dropdown-item dash" href="/dashboard/new-posts" style="color:white">Post List</a></li>
                         </ul>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                       Students
+                        </a>
+                        <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item dash" href="/dashboard/add-student" style="color:white;">Add Student</a></li>
+                            <li><a class="dropdown-item dash" href="{{ route('students.index') }}" style="color:white">Student List</a></li>
+                        </ul>
+                    </li>
                     <li class="nav-item">
                     <form action="{{ route('admin.logout') }}" method="POST">
     @csrf

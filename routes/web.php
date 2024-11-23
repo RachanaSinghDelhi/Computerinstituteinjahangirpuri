@@ -7,7 +7,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\ContactController;
-
+use App\Http\Controllers\StudentController;
 
 use App\Http\Controllers\IndexController;
 
@@ -89,3 +89,24 @@ Route::get('/introduction', [PageController::class, 'showIntroductionPage'])->na
 
 
 
+
+
+ // Handle form submission
+Route::prefix('dashboard')->middleware(['auth'])->group(function () {
+
+    // Create Student Route
+    Route::get('/add-student', [StudentController::class, 'create'])->name('students.create'); // Show form
+    Route::post('/add-student', [StudentController::class, 'store'])->name('students.store');
+    
+    // List All Students (index)
+    Route::get('/students', [StudentController::class, 'index'])->name('students.index');
+    
+    // Edit a Student
+    Route::get('/students/{id}/edit', [StudentController::class, 'edit'])->name('students.edit');
+    
+    // Update a Student
+    Route::put('/students/{id}', [StudentController::class, 'update'])->name('students.update');
+    
+    // Delete a Student
+    Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('students.destroy');
+});
