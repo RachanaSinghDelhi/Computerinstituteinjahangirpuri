@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Course;
-
+use PDF;
 class StudentController extends Controller
 {
     // Show the Add Student Form
@@ -132,21 +132,18 @@ public function destroy($id)
         return view('dashboard.id-cards', compact('students'));
     }
 
+  
+
     public function downloadIdCard($id)
     {
         // Fetch the student data
         $student = Student::findOrFail($id);
         
-        // Assuming ID cards are stored in the 'public' directory
-        $filePath = storage_path('app/public/id-cards/' . $student->id . '-id-card.pdf');
-        
-        // Check if the file exists
-        if (file_exists($filePath)) {
-            return response()->download($filePath);
-        } else {
-            return redirect()->route('dahsboard.id-cards')->with('error', 'ID Card not found.');
-        }
+        // Generate the ID card PDF
+        $pdf = PDF::loadView('dashboard.id-card-pdf',compact('student'));
+    
+        // Download the generated PDF
+        return $pdf->download($student->student_id . '-id-card.pdf');
     }
-
-
+    
 }

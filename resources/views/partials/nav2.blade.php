@@ -25,7 +25,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown" id="get_course">
                            @foreach($courses as $course)
-                                <li><a class="dropdown-item" href="{{  route('course.show', $course->id)  }}">{{ $course->course_title }}</a></li>
+                                <li><a class="dropdown-item" href="{{  route('courses.show', $course->id)  }}">{{ $course->course_title }}</a></li>
                             @endforeach
                                 <!--   <li><a class="dropdown-item " href="#">Baic</a></li> -->
                             </ul>

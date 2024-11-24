@@ -64,7 +64,7 @@
             <option selected disabled>Select Batch</option>
             @php
                 $start = strtotime('08:00 AM');
-                $end = strtotime('09:00 PM');
+                $end = strtotime('08:00 PM');
                 while ($start < $end) {
                     $slot = date('h:i A', $start) . ' - ' . date('h:i A', strtotime('+1 hour', $start));
                     echo "<option value=\"$slot\">$slot</option>";

@@ -55,7 +55,7 @@
                 <td>{{ \Illuminate\Support\Str::limit($course->course_desc, 150, '...') }}</td>
                 <td>{{ \Illuminate\Support\Str::limit($course->course_content, 150, '...') }}</td>
                 <td>
-                    <a href="{{ route('courses.edit', $course->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                    <a href="{{ route('course.edit', $course->id) }}" class="btn btn-primary btn-sm">Edit</a>
                     <form action="{{ route('course.destroy', ['id' => $course->id]) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')

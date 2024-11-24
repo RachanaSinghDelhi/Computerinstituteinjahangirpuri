@@ -30,7 +30,7 @@
                         <h5 class="card-title">{{ $course->course_title }}</h5>
                         <p class="card-text">{{ Str::limit(strip_tags($course->course_desc), 100) }}</p>
                         <h6 class="text-primary"><a href="tel:9312945741">Enroll</a></h6>
-                        <a href="{{ url('/course/' . $course->course_url) }}" class="btn btn-primary">Learn More</a>
+                        <a href="{{ url('/courses/' . $course->course_url) }}" class="btn btn-primary">Learn More</a>
                     </div>
                 </div>
             </div>

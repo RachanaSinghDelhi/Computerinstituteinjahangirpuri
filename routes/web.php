@@ -8,7 +8,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\StudentController;
-
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\IndexController;
 
 Route::get('/', [IndexController::class, 'index'])->name('home');
@@ -31,6 +31,7 @@ Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
 Route::get('/blogs', [PostController::class, 'blogs'])->name('posts.blogs');
 Route::get('/courses_list',[PageController::class,'courses'])->name('courses');
+Route::get('/courses',[PageController::class,'list'])->name('courses.list');
 # Single Post Route
 Route::get('/posts/{url}', [PostController::class, 'show'])->name('posts.show');
 
@@ -60,21 +61,21 @@ Route::middleware(['auth'])->group(function () {
     });
     Route::prefix('dashboard')->group(function () {
         // Create Course Routes
-        Route::get('/course', [CourseController::class, 'create'])->name('course.create');
-        Route::post('/course', [CourseController::class, 'store'])->name('courses.store');
+        Route::get('/add_course', [CourseController::class, 'create'])->name('course.create');
+        Route::post('/add_course', [CourseController::class, 'store'])->name('course.store');
         
         // Additional Course CRUD Routes
-        Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
-        Route::get('/courses/{id}/edit', [CourseController::class, 'edit'])->name('courses.edit');
+        Route::get('/course', [CourseController::class, 'index'])->name('course.index');
+        Route::get('/course/{id}/edit', [CourseController::class, 'edit'])->name('course.edit');
         
-        Route::put('/courses/{id}', [CourseController::class, 'update'])->name('courses.update'); 
+        Route::put('/course/{id}', [CourseController::class, 'update'])->name('course.update'); 
         Route::delete('/course/{id}', [CourseController::class, 'destroy'])->name('course.destroy');
     });
     
 });
 
 # Public Course Detail Route
-Route::get('/course/{course_url}', [CourseController::class, 'show'])->name('course.show');
+Route::get('/courses/{course_url}', [CourseController::class, 'show'])->name('courses.show');
 
 
 # Privacy Policy Route
@@ -113,6 +114,6 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
   
 
 Route::get('/students/id-cards', [StudentController::class, 'showIdCards'])->name('students.id-cards');
-Route::get('/students/{id}/download-id-card', [StudentController::class, 'downloadIdCard'])->name('students.download-id-card');
+Route::get('/student/{id}/download-id-card', [StudentController::class, 'downloadIdCard'])->name('students.downloadIdCard');
 
 });

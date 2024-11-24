@@ -5,7 +5,7 @@
     <h1>Edit Course</h1>
 
     <!-- Form for updating course using PUT method -->
-    <form action="{{ route('courses.update', $course->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('course.update', $course->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 

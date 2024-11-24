@@ -12,13 +12,13 @@ class CourseController extends Controller
     public function index()
     {
         // Fetch all courses
-        $courses = Course::all();
+        $course = Course::all();
 
         // Paginate courses for the main content (if needed)
         $coursesPaginated = Course::paginate(10);
 
         // Return the view and pass the courses data
-        return view('dashboard.index', compact('courses', 'coursesPaginated'));
+        return view('dashboard.index', compact('course', 'coursesPaginated'));
     }
 
     /**
@@ -29,7 +29,7 @@ class CourseController extends Controller
     public function create()
     {
         // Return the view for adding a new course
-        return view('dashboard.course'); // Ensure this view file exists in the correct location
+        return view('dashboard.add_course'); // Ensure this view file exists in the correct location
     }
 
     /**
@@ -143,8 +143,8 @@ class CourseController extends Controller
         // Prepare breadcrumbs with course_url
         $breadcrumbs = [
             ['title' => 'Home', 'url' => url('/')],
-            ['title' => 'Courses', 'url' => url('/courses_list')],  // Use route('courses.index') in the URL
-            ['title' => $course->course_title, 'url' => url('/course/' . $course->course_url)]  // Use course_url in the URL
+            ['title' => 'Courses', 'url' => url('/courses')],  // Use route('courses.index') in the URL
+            ['title' => $course->course_title, 'url' => url('/courses/' . $course->course_url)]  // Use course_url in the URL
         ];
 
         // Return the view for displaying the course details, passing the course data and breadcrumbs

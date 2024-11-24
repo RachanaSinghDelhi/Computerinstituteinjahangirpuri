@@ -39,7 +39,7 @@
                             Courses
                         </a>
                         <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item dash" href="/dashboard/course" style="color:white;">Add Course</a></li>
+                            <li><a class="dropdown-item dash" href="/dashboard/add_course" style="color:white;">Add Course</a></li>
                             <li><a class="dropdown-item dash" href="/dashboard" style="color:white;">Course List</a></li>
                         </ul>
                     </li>

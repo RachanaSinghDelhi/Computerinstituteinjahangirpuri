@@ -4,17 +4,15 @@
    <!-- Primary Meta Tags -->
    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Nice Computer Institute - Computer Institute in Jahangirpuri</title>
-    <meta name="description" content="Nice Computer Institute, one of the best institutes since 2001, offers courses in Graphic Design, Advanced Excel, Tally, Marg, Python, Web Design, Digital Marketing, and more. Join us for expert training in Jahangirpuri, Delhi.">
+    <title>Nice Computer Institute - Best Computer Training in Jahangirpuri, Delhi</title>
+    <meta name="description" content="Since 2001, Nice Computer Institute in Jahangirpuri offers top courses like Graphic Design, Tally, Marg ERP, Web Development, and more. Enroll now to upgrade your skills!">
     <meta name="keywords" content="computer institute in Jahangirpuri, nice computer institute, computer institute in Delhi, computer institute in Rohini, computer center reviews, computer institute reviews, best reviews for computer institute, computer courses, graphic design, advanced excel, tally, python, web design, digital marketing, job-oriented computer training">
     <link rel="icon" type="image/png" href="{{ asset('nice.png') }}">
     <link rel="shortcut icon" href="{{ asset('nice.ico') }}"  type="image/x-icon">
     <link rel="canonical" href="{{ url('/') }}" />
     <meta name="robots" content="index, follow" />
-
-    <!-- Open Graph (OG) Meta Tags for Social Media -->
+     <!-- Open Graph (OG) Meta Tags for Social Media -->
     <meta property="og:title" content="Nice Computer Institute - Computer Institute in Jahangirpuri">
     <meta property="og:description" content="Nice Computer Institute offers professional courses like Graphic Design, Web Development, Python, Tally, and Advanced Excel. Enroll today in Jahangirpuri, Delhi.">
     <meta property="og:url" content="https://www.computerinstituteindelhijahangirpuri.com/">
@@ -331,8 +329,8 @@
                <div class="carousel-item active">
                <img src="{{ asset('assets/images/Sliders_image/computer-institute-in-jahangirpuri-1-1024x771.jpg') }}" class="d-block w-100" alt="Computer Institute in Jahangirpuri">
                    <div class="carousel-caption">
-                       <h5 class="animate__animated animate__bounceInRight animate__delay-1s">Computer Institute In Jahangirpuri</h5>
-                       <p class="animate__animated animate__bounceInLeft animate__delay-2s d-none d-md-block">Nice Computer Institute since 2001 is one of the best & courses offered are graphic design, Marg, Tally,Adv.Exl,Web Design & development,Basic,busy...</p>
+                       <h5 class="animate__animated animate__bounceInRight animate__delay-1s">Best Computer Training in Jahangirpuri, Delhi</h5>
+                       <p class="animate__animated animate__bounceInLeft animate__delay-2s d-none d-md-block">Since 2001, Nice Computer Institute in Jahangirpuri offers top courses like Graphic Design, Tally, Marg ERP, Web Development, and more. Enroll now to upgrade your skills!</p>
                        <p class="know"> <a href="#" class="animate__animated animate__bounceInRight animate__delay-3s know">Know More</a></p>
                    </div>
                </div>

@@ -6,7 +6,7 @@
         <br>
         <div class="col-md-6">
             <br>
-            <form method="POST" action="{{ route('courses.store') }}" enctype="multipart/form-data" id="courseForm">
+            <form method="POST" action="{{ route('course.store') }}" enctype="multipart/form-data" id="courseForm">
                 @csrf
 
                 <div class="mb-3">

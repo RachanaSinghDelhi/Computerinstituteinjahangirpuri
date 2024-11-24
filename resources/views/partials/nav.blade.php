@@ -4,7 +4,8 @@
                 <button class="navbar-toggler flex top-button" type="button" data-bs-toggle="collapse" data-bs-target="#topbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="fa fa-arrow-down fa-2x " style="color:#002147;"></span></button>
                 <div class="collapse navbar-collapse" id="topbar">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0  menu_list">
+              <p>  Since 2001, Nice Computer Institute in Jahangirpuri offers top courses like Graphic Design, Tally, Marg ERP, Web Development, and more. Enroll now to upgrade your skills!</p>
+                   <!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0  menu_list">
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="#"> <i class="fa fa-clock-o " style="color:#fff;"></i>Mon - Fri 8AM-8PM</a>
                         </li>
@@ -17,7 +18,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#"><i class="fa fa-envelope" style="color:#fff;"></i> nicewebtechnologies@gmail.com</a>
                         </li>
-                    </ul>
+                    </ul>-->
                     <!-- <p class="collapse navbar-collapse py-2" id="topbar">
                             <i class="fa fa-paper-plane" style="color:#fff;"></i><a aria-current="page" href="#">Mon - Fri 7AM-8PM &nbsp;&nbsp;</a>
                             <i class="fa fa-phone" style="color:#fff;"> </i><a aria-current="page" href="#">9312945741 &nbsp;&nbsp;</a>
@@ -62,7 +63,7 @@
     </a>
     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
         @foreach($courses as $course)
-            <li><a class="dropdown-item" href="{{ url('/course/' . $course->course_url) }}">{{ $course->course_title }} </a></li>
+            <li><a class="dropdown-item" href="{{ url('/courses/' . $course->course_url) }}">{{ $course->course_title }} </a></li>
         @endforeach
         <!-- <li><a class="dropdown-item" href="#">Basic</a></li> -->
     </ul>

@@ -2,7 +2,7 @@
     
     <h1 class="display-5">Courses</h1>
     @forelse ($courses as $course)
-        <p><a  href="{{url('/course/' . $course->course_url)}}">{{ $course->course_title }}</a></p>
+        <p><a  href="{{url('/courses/' . $course->course_url)}}">{{ $course->course_title }}</a></p>
     @empty
         <p>No recent posts available.</p>
     @endforelse
@@ -13,7 +13,7 @@
           
     <h1 class="display-5">Recent Posts</h1>
                 @forelse ($latestPosts as $post)
-        <p><a  href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a></p>
+        <p><a  href="{{ route('posts.show', $post->url) }}">{{ $post->title }}</a></p>
     @empty
         <p>No recent posts available.</p>
     @endforelse
