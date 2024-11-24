@@ -4,15 +4,15 @@
    <!-- Primary Meta Tags -->
    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>@yield('title')</title>
     <meta name="description" content="Nice Computer Institute - One of the best institutes since 2001, offers courses in Graphic Design, Advanced Excel, Tally, Marg, Python, Web Design, Digital Marketing, and more. Join us for expert training in Jahangirpuri, Delhi.">
     <meta name="keywords" content="computer institute in Jahangirpuri, nice computer institute, computer institute in Delhi, computer institute in Rohini, computer center reviews, computer institute reviews, best reviews for computer institute, computer courses, graphic design, advanced excel, tally, python, web design, digital marketing, job-oriented computer training">
     <link rel="icon" type="image/png" href="{{ asset('nice.png') }}">
     <link rel="shortcut icon" href="{{ asset('nice.ico') }}"  type="image/x-icon">
     <link rel="canonical" href="{{ url('/') }}" />
     <meta name="robots" content="index, follow" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>@yield('title') - Best Computer Training in Jahangirpuri, Delhi</title>
+    
 
     <!-- Open Graph (OG) Meta Tags for Social Media -->
     <meta property="og:title" content="Nice Computer Institute - Computer Institute in Jahangirpuri">
