@@ -4,7 +4,7 @@
                 <button class="navbar-toggler flex top-button" type="button" data-bs-toggle="collapse" data-bs-target="#topbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="fa fa-arrow-down fa-2x " style="color:#002147;"></span></button>
                 <div class="collapse navbar-collapse" id="topbar">
-           <!--    <p>  Since 2001, Nice Computer Institute in Jahangirpuri offers top courses like Graphic Design, Tally, Marg ERP, Web Development, and more. Enroll now to upgrade your skills!</p>-->
+        
                    <ul class="navbar-nav me-auto mb-2 mb-lg-0  menu_list">
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="#"> <i class="fa fa-clock-o " style="color:#fff;"></i>Mon - Fri 8AM-8PM</a>
