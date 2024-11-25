@@ -30,36 +30,107 @@
     <meta name="twitter:site" content="@nicewebtechno">
     <meta name="google-site-verification" content="k_wn2HhZyY74S3ieDOBGbjRIaVSmTuNit2gClOSDbgU"/>
     <!-- JSON-LD Structured Data -->
+    <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
         {
-          "@context": "https://schema.org",
-          "@type": "EducationalOrganization",
-          "name": "Nice Computer Institute",
-          "url": "https://www.computerinstituteindelhijahangirpuri.com/",
-          "logo": "http://www.computerinstituteindelhijahangirpuri.com/assets/images/manager_computer-institute-in-jahangirpuri.jpeg",
-          "description": "Located in Jahangirpuri, Delhi, Nice Computer Institute provides courses in Advanced Excel, Tally, Python, Graphic Design, and more.",
-          "sameAs": [
-            "https://www.facebook.com/nicewebtechnologies",
-            "https://x.com/nicewebtechno",
-            "https://www.youtube.com/nicewebtechnologies",
-            "https://www.instagram.com/nicewebtechnologies"
-          ],
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "A1-9/10, A Block Rd, near Da Pizza Palace, Bhalswa Jahangirpuri",
-            "addressLocality": "Jahangirpuri",
-            "addressRegion": "Delhi",
-            "postalCode": "110033",
-            "addressCountry": "IN"
-          },
-          "contactPoint": {
-            "@type": "ContactPoint",
-            "telephone": "+91-9312945741",
-            "contactType": "Customer Service"
-          }
+            "@context": "https://schema.org",
+            "@type": "EducationalOrganization",
+            "name": "Nice Computer Institute",
+            "url": "https://www.computerinstituteindelhijahangirpuri.com/",
+            "logo": "http://www.computerinstituteindelhijahangirpuri.com/assets/images/manager_computer-institute-in-jahangirpuri.jpeg",
+            "description": "Nice Computer Institute, located in Jahangirpuri, Delhi, offers a variety of job-oriented computer courses such as Graphic Design, Web Design, Python, Tally, and more. Learn from experienced instructors.",
+            "sameAs": [
+                "https://www.facebook.com/nicewebtechnologies",
+                "https://x.com/nicewebtechno",
+                "https://www.youtube.com/nicewebtechnologies",
+                "https://www.instagram.com/nicewebtechnologies"
+            ],
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "A1-9/10, A Block Rd, near Da Pizza Palace, Bhalswa Jahangirpuri",
+                "addressLocality": "Jahangirpuri",
+                "addressRegion": "Delhi",
+                "postalCode": "110033",
+                "addressCountry": "IN"
+            },
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "+91-9312945741",
+                "contactType": "Customer Service"
+            }
         }
     </script>
+
+    <!-- Breadcrumb JSON-LD for SEO -->
     <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.computerinstituteindelhijahangirpuri.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Courses",
+          "item": "https://www.computerinstituteindelhijahangirpuri.com/courses"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Web Design",
+          "item": "https://www.computerinstituteindelhijahangirpuri.com/course/web-designing-course"
+        }
+      ]
+    }
+ </script>
+
+<!-- FAQ JSON-LD Structured Data -->
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What courses does Nice Computer Institute offer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nice Computer Institute offers courses in Graphic Design, Marg, Tally, Advanced Excel, Web Design & Development, Basic Computing, C, C++, Python, and more."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where is Nice Computer Institute located?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nice Computer Institute is located in Jahangirpuri, Delhi, India. The exact address is A1-9/10, A Block Rd, near Da Pizza Palace, Bhalswa Jahangirpuri."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are the eligibility criteria for enrolling in courses?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "There are no specific eligibility criteria to enroll in most of the courses at Nice Computer Institute. Basic knowledge of computers is helpful for certain advanced courses like Advanced Excel, Python, etc."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can I contact Nice Computer Institute for inquiries?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can contact Nice Computer Institute by calling +91-9312945741 or emailing nicewebtechnologies@gmail.com."
+          }
+        }
+      ]
+    }
+</script>
+<script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "ItemList",
@@ -78,18 +149,17 @@
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
-          "courseMode": "In-Person",
-          "startDate": "2024-11-22",
+          "courseMode": "blended",
+         "courseWorkload": "PT5H",
+       "startDate": "2024-11-22",
           "endDate": "2025-01-02"
         },
         "offers": {
           "@type": "Offer",
-          "price": "4000",
+          "price": "7000",
           "priceCurrency": "INR",
-          "discount": "20%",
           "availability": "https://schema.org/InStock",
-          "validFrom": "2024-11-22",
-          "validThrough": "2025-01-02"
+          "category": "Microsoft Office Training"
         }
       }
     },
@@ -107,18 +177,17 @@
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
-          "courseMode": "In-Person",
-          "startDate": "2024-11-22",
+          "courseMode": "blended",
+           "courseWorkload": "PT7H",
+       "startDate": "2024-11-22",
           "endDate": "2025-01-02"
         },
         "offers": {
           "@type": "Offer",
-          "price": "6000",
+          "price": "10000",
           "priceCurrency": "INR",
-          "discount": "15%",
           "availability": "https://schema.org/InStock",
-          "validFrom": "2024-11-22",
-          "validThrough": "2025-01-02"
+          "category": "Design and Creativity"
         }
       }
     },
@@ -136,18 +205,17 @@
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
-          "courseMode": "In-Person",
-          "startDate": "2024-11-22",
+          "courseMode": "blended",
+          "courseWorkload": "PT7H",
+       "startDate": "2024-11-22",
           "endDate": "2025-01-02"
         },
         "offers": {
           "@type": "Offer",
-          "price": "7000",
+          "price": "5999",
           "priceCurrency": "INR",
-          "discount": "10%",
           "availability": "https://schema.org/InStock",
-          "validFrom": "2024-11-22",
-          "validThrough": "2025-01-02"
+          "category": "Programming and Development"
         }
       }
     },
@@ -165,18 +233,17 @@
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
-          "courseMode": "In-Person",
-          "startDate": "2024-11-22",
+          "courseMode": "blended",
+          "courseWorkload": "PT7H",
+       "startDate": "2024-11-22",
           "endDate": "2025-01-02"
         },
         "offers": {
           "@type": "Offer",
-          "price": "5000",
+          "price": "6999",
           "priceCurrency": "INR",
-          "discount": "20%",
           "availability": "https://schema.org/InStock",
-          "validFrom": "2024-11-22",
-          "validThrough": "2025-01-02"
+          "category": "Accounting and Finance"
         }
       }
     },
@@ -194,18 +261,17 @@
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
-          "courseMode": "In-Person",
-          "startDate": "2024-11-22",
+          "courseMode": "blended",
+          "courseWorkload": "PT7H",
+       "startDate": "2024-11-22",
           "endDate": "2025-01-02"
         },
         "offers": {
           "@type": "Offer",
-          "price": "8000",
+          "price": "29999",
           "priceCurrency": "INR",
-          "discount": "25%",
           "availability": "https://schema.org/InStock",
-          "validFrom": "2024-11-22",
-          "validThrough": "2025-01-02"
+          "category": "Web Development"
         }
       }
     },
@@ -223,18 +289,17 @@
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
-          "courseMode": "In-Person",
-          "startDate": "2024-11-22",
+          "courseMode": "blended",
+         "courseWorkload": "PT5H",
+       "startDate": "2024-11-22",
           "endDate": "2025-01-02"
         },
         "offers": {
           "@type": "Offer",
-          "price": "9000",
+          "price": "39999",
           "priceCurrency": "INR",
-          "discount": "30%",
           "availability": "https://schema.org/InStock",
-          "validFrom": "2024-11-22",
-          "validThrough": "2025-01-02"
+          "category": "Marketing"
         }
       }
     }
