@@ -9,7 +9,7 @@
     <meta name="keywords" content="computer institute in Jahangirpuri, nice computer institute, computer institute in Delhi, computer institute in Rohini, computer center reviews, computer institute reviews, best reviews for computer institute, computer courses, graphic design, advanced excel, tally, python, web design, digital marketing, job-oriented computer training">
     <meta name="robots" content="index, follow" />
      <link rel="icon" type="image/png" href="{{ asset('nice.png') }}">
-    <title>Nice Computer Institute - Best Computer Training in Jahangirpuri, Delhi</title>
+    <title>Nice computer Institute - computer institute in Jahangirpuri</title>
    <link rel="shortcut icon" href="{{ asset('nice.ico') }}"  type="image/x-icon">
     <link rel="canonical" href="{{ url('/') }}" />
    <!-- Open Graph (OG) Meta Tags for Social Media -->

@@ -10,7 +10,7 @@
     <link rel="shortcut icon" href="{{ asset('nice.ico') }}"  type="image/x-icon">
     <meta name="robots" content="index, follow" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>@yield('title') - Best Computer Training in Jahangirpuri, Delhi</title>
+    <title>@yield('title') - Computer institute in Jahangirpuri</title>
     <link rel="canonical" href="https://www.computerinstituteindelhijahangirpuri.com" />
     <!-- Open Graph (OG) Meta Tags for Social Media -->
     <meta property="og:title" content="Computer Institute in Jahangirpuri">
