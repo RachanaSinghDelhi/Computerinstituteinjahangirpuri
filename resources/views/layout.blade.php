@@ -31,6 +31,7 @@
     <meta name="google-site-verification" content="k_wn2HhZyY74S3ieDOBGbjRIaVSmTuNit2gClOSDbgU"/>
 
     <!-- JSON-LD Structured Data -->
+    <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -77,17 +78,17 @@
           "@type": "ListItem",
           "position": 2,
           "name": "Courses",
-          "item": "https://www.computerinstituteindelhijahangirpuri.com/courses"
+          "item": "https://www.computerinstituteindelhijahangirpuri.com/courses_list"
         },
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "Advanced Excel",
-          "item": "https://www.computerinstituteindelhijahangirpuri.com/course/advanced-excel"
+          "name": "Web Design",
+          "item": "https://www.computerinstituteindelhijahangirpuri.com/courses/web-designing-course"
         }
       ]
     }
-    </script>
+ </script>
 
 <!-- FAQ JSON-LD Structured Data -->
 <script type="application/ld+json">
@@ -149,18 +150,17 @@
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
-          "courseMode": "In-Person",
-          "startDate": "2024-11-22",
+          "courseMode": "blended",
+         "courseWorkload": "PT5H",
+       "startDate": "2024-11-22",
           "endDate": "2025-01-02"
         },
         "offers": {
           "@type": "Offer",
-          "price": "4000",
+          "price": "7000",
           "priceCurrency": "INR",
-          "discount": "20%",
           "availability": "https://schema.org/InStock",
-          "validFrom": "2024-11-22",
-          "validThrough": "2025-01-02"
+          "category": "Microsoft Office Training"
         }
       }
     },
@@ -178,18 +178,17 @@
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
-          "courseMode": "In-Person",
-          "startDate": "2024-11-22",
+          "courseMode": "blended",
+           "courseWorkload": "PT7H",
+       "startDate": "2024-11-22",
           "endDate": "2025-01-02"
         },
         "offers": {
           "@type": "Offer",
-          "price": "6000",
+          "price": "10000",
           "priceCurrency": "INR",
-          "discount": "15%",
           "availability": "https://schema.org/InStock",
-          "validFrom": "2024-11-22",
-          "validThrough": "2025-01-02"
+          "category": "Design and Creativity"
         }
       }
     },
@@ -207,18 +206,17 @@
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
-          "courseMode": "In-Person",
-          "startDate": "2024-11-22",
+          "courseMode": "blended",
+          "courseWorkload": "PT7H",
+       "startDate": "2024-11-22",
           "endDate": "2025-01-02"
         },
         "offers": {
           "@type": "Offer",
-          "price": "7000",
+          "price": "5999",
           "priceCurrency": "INR",
-          "discount": "10%",
           "availability": "https://schema.org/InStock",
-          "validFrom": "2024-11-22",
-          "validThrough": "2025-01-02"
+          "category": "Programming and Development"
         }
       }
     },
@@ -236,18 +234,17 @@
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
-          "courseMode": "In-Person",
-          "startDate": "2024-11-22",
+          "courseMode": "blended",
+          "courseWorkload": "PT7H",
+       "startDate": "2024-11-22",
           "endDate": "2025-01-02"
         },
         "offers": {
           "@type": "Offer",
-          "price": "5000",
+          "price": "6999",
           "priceCurrency": "INR",
-          "discount": "20%",
           "availability": "https://schema.org/InStock",
-          "validFrom": "2024-11-22",
-          "validThrough": "2025-01-02"
+          "category": "Accounting and Finance"
         }
       }
     },
@@ -265,18 +262,17 @@
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
-          "courseMode": "In-Person",
-          "startDate": "2024-11-22",
+          "courseMode": "blended",
+          "courseWorkload": "PT7H",
+       "startDate": "2024-11-22",
           "endDate": "2025-01-02"
         },
         "offers": {
           "@type": "Offer",
-          "price": "8000",
+          "price": "29999",
           "priceCurrency": "INR",
-          "discount": "25%",
           "availability": "https://schema.org/InStock",
-          "validFrom": "2024-11-22",
-          "validThrough": "2025-01-02"
+          "category": "Web Development"
         }
       }
     },
@@ -294,24 +290,26 @@
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
-          "courseMode": "In-Person",
-          "startDate": "2024-11-22",
+          "courseMode": "blended",
+         "courseWorkload": "PT5H",
+       "startDate": "2024-11-22",
           "endDate": "2025-01-02"
         },
         "offers": {
           "@type": "Offer",
-          "price": "9000",
+          "price": "39999",
           "priceCurrency": "INR",
-          "discount": "30%",
           "availability": "https://schema.org/InStock",
-          "validFrom": "2024-11-22",
-          "validThrough": "2025-01-02"
+          "category": "Marketing"
         }
       }
     }
   ]
 }
 </script>
+
+
+
 
 
      <link rel="stylesheet" href="{{ asset('assets/bootstrap5/bootstrap-5.0.2-dist/css/bootstrap.min.css') }}">
