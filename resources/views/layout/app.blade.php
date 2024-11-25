@@ -5,11 +5,11 @@
    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="description" content="Since 2001, Nice Computer Institute in Jahangirpuri offers top courses like Graphic Design, Tally, Marg ERP, Web Development, and more. Enroll now to upgrade your skills!">
+    <meta name="description" content="Since 2001, Nice Computer Institute in Jahangirpuri offers top courses like Graphic Design, Tally, Marg ERP, Web Dev., enroll Now to upgrade your skills!">
     <meta name="keywords" content="computer institute in Jahangirpuri, nice computer institute, computer institute in Delhi, computer institute in Rohini, computer center reviews, computer institute reviews, best reviews for computer institute, computer courses, graphic design, advanced excel, tally, python, web design, digital marketing, job-oriented computer training">
     <meta name="robots" content="index, follow" />
      <link rel="icon" type="image/png" href="{{ asset('nice.png') }}">
-    <title>Nice computer Institute - computer institute in Jahangirpuri</title>
+    <title>Nice computer Institute - Computer institute in Jahangirpuri</title>
    <link rel="shortcut icon" href="{{ asset('nice.ico') }}"  type="image/x-icon">
     <link rel="canonical" href="{{ url('/') }}" />
    <!-- Open Graph (OG) Meta Tags for Social Media -->
@@ -330,7 +330,7 @@
                <img src="{{ asset('assets/images/Sliders_image/computer-institute-in-jahangirpuri-1-1024x771.jpg') }}" class="d-block w-100" alt="Computer Institute in Jahangirpuri">
                    <div class="carousel-caption">
                        <h5 class="animate__animated animate__bounceInRight animate__delay-1s">Best Computer Training in Jahangirpuri, Delhi</h5>
-                       <p class="animate__animated animate__bounceInLeft animate__delay-2s d-none d-md-block">Since 2001, Nice Computer Institute in Jahangirpuri offers top courses like Graphic Design, Tally, Marg ERP, Web Development, and more. Enroll now to upgrade your skills!</p>
+                       <p class="animate__animated animate__bounceInLeft animate__delay-2s d-none d-md-block">Since 2001, Nice Computer Institute in Jahangirpuri offers top courses like Graphic Design, Tally, Marg ERP, Web Dev. Enroll now to upgrade your skills!</p>
                        <p class="know"> <a href="#" class="animate__animated animate__bounceInRight animate__delay-3s know">Know More</a></p>
                    </div>
                </div>
