@@ -1,16 +1,15 @@
 @extends('layout')
-
 @section('title', 'About Us')
 @section('content')
 
 
-
+<h1>Nice Computer Institute</h1>
      <p class="animate__animated animate__fadeInDown">
                 <b>Nice Computer Institute is one of the best since 2001.</b>Some of the computer courses offered are graphic design, Marg Tally,Adv.Exl,Web Design & development,Basic,busy and many more.​
             </p>
             
             <p class="animate__animated animate__fadeInDown">
-            Nice Computer Institute is One Of the Best Computer Institute In Jahangirpuri, Delhi. Nice Web Technologies is an independent education institute established in 2001. Not only institute focuses on creating a friendly environment and providing quality teaching and learning but also with 100% practical, the Institute provides most with its theory classes as well .
+            Nice Computer Institute has been providing quality computer training in Jahangirpuri for over 25 years and Nice Computer Institute is One Of the Best Computer Institute In Jahangirpuri, Delhi. Nice Web Technologies is an independent education institute established in 2001. Not only institute focuses on creating a friendly environment and providing quality teaching and learning but also with 100% practical, the Institute provides most with its theory classes as well .
             
             </p>
             <h1 class="display-5">Nice Computer Institute Welcomes You..</h1>
