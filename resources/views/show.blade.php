@@ -1,4 +1,4 @@
-
+@section('title', "$course->course_title")
 
 @include('partials.course_header',['courses' => $courses])
 <div class="banner" style="background-image: url('{{ asset('storage/courses/' . $course->course_image) }}'); height: 400px; background-size: cover; background-position: center;">
