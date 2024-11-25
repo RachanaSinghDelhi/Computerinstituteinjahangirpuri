@@ -14,7 +14,8 @@ Disallow:
 User-agent: *
 Disallow: /admin/
 Disallow: /privacy-policy/
-Disallow: /login/
+Disallow: /admin-login/
+Disallow: /dashboard/
 
 
 User-agent: *
