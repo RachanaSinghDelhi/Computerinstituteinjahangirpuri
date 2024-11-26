@@ -306,6 +306,7 @@
 </script>
 
     <!-- CSS Links -->
+    <link rel="icon" href="{{ asset('favicon.png') }}"  type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('assets/bootstrap5/bootstrap-5.0.2-dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
