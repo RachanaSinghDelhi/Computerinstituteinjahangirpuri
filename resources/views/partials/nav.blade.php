@@ -13,7 +13,7 @@
                             <a class="nav-link" href="#"><i class="fa fa-phone" style="color:#fff;"> 9312945741 </i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fa fa-paper-plane" style="color:#fff;"></i>  A1- 9/10, Jahangirpuri Rd, A block Rd, Near Da Pizza Palace,Jahangirpuri, Delhi, 110033</a>
+                            <a class="nav-link" href="#"><i class="fa fa-paper-plane" style="color:#fff;"></i> A1- 9/10,Jahangirpuri Rd, A Block Rd, near Da Pizza Palace,Jahangirpuri, Delhi, 110033</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#"><i class="fa fa-envelope" style="color:#fff;"></i> nicewebtechnologies@gmail.com</a>
