@@ -4,6 +4,43 @@
 <div class="container mt-4">
     <h2 class="mb-4">Student ID Cards</h2>
 
+    <form action="{{ route('students.downloadSelectedIdCards') }}" method="POST">
+    @csrf
+    <table>
+        <thead>
+            <tr>
+                <th>Select</th>
+                <th>Student Name</th>
+                <th>Student ID</th>
+                <th>Course</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($students as $student)
+                <tr>
+                    <td><input type="checkbox" name="selected_ids[]" value="{{ $student->student_id }}"></td>
+                    <td>{{ $student->name }}</td>
+                    <td>{{ $student->student_id }}</td>
+                    <td>{{ $student->course->course_title ?? 'N/A' }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+    <!-- Display error message if no IDs are selected -->
+    @if($errors->has('selected_ids'))
+        <div style="color: red; font-weight: bold;">
+            {{ $errors->first('selected_ids') }}
+        </div>
+    @endif
+
+    <button type="submit">Download Selected ID Cards</button>
+</form>
+
+
+
+
+
     <!-- Success/Error Messages -->
     @if(session('error'))
         <div class="alert alert-danger">{{ session('error') }}</div>
@@ -19,59 +56,48 @@
                         <p class="card-text">Student ID: {{ $student->student_id }}</p>
                         <p class="card-text">Course: {{ $student->course->course_title ?? 'N/A' }}</p>
 
-                       <!-- Display ID Card Template with student details -->
-<!-- Display ID Card Template with student details -->
-<!-- Display ID Card Template with student details -->
-<div class="id-card-container" style="position: relative; width: 300px; height: 450px;">
-    <!-- ID Card Background Template -->
-    <img src="{{ asset('assets/images/id_card.jpg') }}" alt="ID Card Template" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-    
-    <!-- Overlay Student's Photo -->
-    @if($student->photo)
-        <div style="position: absolute; top: 55px; left: 50%; transform: translateX(-50%);">
-            <img src="{{ asset('storage/' . $student->photo) }}" alt="Student Photo" width="90" height="90" class="img-thumbnail rounded-circle">
-        </div>
-    @endif
-    
-    <!-- Overlay Student's Name (Less Bold) -->
-    <div style="position: absolute; top: 170px; left: 50%; transform: translateX(-50%); font-size: 16px; font-weight: normal; color: white; text-align: center; white-space: nowrap;">
-        <b>{{ $student->name }}</b>
-    </div>
-    
-    <!-- Overlay Student's Course Name (Subheading) -->
-    <div style="position: absolute; top: 190px; left: 50%; transform: translateX(-50%); font-size: 14px; color: white; text-align: center; white-space: nowrap;">
-        {{ $student->course->course_title ?? 'N/A' }}
-    </div>
+                        <!-- Display ID Card Template with student details -->
+                        <div class="id-card-container" style="position: relative; width: 300px; height: 450px; border: 1px solid #ddd;">
+                            <!-- ID Card Background Template -->
+                            <img src="{{ asset('assets/images/id_card.jpg') }}" alt="ID Card Template" 
+                                 style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; object-fit: cover;">
+                            
+                            <!-- Overlay Student's Photo -->
+                            @if($student->photo)
+                                <div style="position: absolute; top: 55px; left: 50%; transform: translateX(-50%);">
+                                    <img src="{{ asset('storage/' . $student->photo) }}" 
+                                         alt="Student Photo" width="90" height="90" 
+                                         class="img-thumbnail rounded-circle">
+                                </div>
+                            @endif
 
-    <!-- Overlay Student's ID (Left-aligned with left margin and bold) -->
-    <div style="position: absolute; top: 230px; left: 50px; font-size: 14px; color: black; font-weight: bold; padding-top: 10px;">
-        ID: {{ $student->student_id }}
-    </div>
-    
-    <!-- Overlay Father's Name (Left-aligned with left margin and bold) -->
-    <div style="position: absolute; top: 260px; left: 50px; font-size: 14px; color: black; font-weight: bold; padding-top: 10px;">
-        Father: {{ $student->father_name ?? 'N/A' }}
-    </div>
-    
-    <!-- Overlay Date of Admission (Left-aligned with left margin and bold) -->
-    <div style="position: absolute; top: 290px; left: 50px; font-size: 14px; color: black; font-weight: bold; padding-top: 10px;">
-        Dt. Admission: {{ $student->doa ?? 'N/A' }}
-    </div>
-    
-    <!-- Overlay Contact Number (Left-aligned with left margin and bold) -->
-    <div style="position: absolute; top: 320px; left: 50px; font-size: 14px; color: black; font-weight: bold; padding-top: 10px;">
-        Contact: {{ $student->contact_number ?? 'N/A' }}
-    </div>
-</div>
+                            <!-- Overlay Student Details -->
+                            <div style="position: absolute; top: 170px; left: 50%; transform: translateX(-50%); text-align: center; color: white;">
+                                <div style="font-size: 16px; font-weight: bold;">{{ $student->name }}</div>
+                                <div style="font-size: 14px;">{{ $student->course->course_title ?? 'N/A' }}</div>
+                            </div>
 
-
+                            <!-- Additional Info -->
+                            <div style="position: absolute; top: 230px; left: 50px; font-size: 14px; color: black;">
+                                <div><b>ID:</b> {{ $student->student_id }}</div>
+                                <div><b>Father:</b> {{ $student->father_name ?? 'N/A' }}</div>
+                                <div><b>Dt. Admission:</b> {{ $student->doa ?? 'N/A' }}</div>
+                                <div><b>Contact:</b> {{ $student->contact_number ?? 'N/A' }}</div>
+                            </div>
+                        </div>
 
                         <!-- Download Button -->
-                        <a href="{{ route('students.downloadIdCard', $student->id) }}" class="btn btn-primary btn-sm">Download ID Card</a>
+                        <a href="{{ route('students.downloadIdCard', $student->student_id) }}" 
+                           class="btn btn-primary btn-sm mt-3">Download ID Card</a>
+
+                           <a href="{{ route('students.viewIdCard', $student->student_id) }}" class="btn btn-secondary btn-sm">View ID Card</a>
                     </div>
                 </div>
             </div>
         @endforeach
     </div>
+</div>
+<div class="container">
+{{ $students->links() }}
 </div>
 @endsection

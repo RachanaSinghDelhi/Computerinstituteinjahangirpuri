@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Course;
 use PDF;
+use App\Imports\StudentsImport;
+use Maatwebsite\Excel\Facades\Excel;
 class StudentController extends Controller
 {
     // Show the Add Student Form
@@ -25,6 +27,7 @@ class StudentController extends Controller
             'doa' => 'required|date',
             'course' => 'required|exists:courses,id', // Ensure the selected course exists in the database
             'batch' => 'required|string',
+           'contact_number' => 'required|numeric|regex:/^[0-9]{10}$/',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -45,6 +48,7 @@ if ($request->hasFile('photo')) {
             'course_id' => $request->course, // Use course_id instead of course
             'batch' => $request->batch,
             'photo' => $photoPath,
+            'contact_number' => $request->contact_number,
         ]);
 
         // Redirect with success message
@@ -57,9 +61,9 @@ public function index()
 {
      // Fetch all students with their related courses
     $students = Student::with('course')->paginate(10); // Eager load 'course' relationship
-
+    $courses = Course::all();
     // Pass the students to the view
-    return view('dashboard.display_students', compact('students'));
+    return view('dashboard.display_students', compact('students','courses'));
 }
 
 // Show the form for editing the specified student.
@@ -88,6 +92,8 @@ public function update(Request $request, $id)
         'course_id' => 'nullable|exists:courses,id',
         'batch' => 'required|string|max:255',
         'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'contact_number' => 'required|string|max:15', // Validate contact number
+       
     ]);
 
     // Find the student by ID
@@ -99,6 +105,7 @@ public function update(Request $request, $id)
     $student->doa = $validatedData['doa'];
     $student->course_id = $validatedData['course_id'];
     $student->batch = $validatedData['batch'];
+    $student->contact_number = $request->input('contact_number'); // Update contact number
 
     // Handle file upload if a photo is provided
     if ($request->hasFile('photo')) {
@@ -126,7 +133,7 @@ public function destroy($id)
  public function showIdCards()
     {
         // Fetch all students
-        $students = Student::all();
+        $students = Student::with('course')->paginate(9);
         
         // Return the view with the students data
         return view('dashboard.id-cards', compact('students'));
@@ -134,16 +141,74 @@ public function destroy($id)
 
   
 
+
     public function downloadIdCard($id)
     {
-        // Fetch the student data
-        $student = Student::findOrFail($id);
-        
-        // Generate the ID card PDF
-        $pdf = PDF::loadView('dashboard.id-card-pdf',compact('student'));
+        // Fetch the student data using the student_id column
+        $student = Student::with('course')->where('student_id', $id)->firstOrFail();
     
-        // Download the generated PDF
-        return $pdf->download($student->student_id . '-id-card.pdf');
+        // Load the Blade template into a PDF
+        $pdf = PDF::loadView('dashboard.student-id-card', compact('student'));
+    
+        // Return the PDF for download with a descriptive filename
+        return $pdf->download('Student_ID_' . $student->student_id . '.pdf');
     }
     
+
+public function downloadSelectedIdCards(Request $request)
+{
+    // Validate that at least one ID is selected
+    $request->validate([
+        'selected_ids' => 'required|array|min:1', // Ensure at least one ID is selected
+        'selected_ids.*' => 'exists:students,student_id', // Ensure each selected ID exists in the database
+    ]);
+
+    // Check if selected_ids is not empty
+    if (empty($request->selected_ids)) {
+        return back()->withErrors(['selected_ids' => 'Please select at least one ID card to download.']);
+    }
+
+    // Fetch the selected students and their details
+    $students = Student::with('course')
+        ->whereIn('student_id', $request->selected_ids)
+        ->get();
+
+    // Check if any students were found
+    if ($students->isEmpty()) {
+        return back()->withErrors(['selected_ids' => 'No students found for the selected IDs.']);
+    }
+
+    // Load the Blade view and pass the student data
+    $pdf = PDF::loadView('dashboard.selected-id-cards', compact('students'));
+
+
+    $pdf->setPaper([0, 0, 158, 252], 'portrait');
+    // Return the PDF for download
+    return $pdf->download('Selected_ID_Cards.pdf');
+}
+
+public function import(Request $request)
+{
+    // Validate the uploaded file
+    $request->validate([
+        'file' => 'required|mimes:xlsx,xls,csv'
+    ]);
+
+    // Add a log to check if the file is being uploaded
+    \Log::info('File uploaded: ' . $request->file('file')->getClientOriginalName());
+
+    try {
+        Excel::import(new StudentsImport, $request->file('file'));
+
+        // After the import, check if records were inserted
+        $studentCount = \App\Models\Student::count();
+        \Log::info('Number of students in database: ' . $studentCount);
+
+        return redirect()->route('students.index')->with('success', 'Students Imported Successfully!');
+    } catch (\Exception $e) {
+        \Log::error('Import failed: ' . $e->getMessage());
+        return back()->with('error', 'There was an issue with the import!');
+    }
+}
+
 }

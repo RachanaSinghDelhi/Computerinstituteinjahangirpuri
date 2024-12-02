@@ -13,7 +13,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style2.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
+  
+     <!-- Cropper.js CSS -->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" />
 </head>
 <body>
 <header>
@@ -58,7 +60,9 @@
                         </a>
                         <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item dash" href="/dashboard/add-student" style="color:white;">Add Student</a></li>
+                            <li><a class="dropdown-item dash" href="/ajaxstudents" style="color:white;">Edit Student</a></li>
                             <li><a class="dropdown-item dash" href="{{ route('students.index') }}" style="color:white">Student List</a></li>
+                            <li><a class="dropdown-item dash" href="{{ route('students.id-cards') }}" style="color:white">ID Cards</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">

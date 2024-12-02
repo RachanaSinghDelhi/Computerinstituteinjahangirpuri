@@ -15,9 +15,10 @@ class Student extends Model
         'name',
         'father_name',
         'doa',
-        'course_id',  // Make sure it's 'course_id' and not 'course'
         'batch',
         'photo',
+        'course_id',
+        'contact_number'
     ];
 
 

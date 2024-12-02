@@ -1,58 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student ID Card</title>
     <style>
-        /* Add some basic styles for PDF */
-        .id-card {
-            width: 300px;
-            height: 450px;
-            padding: 10px;
-            background-color: #f9f9f9;
-            position: relative;
-            border: 1px solid #ddd;
-        }
-
-        .id-card img {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        .id-card .content {
-            position: absolute;
-            top: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: white;
-            text-align: center;
-        }
-
-        .id-card .content h3 {
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
             margin: 0;
+            padding: 20px;
         }
-
-        .id-card .content p {
-            margin: 5px 0;
+        .header {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
         }
     </style>
 </head>
 <body>
-    <div class="id-card">
-        <img src="{{ asset('assets/images/id_card.jpg') }}" alt="ID Card Template">
-        
-        <div class="content">
-            <h3>{{ $student->name }}</h3>
-            <p>ID: {{ $student->student_id }}</p>
-            <p>Father: {{ $student->father_name ?? 'N/A' }}</p>
-            <p>Course: {{ $student->course->course_title ?? 'N/A' }}</p>
-            <p>Admission: {{ $student->doa ?? 'N/A' }}</p>
-            <p>Contact: {{ $student->contact_number ?? 'N/A' }}</p>
-        </div>
-    </div>
+    <div class="header">Invoice</div>
+    <table>
+        <tr>
+            <th>Item</th>
+            <th>Price</th>
+        </tr>
+        <tr>
+            <td>Product 1</td>
+            <td>$10</td>
+        </tr>
+        <tr>
+            <td>Product 2</td>
+            <td>$20</td>
+        </tr>
+    </table>
 </body>
 </html>

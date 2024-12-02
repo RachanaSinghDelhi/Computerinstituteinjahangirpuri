@@ -91,8 +91,16 @@
                 </select>
             </div>
         </div>
+         
+    
 
         <div class="row">
+            <!-- Contact Number -->
+            <div class="col-md-6 mb-3">
+                <label for="contact_number" class="form-label">Contact Number</label>
+                <input type="text" class="form-control" id="contact_number" name="contact_number" value="{{ $student->contact_number }}" required>
+            </div>
+
             <!-- Photo -->
             <div class="col-md-12 mb-3">
                 <label for="photo" class="form-label">Photo</label>
@@ -104,6 +112,9 @@
                 <input type="file" class="form-control" id="photo" name="photo">
             </div>
         </div>
+            <!-- Photo -->
+          
+     
 
         <!-- Submit Button -->
         <div class="row">

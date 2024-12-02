@@ -8,6 +8,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\StudentableController;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\IndexController;
 
@@ -106,7 +107,11 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
     Route::get('/students/{id}/edit', [StudentController::class, 'edit'])->name('students.edit');
     
     // Update a Student
-    Route::put('/students/{id}', [StudentController::class, 'update'])->name('students.update');
+  //  Route::put('/students/{id}', [StudentController::class, 'update'])->name('students.update');
+  Route::put('students/ajax/update/{student_id}', [StudentController::class, 'ajaxUpdate'])->name('students.ajax.update');
+
+
+
     
     // Delete a Student
     Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('students.destroy');
@@ -114,6 +119,35 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
   
 
 Route::get('/students/id-cards', [StudentController::class, 'showIdCards'])->name('students.id-cards');
-Route::get('/student/{id}/download-id-card', [StudentController::class, 'downloadIdCard'])->name('students.downloadIdCard');
+Route::get('/student/{student_id}/student-id-card', [StudentController::class, 'downloadIdCard'])->name('students.downloadIdCard');
+Route::get('/students/student-id-card/{student_id}', [StudentController::class, 'viewIdCard'])->name('students.viewIdCard');
+Route::post('/students/download-selected-id-cards', [StudentController::class, 'downloadSelectedIdCards'])->name('students.downloadSelectedIdCards');
 
 });
+
+
+
+
+
+Route::post('students/import', [StudentController::class, 'import'])->name('students.import');
+
+
+
+// Route to display the student table
+Route::get('/ajaxstudents', [StudentableController::class, 'index']);
+
+// Route to handle AJAX updates for student data
+//Route::post('/update-student', [StudentableController::class, 'update'])->name('update.student');
+
+
+//Route::post('/students/store', [StudentableController::class, 'store'])->name('students.store');
+//Route::post('/students/update-photo', [StudentableController::class, 'updatePhoto'])->name('students.updatePhoto');
+
+
+Route::post('students/update', [StudentableController::class, 'update'])->name('update.student');
+Route::post('students/photo/update', [StudentableController::class, 'updatePhoto'])->name('update.student.photo');
+
+Route::post('/students/store', [StudentableController::class, 'store'])->name('students.store');
+Route::delete('/student/{student_id}', [StudentController::class, 'destroy'])->name('delete.student');
+
+
