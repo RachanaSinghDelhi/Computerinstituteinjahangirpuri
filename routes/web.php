@@ -148,6 +148,7 @@ Route::post('students/update', [StudentableController::class, 'update'])->name('
 Route::post('students/photo/update', [StudentableController::class, 'updatePhoto'])->name('update.student.photo');
 
 Route::post('/students/store', [StudentableController::class, 'store'])->name('students.store');
-Route::delete('/student/{student_id}', [StudentController::class, 'destroy'])->name('delete.student');
+Route::delete('/dashboard/student/{student_id}', [StudentableController::class, 'destroy'])->name('delete.student');
+
 
 

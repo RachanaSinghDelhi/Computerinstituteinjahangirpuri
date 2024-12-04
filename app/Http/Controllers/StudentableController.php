@@ -121,24 +121,40 @@ public function updatePhoto(Request $request)
 
 
 
-public function destroy($student_id)
+public function destroy($id)
 {
     try {
-        // Find the student by ID
-        $student = Student::findOrFail($student_id);
+        // Fetch the student record
+        $student = Student::findOrFail($id);
 
-        // Remove the student's photo from storage if it exists
-        if ($student->photo && Storage::exists('public/' . $student->photo)) {
-            Storage::delete('public/' . $student->photo);
+        // Check if the student has a photo and delete it
+        if ($student->photo) {
+            // Use the relative path stored in the database
+            $photoPath = str_replace('storage/app/public/', '', $student->photo);
+
+            // Log the path for debugging
+            \Log::info("Attempting to delete photo: " . $photoPath);
+
+            if (Storage::disk('public')->exists($photoPath)) {
+                Storage::disk('public')->delete($photoPath);
+            } else {
+                \Log::info("File not found: " . $photoPath);
+            }
         }
-
-        // Delete the student record from the database
+        // Delete the student record
         $student->delete();
 
         return response()->json([
             'success' => true,
-            'message' => 'Student and photo deleted successfully.',
+            'message' => 'Student and associated photo deleted successfully.',
         ]);
+
+    } catch (ModelNotFoundException $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Student not found.',
+        ], 404);
+
     } catch (\Exception $e) {
         return response()->json([
             'success' => false,
@@ -147,6 +163,5 @@ public function destroy($student_id)
         ], 500);
     }
 }
-
 
 }
