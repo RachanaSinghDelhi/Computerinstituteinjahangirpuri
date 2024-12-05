@@ -88,7 +88,7 @@ class PageController extends Controller
 
         $latestPosts = Post::latest()->take(5)->get();
  
-        $courses = Course::latest()->get();
+        $courses = Course::take(7)->get();
         $breadcrumbs=[
             ['name'=>'Home', 'url'=>url('/')],
             ['name'=>'Courses', 'url'=>route('courses')],  //route name for courses page

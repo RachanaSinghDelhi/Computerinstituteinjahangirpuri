@@ -58,11 +58,11 @@
         Courses
     </a>
     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-        @foreach($courses as $course)
-            <li><a class="dropdown-item" href="{{ url('/courses/' . $course->course_url) }}">{{ $course->course_title }} </a></li>
-        @endforeach
-        <!-- <li><a class="dropdown-item" href="#">Basic</a></li> -->
-    </ul>
+    @foreach($courses->take(7) as $course)  <!-- Limit the loop to 7 courses -->
+        <li><a class="dropdown-item" href="{{ url('/courses/' . $course->course_url) }}">{{ $course->course_title }}</a></li>
+    @endforeach
+    <li><a class="dropdown-item" href="/courses_list">More ..</a></li>
+</ul>
 </li>
                         <li class="nav-item">
                             <a class="nav-link " href="/blogs">Updates</a>
