@@ -10,7 +10,9 @@ class StudentableController extends Controller
     public function index()
     {
          // Fetch all students with their related courses
-        $students = Student::with('course')->paginate(5); // Eager load 'course' relationship
+         $students = Student::with('course')
+         ->orderBy('id', 'desc')  // Order by the id column in descending order
+         ->paginate(5);
         $courses = Course::all();
         // Pass the students to the view
         return view('dashboard.student_table', compact('students','courses'));

@@ -27,6 +27,7 @@
         <p>No recent posts available.</p>
     @endforelse
  <p>   <a  style="color:white" href="{{ url('/privacy-policy') }}">Privacy Policy</a></p>
+ <p>   <a  style="color:white" href="/admin/login">Admin Login</a></p> 
             </div>
             <div class="col-md-4">
                 <h1 class="display-5">Ongoing Classes</h1>
@@ -37,6 +38,7 @@
                 <p><a href="https://posts.gle/FNLZ6g" style="color:white"><i class="fa fa-check-square"></i>Marg Classes(Accounting Software)</a></p>
                 <p><a href="https://posts.gle/hZyL2 " style="color:white"i class="fa fa-check-square"></i>Advance Excel Classes</a></p>
                 <p><a href="/courses_list " style="color:white"i class="fa fa-check-square"></i>Courses</a></p>
+               
                 
             </div>
         </div>

@@ -23,11 +23,7 @@
                             <i class="fa fa-paper-plane" style="color:#fff;"></i><a aria-current="page" href="#">Mon - Fri 7AM-8PM &nbsp;&nbsp;</a>
                             <i class="fa fa-phone" style="color:#fff;"> </i><a aria-current="page" href="#">9312945741 &nbsp;&nbsp;</a>
                         </p>-->
-                     <ul>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/admin/login"><i class="fa fa-user" style="color:#fff;"></i> Admin Login</a>
-                        </li>
-                    </ul>
+                     
                 </div>
             </div>
         </nav>

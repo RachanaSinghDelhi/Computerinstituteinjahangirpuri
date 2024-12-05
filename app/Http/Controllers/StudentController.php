@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Course;
 use PDF;
+use Illuminate\Support\Facades\Storage;
 use App\Imports\StudentsImport;
 use Maatwebsite\Excel\Facades\Excel;
 class StudentController extends Controller
@@ -209,6 +210,27 @@ public function import(Request $request)
         \Log::error('Import failed: ' . $e->getMessage());
         return back()->with('error', 'There was an issue with the import!');
     }
+}
+
+
+public function deleteMultiple(Request $request)
+{
+    $studentIds = $request->input('student_ids');
+
+    if (!$studentIds) {
+        return redirect()->route('students.index')->with('error', 'No students selected for deletion.');
+    }
+
+    // Delete students and their associated files
+    foreach ($studentIds as $id) {
+        $student = Student::find($id);
+        if ($student && $student->photo) {
+            Storage::delete($student->photo); // Delete photo file
+        }
+        $student->delete(); // Delete student record
+    }
+
+    return redirect()->route('students.index')->with('success', 'Selected students deleted successfully.');
 }
 
 }

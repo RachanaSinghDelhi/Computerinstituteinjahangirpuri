@@ -60,7 +60,7 @@
                         </a>
                         <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item dash" href="/dashboard/add-student" style="color:white;">Add Student</a></li>
-                            <li><a class="dropdown-item dash" href="/ajaxstudents" style="color:white;">Edit Student</a></li>
+                            <li><a class="dropdown-item dash" href="/dashboard/ajaxstudents" style="color:white;">Edit Student</a></li>
                             <li><a class="dropdown-item dash" href="{{ route('students.index') }}" style="color:white">Student List</a></li>
                             <li><a class="dropdown-item dash" href="{{ route('students.id-cards') }}" style="color:white">ID Cards</a></li>
                         </ul>

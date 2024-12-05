@@ -12,7 +12,7 @@ class CourseController extends Controller
     public function index()
     {
         // Fetch all courses
-        $course = Course::all();
+        $courses = Course::take(7)->get();
 
         // Paginate courses for the main content (if needed)
         $coursesPaginated = Course::paginate(10);
