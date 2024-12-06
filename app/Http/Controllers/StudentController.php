@@ -61,7 +61,9 @@ if ($request->hasFile('photo')) {
 public function index()
 {
      // Fetch all students with their related courses
-    $students = Student::with('course')->paginate(10); // Eager load 'course' relationship
+     $students = Student::with('course')
+     ->orderBy('id', 'desc') // Order by `id` in descending order
+     ->paginate(10);// Eager load 'course' relationship
     $courses = Course::all();
     // Pass the students to the view
     return view('dashboard.display_students', compact('students','courses'));

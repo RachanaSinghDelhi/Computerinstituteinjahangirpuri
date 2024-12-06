@@ -19,6 +19,7 @@
                     <th>Course</th>
                     <th>Contact Number</th>
                     <th>Photo</th> <!-- Photo Column -->
+                    <th>Photo Preview</th> <!-- Photo Column -->
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -44,9 +45,21 @@
                         </select>
                     </td>
                     <td><input type="text" name="contact_number" class="editable" data-column="contact_number" /></td>
-                    <td>
-                        <input type="file" name="image" class="image" data-student-id="" />
-                    </td>
+             
+                
+    <td>
+        <input type="file" name="image" class="image" id="imageInput" />
+    </td>
+    <td>
+        <div id="imagePreviewContainer" style="display: none;">
+            <img id="imagePreview" src="" style="width: 100%;" />
+        </div>
+        <button type="button" id="cropButton" class="btn btn-primary" style="display: none;">Crop & Upload</button>
+    </td>
+
+    <!-- Other form fields -->
+
+
                     <td><button class="btn btn-success btn-sm add-row">Add</button></td>
                 </tr>
 
@@ -73,9 +86,19 @@
                     </td>
                     <td><input type="text" name="contact_number" class="editable" data-column="contact_number" value="{{ $student->contact_number }}" /></td>
                     <td>
-                        <input type="file" name="photo" class="photo-upload" data-student-id="{{ $student->id }}" />
-                        <img src="{{ asset('storage/' . $student->photo) }}" alt="Photo" class="img-thumbnail" style="width: 50px;" data-student-id="{{ $student->id }}" />
+                    <input type="file" class="photo-upload" data-student-id="{{ $student->id }}">
+<img id="image-preview" style="display:none; max-width: 100%; height: auto;" />
+
+<div id="crop-controls" style="display:none; margin-top: 10px;">
+    <label for="rotation-angle">Rotation Angle:</label>
+    <input type="number" id="rotation-angle" placeholder="Enter angle (e.g., 45)" />
+    <button type="button" id="rotate-custom">Rotate</button>
+    <button type="button" id="crop-button">Crop and Upload</button>
+</div>
+
+                       
                     </td>
+                    <td> <img src="{{ asset('storage/' . $student->photo) }}" alt="Photo" class="img-thumbnail" style="width: 50px;" data-student-id="{{ $student->id }}" /></td>
                     <td>
                         <button class="btn btn-danger btn-sm remove-row" data-student-id="{{ $student->id }}">Remove</button>
                     </td>
@@ -92,6 +115,11 @@
 @endsection
 
 @push('scripts')
+<!-- Include Cropper.js CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+
+<!-- Include Cropper.js JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
@@ -129,34 +157,84 @@
         });
 
         // Photo upload handling
-        $('input[type="file"].photo-upload').on('change', function() {
-            var formData = new FormData();
-            var student_id = $(this).data('student-id'); // Get the student ID
-            var photo = $(this)[0].files[0]; // Get the file
+        let cropper;
 
-            formData.append('photo', photo); // Append the file to formData
-            formData.append('student_id', student_id); // Append student_id
-            formData.append('_token', '{{ csrf_token() }}'); // CSRF Token
+// Trigger file selection and initialize cropper
+$('input[type="file"].photo-upload').on('change', function () {
+    var student_id = $(this).data('student-id'); // Get the student ID
+    var photo = $(this)[0].files[0]; // Get the selected file
+    var reader = new FileReader();
 
-            $.ajax({
-                url: '{{ route("update.student.photo") }}', // Make the AJAX request to update the photo
-                method: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    if (response.success) {
-                        // Only update the photo for the specific student row that was updated
-                        $('tr').find('.img-thumbnail[data-student-id="' + student_id + '"]').attr('src', response.photoUrl);
-                        alert(response.message); // Show success message
-                    }
-                },
-                error: function(error) {
-                    console.log(error);
-                    alert('An error occurred while uploading the photo.');
-                }
-            });
+    reader.onload = function (e) {
+        $('#image-preview').attr('src', e.target.result).show();
+        if (cropper) {
+            cropper.destroy(); // Destroy any existing cropper instance
+        }
+        cropper = new Cropper(document.getElementById('image-preview'), {
+            aspectRatio: 1, // Set aspect ratio (1:1)
+            viewMode: 1,
+            autoCropArea: 0.65,
         });
+        $('#crop-controls').show(); // Show crop controls when an image is selected
+    };
+    reader.readAsDataURL(photo); // Read the image as data URL
+});
+
+// Rotate to a custom angle
+$('#rotate-custom').on('click', function () {
+    const angle = parseFloat($('#rotation-angle').val()); // Get the rotation angle from input
+    if (cropper && !isNaN(angle)) {
+        cropper.rotate(angle); // Rotate to the desired angle
+    } else {
+        alert('Please enter a valid rotation angle.');
+    }
+});
+
+// Crop and upload the image
+$('#crop-button').on('click', function () {
+    if (!cropper) {
+        alert('Please select an image to crop.');
+        return;
+    }
+
+    var canvas = cropper.getCroppedCanvas();
+    canvas.toBlob(function (blob) {
+        var formData = new FormData();
+        var student_id = $('input[type="file"].photo-upload').data('student-id'); // Get the student ID
+
+        formData.append('photo', blob, 'photo.jpg'); // Append the cropped image as blob
+        formData.append('student_id', student_id); // Append student_id
+        formData.append('_token', '{{ csrf_token() }}'); // CSRF Token
+
+        $.ajax({
+            url: '{{ route("update.student.photo") }}', // AJAX endpoint
+            method: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response.success) {
+                    // Update the photo on the page
+                    $('tr')
+                        .find('.img-thumbnail[data-student-id="' + student_id + '"]')
+                        .attr('src', response.photoUrl);
+                    alert(response.message); // Show success message
+                }
+
+                // Cleanup after success
+                cropper.destroy();
+                cropper = null;
+                $('#image-preview').hide();
+                $('#crop-controls').hide(); // Hide crop controls
+            },
+            error: function (error) {
+                console.error(error);
+                alert('An error occurred while uploading the photo.');
+            },
+        });
+    });
+});
+
 
         // Remove row on click
         $(document).on('click', '.remove-row', function() {
@@ -185,43 +263,81 @@
                 });
             }
         });
-
+    });
         // Add row on click
-        $('.add-row').click(function() {
-            var formData = new FormData();
-            var row = $(this).closest('tr');
+        $(document).ready(function() {
+    var cropper; // Store the Cropper instance
 
-            formData.append('student_id', row.find('input[name="student_id"]').val());
-            formData.append('name', row.find('input[name="name"]').val());
-            formData.append('father_name', row.find('input[name="father_name"]').val());
-            formData.append('doa', row.find('input[name="doa"]').val());
-            formData.append('batch', row.find('select[name="batch"]').val());
-            formData.append('course_id', row.find('select[name="course_id"]').val());
-            formData.append('contact_number', row.find('input[name="contact_number"]').val());
-            formData.append('_token', '{{ csrf_token() }}');
+    // Handle image selection for cropping
+    $('#imageInput').on('change', function(e) {
+        var reader = new FileReader();
+        reader.onload = function(event) {
+            var imagePreview = $('#imagePreview');
+            imagePreview.attr('src', event.target.result);
 
-            var image = row.find('input[name="image"]')[0].files[0];
-            if (image) {
-                formData.append('photo', image);
+            // Show preview container and crop button
+            $('#imagePreviewContainer').show();
+            $('#cropButton').show();
+
+            // Initialize or reinitialize Cropper.js
+            if (cropper) {
+                cropper.destroy(); // Destroy previous instance if exists
             }
 
-            $.ajax({
-                url: '{{ route("students.store") }}',
-                method: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    alert(response.message);
-                    // Optionally, refresh the page to show the new data
-                    location.reload();
-                },
-                error: function(error) {
-                    console.log(error);
-                    alert('An error occurred while adding the student.');
-                }
+            cropper = new Cropper(imagePreview[0], {
+                aspectRatio: 1, // Optional: set the aspect ratio for the cropper
+                viewMode: 1, // Optional: control the view mode
+                autoCropArea: 0.8 // Optional: set the default crop area
             });
-        });
+        };
+        reader.readAsDataURL(e.target.files[0]); // Read the selected image as DataURL
     });
+
+    // Handle the image cropping and form submission
+    $('.add-row').click(function() {
+        var formData = new FormData();
+        var row = $(this).closest('tr');
+
+        formData.append('student_id', row.find('input[name="student_id"]').val());
+        formData.append('name', row.find('input[name="name"]').val());
+        formData.append('father_name', row.find('input[name="father_name"]').val());
+        formData.append('doa', row.find('input[name="doa"]').val());
+        formData.append('batch', row.find('select[name="batch"]').val());
+        formData.append('course_id', row.find('select[name="course_id"]').val());
+        formData.append('contact_number', row.find('input[name="contact_number"]').val());
+        formData.append('_token', '{{ csrf_token() }}');
+
+        // Get the cropped image from Cropper.js instance
+        if (cropper) {
+            var canvas = cropper.getCroppedCanvas();
+            canvas.toBlob(function(blob) {
+                formData.append('photo', blob); // Append the cropped image to FormData
+
+                // Submit the form data via AJAX
+                $.ajax({
+                    url: '{{ route("students.store") }}',
+                    method: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        alert(response.message);
+                        // Optionally, refresh the page or update the UI
+                        location.reload();
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        alert('An error occurred while adding the student.');
+                    }
+                });
+            });
+        } else {
+            alert('Please select an image to crop.');
+        }
+    });
+});
+
+
+    
 </script>
 @endpush
