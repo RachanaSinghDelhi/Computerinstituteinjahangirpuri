@@ -136,7 +136,7 @@ public function destroy($id)
  public function showIdCards()
     {
         // Fetch all students
-        $students = Student::with('course')->paginate(50);
+        $students = Student::with('course')->orderBy('id', 'desc')->paginate(50);
         
         // Return the view with the students data
         return view('dashboard.id-cards', compact('students'));
