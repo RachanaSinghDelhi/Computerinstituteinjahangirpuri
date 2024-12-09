@@ -58,7 +58,34 @@
 </div>
 
 
-        <!-- Course URL Field -->
+<div class="form-group">
+        <label for="duration">Duration (in months)</label>
+        <input type="number" class="form-control" name="duration" id="duration" 
+               value="{{ old('duration', $course->duration) }}" min="1">
+        @error('duration')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <div class="form-group">
+        <label for="total_fees">Total Fees</label>
+        <input type="number" class="form-control" name="total_fees" id="total_fees" 
+               value="{{ old('total_fees', $course->total_fees) }}" min="0">
+        @error('total_fees')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <div class="form-group">
+        <label for="installments">Installments</label>
+        <input type="number" class="form-control" name="installments" id="installments" 
+               value="{{ old('installments', $course->installments) }}" min="1">
+        @error('installments')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <!-- Course URL Field -->
         <div class="form-group">
             <label for="course_url">Course URL (optional)</label>
             <input type="text" class="form-control" name="course_url" id="course_url" value="{{ old('course_url', $course->course_url) }}">

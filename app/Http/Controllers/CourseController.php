@@ -46,7 +46,7 @@ class CourseController extends Controller
         'course_desc' => 'required|string',
         'course_content' => 'required|string',
         'course_url' => 'nullable|string',
-        'course_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        'course_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
         'duration' => 'nullable|integer|min:1', // Ensure it's an integer and at least 1 month
         'total_fees' => 'nullable|numeric|min:0', // Ensure it's a positive number
         'installments' => 'nullable|integer|min:1', // At least 1 installment

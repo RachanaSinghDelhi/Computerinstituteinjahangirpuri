@@ -41,6 +41,9 @@
                 <th>Course URL</th>
                 <th>Description</th>
                 <th>Content</th>
+                <th>Duration</th>
+                <th>Total Fees</th>
+                <th>Installments</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -52,6 +55,9 @@
                 </td>
                 <td>{{ $course->course_title }}</td>
                 <td>{{ $course->course_url }}</td>
+                <td>{{ $course->duaration }}</td>
+                <td>{{ $course->total_fees }}</td>
+                <td>{{ $course->insatallemts }}</td>
                 <td>{{ \Illuminate\Support\Str::limit($course->course_desc, 150, '...') }}</td>
                 <td>{{ \Illuminate\Support\Str::limit($course->course_content, 150, '...') }}</td>
                 <td>
