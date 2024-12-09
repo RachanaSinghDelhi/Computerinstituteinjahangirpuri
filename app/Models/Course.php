@@ -15,6 +15,9 @@ class Course extends Model
         'course_content',
         'course_image',
         'course_url',
+        'duration',
+        'total_fees',
+        'installments',
     ];
     public function scopeOrderByDesc($query)
     {

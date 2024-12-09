@@ -50,6 +50,31 @@
                     @enderror
                 </div>
 
+               <div class="mb-3">
+    <label for="duration" class="form-label">Duration (in months)</label>
+    <input type="number" name="duration" id="duration" class="form-control" placeholder="e.g., 6" min="1"> 
+    @error('duration') <!-- This should match the field name -->
+        <div class="text-danger">{{ $message }}</div>
+    @enderror
+</div>
+
+<div class="mb-3">
+    <label for="total_fees" class="form-label">Total Fees</label>
+    <input type="number" name="total_fees" id="total_fees" class="form-control" placeholder="e.g., 5000">
+    @error('total_fees') <!-- This should match the field name -->
+        <div class="text-danger">{{ $message }}</div>
+    @enderror
+</div>
+
+<div class="mb-3">
+    <label for="installments" class="form-label">Installments</label>
+    <input type="number" name="installments" id="installments" class="form-control" placeholder="e.g., 3">
+    @error('installments') <!-- This should match the field name -->
+        <div class="text-danger">{{ $message }}</div>
+    @enderror
+</div>
+
+
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
             <br>

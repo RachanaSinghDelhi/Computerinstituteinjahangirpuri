@@ -9,6 +9,10 @@
     RewriteCond %{HTTPS} off
     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+    # Redirect /index.php to /
+    RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/index\.php [NC]
+    RewriteRule ^index\.php$ / [L,R=301]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

@@ -41,13 +41,16 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         // Validate the incoming request
-        $request->validate([
-            'course_title' => 'required|string|max:255',
-            'course_desc' => 'required|string',
-            'course_content' => 'required|string',
-            'course_url' => 'nullable',
-            'course_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+    $request->validate([
+        'course_title' => 'required|string|max:255',
+        'course_desc' => 'required|string',
+        'course_content' => 'required|string',
+        'course_url' => 'nullable|string',
+        'course_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        'duration' => 'nullable|integer|min:1', // Ensure it's an integer and at least 1 month
+        'total_fees' => 'nullable|numeric|min:0', // Ensure it's a positive number
+        'installments' => 'nullable|integer|min:1', // At least 1 installment
+    ]);
 
         // Handle the image upload (if any)
         $imagePath = null;
@@ -72,6 +75,9 @@ class CourseController extends Controller
             'course_content' => $request->course_content,
             'course_url' => $courseUrl,  // Save course_url in lowercase
             'course_image' => $imageName ?? null,  // Image name, if provided
+            'duration' => $request->duration, // Duration in months
+            'total_fees' => $request->total_fees, // Total fees for the course
+            'installments' => $request->installments, // Number of installments
         ]);
 
         // Redirect back to the main dashboard with a success message
@@ -94,6 +100,9 @@ class CourseController extends Controller
             'course_desc' => 'nullable|string',
             'course_content' => 'nullable|string',
             'course_url' => 'nullable|string', // Allow course_url to be nullable
+            'duration' => 'nullable|integer|min:1', // Ensure it's an integer and at least 1 month
+            'total_fees' => 'nullable|numeric|min:0', // Ensure it's a positive number
+            'installments' => 'nullable|integer|min:1', // At least 1 installment
         ]);
 
         $course = Course::findOrFail($id);
@@ -118,6 +127,11 @@ class CourseController extends Controller
         $course->course_desc = $request->course_desc;
         $course->course_content = $request->course_content;
         $course->course_url = $courseUrl;  // Save course_url in lowercase
+        $course->duration = $request->duration;
+        $course->total_fees = $request->total_fees;
+        $course->installments = $request->installments;
+
+
         $course->save();
 
         return redirect()->route('dashboard.index')->with('success', 'Course updated successfully!');

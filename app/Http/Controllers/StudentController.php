@@ -153,8 +153,11 @@ public function destroy($id)
         // Load the Blade template into a PDF
         $pdf = PDF::loadView('dashboard.student-id-card', compact('student'));
     
+
+        $pdf->setPaper([0, 0, 162, 256], 'portrait');
         // Return the PDF for download with a descriptive filename
         return $pdf->download('Student_ID_' . $student->student_id . '.pdf');
+
     }
     
 
@@ -164,7 +167,7 @@ public function downloadSelectedIdCards(Request $request)
     $request->validate([
         'selected_ids' => 'required|array|min:1', // Ensure at least one ID is selected
         'selected_ids.*' => 'exists:students,student_id', // Ensure each selected ID exists in the database
-    ]);
+           ]);
 
     // Check if selected_ids is not empty
     if (empty($request->selected_ids)) {
