@@ -11,6 +11,28 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentableController;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\CertificateController;
+use App\Http\Controllers\ExcelImportController;
+use App\Http\Controllers\FeeController;
+
+Route::get('/fees', [FeeController::class, 'index'])->name('fees.index');
+// Route to display the add fee form
+Route::get('fees/add', [FeeController::class, 'create'])->name('fees.create');
+
+// Route to store the fee data
+Route::post('fees/store', [FeeController::class, 'store'])->name('fees.store');
+
+
+
+Route::get('/import-excel', [ExcelImportController::class, 'import']);
+
+Route::get('/import-courses', [ExcelImportController::class, 'importCourses']);
+
+Route::prefix('certificates')->group(function () {
+    Route::get('/', [CertificateController::class, 'index'])->name('certificates.index');
+    Route::get('/show/{studentId}/{courseId}', [CertificateController::class, 'show'])->name('certificates.show');
+    Route::get('/generate/{studentId}/{courseId}', [CertificateController::class, 'generate'])->name('certificates.generate');
+});
 
 Route::get('/', [IndexController::class, 'index'])->name('home');
 

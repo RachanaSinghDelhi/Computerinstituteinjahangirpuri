@@ -19,6 +19,15 @@ class Course extends Model
         'total_fees',
         'installments',
     ];
+
+    protected $table = 'courses';
+
+    public function certificateTypes()
+    {
+        return $this->hasMany(CertificateType::class, 'course_id');
+    }
+
+
     public function scopeOrderByDesc($query)
     {
         return $query->orderBy('created_at', 'desc');
@@ -28,5 +37,7 @@ class Course extends Model
 {
     return $this->hasMany(Student::class);
 }
+
+
    
 }

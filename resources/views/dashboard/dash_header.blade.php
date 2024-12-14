@@ -43,6 +43,7 @@
                         <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item dash" href="/dashboard/add_course" style="color:white;">Add Course</a></li>
                             <li><a class="dropdown-item dash" href="/dashboard" style="color:white;">Course List</a></li>
+                            <li><a class="dropdown-item dash" href="/import-courses" style="color:white;">Import Courses Excel</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -65,6 +66,29 @@
                             <li><a class="dropdown-item dash" href="{{ route('students.id-cards') }}" style="color:white">ID Cards</a></li>
                         </ul>
                     </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                           Fees
+                        </a>
+                        <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item dash" href="/fees" style="color:white;">Fees</a></li>
+                            <li><a class="dropdown-item dash" href="/fees/add" style="color:white;">Add Fees</a></li>
+                           
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Certificates
+                        </a>
+                        <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item dash" href="/certificates" style="color:white;">Certificates</a></li>
+                            <li><a class="dropdown-item dash" href="/import-excel" style="color:white;">Import Certificate Type Excel</a></li>
+                           
+                        </ul>
+                    </li>
+
+
                     <li class="nav-item">
                     <form action="{{ route('admin.logout') }}" method="POST">
     @csrf

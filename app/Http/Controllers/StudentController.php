@@ -199,23 +199,37 @@ public function import(Request $request)
     $request->validate([
         'file' => 'required|mimes:xlsx,xls,csv'
     ]);
-
-    // Add a log to check if the file is being uploaded
+   
+    // Log the file name being uploaded for debugging
     \Log::info('File uploaded: ' . $request->file('file')->getClientOriginalName());
 
     try {
+        // Import the Excel file
         Excel::import(new StudentsImport, $request->file('file'));
-
-        // After the import, check if records were inserted
+     
+        // Log the number of records in the database after import
         $studentCount = \App\Models\Student::count();
-        \Log::info('Number of students in database: ' . $studentCount);
+        \Log::info('Number of students in the database after import: ' . $studentCount);
 
         return redirect()->route('students.index')->with('success', 'Students Imported Successfully!');
+    } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+        // Specific validation exception from Maatwebsite\Excel
+        $failures = $e->failures();
+        foreach ($failures as $failure) {
+            \Log::error("Row {$failure->row()} failed: " . json_encode($failure->values()));
+        }
+        return back()->with('error', 'Some rows failed validation. Check logs for details.');
+    } catch (\Illuminate\Database\QueryException $e) {
+        // Database query exception
+        \Log::error('Database error: ' . $e->getMessage());
+        return back()->with('error', 'Database error occurred during import: ' . $e->getMessage());
     } catch (\Exception $e) {
+        // General exception
         \Log::error('Import failed: ' . $e->getMessage());
-        return back()->with('error', 'There was an issue with the import!');
+        return back()->with('error', 'An error occurred during the import: ' . $e->getMessage());
     }
 }
+
 
 
 public function deleteMultiple(Request $request)

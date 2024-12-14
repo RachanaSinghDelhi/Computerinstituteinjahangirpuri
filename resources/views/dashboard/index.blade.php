@@ -55,11 +55,12 @@
                 </td>
                 <td>{{ $course->course_title }}</td>
                 <td>{{ $course->course_url }}</td>
-                <td>{{ $course->duaration }}</td>
+                <td>{{ \Illuminate\Support\Str::limit($course->course_desc, 50, '...') }}</td>
+                <td>{{ \Illuminate\Support\Str::limit($course->course_content, 50, '...') }}</td>
+                <td>{{ $course->duration }}</td>
                 <td>{{ $course->total_fees }}</td>
-                <td>{{ $course->insatallemts }}</td>
-                <td>{{ \Illuminate\Support\Str::limit($course->course_desc, 150, '...') }}</td>
-                <td>{{ \Illuminate\Support\Str::limit($course->course_content, 150, '...') }}</td>
+                <td>{{ $course->insatallments }}</td>
+                
                 <td>
                     <a href="{{ route('course.edit', $course->id) }}" class="btn btn-primary btn-sm">Edit</a>
                     <form action="{{ route('course.destroy', ['id' => $course->id]) }}" method="POST" style="display:inline;">

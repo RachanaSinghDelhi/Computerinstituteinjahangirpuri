@@ -50,10 +50,10 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label for="course" class="form-label">Course</label>
-                <select class="form-select" id="course" name="course">
+                <select class="form-select" id="course" name="course_id">
                     <option selected disabled>Select Course</option>
                     @foreach($courses as $course)
-                        <option value="{{ $course->id }}" {{ old('course') == $course->id ? 'selected' : '' }}>{{ $course->course_title }}</option>
+                        <option value="{{ $course->id }}" {{ old('course_id') == $course->id ? 'selected' : '' }}>{{ $course->course_title }}</option>
                     @endforeach
                 </select>
             </div>
