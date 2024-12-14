@@ -1,10 +1,8 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Student; // Correct namespace
 
 class Fee extends Model
 {
@@ -12,16 +10,23 @@ class Fee extends Model
 
     protected $fillable = [
         'student_id',
-        'receipt_number',
-        'amount',
+        'course_id',
         'payment_date',
-        'due_date',
+        'amount_paid',
+        'receipt_number',
         'receipt_image',
         'status',
     ];
 
+    // Relationship with Student
     public function student()
     {
         return $this->belongsTo(Student::class);
+    }
+
+    // Relationship with Course
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
     }
 }

@@ -39,5 +39,13 @@ class Course extends Model
 }
 
 
+
+public function fees()
+{
+    return $this->hasMany(Fee::class);
+}
+
+
+
    
 }

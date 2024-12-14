@@ -1,27 +1,17 @@
 @extends('dashboard.app')
 @section('title', 'Add Fees')
 @section('content')
-<h1>Add Fee</h1>
-
-<form action="{{ route('fees.store') }}" method="POST" enctype="multipart/form-data">
+<h1>Pay Fees for {{ $student->name }}</h1>
+<form action="{{ route('fees.store', $student->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
-
-    <label for="student_id">Student:</label>
-    <select name="student_id" id="student_id" required>
-        @foreach ($students as $student)
-        <option value="{{ $student->id }}">{{ $student->student_id }}</option>
-        @endforeach
-    </select>
-  
-    <label for="amount">Amount:</label>
-    <input type="number" name="amount" id="amount" step="0.01" required>
-
-    <label for="payment_date">Payment Date:</label>
-    <input type="date" name="payment_date" id="payment_date" required>
-
-    <label for="receipt_image">Receipt Image:</label>
-    <input type="file" name="receipt_image" id="receipt_image" accept="image/*">
-
-    <button type="submit">Submit</button>
+    <div class="form-group">
+        <label for="amount_paid">Amount to Pay</label>
+        <input type="number" name="amount_paid" id="amount_paid" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="receipt_image">Upload Receipt</label>
+        <input type="file" name="receipt_image" id="receipt_image" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-success">Submit Payment</button>
 </form>
 @endsection

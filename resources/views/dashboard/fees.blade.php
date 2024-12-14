@@ -1,37 +1,30 @@
 @extends('dashboard.app')
-@section('title', 'Add Course')
+@section('title', 'Fees')
 @section('content')
-
-<h1>Fees List</h1>
-
-<table>
+<h1>Fees Management</h1>
+<table class="table">
     <thead>
         <tr>
-            <th>Receipt Number</th>
-            <th>Student</th>
-            <th>Amount</th>
-            <th>Payment Date</th>
-            <th>Due Date</th>
-            <th>Receipt</th>
-            <th>Status</th>
+            <th>Student Name</th>
+            <th>Course</th>
+            <th>Total Fee</th>
+            <th>Fees Paid</th>
+            <th>Fees Due</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        @foreach ($fees as $fee)
+        @foreach($students as $student)
         <tr>
-            <td>{{ $fee->receipt_number }}</td>
-            <td>{{ $fee->student->name }}</td>
-            <td>{{ $fee->amount }}</td>
-            <td>{{ $fee->payment_date }}</td>
-            <td>{{ $fee->due_date }}</td>
+            <td>{{ $student->name }}</td>
+            <td>{{ $student->course->course_title }}</td>
+            <td>{{ $student->course->total_fees }}</td>
+            <td>{{ $student->fees->sum('amount_paid') }}</td>
+            <td>{{ $student->course->total_fees - $student->fees->sum('amount_paid') }}</td>
             <td>
-                @if ($fee->receipt_image)
-                <a href="{{ asset('storage/' . $fee->receipt_image) }}" target="_blank">View Receipt</a>
-                @else
-                No Receipt
-                @endif
+                <a href="{{ route('fees.show', $student->id) }}" class="btn btn-info">Details</a>
+                <a href="{{ route('fees.create', $student->id) }}" class="btn btn-primary">Pay Fee</a>
             </td>
-            <td>{{ $fee->status }}</td>
         </tr>
         @endforeach
     </tbody>

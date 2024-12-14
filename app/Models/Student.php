@@ -26,6 +26,14 @@ class Student extends Model
     public function course()
     {
         return $this->belongsTo(Course::class, 'course_id'); // Use 'course_id' as the foreign key
+
     }
+
+public function fees()
+{
+    return $this->hasMany(Fee::class);
+}
+
+    
 }
 

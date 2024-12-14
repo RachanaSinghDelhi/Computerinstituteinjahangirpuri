@@ -1,70 +1,61 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Models\Fee;
 use App\Models\Student;
+use App\Models\Fee;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
 
 class FeeController extends Controller
 {
+    // List all students' fees
     public function index()
     {
-        $fees = Fee::with('student')->get();
-        return view('dashboard.fees', compact('fees'));
+        $students = Student::with(['course', 'fees'])->get();
+        return view('dashboard.fees', compact('students'));
     }
 
-    public function create()
+    // Show fee details of a specific student
+    public function show(Student $student)
     {
-        $students = Student::all();
-        return view('dashboard.add_fees', compact('students'));
+        $fees = $student->fees;
+        return view('dashboard.single_fees', compact('student', 'fees'));
     }
 
-    public function store(Request $request)
+    // Form to pay fees
+    public function create(Student $student)
     {
-        $validated = $request->validate([
-            'student_id' => 'required|exists:students,id',
-            'amount' => 'required|numeric',
-            'payment_date' => 'required|date',
-            'receipt_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        return view('dashboard.add_fees', compact('student'));
+    }
+
+    // Store fee payment
+    public function store(Request $request, Student $student)
+    {
+        $request->validate([
+            'amount_paid' => 'required|numeric|min:1',
+            'receipt_image' => 'required|image|mimes:jpg,png,jpeg|max:2048',
         ]);
-
-        $paymentDate = Carbon::parse($validated['payment_date']);
-        $dueDate = $paymentDate->addMonth();
-        $receiptNumber = 'REC-' . strtoupper(uniqid());
-
-        $receiptPath = null;
-        if ($request->hasFile('receipt_image')) {
-            $nextFileNumber = $this->getNextReceiptFileNumber();
-            $filename = $nextFileNumber . '.jpg';
-            $receiptPath = $request->file('receipt_image')->storeAs('assets/receipts', $filename, 'public');
-        }
-
+    
+        // Get the original file name (without the extension)
+        $originalName = pathinfo($request->receipt_image->getClientOriginalName(), PATHINFO_FILENAME);
+        $extension = $request->receipt_image->getClientOriginalExtension();
+    
+        // Ensure the original file name is unique (if necessary)
+        $uniqueName = $originalName.'.' . $extension;
+    
+        // Move the file to the "assets/receipts" directory
+        $request->receipt_image->move(public_path('assets/receipts'), $uniqueName);
+    
+        // Save fee record in the database
         Fee::create([
-            'student_id' => $validated['student_id'],
-            'amount' => $validated['amount'],
-            'payment_date' => $paymentDate,
-            'due_date' => $dueDate,
-            'receipt_number' => $receiptNumber,
-            'receipt_image' => $receiptPath,
+            'student_id' => $student->id,
+            'course_id' => $student->course->id,
+            'amount_paid' => $request->amount_paid,
+            'payment_date' => now(),
+            'receipt_number' =>$originalName , // Store the original file name as receipt number
+            'receipt_image' =>  $uniqueName, // Save the full file name (including timestamp and extension)
             'status' => 'Paid',
         ]);
-
-        return redirect()->route('fees.index')->with('success', 'Fee record added successfully.');
-    }
-
-    protected function getNextReceiptFileNumber()
-    {
-        $path = public_path('assets/receipts');
-        $files = collect(scandir($path))->filter(function ($file) {
-            return preg_match('/^\d+\.jpg$/', $file);
-        })->sort();
-
-        $lastFile = $files->last();
-        $lastNumber = $lastFile ? (int) pathinfo($lastFile, PATHINFO_FILENAME) : 6200;
-
-        return $lastNumber + 1;
+    
+        return redirect()->route('fees.show', $student->id)->with('success', 'Fee payment recorded successfully!');
     }
 }
-

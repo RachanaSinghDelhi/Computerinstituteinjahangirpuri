@@ -15,12 +15,19 @@ use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\ExcelImportController;
 use App\Http\Controllers\FeeController;
 
-Route::get('/fees', [FeeController::class, 'index'])->name('fees.index');
+
+
+Route::prefix('fees')->group(function () {
+    Route::get('/', [FeeController::class, 'index'])->name('fees.index'); // List all students' fees
+    Route::get('/{student}/details', [FeeController::class, 'show'])->name('fees.show'); // View details of a student's fees
+    Route::get('/{student}/pay', [FeeController::class, 'create'])->name('fees.create'); // Form to pay fees
+    Route::post('/{student}/pay', [FeeController::class, 'store'])->name('fees.store'); // Submit fee payment
+});
 // Route to display the add fee form
-Route::get('fees/add', [FeeController::class, 'create'])->name('fees.create');
+//Route::get('fees/add', [FeeController::class, 'create'])->name('fees.create');
 
 // Route to store the fee data
-Route::post('fees/store', [FeeController::class, 'store'])->name('fees.store');
+//Route::post('fees/store', [FeeController::class, 'store'])->name('fees.store');
 
 
 
