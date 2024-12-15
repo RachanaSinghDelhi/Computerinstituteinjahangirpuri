@@ -1,31 +1,43 @@
 @extends('dashboard.app')
 @section('title', 'Single Fees')
 @section('content')
-<h1>Fee Details for {{ $student->name }}</h1>
-<p>Course: {{ $student->course->name }}</p>
-<p>Total Fee: {{ $student->course->total_fee }}</p>
-<p>Fees Paid: {{ $fees->sum('amount_paid') }}</p>
-<p>Fees Due: {{ $student->course->total_fee - $fees->sum('amount_paid') }}</p>
+<div class="container">
+    <h3>Fee Details for {{ $student->name }}</h3>
+    <p><strong>Course:</strong> {{ $student->course->name }}</p>
+    <p><strong>Total Fees:</strong> ₹{{ $student->course->total_fees }}</p>
+    <p><strong>Installment Amount:</strong> ₹{{ $installmentAmount }}</p>
 
-<h2>Payment History</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Amount Paid</th>
-            <th>Payment Date</th>
-            <th>Receipt Number</th>
-            <th>Receipt</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($fees as $fee)
-        <tr>
-            <td>{{ $fee->amount_paid }}</td>
-            <td>{{ $fee->payment_date }}</td>
-            <td>{{ $fee->receipt_number }}</td>
-            <td><img src="{{ asset('assets/receipts/' . $fee->receipt_image) }}" alt="Receipt" width="100"></td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Payment Date</th>
+                <th>Admission Date</th>
+                <th>Amount Paid</th>
+                <th>Due Date</th>
+                <th>Fees Due</th>
+                <th>Status</th>
+                <th>Receipt</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($fees as $fee)
+                <tr>
+                    <td>{{ $fee->payment_date }}</td>
+                    <td>{{ $student->doa}}</td>
+                    <td>₹{{ $fee->amount_paid }}</td>
+                    <td>{{ $fee->due_date ? $fee->due_date->format('Y-m-d') : 'N/A' }}</td>
+                    <td>₹{{ $fee->fees_due }}</td>
+                    <td>{{ $fee->fee_status }}</td>
+                    <td>
+                        @if ($fee->receipt_image)
+                            <a href="{{ asset('assets/receipts/' . $fee->receipt_image) }}" target="_blank">View Receipt</a>
+                        @else
+                            No Receipt
+                        @endif
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
 @endsection
