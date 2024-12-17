@@ -7,6 +7,8 @@
     <p><strong>Course:</strong> {{ $student->course->name }}</p>
     <p><strong>Total Fees:</strong> ₹{{ $student->course->total_fees }}</p>
     <p><strong>Installment Amount:</strong> ₹ {{$defaultInstallmentAmount}}</p>
+    <p><strong>Total Installments:</strong> {{ $fees->count() }}</p> <!-- Total Installments -->
+    <p><strong>Total Fees Paid:</strong> ₹{{ $fees->sum('amount_paid') }}</p> <!-- Total Fees Paid -->
 
     <table class="table table-bordered">
         <thead>

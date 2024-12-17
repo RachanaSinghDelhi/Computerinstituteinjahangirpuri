@@ -48,7 +48,7 @@
 
     <div class="container">
         <div class="row">
-            @foreach ($courses as $course)
+            @foreach($courses->take(9) as $course)
                 <div class="col-md-4 p-4">
                     <div class="page-section bg-light" style="width: 24rem;">
                         <div class="card-body text-center">

@@ -34,11 +34,7 @@ class StudentsImport implements ToModel, WithHeadingRow
 
             // Format the date
             $formattedDate = $this->formatDate($row['dt']);
-            if (!$formattedDate) {
-                // Log if the date format is invalid
-                Log::error("Invalid date format: " . $row['dt']);
-                return null; // Skip this row if the date is invalid
-            }
+          
 
             // Map the data to the Student model
             $student = new Student([
