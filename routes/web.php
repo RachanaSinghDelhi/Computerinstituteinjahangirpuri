@@ -19,10 +19,18 @@ use App\Http\Controllers\FeeController;
 
 Route::prefix('fees')->group(function () {
     Route::get('/', [FeeController::class, 'index'])->name('fees.index'); // List all students' fees
-    Route::get('/{student}/details', [FeeController::class, 'show'])->name('fees.show'); // View details of a student's fees
-    Route::get('/{student}/pay', [FeeController::class, 'create'])->name('fees.create'); // Form to pay fees
-    Route::post('/{student}/pay', [FeeController::class, 'store'])->name('fees.store'); // Submit fee payment
+    Route::get('/dashboard/{student}/single-fees', [FeeController::class, 'show'])->name('dashboard.single_fees');
+ Route::get('/dashboard/{student}/add-fees', [FeeController::class, 'create'])->name('dashboard.add_fees'); // Route for the add_fees page
+Route::post('/dashboard/{student}/add-fees', [FeeController::class, 'store'])->name('dashboard.store_fees'); // Form submission for fees
+Route::get('/{fee}/edit', [FeeController::class, 'edit'])->name('fees.edit'); // Edit form
+    Route::put('/{fee}', [FeeController::class, 'update'])->name('fees.update'); // Update route
+    Route::delete('/{fee}', [FeeController::class, 'destroy'])->name('fees.destroy'); // Delete route
+    
 });
+
+// In web.php
+Route::get('/search-fees', [FeeController::class, 'search'])->name('search.fees');
+
 // Route to display the add fee form
 //Route::get('fees/add', [FeeController::class, 'create'])->name('fees.create');
 

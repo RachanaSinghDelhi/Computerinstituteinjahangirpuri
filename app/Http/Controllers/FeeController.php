@@ -11,7 +11,9 @@ class FeeController extends Controller
     // List all students' fees
     public function index()
     {
-        $students = Student::with(['course', 'fees'])->get();
+        $students = Student::with(['course', 'fees'])
+        ->orderBy('id', 'desc') // Order by 'id' in ascending order
+        ->paginate(10);
         return view('dashboard.fees', compact('students'));
     }
 
@@ -20,8 +22,8 @@ class FeeController extends Controller
     {
         $fees = $student->fees;
         $course = $student->course;
-        $installmentAmount = $course->total_fees / $course->installments;
-        return view('dashboard.single_fees', compact('student', 'fees','installmentAmount'));
+        $defaultInstallmentAmount = round($course->total_fees / $course->installments);
+        return view('dashboard.single_fees', compact('student', 'fees','defaultInstallmentAmount'));
     }
 
     // Form to pay fees
@@ -30,9 +32,12 @@ class FeeController extends Controller
         $course = $student->course;
     
         // Calculate the monthly installment
-        $installmentAmount = $course->total_fees / $course->installments;
-    
-        return view('dashboard.add_fees', compact('student', 'installmentAmount'));
+      
+        $defaultInstallmentAmount = round($course->total_fees / $course->installments);
+
+        $lastReceipt = Fee::latest('receipt_number')->first();
+        $receiptNumber = $lastReceipt ? $lastReceipt->receipt_number + 1 : 1; 
+        return view('dashboard.add_fees', compact('student', 'defaultInstallmentAmount','receiptNumber'));
     }
     
 
@@ -41,36 +46,61 @@ class FeeController extends Controller
     {
         // Fetch the student's course details
         $course = $student->course;
-        $installmentAmount = $course->total_fees / $course->installments;
+        $defaultInstallmentAmount = round($course->total_fees / $course->installments);
     
         // Validate the form input
         $request->validate([
-            'amount_paid' => ['required', 'numeric', 'min:1', function ($attribute, $value, $fail) use ($installmentAmount) {
-                if ($value != $installmentAmount) {
-                    $fail('The amount to be paid must match the installment amount: ' . number_format($installmentAmount, 2));
-                }
-            }],
-            'receipt_image' => 'required|image|mimes:jpg,png,jpeg|max:2048',
+            'amount_paid' => ['required', 'numeric', 'min:1'],
+            'installment_amount' => 'nullable|numeric|min:1',
+            'receipt_image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
             'payment_date' => 'required|date',
         ]);
     
+        // Determine the installment amount (use custom if provided)
+        $installmentAmount = $request->installment_amount ?: $defaultInstallmentAmount;
+    
+          // Fetch the last used receipt number and increment it
+    if ($request->filled('receipt_number')) {
+        $receiptNumber = $request->receipt_number; // Use the provided receipt number
+    } else {
+        $lastReceipt = Fee::latest('receipt_number')->first();
+        $receiptNumber = $lastReceipt ? $lastReceipt->receipt_number + 1 : 1; // Increment based on the last receipt
+    }
+    
         // Handle receipt image
-        $originalName = pathinfo($request->receipt_image->getClientOriginalName(), PATHINFO_FILENAME);
-        $extension = $request->receipt_image->getClientOriginalExtension();
-        $uniqueName = $originalName . '.' . $extension;
+        if ($request->hasFile('receipt_image')) {
+            $receiptImageName = $receiptNumber . '.' . $request->receipt_image->getClientOriginalExtension();
+            $request->receipt_image->move(public_path('assets/receipts'), $receiptImageName);
+        } else {
+            $receiptImageName = $receiptNumber . '.jpg';
+        }
     
-        // Move the uploaded receipt image to the desired location
-        $request->receipt_image->move(public_path('assets/receipts'), $uniqueName);
-    
-        // Calculate the due date: 1 month after the current installment
-        // Get the number of months since the admission date
-        $monthsSinceAdmission = Fee::where('student_id', $student->id)->count() + 1; // Increment for next due
-    
-        // Ensure 'doa' (date of admission) is a valid Carbon instance
-        $admissionDate = Carbon::parse($student->doa);
-    
-        // Calculate the due date based on the months since admission
-        $dueDate = $admissionDate->addMonths($monthsSinceAdmission)->endOfMonth(); // Due date is end of month
+       
+ // Parse dates
+$admissionDate = Carbon::parse($student->doa); // Admission date
+$paymentDate = Carbon::parse($request->payment_date); // Payment date
+
+// Admission day of the month
+$admissionDay = $admissionDate->day;
+
+// Calculate the due date
+if ($paymentDate->day >= $admissionDay) {
+    // Payment made on or after the admission day -> Due in the next month
+    $dueDate = $paymentDate->copy()->addMonthNoOverflow()->setDay($admissionDay);
+} else {
+    // Payment made before the admission day -> Due in the current month
+    $dueDate = $paymentDate->copy()->setDay($admissionDay);
+}
+
+// Handle edge cases for invalid days (e.g., 31st in February)
+if (!$dueDate->isValid()) {
+    $dueDate = $dueDate->lastOfMonth();
+}
+
+
+
+        // Set payment status based on the payment date
+        $status = $paymentDate->isCurrentMonth() ? 'Paid' : 'Pending';
     
         // Save fee record in the database
         Fee::create([
@@ -79,13 +109,82 @@ class FeeController extends Controller
             'amount_paid' => $request->amount_paid,
             'payment_date' => $request->payment_date,
             'due_date' => $dueDate, // Save the calculated due date
-            'receipt_number' => $originalName,
-            'receipt_image' => $uniqueName,
-            'status' => 'Paid',
+            'receipt_number' => $receiptNumber,
+            'receipt_image' => $receiptImageName,
+            'status' => $status,
         ]);
     
         // Redirect to the fee details page with success message
-        return redirect()->route('fees.show', $student->id)->with('success', 'Fee payment recorded successfully!');
+        return redirect()->route('dashboard.single_fees', $student->id)->with('success', 'Fee payment recorded successfully!');
     }
+        
+
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+    
+        // Get students based on search query (adjust to your need)
+        $students = Student::with(['course', 'fees'])
+            ->where('name', 'like', '%' . $query . '%')
+            ->orWhere('student_id', 'like', '%' . $query . '%')
+            ->orWhereHas('course', function($q) use ($query) {
+                $q->where('course_title', 'like', '%' . $query . '%');
+            })
+            ->paginate(10);  // Adjust pagination as needed
+    
+        // Return the filtered student rows
+        return view('dashboard.fees_table', compact('students'))->render();
+    }
+
+
+
+    public function edit($id)
+{
+    $fee = Fee::findOrFail($id);
+     $fee->payment_date = $fee->payment_date ? \Carbon\Carbon::parse($fee->payment_date) : null;
+    return view('dashboard.edit_fees', compact('fee'));
+}
+
+public function destroy($id)
+{
+    $fee = Fee::findOrFail($id);
+    $fee->delete();
+
+    return redirect()->back()->with('success', 'Fee record deleted successfully!');
+}
+
+
+
+
+public function update(Request $request, $id)
+{
+    // Retrieve the fee record
+    $fee = Fee::findOrFail($id);
+
+    // Validate the input
+    $validatedData = $request->validate([
+        'receipt_number' => 'required|numeric|unique:fees,receipt_number,' . $fee->id,
+        'amount_paid' => 'required|numeric',
+        'receipt_image' => 'required|string|max:255',
+        'payment_date' => 'required|date',
+        'due_date' => 'nullable|date|after_or_equal:payment_date', // Optional field
+    ]);
+
+    // Update the fee record
+    $fee->update([
+        'receipt_number' => $validatedData['receipt_number'],
+        'amount_paid' => $validatedData['amount_paid'],
+        'receipt_image' => $validatedData['receipt_image'],
+        'payment_date' => $validatedData['payment_date'],
+        'due_date' => $validatedData['due_date'], // This will handle null values
+    ]);
+
+    // Redirect to the single fees page with the required student parameter
+    return redirect(url()->previous())->with('success', 'Fee record updated successfully!');
+
+}
+
+
     
 }

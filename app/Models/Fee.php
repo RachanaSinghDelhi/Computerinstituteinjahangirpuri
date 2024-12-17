@@ -9,8 +9,14 @@ class Fee extends Model
     use HasFactory;
 
     protected $fillable = [
-        'student_id', 'course_id', 'payment_date', 'amount_paid',
+        'student_id', 'course_id', 'payment_date','due_date', 'amount_paid',
         'receipt_number', 'receipt_image', 'status',
+    ];
+
+
+    protected $casts = [
+        'payment_date' => 'date',
+        'due_date' => 'date',
     ];
 
     // Get installment amount
@@ -32,25 +38,7 @@ class Fee extends Model
     }
 
     // Calculate due date (end of the current month if pending payment)
-    public function getDueDateAttribute()
-    {
-        $student = $this->student;  // Access the related student
-
-        // Check if the student exists and has an admission date
-        if ($student && $student->doa) {
-            // Parse the admission date as a Carbon instance
-            $admissionDate = Carbon::parse($student->doa);
-
-            // Calculate the number of months since admission
-            $monthsSinceAdmission = now()->diffInMonths($admissionDate);
-
-            // Add months and calculate the due date
-            return $admissionDate->addMonths($monthsSinceAdmission + 1)->endOfMonth();
-        }
-
-        return null; // Return null if no admission date
-    }
-
+   
     // Determine fee status
     public function getFeeStatusAttribute()
     {
