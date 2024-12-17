@@ -13,7 +13,7 @@
     @endif
 
     <div class="row">
-        @forelse ($courses as $course)
+        @forelse ($courses->take(10) as $course)
             <div class="col-md-6 col-12 mb-4">
                 <div class="card">
                     <!-- Course Image Wrapper with Fixed Height -->
