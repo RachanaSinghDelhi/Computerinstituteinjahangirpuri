@@ -97,7 +97,7 @@
         <button type="button" class="crop-button" data-student-id="{{ $student->id }}">Crop and Upload</button>
     </div>
 </td>
-                    <td> <img src="{{ asset('storage/' . $student->photo) }}" alt="Photo" class="img-thumbnail" style="width: 50px;" data-student-id="{{ $student->id }}" /></td>
+                    <td> <img src="{{ asset('storage/students' . $student->photo) }}" alt="Photo" class="img-thumbnail" style="width: 50px;" data-student-id="{{ $student->id }}" /></td>
                     <td>
                         <button class="btn btn-danger btn-sm remove-row" data-student-id="{{ $student->id }}">Remove</button>
                     </td>
