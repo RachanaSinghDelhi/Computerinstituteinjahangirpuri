@@ -19,9 +19,9 @@
                     <!-- Course Image Wrapper with Fixed Height -->
                     <div class="image-wrapper" style="height: 250px; overflow: hidden;">
                         @if ($course->course_image)
-                            <img src="{{ asset('storage/courses/'. $course->course_image) }}" class="card-img-top" alt="{{ $course->title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                            <img src="{{ asset('storage/courses/' . $course->course_image) }}" class="card-img-top" alt="{{ $course->course_title }}" style="width: 100%; height: 100%; object-fit: cover;">
                         @else
-                            <img src="{{ asset('images/default_course.png') }}" class="card-img-top" alt="Default Course Image" style="width: 100%; height: 100%; object-fit: cover;">
+                            <img src="{{ asset('courses/default_course.png') }}" class="card-img-top" alt="Default Course Image" style="width: 100%; height: 100%; object-fit: cover;">
                         @endif
                     </div>
                     
