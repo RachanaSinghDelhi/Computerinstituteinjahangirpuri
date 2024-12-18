@@ -73,7 +73,7 @@
                         </a>
                         <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item dash" href="/fees" style="color:white;">Fees</a></li>
-                            <li><a class="dropdown-item dash" href="/fees/add" style="color:white;">Add Fees</a></li>
+                            <li><a class="dropdown-item dash" href="/dashboard/add_fees" style="color:white;">Add Fees</a></li>
                            
                         </ul>
                     </li>
