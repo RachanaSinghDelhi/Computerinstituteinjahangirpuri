@@ -73,7 +73,7 @@
                         </a>
                         <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item dash" href="/fees" style="color:white;">Fees</a></li>
-                            <li><a class="dropdown-item dash" href="{{ route('dashboard.add_fees', $student->id) }}" style="color:white;">Add Fees</a></li>
+                           
                            
                         </ul>
                     </li>

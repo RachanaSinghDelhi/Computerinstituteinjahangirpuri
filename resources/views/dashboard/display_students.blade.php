@@ -68,7 +68,7 @@
                 <td>{{ $student->batch }}</td>
                 <td>
                     @if($student->photo)
-                        <img src="{{ asset('storage/' . $student->photo) }}" alt="Student Photo" width="50">
+                        <img src="{{ asset('storage/students/' . $student->photo) }}" alt="Student Photo" width="50">
                     @else
                         No Photo
                     @endif
