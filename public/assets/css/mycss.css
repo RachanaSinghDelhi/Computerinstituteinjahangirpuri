@@ -1,0 +1,272 @@
+/* General Reset */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* Navbar Styles */
+.navbar {
+    background: #005e99; /* Brighter initial background color */
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    z-index: 1000;
+    padding-top: 0; /* Remove any top padding */
+    margin-top: 0; /* Remove any margin from top */
+    opacity: 0.9;
+}
+
+.navbar:hover {
+    background: #004a79; /* Slightly darker background on hover */
+    box-shadow: 0 4px 8px rgba(0, 33, 71, 0.3); /* Subtle shadow on hover */
+ 
+}
+
+/* Navbar items */
+.navbar-nav .nav-link {
+    color: #ffffff !important; /* Force the text color to white */
+    font-size: 20px; /* Increase font size */
+    text-transform: uppercase;
+    font-weight: 500;
+    margin: 0 10px;
+    transition: color 0.3s ease, background 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ffd700!important; /* Dark blue text color on hover */
+    background: rgba(255, 255, 255, 0.2); /* Slightly lighter background on hover */
+    border-radius: 5px;
+    padding: 5px 10px;
+   
+}
+
+/* Navbar Toggler */
+.navbar-toggler {
+    color: #ffffff;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    transition: background 0.3s ease;
+}
+
+.navbar-toggler:hover {
+    background: #ffd700; /* Contrasting color on hover */
+    color: #002147;
+}
+
+/* Dropdown Styles */
+.dropdown-menu {
+    background: #005e99; /* Dark blue background */
+    border: none;
+    transition: background 0.3s ease;
+}
+
+.dropdown-menu a {
+    color: #ffffff;
+    font-size: 16px;
+    padding: 10px 20px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-menu a:hover {
+    background: #004a79; /* Slightly darker background */
+    color: #ffd700; /* Gold text color */
+}
+
+/* Header */
+header1 {
+    margin-top: 0; /* Ensure no extra margin on top of header */
+}
+
+/* Responsive Navbar */
+@media only screen and (max-width: 767px) {
+    .navbar-nav {
+        background: #005e99; /* Brighter background for small screens */
+        text-align: center;
+        padding: 20px;
+    }
+
+    .navbar-nav .nav-link {
+        margin: 10px 0;
+    }
+
+    .navbar-toggler {
+        font-size: 16px;
+    }
+
+    .footer {
+        padding: 20px 0;
+    }
+
+    .footer h1 {
+        font-size: 18px;
+    }
+
+    .footer p {
+        font-size: 14px;
+    }
+
+    .banner h1 {
+        font-size: 24px;
+    }
+
+    .banner p {
+        font-size: 14px;
+        width: 80%;
+    }
+}
+
+/* Brand Section */
+.navbar-brand {
+    color: #ffffff; /* Set the color of the brand link to white */
+}
+
+.navbar-brand span {
+    color: #ffffff; /* Set the brand name text to white */
+    font-size: 24px; /* Adjust font size for visibility */
+    font-weight: bold; /* Bold for brand name */
+}
+
+.navbar-brand small {
+    color: #ffffff; /* Set subtitle text to white */
+    font-size: 16px; /* Adjust subtitle size */
+    font-weight: 300; /* Lighter weight for the subtitle */
+}
+
+/* Optional: Change the color on hover */
+.navbar-brand:hover {
+    color: #ffffff; /* Ensure the brand text stays white on hover */
+}
+
+.navbar-brand:hover span {
+    color: #ffffff; /* Keep brand name text white on hover */
+}
+
+.navbar-brand:hover small {
+    color: #ffffff; /* Keep subtitle text white on hover */
+}
+
+/* Footer Styles */
+.footer {
+    background: #004a79; /* Dark blue background for footer */
+    color: #ffffff; /* White text for footer */
+    padding: 40px 0; /* Padding for top and bottom */
+  
+    font-size: 16px; /* Font size for footer text */
+}
+
+.footer a {
+    color: #ffffff; /* Gold links */
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: #ffffff; /* White color on hover */
+    text-decoration: underline; /* Underline links on hover */
+}
+
+.footer h1 {
+    font-size: 24px; /* Larger font size for the header */
+    margin-bottom: 15px; /* Space below the header */
+}
+
+.footer .social-icons {
+    margin-top: 20px; /* Space between the text and icons */
+}
+
+.footer .social-icons a {
+    font-size: 24px; /* Icon size */
+    margin: 0 10px; /* Space between icons */
+    color: #ffd700; /* Gold color for icons */
+    transition: color 0.3s ease;
+}
+
+.footer .social-icons a:hover {
+    color: #ffffff; /* Change to white on hover */
+}
+
+
+
+/* Responsive Footer */
+@media only screen and (max-width: 767px) {
+    .footer {
+        font-size: 14px; /* Smaller font size for smaller screens */
+        padding: 20px 0; /* Less padding for small screens */
+    }
+
+    .footer h1 {
+        font-size: 18px; /* Smaller header font size */
+    }
+
+    .footer p {
+        font-size: 12px; /* Smaller paragraph font size */
+    }
+
+    .footer .social-icons a {
+        font-size: 20px; /* Smaller icon size */
+    }
+}
+
+
+/* Go to Top Button Styles */
+.go-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #005e99; /* Button color */
+    color: #fff;
+    border: none;
+    padding: 15px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    display: none; /* Initially hidden */
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+}
+
+.go-to-top:hover {
+    background-color: #004a79; /* Darker button color on hover */
+}
+
+/* Show the button when the user scrolls down */
+.show {
+    display: block;
+}
+
+
+
+
+/* Breadcrumb Styles */
+.breadcrumb {
+    display: flex;
+    justify-content: center; /* Center the breadcrumb */
+    align-items: center;
+    list-style: none;
+    background-color: transparent; /* Remove background */
+    padding: 0;
+    margin: 20px 0;
+}
+
+.breadcrumb li {
+    color: white; /* White color for breadcrumb items */
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.breadcrumb li + li:before {
+    content: " > "; /* Add the separator between items */
+    color: white; /* White separator */
+}
+
+.breadcrumb li a {
+    color: white; /* Link color is white */
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s ease;
+}
+
+.breadcrumb li a:hover {
+    color: #ffd700; /* Gold color on hover for links */
+}

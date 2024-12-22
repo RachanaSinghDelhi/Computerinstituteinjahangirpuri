@@ -1,85 +1,66 @@
-<nav class=" navbar topbar navbar-expand-lg">
-
-            <div class="container container-fluid">
-                <button class="navbar-toggler flex top-button" type="button" data-bs-toggle="collapse" data-bs-target="#topbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="fa fa-arrow-down fa-2x " style="color:#002147;"></span></button>
-                <div class="collapse navbar-collapse" id="topbar">
-        
-                   <ul class="navbar-nav me-auto mb-2 mb-lg-0  menu_list">
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="#"> <i class="fa fa-clock-o " style="color:#fff;"></i>Mon - Fri 8AM-8PM</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fa fa-phone" style="color:#fff;"> 9312945741 </i></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fa fa-paper-plane" style="color:#fff;"></i> A1- 9/10,Jahangirpuri Rd, A Block Rd, near Da Pizza Palace,Jahangirpuri, Delhi, 110033</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fa fa-envelope" style="color:#fff;"></i> nicewebtechnologies@gmail.com</a>
-                        </li>
-                    </ul>
-                    <!-- <p class="collapse navbar-collapse py-2" id="topbar">
-                            <i class="fa fa-paper-plane" style="color:#fff;"></i><a aria-current="page" href="#">Mon - Fri 7AM-8PM &nbsp;&nbsp;</a>
-                            <i class="fa fa-phone" style="color:#fff;"> </i><a aria-current="page" href="#">9312945741 &nbsp;&nbsp;</a>
-                        </p>-->
-                     
-                </div>
-            </div>
-        </nav>
+<nav class="navbar topbar navbar-expand-lg">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topbar" aria-controls="topbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="fa fa-arrow-down fa-2x" style="color:#fff;"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="topbar">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                <a class="nav-link"><i class="fa fa-clock-o"></i> Mon - Fri 8AM-8PM</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="tel:9312945741"><i class="fa fa-phone"></i> 9312945741</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="mailto:nicewebtechnologies@gmail.com"><i class="fa fa-envelope"></i> nicewebtechnologies@gmail.com</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa fa-map-marker"></i> A1- 9/10, Jahangirpuri Rd, Delhi</a>
+                </li>
+            </ul>
+        </div>
     </div>
+</nav>
 
-    <br><br>
-
-    <!-- topbar--->
-    <!---Navabr --->
-
-    <header1>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light nav_nice">
-            <div class="container container-fluid">
-            <img src="{{ asset('assets/images/logo1_3D_half.png') }}" width="150" height="100">
-
-                <p class="logo"><a class="navbar-brand brand_nice " href="#">Nice Computer Institute</a><br>
-                    <a class="tagline_nice" href="#">Be a Part Of I.T.</a>
-                </p>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon nice_toggler"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0  menu_list">
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="/">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/about">About Us</a>
-                        </li>
-                        <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        Courses
-    </a>
-    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-    @foreach($courses->take(7) as $course)  <!-- Limit the loop to 7 courses -->
-        <li><a class="dropdown-item" href="{{ url('/courses/' . $course->course_url) }}">{{ $course->course_title }}</a></li>
-    @endforeach
-    <li><a class="dropdown-item" href="/courses_list">More ..</a></li>
-</ul>
-</li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="/blogs">Updates</a>
-                        </li>
-                     
-                        <li class="nav-item">
-                            <a class="nav-link" href="/contact">Contact</a>
-                        </li>
-                        <li class="nav-item">
-                              <a class="nav-link" href="{{ route('faq') }}">FAQs</a>
-                        </li>
-                        <li class="nav-item">
-                            <button class="btn btn-light"> <span class="whatsapp"><a href="https://wa.me/9312945741"><i class="fa fa-whatsapp" style="font-size:48px;color:green;"></i></a></span></button>
-                        </li>
-                    </ul>
-
-
+<header1>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="{{ asset('assets/images/logo1_3D_half.png') }}" alt="Logo" width="100" height="80" class="me-2">
+                <div>
+                    <span>Nice Computer Institute</span><br>
+                    <small class="">Be a Part Of I.T.</small>
                 </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about">About Us</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="coursesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Courses</a>
+                        <ul class="dropdown-menu" aria-labelledby="coursesDropdown">
+                            @foreach($courses->take(7) as $course)
+                                <li><a class="dropdown-item" href="{{ url('/courses/' . $course->course_url) }}">{{ $course->course_title }}</a></li>
+                            @endforeach
+                            <li><a class="dropdown-item" href="/courses_list">More ..</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="/blogs">Updates</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('faq') }}">FAQs</a></li>
+                    <li class="nav-item">
+                    <li class="nav-item">
+    <a class="nav-link" href="https://wa.me/9312945741">
+        <i class="fa fa-whatsapp" style="font-size:40px; color:rgb(4, 41, 4);"></i>
+    </a>
+</li>
+
+                    </li>
+                </ul>
             </div>
-        </nav>
+        </div>
+    </nav>
+

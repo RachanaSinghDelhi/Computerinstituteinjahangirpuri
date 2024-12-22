@@ -305,10 +305,41 @@
 }
 </script>
 
+<!-- Existing content -->
+
+<!-- Go to Top Button -->
+<button id="goToTop" class="go-to-top" onclick="scrollToTop()">
+    ↑
+</button>
+
+<!-- JavaScript for handling the Go to Top button -->
+<script>
+// Get the button element
+var mybutton = document.getElementById("goToTop");
+
+// When the user scrolls down 200px from the top, show the button
+window.onscroll = function() {
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        mybutton.classList.add("show");
+    } else {
+        mybutton.classList.remove("show");
+    }
+};
+
+// When the user clicks on the button, scroll to the top of the document
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+</script>
+
+
     <!-- CSS Links -->
     <link rel="icon" href="{{ asset('favicon.ico') }}"  type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('assets/bootstrap5/bootstrap-5.0.2-dist/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/mycss.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link href="{{ asset('assets/bootstrap5/bootstrap-5.0.2-dist/fonts/font.woff2') }}" rel="stylesheet">
