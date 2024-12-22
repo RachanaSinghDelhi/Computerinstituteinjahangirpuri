@@ -1,7 +1,9 @@
 @section('title', "$course->course_title")
 
 @include('partials.course_header',['courses' => $courses])
-<div class="banner" style="background-image: url('{{ asset('storage/courses/' . $course->course_image) }}'); height: 400px; background-size: cover; background-position: center;">
+
+<!--style="background-image: url('{{ asset('storage/courses/' . $course->course_image) }}'-->
+<div class="banner" style="background-image: url('{{ asset('assets/images/Sliders_image/medal_nice_computer_institute_jahangirpuri.jpg') }}'); height: 400px; background-size: cover; background-position: center;">
         <div class="overlay" style="background-color: rgba(0, 0, 0, 0.5); height: 100%; display: flex; justify-content: center; align-items: center;">
         <div class="container-fluid bg-breadcrumb">
 <nav aria-label="breadcrumb">
@@ -12,7 +14,7 @@
                 </li>
             @endforeach
         </ol>
-    </nav>
+    </nav>public/
             </div>
         </div>
     </div>
