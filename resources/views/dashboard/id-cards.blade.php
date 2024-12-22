@@ -66,7 +66,7 @@
                         <div class="id-card">
             <img src="{{ asset('assets/images/id_card.jpg') }}" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; object-fit: cover;">
             <div class="image">
-                <img src="{{ asset('storage/' . $student->photo) }}" style="width: 60px; height: 70px;top: 50px; border-radius: 50%; border: 2px solid white;">
+                <img src="{{ asset('storage/students/' . $student->photo) }}" style="width: 60px; height: 70px;top: 50px; border-radius: 50%; border: 2px solid white;">
             </div>
             <div class="text-container">
                 <div>{{ $student->name }}</div>
