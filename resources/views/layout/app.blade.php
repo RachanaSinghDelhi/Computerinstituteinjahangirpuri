@@ -304,6 +304,7 @@
 </script>
 
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
 <link rel="icon" href="{{ asset('favicon.ico') }}"  type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('assets/bootstrap5/bootstrap-5.0.2-dist/css/bootstrap.min.css') }}">
@@ -329,7 +330,7 @@
                    <div class="carousel-caption">
                        <h5 class="animate__animated animate__bounceInRight animate__delay-1s">Best Computer Training in Jahangirpuri, Delhi</h5>
                        <p class="animate__animated animate__bounceInLeft animate__delay-2s d-none d-md-block">Since 2001, Nice Computer Institute in Jahangirpuri offers top courses like Graphic Design, Tally, Marg ERP, Web Dev. Enroll now to upgrade your skills!</p>
-                       <p class="know"> <a href="#" class="animate__animated animate__bounceInRight animate__delay-3s know">Know More</a></p>
+                       <p class="know"> <a href="/introduction" class="btn btn-primary animate__animated animate__bounceInRight animate__delay-3s know">Know More</a></p>
                    </div>
                </div>
                <div class="carousel-item">
@@ -338,7 +339,7 @@
                        <h5 class="animate__animated animate__bounceInRight animate__delay-1s" style="animation-delay:1s">
                            Basic Courses</h5>
                        <p class="animate__animated animate__bounceInLeft animate__delay-2s d-none d-md-block">Nice Computer Institute Provides with the best job oriented computer course in Jahangirpuri. This course comprises of ...</p>
-                       <p class="know"> <a href="#" class="animate__animated animate__bounceInRight animate__delay-3s know">Know More</a></p>
+                       <p class="know"> <a href="/courses/basic" class="btn btn-primary animate__animated animate__bounceInRight animate__delay-3s know">Know More</a></p>
                    </div>
 
                </div>
@@ -347,7 +348,7 @@
                <div class="carousel-caption ">        
                <h5 class="animate__animated animate__bounceInRight animate__delay-1s">Advance Excel</h5>
                        <p class="animate__animated animate__bounceInLeft animate__delay-2s d-none d-md-block">Advanced Excel institute in Jahangirpuri Nice Computer is known for Excel developers who want to channel their skills into building spreadsheet applications and dashboards. Nice Computer institute..</p>
-                       <p class="know"> <a href="#" class="animate__animated animate__bounceInRight animate__delay-3s know">Know More</a></p>
+                       <p class="know"> <a href="/courses/advance-excel" class="btn btn-primary animate__animated animate__bounceInRight animate__delay-3s know">Know More</a></p>
                    </div>
 
                </div>
@@ -355,9 +356,9 @@
                <img src="{{ asset('assets/images/Sliders_image/autocad_nice_computer_institute_jahangirpri.jpg') }}" class="d-block w-100" alt="AutoCAD at Nice Computer Institute in Jahangirpuri">
                    <div class="carousel-caption">
                        <h5 class="animate__animated animate__bounceInRight animate__delay-1s">
-                           AutoCAD Training </h5>
-                       <p class="animate__animated animate__bounceInLeft animate__delay-2s d-none d-md-block">AutoCad training at Nice Computer Institute in Jahangirpuri. AutoCAD is computer-aided design (CAD) software that architects, engineers and construction professionals rely on to create...</p>
-                       <p class="know"><a href="#" class="animate__animated animate__bounceInRight animate__delay-3s">Know More</a></p>
+                           Python Training </h5>
+                       <p class="animate__animated animate__bounceInLeft animate__delay-2s d-none d-md-block">Learn Python Programming from Scratch: The Python course at Nice Web Technologies, Jahangirpuri, Delhi, is a comprehensive program designed for beginners</p>
+                       <p class="know"><a href="/courses/python" class="btn btn-primary animate__animated animate__bounceInRight animate__delay-3s">Know More</a></p>
                    </div>
 
                </div>
@@ -367,7 +368,7 @@
                        <h5 class="animate__animated animate__bounceInRight animate__delay-1s">
                            Graphic Design</h5>
                        <p class="animate__animated animate__bounceInLeft animate__delay-2s d-none d-md-block">Graphic Design Concepts & Practices,Elements of design,Typography,Color,Layout</p>
-                       <p class="know"> <a href="#" class="animate__animated animate__bounceInRight animate__delay-3s">Know More</a></p>
+                       <p class="know"> <a href="/courses/graphic-design" class="btn btn-primary animate__animated animate__bounceInRight animate__delay-3s">Know More</a></p>
                    </div>
 
                </div>

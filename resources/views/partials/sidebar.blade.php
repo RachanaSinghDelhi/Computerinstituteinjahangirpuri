@@ -20,12 +20,7 @@
 
     <hr>
     
-    <h1 class="display-3">
-               Join Now
-            </h1>
-            
-            <p><img src="{{asset('assets/images/support_nice_computer_institute_jahangirpuri.jpg')}}" class="img-fluid"></p>
-  
+   
 
 
 

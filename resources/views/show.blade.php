@@ -14,7 +14,7 @@
                 </li>
             @endforeach
         </ol>
-    </nav>public/
+    </nav>
             </div>
         </div>
     </div>
