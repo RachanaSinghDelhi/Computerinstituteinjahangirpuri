@@ -41,7 +41,7 @@ class StudentableController extends Controller
             $fileName = $request->file('photo')->getClientOriginalName();
 
             // Store the file using the original file name
-            $photoPath = $request->file('photo')->storeAs('students', $request->file('photo')->getClientOriginalName(), 'public');
+            $photoPath = $request->file('photo')->storeAs('students', $fileName, 'public');
         }
 
         // Create the student entry
@@ -53,7 +53,7 @@ class StudentableController extends Controller
         $student->batch = $validatedData['batch'];
         $student->course_id = $validatedData['course_id'];
         $student->contact_number = $validatedData['contact_number'];
-        $student->photo = $photoPath;
+        $student->photo =   $fileName;
         $student->save();
 
         return response()->json([
@@ -105,10 +105,10 @@ public function updatePhoto(Request $request)
         $fileName = $request->file('photo')->getClientOriginalName();
 
         // Store the photo using the original file name
-        $Path = $request->file('photo')->storeAs('students', $request->file('photo')->getClientOriginalName(), 'public');
+        $path = $request->file('photo')->storeAs('students', $fileName, 'public');
         
         // Update the student's photo path in the database
-        $student->photo = $path;
+        $student->photo =   $fileName;
         $student->save();
 
         return response()->json([
