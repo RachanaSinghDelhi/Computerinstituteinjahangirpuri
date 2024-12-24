@@ -21,7 +21,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($certificates as $certificate)
+        @foreach ($paginatedCertificates as $certificate)
             <tr>
                 <td>{{ $certificate->student_id }}</td>
                 <td>{{ $certificate->name }}</td>
@@ -34,19 +34,16 @@
                 </td>
                 <td>{{ $certificate->certificate_type }}</td>
                 <td>{{ $certificate->duration }}</td>
-                <td>{{ $certificate->desc }}</td>
+                <td>{{ $certificate->description }}</td>
                 <td>{{ $certificate->grade }}</td>
                 <td>{{ $certificate->code }}</td>
             </tr>
-            @endforeach
+        @endforeach
         </tbody>
-        <tfoot></tfoot>
     </table>
     <!-- Pagination Links -->
     <div class="d-flex justify-content-center">
-    <ul class="pagination pagination-sm">
-        {{ $certificates->links('pagination::bootstrap-4') }}
-    </ul>
-</div>
+        {{ $paginatedCertificates->links('pagination::bootstrap-4') }}
+    </div>
 </div>
 @endsection
