@@ -224,10 +224,66 @@ padding: 10px 15px;
 }
 
 
-footer {
-    background-color: #002147;
-    color: white;
+.footer {
+    background: #004a79; /* Dark blue background for footer */
+    color: #ffffff; /* White text for footer */
+    padding: 40px 0; /* Padding for top and bottom */
+  
+    font-size: 16px; /* Font size for footer text */
 }
+
+.footer a {
+    color: #ffffff; /* Gold links */
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: #ffffff; /* White color on hover */
+    text-decoration: underline; /* Underline links on hover */
+}
+
+.footer h1 {
+    font-size: 24px; /* Larger font size for the header */
+    margin-bottom: 15px; /* Space below the header */
+}
+
+.footer .social-icons {
+    margin-top: 20px; /* Space between the text and icons */
+}
+
+.footer .social-icons a {
+    font-size: 24px; /* Icon size */
+    margin: 0 10px; /* Space between icons */
+    color: #ffd700; /* Gold color for icons */
+    transition: color 0.3s ease;
+}
+
+.footer .social-icons a:hover {
+    color: #ffffff; /* Change to white on hover */
+}
+
+
+
+/* Responsive Footer */
+@media only screen and (max-width: 767px) {
+    .footer {
+        font-size: 14px; /* Smaller font size for smaller screens */
+        padding: 20px 0; /* Less padding for small screens */
+    }
+
+    .footer h1 {
+        font-size: 18px; /* Smaller header font size */
+    }
+
+    .footer p {
+        font-size: 12px; /* Smaller paragraph font size */
+    }
+
+    .footer .social-icons a {
+        font-size: 20px; /* Smaller icon size */
+    }
+}
+
 
 a .social {
     width: 50px;

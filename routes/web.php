@@ -17,6 +17,12 @@ use App\Http\Controllers\FeeController;
 
 
 
+
+
+// Route to view the certificates page
+Route::get('/dashboard/certificates', [CertificateController::class, 'index'])->name('dashboard.certificates');
+
+
 Route::prefix('fees')->group(function () {
     Route::get('/', [FeeController::class, 'index'])->name('fees.index'); // List all students' fees
     Route::get('/dashboard/{student}/single-fees', [FeeController::class, 'show'])->name('dashboard.single_fees');

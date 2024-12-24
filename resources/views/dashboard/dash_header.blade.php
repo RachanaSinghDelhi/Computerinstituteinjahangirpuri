@@ -82,7 +82,7 @@
                             Certificates
                         </a>
                         <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item dash" href="/certificates" style="color:white;">Certificates</a></li>
+                            <li><a class="dropdown-item dash" href="/dashboard/certificates" style="color:white;">Certificates</a></li>
                             <li><a class="dropdown-item dash" href="/import-excel" style="color:white;">Import Certificate Type Excel</a></li>
                            
                         </ul>

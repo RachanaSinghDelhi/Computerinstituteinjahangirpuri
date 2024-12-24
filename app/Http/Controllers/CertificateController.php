@@ -1,88 +1,47 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\DB;
-use App\Models\Certificate;
-use App\Models\Student;
-use App\Models\Course;
-use Illuminate\Http\Request;
 
 class CertificateController extends Controller
 {
-    /**
-     * Display a listing of certificates.
-     */
     public function index()
     {
-        // Fetch all certificates with related student and course data
+        // Fetch data with proper joins and grouping
         $certificates = DB::table('students')
-        ->join('courses', 'students.course_id', '=', 'courses.id')
-        ->select(
-            'students.student_id',
-            'students.name',
-            'students.father_name',
-            'students.doa',
-            'students.batch',
-            'students.photo',
-            'students.contact_number',
-            'courses.course_title',
-            'courses.duration',
-            'courses.course_desc',
-            'courses.course_image'
-        )
-        ->get();
+            ->join('courses', 'students.course_id', '=', 'courses.id')
+            ->join('certificate_types', 'students.course_id', '=', 'certificate_types.course_id')
+            ->select(
+                'students.student_id',
+                'students.name',
+                'students.father_name as father',
+                'students.doa as dt',
+                DB::raw('DATE_ADD(students.doa, INTERVAL courses.duration MONTH) as date'),
+                'courses.course_title as course',
+                'students.photo',
+                'certificate_types.certificate_type',
+                'certificate_types.duration',
+                'certificate_types.description as desc',
+                DB::raw("'A+' as grade"), // Default grade
+                DB::raw("CONCAT('NWT', LPAD(students.student_id, 5, '0'), '/', YEAR(NOW()) % 100) as code")
+            )
+            ->groupBy(
+                'students.student_id',
+                'students.name',
+                'students.father_name',
+                'students.doa',
+                'courses.course_title',
+                'students.photo',
+                'certificate_types.certificate_type',
+                'certificate_types.duration',
+                'certificate_types.description',
+                'courses.duration'
+            )
+            ->paginate(10); 
+           
 
-    return view('dashboard.certificates', compact('certificates'));
-    }
-
-    /**
-     * Show the certificate details for a specific student and course.
-     */
-    public function show($studentId, $courseId)
-    {
-        $certificate = Certificate::where('student_id', $studentId)
-            ->where('course_id', $courseId)
-            ->first();
-
-        if (!$certificate) {
-            return redirect()->route('certificates.index')->with('error', 'Certificate not found!');
-        }
-
-        return view('dashboard.certificates', compact('certificate'));
-    }
-
-    /**
-     * Generate a certificate for a specific student and course.
-     */
-    public function generate($studentId, $courseId)
-    {
-        $student = Student::findOrFail($studentId);
-        $course = Course::findOrFail($courseId);
-
-        // Check if the certificate already exists
-        $existingCertificate = Certificate::where('student_id', $studentId)
-            ->where('course_id', $courseId)
-            ->first();
-
-        if ($existingCertificate) {
-            return redirect()->route('certificates.index')->with('error', 'Certificate already exists!');
-        }
-
-        // Generate a new certificate
-        $certificate = Certificate::create([
-            'name' => $student->name,
-            'father_name' => $student->father_name,
-            'dt' => now(), // Certificate date
-            'date' => now(),
-            'course_id' => $course->id,
-            'photo' => $student->photo, // Assuming the student has a photo field
-            'certificate' => 'CERT-' . strtoupper(uniqid()), // Unique certificate number
-            'duration' => $course->duration,
-            'desc' => $course->description,
-            'grade' => 'A+', // Example grade
-            'code' => strtoupper(uniqid()), // Unique code
-        ]);
-
-        return redirect()->route('certificates.index')->with('success', 'Certificate generated successfully!');
+        // Return the certificates to the view
+        return view('dashboard.certificates', compact('certificates'));
     }
 }
