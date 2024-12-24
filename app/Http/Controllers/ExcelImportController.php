@@ -12,7 +12,7 @@ class ExcelImportController extends Controller
     public function import()
 {
     // Define the file path
-    $filePath = public_path('certificates/certificate_type.xlsx');
+    $filePath = public_path('certificates/certificate_types.xlsx');
     
     if (file_exists($filePath)) {
         $spreadsheet = IOFactory::load($filePath);
@@ -21,7 +21,7 @@ class ExcelImportController extends Controller
 
         foreach ($rows as $index => $row) {
             if ($index === 1) {
-                // Skip header row
+               
                 continue;
             }
 
