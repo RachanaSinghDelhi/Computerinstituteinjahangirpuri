@@ -41,7 +41,7 @@ class StudentableController extends Controller
             $fileName = $request->file('photo')->getClientOriginalName();
 
             // Store the file using the original file name
-            $photoPath = $request->file('photo')->storeAs('students', $fileName, 'public');
+            $photoPath = $request->file('photo')->storeAs('students', $request->file('photo')->getClientOriginalName(), 'public');
         }
 
         // Create the student entry
@@ -105,7 +105,7 @@ public function updatePhoto(Request $request)
         $fileName = $request->file('photo')->getClientOriginalName();
 
         // Store the photo using the original file name
-        $path = $request->file('photo')->storeAs('students', $fileName, 'public');
+        $photoPath = $request->file('photo')->storeAs('students', $request->file('photo')->getClientOriginalName(), 'public');
         
         // Update the student's photo path in the database
         $student->photo = $path;
@@ -114,7 +114,7 @@ public function updatePhoto(Request $request)
         return response()->json([
             'success' => true,
             'message' => 'Photo updated successfully.',
-            'photoUrl' => asset('storage/' . $path) // Send the new photo URL back
+            'photoUrl' => asset('storage/students' . $path) // Send the new photo URL back
         ]);
     }
     
@@ -132,7 +132,7 @@ public function destroy($id)
         // Check if the student has a photo and delete it
         if ($student->photo) {
             // Use the relative path stored in the database
-            $photoPath = str_replace('storage/app/public/', '', $student->photo);
+            $photoPath = str_replace('storage/app/public/students', '', $student->photo);
 
             // Log the path for debugging
             \Log::info("Attempting to delete photo: " . $photoPath);
