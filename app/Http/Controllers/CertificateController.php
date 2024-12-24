@@ -23,7 +23,7 @@ class CertificateController extends Controller
                 'certificate_types.certificate_type',
                 'certificate_types.duration',
                 'certificate_types.description as desc',
-                DB::raw("'A+' as grade"), // Default grade
+                DB::raw("CASE WHEN RAND() < 0.5 THEN 'A' ELSE 'A+' END as grade"), // Random grade
                 DB::raw("CONCAT('NWT', LPAD(students.student_id, 5, '0'), '/', YEAR(NOW()) % 100) as code")
             )
             ->groupBy(
