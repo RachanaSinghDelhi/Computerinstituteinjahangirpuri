@@ -179,6 +179,13 @@ Route::post('/students/store', [StudentableController::class, 'store'])->name('s
 Route::delete('/dashboard/student/{student_id}', [StudentableController::class, 'destroy'])->name('delete.student');
 
 
+
+//certificates
+
+
+Route::post('/certificates/download-selected', [CertificateController::class, 'downloadSelected'])->name('certificates.downloadSelected');
+Route::get('/certificates/select_certificates', [CertificateController::class, 'selectCertificates'])->name('certificates.select');
+
 });
 
 

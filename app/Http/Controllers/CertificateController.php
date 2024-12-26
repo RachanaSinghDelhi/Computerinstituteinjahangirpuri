@@ -2,8 +2,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use App\Models\Certificate; // Make sure this is added
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
+use PDF;
 
 class CertificateController extends Controller
 {
@@ -77,7 +79,40 @@ class CertificateController extends Controller
             ->paginate(10);
 
         // Return the certificates to the view
-        return view('dashboard.certificates', compact('paginatedCertificates'));
+        return view('dashboard.certificates.certificates', compact('paginatedCertificates'));
     }
-}
+    
+    public function downloadSelected(Request $request)
+    {
+        // Validate that at least one certificate is selected
+        $request->validate([
+            'selected_certificates' => 'required|array|min:1',
+          
+        ]);
 
+        // Fetch the selected certificates from the database
+        $certificates = Certificate::whereIn('id', $request->selected_certificates)->get();
+
+        // Generate the PDF (use dompdf, snappy, etc.)
+        $pdf = PDF::loadView('dashboard.certificates.selected_certificates', compact('certificates'));
+
+        // Return the PDF as a download
+        return $pdf->download('selected_certificates.pdf');
+    }
+    
+    public function selectCertificates()
+    {
+        // Fetch paginated certificates from the certificates table
+        $paginatedCertificates = DB::table('certificates')
+            ->select('id','student_id', 'name', 'father', 'dt', 'date', 'course', 'photo', 'certificate_type', 'duration', 'description', 'grade', 'code')
+            ->distinct()
+            ->orderBy('student_id', 'desc')
+            ->paginate(10);
+   
+        // Pass the data to the view
+        return view('dashboard.certificates.select_certificates', ['certificates' => $paginatedCertificates]);
+    }
+    
+    
+
+}

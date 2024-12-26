@@ -14,6 +14,7 @@ class Certificate extends Model
 
     // Specify the fillable fields for mass assignment
     protected $fillable = [
+    
         'NAME',
         'FATHER',
         'DT',
@@ -27,6 +28,10 @@ class Certificate extends Model
         'Code',
     ];
 
+    protected $casts = [
+        'dt' => 'datetime', 
+        'date' => 'datetime', // Make sure the 'date' column is cast to a Carbon date instance
+    ];
     // Define any relationships if needed
     public function student()
     {
