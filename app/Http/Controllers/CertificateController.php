@@ -82,23 +82,21 @@ class CertificateController extends Controller
         return view('dashboard.certificates.certificates', compact('paginatedCertificates'));
     }
     
-    public function downloadSelected(Request $request)
-    {
-        // Validate that at least one certificate is selected
-        $request->validate([
-            'selected_certificates' => 'required|array|min:1',
-          
-        ]);
+  
+public function downloadSelected(Request $request)
+{
+    $request->validate([
+        'selected_certificates' => 'required|array|min:1',
+    ]);
 
-        // Fetch the selected certificates from the database
-        $certificates = Certificate::whereIn('id', $request->selected_certificates)->get();
+    $certificates = Certificate::whereIn('id', $request->selected_certificates)->get();
 
-        // Generate the PDF (use dompdf, snappy, etc.)
-        $pdf = PDF::loadView('dashboard.certificates.selected_certificates', compact('certificates'));
+    $pdf = Pdf::loadView('dashboard.certificates.selected_certificates', compact('certificates'))
+              ->setPaper('a4', 'portrait'); // Enforce A4 size in portrait mode
 
-        // Return the PDF as a download
-        return $pdf->download('selected_certificates.pdf');
-    }
+    return $pdf->download('selected_certificates.pdf');
+}
+
     
     public function selectCertificates()
     {
@@ -113,6 +111,11 @@ class CertificateController extends Controller
         return view('dashboard.certificates.select_certificates', ['certificates' => $paginatedCertificates]);
     }
     
-    
+    public function viewCertificate($id)
+    {
+        $certificate = Certificate::with('course')->findOrFail($id);
+
+        return view('dashboard.certificates.selected_certificates', ['certificates' => [$certificate]]);
+    }
 
 }

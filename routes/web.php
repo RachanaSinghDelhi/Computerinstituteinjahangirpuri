@@ -182,7 +182,7 @@ Route::delete('/dashboard/student/{student_id}', [StudentableController::class, 
 
 //certificates
 
-
+Route::get('/certificate/view/{id}', [CertificateController::class, 'viewCertificate'])->name('dashboard.certificates.view');
 Route::post('/certificates/download-selected', [CertificateController::class, 'downloadSelected'])->name('certificates.downloadSelected');
 Route::get('/certificates/select_certificates', [CertificateController::class, 'selectCertificates'])->name('certificates.select');
 

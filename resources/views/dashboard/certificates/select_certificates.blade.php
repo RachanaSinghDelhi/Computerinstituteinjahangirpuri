@@ -78,6 +78,8 @@
                 <p><strong>Photo:</strong> <img src="{{ asset('storage/students/' . $certificate->photo) }}" alt="Certificate Photo" width="100" /></p>
             @endif
         </div>
+        <a href="{{ route('dashboard.certificates.view', $certificate->id) }}" target="_blank">View Certificate</a>
+
     @endforeach
 
 </div>

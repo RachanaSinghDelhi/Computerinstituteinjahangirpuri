@@ -50,7 +50,7 @@
                                 @endif
                                 <h5 class="card-title">{{ $course->course_title }}</h5>
                                 <p class="text-muted">{{ \Illuminate\Support\Str::limit($course->course_desc, 100) }}</p>
-                                <a href="{{ url('/course/' . $course->course_url) }}" class="btn btn-primary">Read More</a>
+                                <a href="{{ url('/courses/' . $course->course_url) }}" class="btn btn-primary">Read More</a>
                             </div>
                         </div>
                     </div>
