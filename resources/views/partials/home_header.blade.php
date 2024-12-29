@@ -13,6 +13,7 @@
     <meta name="keywords" content="computer institute in Jahangirpuri, nice computer institute, computer institute in Delhi, computer institute in Rohini, computer center reviews, computer institute reviews, best reviews for computer institute, computer courses, graphic design, advanced excel, tally, python, web design, digital marketing, job-oriented computer training">
     <link rel="icon" href="https://www.computerinstituteindelhijahangirpuri.com/assets/images/logo_new_icon_nice_computer_institute_jahangirpuri.png" type="image/x-icon">
     <link rel="canonical" href="https://www.computerinstituteindelhijahangirpuri.com" />
+
     <meta name="robots" content="index, follow" />
 
     <!-- Open Graph (OG) Meta Tags for Social Media -->

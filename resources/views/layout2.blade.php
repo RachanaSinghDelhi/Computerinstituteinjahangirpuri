@@ -10,6 +10,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title') - Computer institute in Jahangirpuri</title>
     <link rel="canonical" href="https://www.computerinstituteindelhijahangirpuri.com" />
+
     <!-- Open Graph (OG) Meta Tags for Social Media -->
     <meta property="og:title" content="Computer Institute in Jahangirpuri">
     <meta property="og:description" content="Nice Computer Institute offers courses in Advanced Excel, Tally, Python, and Graphic Design. Located in Jahangirpuri, Delhi.">

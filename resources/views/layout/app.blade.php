@@ -9,7 +9,8 @@
     <meta name="keywords" content="computer institute in Jahangirpuri, nice computer institute, computer institute in Delhi, computer institute in Rohini, computer center reviews, computer institute reviews, best reviews for computer institute, computer courses, graphic design, advanced excel, tally, python, web design, digital marketing, job-oriented computer training">
     <meta name="robots" content="index, follow" />
     <title>Nice computer Institute - Computer institute in Jahangirpuri</title>
-   <link rel="canonical" href="{{ url('/') }}" />
+    <link rel="canonical" href="https://www.computerinstituteindelhijahangirpuri.com" />
+
    <!-- Open Graph (OG) Meta Tags for Social Media -->
     <meta property="og:title" content="Nice Computer Institute - Computer Institute in Jahangirpuri">
     <meta property="og:description" content="Nice Computer Institute offers professional courses like Graphic Design, Web Development, Python, Tally, and Advanced Excel. Enroll today in Jahangirpuri, Delhi.">

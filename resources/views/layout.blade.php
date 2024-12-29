@@ -10,7 +10,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title') - Computer institute in Jahangirpuri</title>
     <link rel="canonical" href="https://www.computerinstituteindelhijahangirpuri.com" />
-    <!-- Open Graph (OG) Meta Tags for Social Media -->
+   <!-- Open Graph (OG) Meta Tags for Social Media -->
     <meta property="og:title" content="Nice Computer Institute - Computer Institute in Jahangirpuri">
     <meta property="og:description" content="Nice Computer Institute offers professional courses like Graphic Design, Web Development, Python, Tally, and Advanced Excel. Enroll today in Jahangirpuri, Delhi.">
     <meta property="og:url" content="https://www.computerinstituteindelhijahangirpuri.com/">
