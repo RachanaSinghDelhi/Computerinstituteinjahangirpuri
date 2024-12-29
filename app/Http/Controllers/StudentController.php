@@ -15,7 +15,7 @@ class StudentController extends Controller
     public function create()
     {
         $courses = Course::all();
-        return view('dashboard.add_student'); // Ensure the Blade file is named add_student.blade.php
+        return view('dashboard.students.add_student'); // Ensure the Blade file is named add_student.blade.php
     }
 
     // Handle Form Submission
@@ -66,7 +66,7 @@ public function index()
      ->paginate(10);// Eager load 'course' relationship
     $courses = Course::all();
     // Pass the students to the view
-    return view('dashboard.display_students', compact('students','courses'));
+    return view('dashboard.students.display_students', compact('students','courses'));
 }
 
 // Show the form for editing the specified student.
@@ -81,7 +81,7 @@ public function edit($id)
 
    
     // Return the 'edit' view with the student and courses data
-    return view('dashboard.edit_student', compact('student', 'courses'));
+    return view('dashboard.students.edit_student', compact('student', 'courses'));
 }
 
 // Update the specified student in storage.

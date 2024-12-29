@@ -10,7 +10,7 @@ class PostController extends Controller
     // Show the form to create a new post
     public function create()
     {
-        return view('dashboard.create_post');
+        return view('dashboard.posts.create_post');
     }
 
     // Store a new post in the database
@@ -39,14 +39,14 @@ class PostController extends Controller
 
         $post->save();
 
-        return redirect()->route('dashboard.new_posts')->with('success', 'Post created successfully.');
+        return redirect()->route('dashboard.posts.new_posts')->with('success', 'Post created successfully.');
     }
 
 
     public function edit($id){
 
         $post = Post::findOrfail($id);
-        return view('dashboard.edit_post', compact('post'));
+        return view('dashboard.posts.edit_post', compact('post'));
 
     }
 
@@ -72,9 +72,22 @@ class PostController extends Controller
 
         $post->save();
 
-        return redirect()->route('dashboard.new_posts')->with('success', 'Post updated successfully.');
+        return redirect()->route('posts.new_posts')->with('success', 'Post updated successfully.');
     }
     
+
+    public function destroy($id)
+    {
+        $post = Post::find($id);
+
+        if ($post) {
+            $post->delete();
+            return redirect()->back()->with('success', 'Course deleted successfully.');
+        }
+
+        return redirect()->back()->with('error', 'Course not found.');
+    }
+
 
 
     // Display the list of posts
@@ -88,7 +101,7 @@ class PostController extends Controller
             ['name' => 'Updates', 'url' => route('posts.index')],
         ];
 
-        return view('dashboard.new_post', compact('posts', 'breadcrumbs'));
+        return view('dashboard.posts.new_post', compact('posts', 'breadcrumbs'));
     }
 
     // Display posts on the "Updates" (blogs) page

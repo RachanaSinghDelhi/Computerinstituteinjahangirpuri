@@ -15,7 +15,7 @@ class StudentableController extends Controller
          ->paginate(5);
         $courses = Course::all();
         // Pass the students to the view
-        return view('dashboard.student_table', compact('students','courses'));
+        return view('dashboard.students.student_table', compact('students','courses'));
     }
 
    // Store a new student

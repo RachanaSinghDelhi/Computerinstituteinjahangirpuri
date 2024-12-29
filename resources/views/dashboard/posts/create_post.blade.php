@@ -23,7 +23,7 @@
     @endif
 
     {{-- Post creation form --}}
-    <form id="form" action="{{ route('dashboard.store_post') }}" method="POST" enctype="multipart/form-data" class="mt-4">
+    <form id="form" action="{{ route('posts.store_post') }}" method="POST" enctype="multipart/form-data" class="mt-4">
 
         @csrf
         <div class="mb-3">

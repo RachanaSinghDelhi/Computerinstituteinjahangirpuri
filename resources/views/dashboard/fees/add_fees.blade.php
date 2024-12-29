@@ -2,7 +2,7 @@
 @section('title', 'Add Fees')
 @section('content')
 <h1>Pay Fees for {{ $student->name }}</h1>
-<form action="{{ route('dashboard.store_fees', $student->id) }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('fees.store_fees', $student->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="form-group">
         <label for="receipt_number">Receipt Number (Optional)</label>

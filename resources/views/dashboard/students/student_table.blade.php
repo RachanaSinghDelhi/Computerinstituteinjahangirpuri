@@ -108,7 +108,7 @@
     </div>
 
     <div class="pagination-container">
-        {{ $students->links() }}
+    {{ $students->links('pagination::bootstrap-4') }}
     </div>
 
 @endsection

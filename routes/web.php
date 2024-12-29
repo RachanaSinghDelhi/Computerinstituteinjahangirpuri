@@ -23,11 +23,11 @@ use App\Http\Controllers\FeeController;
 Route::get('/dashboard/certificates', [CertificateController::class, 'index'])->name('dashboard.certificates');
 
 
-Route::prefix('fees')->group(function () {
-    Route::get('/', [FeeController::class, 'index'])->name('fees.index'); // List all students' fees
-    Route::get('/dashboard/{student}/single-fees', [FeeController::class, 'show'])->name('dashboard.single_fees');
- Route::get('/dashboard/{student}/add-fees', [FeeController::class, 'create'])->name('dashboard.add_fees'); // Route for the add_fees page
-Route::post('/dashboard/{student}/add-fees', [FeeController::class, 'store'])->name('dashboard.store_fees'); // Form submission for fees
+Route::prefix('dashboard')->group(function () {
+    Route::get('/fees', [FeeController::class, 'index'])->name('fees.index'); // List all students' fees
+    Route::get('/fees/{student}/single-fees', [FeeController::class, 'show'])->name('fees.single_fees');
+ Route::get('/fees/{student}/add-fees', [FeeController::class, 'create'])->name('fees.add_fees'); // Route for the add_fees page
+Route::post('/fees/{student}/add-fees', [FeeController::class, 'store'])->name('fees.store_fees'); // Form submission for fees
 Route::get('/{fee}/edit', [FeeController::class, 'edit'])->name('fees.edit'); // Edit form
     Route::put('/{fee}', [FeeController::class, 'update'])->name('fees.update'); // Update route
     Route::delete('/{fee}', [FeeController::class, 'destroy'])->name('fees.destroy'); // Delete route
@@ -91,12 +91,13 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('posts', PostController::class);  // Automatically generates routes for posts
 
     # Custom Post Management Routes
-    Route::get('/dashboard/create-post', [PostController::class, 'create'])->name('dashboard.create_post');
-    Route::post('/dashboard/store-post', [PostController::class, 'store'])->name('dashboard.store_post');
-    Route::get('/dashboard/new-posts', [PostController::class, 'index'])->name('dashboard.new_posts');
-    Route::get('/posts/{id}/edit', [PostController::class, 'edit'])->name('dashboard.edit_edit');
-    Route::get('/dashboard/edit_posts', [PostController::class, 'update'])->name('dashboard.update_post');
-    
+    Route::prefix('dashboard')->group(function () {
+    Route::get('/posts/create-post', [PostController::class, 'create'])->name('posts.create_post');
+    Route::post('/posts/store-post', [PostController::class, 'store'])->name('posts.store_post');
+    Route::get('/posts/new-posts', [PostController::class, 'index'])->name('posts.new_posts');
+    Route::get('/posts/{id}/edit', [PostController::class, 'edit'])->name('posts.edit_edit');
+    Route::get('/posts/edit_posts', [PostController::class, 'update'])->name('posts.update_post');
+    });
 
     # News Routes under Dashboard Prefix
     Route::prefix('dashboard')->group(function () {
@@ -164,17 +165,13 @@ Route::get('/students/id-cards', [StudentController::class, 'showIdCards'])->nam
 Route::get('/student/{student_id}/student-id-card', [StudentController::class, 'downloadIdCard'])->name('students.downloadIdCard');
 Route::get('/students/student-id-card/{student_id}', [StudentController::class, 'viewIdCard'])->name('students.viewIdCard');
 Route::post('/students/download-selected-id-cards', [StudentController::class, 'downloadSelectedIdCards'])->name('students.downloadSelectedIdCards');
-
-
-
-
+Route::delete('/students/delete-multiple', [StudentController::class, 'deleteMultiple'])->name('students.deleteMultiple');
 
 //stunt table editable
 
-Route::get('/ajaxstudents', [StudentableController::class, 'index']);
+Route::get('/ajaxstudents', [StudentableController::class, 'index'])->name('student.index');
 Route::post('students/update', [StudentableController::class, 'update'])->name('update.student');
 Route::post('students/photo/update', [StudentableController::class, 'updatePhoto'])->name('update.student.photo');
-Route::delete('/students/delete-multiple', [StudentController::class, 'deleteMultiple'])->name('students.deleteMultiple');
 Route::post('/students/store', [StudentableController::class, 'store'])->name('students.store');
 Route::delete('/dashboard/student/{student_id}', [StudentableController::class, 'destroy'])->name('delete.student');
 

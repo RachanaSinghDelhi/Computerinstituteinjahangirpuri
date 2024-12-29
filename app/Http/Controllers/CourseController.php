@@ -5,22 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Storage;
 
 class CourseController extends Controller
 {
     public function index()
-    {
-        // Fetch all courses
-        $course = Course::all();
-
-        // Paginate courses for the main content (if needed)
-        $coursesPaginated = Course::paginate(10);
-
-        // Return the view and pass the courses data
-        return view('dashboard.index', compact('course', 'coursesPaginated'));
-    }
-
+{
+    $courselist = Course::query()->paginate(10); // Or any other pagination setup
+    return view('dashboard.courses.display_courses', compact('courselist'));
+}
     /**
      * Show the form for creating a new course.
      *
@@ -29,7 +23,7 @@ class CourseController extends Controller
     public function create()
     {
         // Return the view for adding a new course
-        return view('dashboard.add_course'); // Ensure this view file exists in the correct location
+        return view('dashboard.courses.add_course'); // Ensure this view file exists in the correct location
     }
 
     /**
@@ -81,14 +75,14 @@ class CourseController extends Controller
         ]);
 
         // Redirect back to the main dashboard with a success message
-        return redirect()->route('dashboard.index')->with('success', 'Course created successfully!');
+        return redirect()->route('dashboard.courses.display_courses')->with('success', 'Course created successfully!');
     }
 
     // Show the edit form for a specific course
     public function edit($id)
     {
         $course = Course::findOrFail($id);
-        return view('dashboard.course_edit', compact('course'));
+        return view('dashboard.courses.course_edit', compact('course'));
     }
 
     // Update the course in the database
@@ -134,7 +128,7 @@ class CourseController extends Controller
 
         $course->save();
 
-        return redirect()->route('dashboard.index')->with('success', 'Course updated successfully!');
+        return redirect()->route('course.index')->with('success', 'Course updated successfully!');
     }
 
     public function destroy($id)

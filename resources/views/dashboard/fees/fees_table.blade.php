@@ -16,8 +16,8 @@
         @endphp
     </td>
     <td>
-        <a href="{{ route('dashboard.single_fees', $student->id) }}" class="btn btn-info">Details</a>
-        <a href="{{ route('dashboard.add_fees', $student->id) }}" class="btn btn-primary">Pay Fee</a>
+        <a href="{{ route('fees.single_fees', $student->id) }}" class="btn btn-info">Details</a>
+        <a href="{{ route('fees.add_fees', $student->id) }}" class="btn btn-primary">Pay Fee</a>
         <button class="btn btn-danger delete-btn" data-id="{{ $student->id }}">Delete</button>
     </td>
 </tr>

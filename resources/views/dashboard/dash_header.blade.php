@@ -41,8 +41,8 @@
                             Courses
                         </a>
                         <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item dash" href="/dashboard/add_course" style="color:white;">Add Course</a></li>
-                            <li><a class="dropdown-item dash" href="/dashboard" style="color:white;">Course List</a></li>
+                            <li><a class="dropdown-item dash" href="{{ route('course.create') }}" style="color:white;">Add Course</a></li>
+                            <li><a class="dropdown-item dash" href="{{ route('course.index') }}" style="color:white;">Course List</a></li>
                             <li><a class="dropdown-item dash" href="/import-courses" style="color:white;">Import Courses Excel</a></li>
                         </ul>
                     </li>
@@ -51,8 +51,8 @@
                          Posts
                         </a>
                         <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item dash" href="/dashboard/create-post" style="color:white;">Add Post</a></li>
-                            <li><a class="dropdown-item dash" href="/dashboard/new-posts" style="color:white">Post List</a></li>
+                            <li><a class="dropdown-item dash" href="{{ route('posts.create_post') }}" style="color:white;">Add Post</a></li>
+                            <li><a class="dropdown-item dash" href="{{ route('posts.new_posts') }}" style="color:white">Post List</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -60,8 +60,8 @@
                        Students
                         </a>
                         <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item dash" href="/dashboard/add-student" style="color:white;">Add Student</a></li>
-                            <li><a class="dropdown-item dash" href="/dashboard/ajaxstudents" style="color:white;">Edit Student</a></li>
+                            <li><a class="dropdown-item dash" href="{{ route('students.create') }}" style="color:white;">Add Student</a></li>
+                            <li><a class="dropdown-item dash" href="{{ route('student.index') }}" style="color:white;">Ajax Student</a></li>
                             <li><a class="dropdown-item dash" href="{{ route('students.index') }}" style="color:white">Student List</a></li>
                             <li><a class="dropdown-item dash" href="{{ route('students.id-cards') }}" style="color:white">ID Cards</a></li>
                         </ul>
@@ -72,7 +72,7 @@
                            Fees
                         </a>
                         <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item dash" href="/fees" style="color:white;">Fees</a></li>
+                            <li><a class="dropdown-item dash" href="{{ route('fees.index') }}" style="color:white;">Fees</a></li>
                            
                            
                         </ul>

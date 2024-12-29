@@ -14,7 +14,7 @@ class FeeController extends Controller
         $students = Student::with(['course', 'fees'])
         ->orderBy('id', 'desc') // Order by 'id' in ascending order
         ->paginate(10);
-        return view('dashboard.fees', compact('students'));
+        return view('dashboard.fees.fees', compact('students'));
     }
 
     // Show fee details of a specific student
@@ -23,7 +23,7 @@ class FeeController extends Controller
         $fees = $student->fees;
         $course = $student->course;
         $defaultInstallmentAmount = round($course->total_fees / $course->installments);
-        return view('dashboard.single_fees', compact('student', 'fees','defaultInstallmentAmount'));
+        return view('dashboard.fees.single_fees', compact('student', 'fees','defaultInstallmentAmount'));
     }
 
     // Form to pay fees
@@ -37,7 +37,7 @@ class FeeController extends Controller
 
         $lastReceipt = Fee::latest('receipt_number')->first();
         $receiptNumber = $lastReceipt ? $lastReceipt->receipt_number + 1 : 1; 
-        return view('dashboard.add_fees', compact('student', 'defaultInstallmentAmount','receiptNumber'));
+        return view('dashboard.fees.add_fees', compact('student', 'defaultInstallmentAmount','receiptNumber'));
     }
     
 
@@ -115,7 +115,7 @@ if (!$dueDate->isValid()) {
         ]);
     
         // Redirect to the fee details page with success message
-        return redirect()->route('dashboard.single_fees', $student->id)->with('success', 'Fee payment recorded successfully!');
+        return redirect()->route('fees.single_fees', $student->id)->with('success', 'Fee payment recorded successfully!');
     }
         
 
@@ -134,7 +134,7 @@ if (!$dueDate->isValid()) {
             ->paginate(10);  // Adjust pagination as needed
     
         // Return the filtered student rows
-        return view('dashboard.fees_table', compact('students'))->render();
+        return view('dashboard.fees.fees_table', compact('students'))->render();
     }
 
 
@@ -143,7 +143,7 @@ if (!$dueDate->isValid()) {
 {
     $fee = Fee::findOrFail($id);
      $fee->payment_date = $fee->payment_date ? \Carbon\Carbon::parse($fee->payment_date) : null;
-    return view('dashboard.edit_fees', compact('fee'));
+    return view('dashboard.fees.edit_fees', compact('fee'));
 }
 
 public function destroy($id)
