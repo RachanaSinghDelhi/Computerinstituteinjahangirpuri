@@ -7,26 +7,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Certificates</title>
     <style>
-        body {
+        body,html {
             margin: 0;
             padding: 0;
-            font-family: 'Arial', sans-serif;
-        }
-        .certificate-container {
-            width: 210mm; /* A4 width */
-            height: 297mm; /* A4 height */
-            position: relative;
-            page-break-inside: avoid;
-            box-sizing: border-box;
-        }
-        .background-image {
-            width: 100%;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start; /* Align the cards from the left */
+            width: 100%; /* Full width of the page */
             height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            object-fit: cover;
+            box-sizing: border-box; /* Avoid any unwanted space due to padding/margin */
         }
+
+        .certificate-container {
+
+            margin: 0;
+            padding: 0;
+    width: 210mm;
+    height: 297mm;
+    position: relative;
+    page-break-inside: avoid;
+    box-sizing: border-box;
+    position:relative
+   /* Ensure content doesn't spill over */
+}
+
+.background-image {
+    width: 210mm;
+    height: 297mm;
+    position: absolute;
+    top: 0;
+    left: 0;
+    object-fit: cover; /* Ensures the image covers the entire area */
+}
+
          .content {
             width: 80%;
             z-index: 1; /* Ensure text appears above the background */
@@ -35,7 +49,7 @@
             text-align: left;
             color: #000;
             font-size:22px;
-        
+        top:200px;
         }
        
        
@@ -43,21 +57,22 @@
         .id {float:right; margin-top:60px; margin-right:225px;}
         .name {float:left; margin-top:60px;margin-left:60px;}
         .father {float:left; margin-top:100px;margin-left:80px;}
-        .type {float:left; margin-top:50px;margin-left:120px;}
-        .adm {float:left; margin-top:20px; margin-left:210px;  font-size:22px;}
+        .type {position:absolute;top:290px;left:240px;}
+        .adm {position:absolute; top:330px;left:320px;  font-size:22px;}
         .dur {position:absolute; top:330px;left:590px; font-size:24px;}
-        .desc {position:absolute;top:365px;margin-left:170px;   text-indent: 170px; margin:0px; line-height: 1.4;font-size:22px; width:70%;}
+        .desc {position:absolute;top:365px;left:120px;   text-indent: 170px; line-height: 1.4;font-size:22px; width:70%;}
         .grade {margin-top:350px;margin-left:400px; font-size:24px; }
-        .code {margin-top:10px;margin-left:280px; font-size:18px; }
-        .issudt {margin-top:30px; margin-left:280px;}
+        .code {margin-top:10px;margin-left:250px; font-size:18px; }
+        .issudt {margin-top:20px; margin-left:280px;}
         
     </style>
 </head>
 <body>
     @foreach ($certificates as $certificate)
+   
         <div class="certificate-container">
-        <img src="{{ public_path('assets/images/certificate.jpg') }}" alt="Certificate Background" class="background-image">
-            <div class="content" style="margin-top:200px;">
+        <img src="{{public_path('assets/images/certificate.jpg') }}" alt="Certificate Background" class="background-image">
+            <div class="content" >
          
                 <div class="id"><strong><u> {{ $certificate->student_id }}</u></strong></div>
                 <div class="name"><u>{{ $certificate->name }}</u></div>

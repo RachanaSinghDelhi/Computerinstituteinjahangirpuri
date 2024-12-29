@@ -92,7 +92,7 @@ public function downloadSelected(Request $request)
     $certificates = Certificate::whereIn('id', $request->selected_certificates)->get();
 
     $pdf = Pdf::loadView('dashboard.certificates.selected_certificates', compact('certificates'))
-              ->setPaper('a4', 'portrait'); // Enforce A4 size in portrait mode
+    ->setPaper([0, 0, 595.276, 841.890], 'portrait'); // Enforce A4 size in portrait mode $pdf->setPaper([0, 0, 162, 256], 'portrait');
 
     return $pdf->download('selected_certificates.pdf');
 }
