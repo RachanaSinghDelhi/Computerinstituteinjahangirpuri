@@ -56,11 +56,11 @@
       
         .id {float:right; margin-top:60px; margin-right:225px;}
         .name {float:left; margin-top:60px;margin-left:60px;}
-        .father {float:left; margin-top:100px;margin-left:80px;}
-        .type {position:absolute;top:290px;left:240px;}
+        .father {position:absolute;top:210px;left:300px;}
+        .type {position:absolute;top:290px;left:230px;font-size:16px}
         .adm {position:absolute; top:330px;left:320px;  font-size:22px;}
         .dur {position:absolute; top:330px;left:590px; font-size:24px;}
-        .desc {position:absolute;top:365px;left:120px;   text-indent: 170px; line-height: 1.4;font-size:22px; width:70%;}
+        .desc {position:absolute;top:365px;left:120px;   text-indent: 170px; line-height: 1.4;font-size:18px; width:70%;}
         .grade {margin-top:350px;margin-left:400px; font-size:24px; }
         .code {margin-top:10px;margin-left:250px; font-size:18px; }
         .issudt {margin-top:20px; margin-left:280px;}
