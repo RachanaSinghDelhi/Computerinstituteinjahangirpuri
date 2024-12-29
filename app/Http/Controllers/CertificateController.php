@@ -115,7 +115,7 @@ public function downloadSelected(Request $request)
     {
         $certificate = Certificate::with('course')->findOrFail($id);
 
-        return view('dashboard.certificates.selected_certificates', ['certificates' => [$certificate]]);
+        return view('dashboard.certificates.view_certificates', ['certificates' => [$certificate]]);
     }
 
 }
