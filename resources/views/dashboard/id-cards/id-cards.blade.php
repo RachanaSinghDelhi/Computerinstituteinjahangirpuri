@@ -102,15 +102,21 @@
         }
         body, html {
             margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-start; /* Align the cards from the left */
-            width: 100%; /* Full width of the page */
-            height: 100%;
-            box-sizing: border-box; /* Avoid any unwanted space due to padding/margin */
+    padding: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
         }
+
+
+        .container {
+    width: 100%;
+    padding: 0 15px; /* Ensures no overflow and consistent spacing */
+    box-sizing: border-box;
+}
 
         .id-card {
             width: 211.2px; /* ID card width in pixels (2.2 inches) */
