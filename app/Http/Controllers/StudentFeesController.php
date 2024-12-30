@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class StudentFeesController extends Controller
 {
@@ -17,13 +19,39 @@ class StudentFeesController extends Controller
                 'students.doa as admission_date',
                 'students.course_id',
                 'courses.total_fees as total_fee',
+                'courses.installments as installments',
                 DB::raw('COALESCE(SUM(fees.amount_paid), 0) as fees_paid') // Use COALESCE to handle null values
             )
-            ->groupBy('students.id', 'students.name', 'students.doa', 'students.course_id', 'courses.total_fees')
+            ->groupBy('students.id', 'students.name', 'students.doa', 'students.course_id', 'courses.total_fees', 'courses.installments')
             ->get();
 
         // Insert or update data in student_fees table
         foreach ($data as $row) {
+            // Calculate installment amount
+            $installmentAmount = round($row->total_fee / $row->installments);
+            
+            // Get payments for the current month
+            $paymentThisMonth = DB::table('fees')
+                ->where('student_id', $row->student_id)
+                ->whereMonth('created_at', Carbon::now()->month)
+                ->sum('amount_paid');
+                
+            // Determine if the current month is paid
+            $isPaidThisMonth = $paymentThisMonth >= $installmentAmount;
+
+            // Determine if the full fees have been paid
+            $isFullyPaid = $row->fees_paid >= $row->total_fee;
+
+            // Set the status based on the payment logic
+            if ($isFullyPaid) {
+                $status = 'Paid';
+            } elseif ($isPaidThisMonth) {
+                $status = 'Pending (Next Month)';
+            } else {
+                $status = 'Pending';
+            }
+
+            // Update or insert the fees record in the student_fees table
             DB::table('student_fees')->updateOrInsert(
                 [
                     'student_id' => $row->student_id,
@@ -34,7 +62,7 @@ class StudentFeesController extends Controller
                     'admission_date' => $row->admission_date,
                     'total_fee' => $row->total_fee,
                     'fees_paid' => $row->fees_paid,
-                    'status' => $row->fees_paid >= $row->total_fee ? 'Paid' : 'Pending',
+                    'status' => $status,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]
