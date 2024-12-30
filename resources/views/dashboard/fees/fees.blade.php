@@ -9,72 +9,74 @@
 </div>
 
 <!-- Fees Table -->
-<table class="table">
-    <thead>
-        <tr>
-            <th>Student Name</th>
-            <th>Student ID</th>
-            <th>Admission Date</th>
-            <th>Course</th>
-            <th>Total Fee</th>
-            <th>Fees Paid</th>
-            <th>Fees Due</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody id="studentTableBody">
-        @foreach($students as $student)
-        @php
-            // Calculate the installment amount (total fee divided by number of installments)
-            $installmentAmount = round($student->course->total_fees / $student->course->installments); // Round to nearest whole number
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Student ID</th>
+                <th class="d-none d-md-table-cell">Admission Date</th> <!-- Hidden on small screens -->
+                <th class="d-none d-md-table-cell">Course</th> <!-- Hidden on small screens -->
+                <th class="d-none d-md-table-cell">Total Fee</th> <!-- Hidden on small screens -->
+                <th class="d-none d-md-table-cell">Fees Paid</th> <!-- Hidden on small screens -->
+                <th class="d-none d-md-table-cell">Fees Due</th> <!-- Hidden on small screens -->
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="studentTableBody">
+            @foreach($students as $student)
+            @php
+                // Calculate the installment amount (total fee divided by number of installments)
+                $installmentAmount = round($student->course->total_fees / $student->course->installments); // Round to nearest whole number
 
-            // Get the payment for the current month
-            $paymentThisMonth = $student->fees()
-                ->whereMonth('created_at', now()->month) // Payments made this month
-                ->sum('amount_paid');
+                // Get the payment for the current month
+                $paymentThisMonth = $student->fees()
+                    ->whereMonth('created_at', now()->month) // Payments made this month
+                    ->sum('amount_paid');
 
-            // Check if the student has paid the current month's installment
-            $isPaidThisMonth = ($paymentThisMonth >= $installmentAmount);
+                // Check if the student has paid the current month's installment
+                $isPaidThisMonth = ($paymentThisMonth >= $installmentAmount);
 
-            // Calculate the total amount paid so far
-            $totalPaid = $student->fees->sum('amount_paid');
+                // Calculate the total amount paid so far
+                $totalPaid = $student->fees->sum('amount_paid');
 
-            // Check if the total fee has been fully paid
-            $isFullyPaid = ($totalPaid >= $student->course->total_fees);
+                // Check if the total fee has been fully paid
+                $isFullyPaid = ($totalPaid >= $student->course->total_fees);
 
-            // Set status as "Paid" if the full fee is paid
-            $statusClass = $isPaidThisMonth ? 'bg-success' : 'bg-danger'; // Green for paid, red for pending
-            $statusText = $isPaidThisMonth ? 'Paid' : 'Pending'; // Text showing paid or pending
+                // Set status as "Paid" if the full fee is paid
+                $statusClass = $isPaidThisMonth ? 'bg-success' : 'bg-danger'; // Green for paid, red for pending
+                $statusText = $isPaidThisMonth ? 'Paid' : 'Pending'; // Text showing paid or pending
 
-            // If the fee is completely paid, mark as "Paid"
-            if ($isFullyPaid) {
-                $statusClass = 'bg-success';
-                $statusText = 'Paid';
-            }
-        @endphp
-        <tr id="student-{{ $student->id }}">
-            <td>{{ $student->name }}</td>
-            <td>{{ $student->student_id }}</td>
-            <td>{{ $student->doa }}</td>
-            <td>{{ $student->course->course_title }}</td>
-            <td>{{ $student->course->total_fees }}</td>
-            <td>{{ $totalPaid }}</td>
-            <td>{{ $student->course->total_fees - $totalPaid }}</td>
-            <td class="{{ $statusClass }}">
-                {{ $statusText }}
-            </td>
-            <td>
-                <a href="{{ route('fees.single_fees', $student->id) }}" class="btn btn-info">Details</a>
-                <a href="{{ route('fees.add_fees', $student->id) }}" class="btn btn-primary">Pay Fee</a>
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+                // If the fee is completely paid, mark as "Paid"
+                if ($isFullyPaid) {
+                    $statusClass = 'bg-success';
+                    $statusText = 'Paid';
+                }
+            @endphp
+            <tr id="student-{{ $student->id }}">
+                <td>{{ $student->name }}</td>
+                <td>{{ $student->student_id }}</td>
+                <td class="d-none d-md-table-cell">{{ $student->doa }}</td> <!-- Hidden on small screens -->
+                <td class="d-none d-md-table-cell">{{ $student->course->course_title }}</td> <!-- Hidden on small screens -->
+                <td class="d-none d-md-table-cell">{{ $student->course->total_fees }}</td> <!-- Hidden on small screens -->
+                <td class="d-none d-md-table-cell">{{ $totalPaid }}</td> <!-- Hidden on small screens -->
+                <td class="d-none d-md-table-cell">{{ $student->course->total_fees - $totalPaid }}</td> <!-- Hidden on small screens -->
+                <td class="{{ $statusClass }}">
+                    {{ $statusText }}
+                </td>
+                <td>
+                    <a href="{{ route('fees.single_fees', $student->id) }}" class="btn btn-info btn-sm">Details</a>
+                    <a href="{{ route('fees.add_fees', $student->id) }}" class="btn btn-primary btn-sm">Pay Fee</a>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
 
 <!-- Pagination -->
-{{ $students->links() }}
+{{ $students->links('pagination::bootstrap-4') }}
 
 @endsection
 
