@@ -20,7 +20,7 @@ use App\Http\Controllers\FeeController;
 
 
 // Route to view the certificates page
-Route::get('/dashboard/certificates', [CertificateController::class, 'index'])->name('dashboard.certificates');
+
 
 
 Route::prefix('dashboard')->group(function () {
@@ -178,7 +178,7 @@ Route::delete('/dashboard/student/{student_id}', [StudentableController::class, 
 
 
 //certificates
-
+Route::get('/certificates', [CertificateController::class, 'index'])->name('certificates.index');
 Route::get('/certificate/view/{id}', [CertificateController::class, 'viewCertificate'])->name('dashboard.certificates.view');
 Route::post('/certificates/download-selected', [CertificateController::class, 'downloadSelected'])->name('certificates.downloadSelected');
 Route::get('/certificates/select_certificates', [CertificateController::class, 'selectCertificates'])->name('certificates.select');

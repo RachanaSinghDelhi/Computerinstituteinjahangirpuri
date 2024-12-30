@@ -84,7 +84,7 @@
                         <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item dash" href="/dashboard/certificates" style="color:white;">Certificates</a></li>
                             <li><a class="dropdown-item dash" href="{{ route('certificates.select') }}" style="color:white;">Select Certificates</a></li>
-                            <li><a class="dropdown-item dash" href="/import-excel" style="color:white;">Import Certificate Type Excel</a></li>
+                          <!--  <li><a class="dropdown-item dash" href="/import-excel" style="color:white;">Imp. Cet.Type Excel</a></li>-->
                            
                         </ul>
                     </li>
