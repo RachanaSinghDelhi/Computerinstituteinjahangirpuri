@@ -93,7 +93,7 @@ class PostController extends Controller
     // Display the list of posts
     public function index()
     {
-        $posts = Post::latest()->get();
+        $posts = Post::latest()->paginate(10);
         
         // Breadcrumbs for the 'Updates' page
         $breadcrumbs = [

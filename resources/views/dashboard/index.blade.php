@@ -39,16 +39,28 @@
                 <tr>
                     <th>Image</th>
                     <th>Title</th>
+                    <th class="d-none d-sm-table-cell">Course URL</th>
+                    <th class="d-none d-sm-table-cell">Description</th>
+                    <th class="d-none d-sm-table-cell">Content</th>
+                    <th class="d-none d-sm-table-cell">Duration</th>
+                    <th class="d-none d-sm-table-cell">Total Fees</th>
+                    <th class="d-none d-sm-table-cell">Installments</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($courses as $course)
+                @foreach ($courselist as $course)
                 <tr id="course-row-{{ $course->id }}">
                     <td>
-                        <img src="{{ asset('storage/courses/'.$course->course_image) }}" alt="{{ $course->course_title }}" style="max-width: 100px; height: 100px;">
+                        <img src="{{ asset('storage/courses/'.$course->course_image) }}" alt="{{ $course->course_title }}" style="max-width: 100px; height:100px;">
                     </td>
                     <td>{{ $course->course_title }}</td>
+                    <td class="d-none d-sm-table-cell">{{ $course->course_url }}</td>
+                    <td class="d-none d-sm-table-cell">{{ \Illuminate\Support\Str::limit($course->course_desc, 50, '...') }}</td>
+                    <td class="d-none d-sm-table-cell">{{ \Illuminate\Support\Str::limit($course->course_content, 50, '...') }}</td>
+                    <td class="d-none d-sm-table-cell">{{ $course->duration }}</td>
+                    <td class="d-none d-sm-table-cell">{{ $course->total_fees }}</td>
+                    <td class="d-none d-sm-table-cell">{{ $course->installments }}</td>
                     <td>
                         <a href="{{ route('course.edit', $course->id) }}" class="btn btn-primary btn-sm">Edit</a>
                         <form action="{{ route('course.destroy', ['id' => $course->id]) }}" method="POST" style="display:inline;">
@@ -61,6 +73,11 @@
                 @endforeach
             </tbody>
         </table>
+    </div>
+
+    <!-- Pagination Links -->
+    <div class="d-flex justify-content-center">
+        {{ $courselist->links('pagination::bootstrap-4') }}
     </div>
 </div>
 @endsection

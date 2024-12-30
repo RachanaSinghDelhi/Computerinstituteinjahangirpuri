@@ -55,6 +55,8 @@
             </tbody>
         </table>
     </div>
-
+    <div class="d-flex justify-content-center">
+        {{ $posts->links('pagination::bootstrap-4') }}
+    </div>
 </div>
 @endsection

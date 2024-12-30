@@ -33,7 +33,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 menu_list">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/dashboard">Courses</a>
+                        <a class="nav-link" aria-current="page" href="{{ route('course.index') }}">Courses</a>
                     </li>
                 
                     <li class="nav-item dropdown">
@@ -43,7 +43,7 @@
                         <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item dash" href="{{ route('course.create') }}" style="color:white;">Add Course</a></li>
                             <li><a class="dropdown-item dash" href="{{ route('course.index') }}" style="color:white;">Course List</a></li>
-                            <li><a class="dropdown-item dash" href="/import-courses" style="color:white;">Import Courses Excel</a></li>
+                        <!--    <li><a class="dropdown-item dash" href="/import-courses" style="color:white;">Import Courses Excel</a></li>-->
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -82,7 +82,7 @@
                             Certificates
                         </a>
                         <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item dash" href="/dashboard/certificates" style="color:white;">Certificates</a></li>
+                            <li><a class="dropdown-item dash" href="{{ route('certificates.index') }}" style="color:white;">Certificates</a></li>
                             <li><a class="dropdown-item dash" href="{{ route('certificates.select') }}" style="color:white;">Select Certificates</a></li>
                           <!--  <li><a class="dropdown-item dash" href="/import-excel" style="color:white;">Imp. Cet.Type Excel</a></li>-->
                            

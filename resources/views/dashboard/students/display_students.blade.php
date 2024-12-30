@@ -15,18 +15,15 @@
         </div>
     @endif
 
-
-
     <h2>Import Students via Excel</h2>
-        <form action="{{ route('students.import') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <div class="form-group">
-                <label for="file">Upload Excel File</label>
-                <input type="file" name="file" class="form-control" required>
-            </div>
-            <button type="submit" class="btn btn-success mt-2">Import</button>
-        </form>
-    </div>
+    <form action="{{ route('students.import') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div class="form-group">
+            <label for="file">Upload Excel File</label>
+            <input type="file" name="file" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-success mt-2">Import</button>
+    </form>
 
     <!-- Table for displaying students -->
     <form action="{{ route('students.deleteMultiple') }}" method="POST">
@@ -40,61 +37,65 @@
         <button type="submit" class="btn btn-danger btn-sm ms-2">Delete Selected</button>
     </div>
 
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>Select</th>
-                <th>Student ID</th>
-                <th>Name</th>
-                <th>Father's Name</th>
-                <th>Date of Admission</th>
-                <th>Course</th>
-                <th>Batch</th>
-                <th>Photo</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($students as $student)
-            <tr>
-                <td>
-                    <input type="checkbox" name="student_ids[]" value="{{ $student->id }}" class="student-checkbox">
-                </td>
-                <td>{{ $student->student_id }}</td>
-                <td>{{ $student->name }}</td>
-                <td>{{ $student->father_name }}</td>
-                <td>{{ \Carbon\Carbon::parse($student->doa)->format('d-m-Y') }}</td>
-                <td>{{ $student->course->course_title ?? 'N/A' }}</td>
-                <td>{{ $student->batch }}</td>
-                <td>
-                    @if($student->photo)
-                        <img src="{{ asset('storage/students/' . $student->photo) }}" alt="Student Photo" width="50">
-                    @else
-                        No Photo
-                    @endif
-                </td>
-                <td>
-                    <a href="{{ route('students.edit', $student->id) }}" class="btn btn-primary btn-sm">Edit</a>
-                    <form action="{{ route('students.destroy', $student->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <!-- Responsive Table -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Select</th>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th class="d-none d-md-table-cell">Father's Name</th>
+                    <th class="d-none d-md-table-cell">Date of Admission</th>
+                    <th>Course</th>
+                    <th class="d-none d-md-table-cell">Batch</th>
+                    <th>Photo</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($students as $student)
+                <tr>
+                    <td>
+                        <input type="checkbox" name="student_ids[]" value="{{ $student->id }}" class="student-checkbox">
+                    </td>
+                    <td>{{ $student->student_id }}</td>
+                    <td>{{ $student->name }}</td>
+                    <td class="d-none d-md-table-cell">{{ $student->father_name }}</td>
+                    <td class="d-none d-md-table-cell">{{ \Carbon\Carbon::parse($student->doa)->format('d-m-Y') }}</td>
+                    <td >{{ $student->course->course_title ?? 'N/A' }}</td>
+                    <td class="d-none d-md-table-cell">{{ $student->batch }}</td>
+                    <td>
+                        @if($student->photo)
+                            <img src="{{ asset('storage/students/' . $student->photo) }}" alt="Student Photo" width="50">
+                        @else
+                            No Photo
+                        @endif
+                    </td>
+                    <td>
+                        <a href="{{ route('students.edit', $student->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                        <form action="{{ route('students.destroy', $student->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 
     <!-- Pagination Links -->
-    {{ $students->links() }}
+    <div class="d-flex justify-content-center">
+        {{ $students->links('pagination::bootstrap-4') }}
+    </div>
 </form>
-
+</div>
 @endsection
 
 @push('scripts')
- <!-- Custom JavaScript for master checkbox functionality -->
-
+<!-- Custom JavaScript for master checkbox functionality -->
 <script>
     function toggleSelectAll() {
         const masterCheckbox = document.getElementById('selectAll');
@@ -102,6 +103,4 @@
         checkboxes.forEach(checkbox => checkbox.checked = masterCheckbox.checked);
     }
 </script>
- 
 @endpush
-
