@@ -1,6 +1,7 @@
 @extends('dashboard.app')
 @section('title', 'Fees')
 @section('content')
+<div class="container">
 <h1>Fees Management</h1>
 
 <!-- Search Bar -->
@@ -77,7 +78,7 @@
 
 <!-- Pagination -->
 {{ $students->links('pagination::bootstrap-4') }}
-
+            </div>
 @endsection
 
 @push('scripts')

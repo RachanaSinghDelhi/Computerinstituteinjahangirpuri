@@ -134,7 +134,7 @@ if (!$dueDate->isValid()) {
             ->paginate(10);  // Adjust pagination as needed
     
         // Return the filtered student rows
-        return view('dashboard.fees.fees_table', compact('students'))->render();
+        return view('dashboard.fees.search_fees_table', compact('students'))->render();
     }
 
 

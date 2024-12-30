@@ -31,11 +31,11 @@ Route::post('/fees/{student}/add-fees', [FeeController::class, 'store'])->name('
 Route::get('/{fee}/edit', [FeeController::class, 'edit'])->name('fees.edit'); // Edit form
     Route::put('/{fee}', [FeeController::class, 'update'])->name('fees.update'); // Update route
     Route::delete('/{fee}', [FeeController::class, 'destroy'])->name('fees.destroy'); // Delete route
-    
+    Route::get('/search-fees', [FeeController::class, 'search'])->name('search.fees');   
 });
 
 // In web.php
-Route::get('/search-fees', [FeeController::class, 'search'])->name('search.fees');
+
 
 // Route to display the add fee form
 //Route::get('fees/add', [FeeController::class, 'create'])->name('fees.create');

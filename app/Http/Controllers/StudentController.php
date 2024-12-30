@@ -139,7 +139,7 @@ public function destroy($id)
         $students = Student::with('course')->orderBy('id', 'desc')->paginate(50);
         
         // Return the view with the students data
-        return view('dashboard.id-cards', compact('students'));
+        return view('dashboard.id-cards.id-cards', compact('students'));
     }
 
   
@@ -151,7 +151,7 @@ public function destroy($id)
         $student = Student::with('course')->where('student_id', $id)->firstOrFail();
     
         // Load the Blade template into a PDF
-        $pdf = PDF::loadView('dashboard.student-id-card', compact('student'));
+        $pdf = PDF::loadView('dashboard.id-cards.student-id-card', compact('student'));
     
 
         $pdf->setPaper([0, 0, 162, 256], 'portrait');
@@ -185,7 +185,7 @@ public function downloadSelectedIdCards(Request $request)
     }
 
     // Load the Blade view and pass the student data
-    $pdf = PDF::loadView('dashboard.selected-id-cards', compact('students'));
+    $pdf = PDF::loadView('dashboard.id-cards.selected-id-cards', compact('students'));
 
 
     $pdf->setPaper([0, 0, 158, 252], 'portrait');
