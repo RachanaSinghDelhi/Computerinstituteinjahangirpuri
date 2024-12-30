@@ -15,7 +15,7 @@ use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\ExcelImportController;
 use App\Http\Controllers\FeeController;
 
-
+use App\Http\Controllers\StudentFeesController;
 
 
 
@@ -35,6 +35,10 @@ Route::get('/{fee}/edit', [FeeController::class, 'edit'])->name('fees.edit'); //
 });
 
 // In web.php
+
+
+
+Route::get('/sync-student-fees', [StudentFeesController::class, 'syncStudentFees'])->name('student.fees.sync');
 
 
 // Route to display the add fee form

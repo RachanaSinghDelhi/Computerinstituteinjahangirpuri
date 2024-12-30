@@ -3,6 +3,17 @@
 @section('content')
 <div class="container">
 <h1>Fees Management</h1>
+<a href="{{ route('student.fees.sync') }}" class="btn btn-primary">
+    Sync Student Fees
+</a>
+
+@if(session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+@endif
+
+@if(session('error'))
+    <div class="alert alert-danger">{{ session('error') }}</div>
+@endif
 
 <!-- Search Bar -->
 <div class="mb-3">
@@ -101,5 +112,9 @@
             }
         });
     });
+
+
+// Sync Fees Data
+ 
 </script>
 @endpush

@@ -100,7 +100,7 @@ if (!$dueDate->isValid()) {
 
 
         // Set payment status based on the payment date
-        $status = $paymentDate->isCurrentMonth() ? 'Paid' : 'Pending';
+        $status = $paymentDate->isCurrentMonth() ? 'Paid' : 'Unpaid';
     
         // Save fee record in the database
         Fee::create([
