@@ -5,20 +5,35 @@
 </head>
 <body>
     <div class="d-flex flex-column min-vh-100">
-        <header>
-            @include('dashboard.dash_header')
-            <div class="banner" style="background-image: url('{{ asset('assets/images/Advance_excel_nice_computer_institute_jahangirpuri.jpg') }}'); height: 150px; background-size: cover; background-position: center;">
-                <div class="overlay" style="background-color: rgba(0, 0, 0, 0.5); height: 100%; display: flex; justify-content: center; align-items: center;">
-                    <h1 style="color: #fff;">@yield('title')</h1>
-                </div>
-            </div>
-        </header>
+    <header>
+    @include('dashboard.dash_header')
+    <div class="banner" style="
+        background-image: url('{{ asset('assets/images/Advance_excel_nice_computer_institute_jahangirpuri.jpg') }}');
+        height: 150px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    ">
+        <div class="overlay" style="
+            background-color: rgba(0, 0, 0, 0.5);
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        ">
+            <h1 class="banner-title">@yield('title')</h1>
+        </div>
+    </div>
+</header>
 
-        <main class="flex-grow-1">
+
+       
             @yield('content')
-        </main>
+     
 
-        @include('partials.footer')
+
+            @include('dashboard.dash_footer')
+        
     </div>
 
     @stack('scripts')

@@ -1,11 +1,11 @@
 @extends('dashboard.app')
 @section('title', 'Add Course')
 @section('content')
-
-<div class="row justify-content-center container-fluid">
+<div class="container">
+<div class="row justify-content-center">
         <br>
         <div class="col-md-12">
-
+<h1>Add Course</h1>
             <br>
             <form method="POST" action="{{ route('course.store') }}" enctype="multipart/form-data" id="courseForm">
                 @csrf
@@ -81,7 +81,7 @@
             <br>
         </div>
     </div>
-
+</div>
 @push('scripts')
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>

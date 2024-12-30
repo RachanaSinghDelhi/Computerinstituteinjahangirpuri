@@ -26,57 +26,58 @@
     </div>
 
     <div>
-        <a href="/dashboard/course">
+        <a href="{{ route('course.create') }}">
             <button class="btn btn-sm btn-success">Add New Course</button>
         </a>
     </div>
     <br/>
 
-    <!-- Table with courses data -->
-    <table id="coursesTable" class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Image</th>
-                <th>Title</th>
-                <th>Course URL</th>
-                <th>Description</th>
-                <th>Content</th>
-                <th>Duration</th>
-                <th>Total Fees</th>
-                <th>Installments</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($courselist as $course)
-            <tr id="course-row-{{ $course->id }}">
-                <td>
-                    <img src="{{ asset('storage/courses/'.$course->course_image) }}" alt="{{ $course->course_title }}" style="max-width: 100px; height:100px;">
-                </td>
-                <td>{{ $course->course_title }}</td>
-                <td>{{ $course->course_url }}</td>
-                <td>{{ \Illuminate\Support\Str::limit($course->course_desc, 50, '...') }}</td>
-                <td>{{ \Illuminate\Support\Str::limit($course->course_content, 50, '...') }}</td>
-                <td>{{ $course->duration }}</td>
-                <td>{{ $course->total_fees }}</td>
-                <td>{{ $course->insatallments }}</td>
-                
-                <td>
-                    <a href="{{ route('course.edit', $course->id) }}" class="btn btn-primary btn-sm">Edit</a>
-                    <form action="{{ route('course.destroy', ['id' => $course->id]) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <!-- Responsive Table -->
+    <div class="table-responsive">
+        <table id="coursesTable" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Title</th>
+                    <th class="d-none d-sm-table-cell">Course URL</th>
+                    <th class="d-none d-sm-table-cell">Description</th>
+                    <th class="d-none d-sm-table-cell">Content</th>
+                    <th class="d-none d-sm-table-cell">Duration</th>
+                    <th class="d-none d-sm-table-cell">Total Fees</th>
+                    <th class="d-none d-sm-table-cell">Installments</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($courselist as $course)
+                <tr id="course-row-{{ $course->id }}">
+                    <td>
+                        <img src="{{ asset('storage/courses/'.$course->course_image) }}" alt="{{ $course->course_title }}" style="max-width: 100px; height:100px;">
+                    </td>
+                    <td>{{ $course->course_title }}</td>
+                    <td class="d-none d-sm-table-cell">{{ $course->course_url }}</td>
+                    <td class="d-none d-sm-table-cell">{{ \Illuminate\Support\Str::limit($course->course_desc, 50, '...') }}</td>
+                    <td class="d-none d-sm-table-cell">{{ \Illuminate\Support\Str::limit($course->course_content, 50, '...') }}</td>
+                    <td class="d-none d-sm-table-cell">{{ $course->duration }}</td>
+                    <td class="d-none d-sm-table-cell">{{ $course->total_fees }}</td>
+                    <td class="d-none d-sm-table-cell">{{ $course->installments }}</td>
+                    <td>
+                        <a href="{{ route('course.edit', $course->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                        <form action="{{ route('course.destroy', ['id' => $course->id]) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 
     <!-- Pagination Links -->
     <div class="d-flex justify-content-center">
-    {{$courselist->links('pagination::bootstrap-4') }}
+        {{ $courselist->links('pagination::bootstrap-4') }}
     </div>
 </div>
 @endsection
