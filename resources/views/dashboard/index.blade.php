@@ -49,7 +49,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($courselist as $course)
+                @foreach (  $courselist as $course)
                 <tr id="course-row-{{ $course->id }}">
                     <td>
                         <img src="{{ asset('storage/courses/'.$course->course_image) }}" alt="{{ $course->course_title }}" style="max-width: 100px; height:100px;">
@@ -77,7 +77,7 @@
 
     <!-- Pagination Links -->
     <div class="d-flex justify-content-center">
-        {{ $courselist->links('pagination::bootstrap-4') }}
+        {{   $courselist->links('pagination::bootstrap-4') }}
     </div>
 </div>
 @endsection
