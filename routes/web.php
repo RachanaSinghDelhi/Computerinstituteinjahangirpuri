@@ -16,7 +16,7 @@ use App\Http\Controllers\ExcelImportController;
 use App\Http\Controllers\FeeController;
 
 use App\Http\Controllers\StudentFeesController;
-
+use App\Http\Controllers\ReceiptController;
 
 
 // Route to view the certificates page
@@ -24,6 +24,10 @@ use App\Http\Controllers\StudentFeesController;
 
 
 Route::prefix('dashboard')->group(function () {
+ 
+
+Route::post('/upload-receipts', [ReceiptController::class, 'upload'])->name('upload.receipts');
+
     Route::get('/fees', [FeeController::class, 'index'])->name('fees.index'); // List all students' fees
     Route::get('/fees/{student}/single-fees', [FeeController::class, 'show'])->name('fees.single_fees');
  Route::get('/fees/{student}/add-fees', [FeeController::class, 'create'])->name('fees.add_fees'); // Route for the add_fees page

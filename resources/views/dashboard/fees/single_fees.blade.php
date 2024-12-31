@@ -38,7 +38,7 @@
                         <td>{{ $fee->receipt_number }}</td>
                         <td>
                             @if ($fee->receipt_image)
-                                <a href="{{ asset('assets/receipts/' . $fee->receipt_image) }}" target="_blank">View Receipt</a>
+                                <a href="{{ asset('/receipts/' . $fee->receipt_image) }}" target="_blank">View Receipt</a>
                             @else
                                 No Receipt
                             @endif

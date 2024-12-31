@@ -3,6 +3,29 @@
 @section('content')
 <div class="container">
 <h1>Fees Management</h1>
+<div class="container mt-5">
+        <h1>Upload Receipts</h1>
+
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+            <ul>
+                @foreach(session('files') as $file)
+                    <li>{{ $file }}</li>
+                @endforeach
+            </ul>
+        @endif
+
+        <form action="{{ route('upload.receipts') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="mb-3">
+                <label for="receipt_images" class="form-label">Select Receipt Images</label>
+                <input type="file" name="receipt_images[]" id="receipt_images" class="form-control" multiple>
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+    </div>
 <a href="{{ route('student.fees.sync') }}" class="btn btn-primary">
     Sync Student Fees
 </a>
