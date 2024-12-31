@@ -16,15 +16,19 @@
                 @endforeach
             </ul>
         @endif
-
+<div class="row">
+    
         <form action="{{ route('upload.receipts') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <div class="mb-3">
+            <div class="mb-3 col-mg-6">
                 <label for="receipt_images" class="form-label">Select Receipt Images</label>
                 <input type="file" name="receipt_images[]" id="receipt_images" class="form-control" multiple>
             </div>
+            <div class="mb-3 col-md-6">
             <button type="submit" class="btn btn-primary">Upload</button>
+            </div>
         </form>
+</row>
     </div>
 <a href="{{ route('student.fees.sync') }}" class="btn btn-primary">
     Sync Student Fees
