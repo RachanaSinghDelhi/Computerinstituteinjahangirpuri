@@ -28,7 +28,7 @@
             <button type="submit" class="btn btn-primary">Upload</button>
             </div>
         </form>
-</row>
+</div>
     </div>
 <a href="{{ route('student.fees.sync') }}" class="btn btn-primary">
     Sync Student Fees
