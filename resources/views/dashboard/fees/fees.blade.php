@@ -114,7 +114,7 @@
     </table>
 </div>
 
-<!-- Pagination -->
+
 <!-- Pagination -->
 <div class="d-flex justify-content-center">
     {{ $students->links('pagination::bootstrap-4') }}

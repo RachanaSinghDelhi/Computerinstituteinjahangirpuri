@@ -149,3 +149,8 @@ ul .dash  { color:white}
         display: none;
     }
 }
+
+.pagination {
+    flex-wrap: wrap; /* Ensures pagination wraps on smaller screens */
+    overflow-x: auto; /* Allows horizontal scrolling if content overflows */
+}
