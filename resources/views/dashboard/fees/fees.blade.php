@@ -115,7 +115,10 @@
 </div>
 
 <!-- Pagination -->
-{{ $students->links('pagination::bootstrap-4') }}
+<!-- Pagination -->
+<div class="d-flex justify-content-center">
+    {{ $students->links('pagination::bootstrap-4') }}
+</div>
             </div>
 @endsection
 

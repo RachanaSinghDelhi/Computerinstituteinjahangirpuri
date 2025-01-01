@@ -9,6 +9,7 @@
 
     <title>@yield('title', 'Nice Computer Institute')</title>
     <link rel="icon" href="https://www.computerinstituteindelhijahangirpuri.com/assets/images/nice.ico" type="image/x-icon">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="{{ asset('assets/bootstrap5/bootstrap-5.0.2-dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style2.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">

@@ -174,6 +174,7 @@ Route::get('/student/{student_id}/student-id-card', [StudentController::class, '
 Route::get('/students/student-id-card/{student_id}', [StudentController::class, 'viewIdCard'])->name('students.viewIdCard');
 Route::post('/students/download-selected-id-cards', [StudentController::class, 'downloadSelectedIdCards'])->name('students.downloadSelectedIdCards');
 Route::delete('/students/delete-multiple', [StudentController::class, 'deleteMultiple'])->name('students.deleteMultiple');
+Route::patch('/students/{student}/status', [StudentController::class, 'updateStatus'])->name('students.updateStatus');
 
 //stunt table editable
 

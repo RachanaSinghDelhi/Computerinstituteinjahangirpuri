@@ -18,7 +18,8 @@ class Student extends Model
         'batch',
         'photo',
         'course_id',
-        'contact_number'
+        'contact_number',
+        'status',
     ];
 
 
