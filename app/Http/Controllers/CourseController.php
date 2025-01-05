@@ -75,7 +75,7 @@ class CourseController extends Controller
         ]);
 
         // Redirect back to the main dashboard with a success message
-        return redirect()->route('dashboard.courses.display_courses')->with('success', 'Course created successfully!');
+        return redirect()->route('course.index')->with('success', 'Course created successfully!');
     }
 
     // Show the edit form for a specific course
