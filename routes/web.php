@@ -164,17 +164,25 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
 
 
     
-    // Delete a Student
-    Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('students.destroy');
-
-  
-
+/*Delete a Student
+    Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('students.destroy');*/
 Route::get('/students/id-cards', [StudentController::class, 'showIdCards'])->name('students.id-cards');
 Route::get('/student/{student_id}/student-id-card', [StudentController::class, 'downloadIdCard'])->name('students.downloadIdCard');
 Route::get('/students/student-id-card/{student_id}', [StudentController::class, 'viewIdCard'])->name('students.viewIdCard');
 Route::post('/students/download-selected-id-cards', [StudentController::class, 'downloadSelectedIdCards'])->name('students.downloadSelectedIdCards');
+Route::patch('/students/update-status', [StudentController::class, 'updateStatus'])->name('students.update-status');
+Route::delete('/students/destroy', [StudentController::class, 'destroy'])->name('students.destroy');
+
+// routes/web.php
+Route::get('/students/search', [StudentController::class, 'search'])->name('students.search');
+Route::post('/students/exportExcel', [StudentController::class, 'exportExcel'])->name('students.exportExcel');
+Route::get('/students/exportSQL', [StudentController::class, 'exportSQL'])->name('students.exportSQL');
+
+//bulk
+Route::patch('/students/bulk-update-status', [StudentController::class, 'bulkUpdateStatus'])->name('students.bulkUpdateStatus');
 Route::delete('/students/delete-multiple', [StudentController::class, 'deleteMultiple'])->name('students.deleteMultiple');
-Route::patch('/students/{student}/status', [StudentController::class, 'updateStatus'])->name('students.updateStatus');
+
+
 
 //stunt table editable
 

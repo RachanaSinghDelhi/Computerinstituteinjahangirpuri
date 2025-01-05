@@ -8,6 +8,7 @@ use App\Models\Course;
 use PDF;
 use Illuminate\Support\Facades\Storage;
 use App\Imports\StudentsImport;
+use App\Exports\StudentsExport;
 use Maatwebsite\Excel\Facades\Excel;
 class StudentController extends Controller
 {
@@ -62,8 +63,8 @@ public function index()
 {
      // Fetch all students with their related courses
      $students = Student::with('course')
-     ->orderBy('id', 'desc') // Order by `id` in descending order
-     ->paginate(10);// Eager load 'course' relationship
+     ->orderBy('student_id', 'desc') // Order by `id` in descending order
+     ->paginate(50);// Eager load 'course' relationship
     $courses = Course::all();
     // Pass the students to the view
     return view('dashboard.students.display_students', compact('students','courses'));
@@ -125,12 +126,7 @@ public function update(Request $request, $id)
 
 
 
-public function destroy($id)
-{
-    $student = Student::findOrFail($id); // Find the student by ID
-    $student->delete(); // Delete the student record
-    return redirect()->route('students.index')->with('success', 'Student deleted successfully.');
-}
+
 
 
  public function showIdCards()
@@ -232,24 +228,96 @@ public function import(Request $request)
 
 
 
+public function updateStatus(Request $request)
+{
+    $student = Student::find($request->id);
+    if (!$student) {
+        return response()->json(['message' => 'Student not found'], 404);
+    }
+    $student->status = $request->status;
+    $student->save();
+
+    return response()->json(['message' => 'Status updated successfully']);
+}
+
+public function destroy(Request $request)
+{
+    $student = Student::find($request->id);
+    if (!$student) {
+        return response()->json(['message' => 'Student not found'], 404);
+    }
+    $student->delete();
+
+    return response()->json(['message' => 'Student deleted successfully']);
+}
+
 public function deleteMultiple(Request $request)
 {
-    $studentIds = $request->input('student_ids');
+    Student::whereIn('id', $request->ids)->delete();
 
-    if (!$studentIds) {
-        return redirect()->route('students.index')->with('error', 'No students selected for deletion.');
-    }
-
-    // Delete students and their associated files
-    foreach ($studentIds as $id) {
-        $student = Student::find($id);
-        if ($student && $student->photo) {
-            Storage::delete($student->photo); // Delete photo file
-        }
-        $student->delete(); // Delete student record
-    }
-
-    return redirect()->route('students.index')->with('success', 'Selected students deleted successfully.');
+    return response()->json(['message' => 'Selected students deleted successfully']);
 }
+
+
+public function bulkUpdateStatus(Request $request)
+{
+    $validated = $request->validate([
+        'ids' => 'required|array',
+        'status' => 'required|string',
+    ]);
+
+    Student::whereIn('id', $validated['ids'])->update(['status' => $validated['status']]);
+
+    return response()->json(['message' => 'Status updated successfully for selected students']);
+}
+
+
+// app/Http/Controllers/StudentController.php
+public function search(Request $request)
+{
+    $query = $request->input('query');
+
+    // Filter students based on student_id or name
+    $students = Student::where('student_id', 'LIKE', "%{$query}%")
+                    ->orWhere('name', 'LIKE', "%{$query}%")
+                    ->get();
+
+    // Return the filtered results as a partial view
+    return view('dashboard.students.student_search', compact('students'));
+}
+
+
+ // Export Excel
+ public function exportExcel(Request $request)
+{
+    // Fetch students and export them to Excel
+   
+
+    // Return the Excel file as a response
+    return Excel::download(new StudentsExport, 'students.xlsx');
+}
+
+ public function exportSQL()
+    {
+        $students = Student::all([
+            'student_id', 'name', 'father_name', 'doa', 'batch', 
+            'photo', 'created_at', 'updated_at', 'course_id', 'contact_number', 'status'
+        ]);
+
+        $sql = "INSERT INTO students (student_id, name, father_name, doa, batch, photo, created_at, updated_at, course_id, contact_number, status) VALUES\n";
+        
+        foreach ($students as $student) {
+            $sql .= "('{$student->student_id}', '{$student->name}', '{$student->father_name}', '{$student->doa}', '{$student->batch}', 
+                    '{$student->photo}', '{$student->created_at}', '{$student->updated_at}', '{$student->course_id}', 
+                    '{$student->contact_number}', '{$student->status}'),\n";
+        }
+
+        // Remove the last comma and append semicolon
+        $sql = rtrim($sql, ",\n") . ";";
+
+        return response($sql, 200)
+            ->header('Content-Type', 'application/sql')
+            ->header('Content-Disposition', 'attachment; filename="students.sql"');
+    }
 
 }

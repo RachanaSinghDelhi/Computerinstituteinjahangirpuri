@@ -12,8 +12,8 @@ class FeeController extends Controller
     public function index()
     {
         $students = Student::with(['course', 'fees'])
-        ->orderBy('id', 'desc') // Order by 'id' in ascending order
-        ->paginate(10);
+        ->orderBy('student_id', 'desc') // Order by 'id' in ascending order
+        ->paginate(50);
         return view('dashboard.fees.fees', compact('students'));
     }
 
