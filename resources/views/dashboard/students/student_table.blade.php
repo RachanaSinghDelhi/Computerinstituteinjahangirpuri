@@ -140,7 +140,38 @@
                 data: { query: query },
                 success: function (response) {
                     // Update the table with filtered students
-                    $('#studentTable tbody').html(response); 
+                    $('#studentTable tbody').html(response);
+
+// Reinitialize cropper for new content
+$('input[type="file"].photo-upload').trigger('change'); // Trigger file input change event to initialize cropper again
+
+// Re-initialize cropper for new file uploads
+$('input[type="file"].photo-upload').on('change', function () {
+    var student_id = $(this).data('student-id'); // Get the student ID specific to the row
+    var photo = $(this)[0].files[0]; // Get the selected file
+    originalFilename = photo.name; // Store original file name
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+        var imagePreview = $('#image-preview-' + student_id); // Use specific preview for the student ID
+        imagePreview.attr('src', e.target.result).show();
+
+        var cropperContainer = $('#crop-controls-' + student_id); // Crop controls for specific row
+        cropperContainer.show();
+
+        if (cropper) {
+            cropper.destroy(); // Destroy previous cropper instance
+        }
+
+        cropper = new Cropper(imagePreview[0], {
+            aspectRatio: 1,
+            viewMode: 1,
+            autoCropArea: 0.65,
+        });
+    };
+
+    reader.readAsDataURL(photo); // Read the image as data URL
+});
                 }
             });
         });
@@ -229,7 +260,7 @@ $(document).on('click', '.crop-button', function () {
         formData.append('photo', blob, originalFilename); // Add cropped image
         formData.append('student_id', student_id); // Add student ID
         formData.append('_token', '{{ csrf_token() }}'); // CSRF Token
-alert(student_id);
+
         $.ajax({
             url: '{{ route("update.student.photo") }}',
             method: 'POST',
