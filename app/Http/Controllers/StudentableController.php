@@ -98,27 +98,46 @@ class StudentableController extends Controller
 
 public function updatePhoto(Request $request)
 {
-    $student = Student::find($request->student_id);
-    
-    if ($student && $request->hasFile('photo')) {
-        // Get the original file name
-        $fileName = $request->file('photo')->getClientOriginalName();
+    try {
+        $student = Student::find($request->student_id);
 
-        // Store the photo using the original file name
-        $path = $request->file('photo')->storeAs('students', $fileName, 'public');
-        
-        // Update the student's photo path in the database
-        $student->photo =   $fileName;
-        $student->save();
+        if (!$student) {
+            return response()->json(['success' => false, 'message' => 'Student not found.'], 404);
+        }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Photo updated successfully.',
-            'photoUrl' => asset('storage/students' . $path) // Send the new photo URL back
+        if ($request->hasFile('photo')) {
+            // Get the original file name
+            $fileName = $request->file('photo')->getClientOriginalName();
+
+            // Store the photo using the original file name
+            $path = $request->file('photo')->storeAs('students', $fileName, 'public');
+
+            // Update the student's photo path in the database
+            $student->photo = $fileName;
+            $student->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Photo updated successfully.',
+                'photoUrl' => asset('storage/students/' . $fileName), // Send the new photo URL back
+            ]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'No photo file provided.'], 400);
+    } catch (\Exception $e) {
+        // Log the exact error
+        \Log::error('Photo update error: ' . $e->getMessage(), [
+            'request' => $request->all(),
+            'trace' => $e->getTraceAsString(),
         ]);
+
+        // Return detailed error response
+        return response()->json([
+            'success' => false,
+            'message' => 'An error occurred while updating the photo.',
+            'error' => $e->getMessage(), // Include the exception message for debugging
+        ], 500);
     }
-    
-    return response()->json(['message' => 'Error updating photo.'], 500);
 }
 
 
@@ -164,6 +183,20 @@ public function destroy($id)
             'error' => $e->getMessage(),
         ], 500);
     }
+}
+
+
+public function search(Request $request)
+{
+    $query = $request->input('query');
+
+    // Filter students based on student_id or name
+    $students = Student::where('student_id', 'LIKE', "%{$query}%")
+                    ->orWhere('name', 'LIKE', "%{$query}%")
+                    ->get();
+
+    // Return the filtered results as a partial view
+    return view('dashboard.students.student_table_search', compact('students'));
 }
 
 }

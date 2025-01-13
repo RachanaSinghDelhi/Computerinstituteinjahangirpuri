@@ -14,7 +14,7 @@ class Certificate extends Model
 
     // Specify the fillable fields for mass assignment
     protected $fillable = [
-    
+        'student_id',
         'NAME',
         'FATHER',
         'DT',

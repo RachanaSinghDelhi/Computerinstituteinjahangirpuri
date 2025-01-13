@@ -3,7 +3,12 @@
 @section('content')
 <div class="container">
     <h1 class="mb-4">Certificates</h1>
-    <table class="table table-bordered">
+
+       <!-- Single Search Box -->
+       <div class="mb-4">
+        <input type="text" id="searchBox" class="form-control" placeholder="Search by Student ID, Name, or Course">
+    </div>
+    <table id="certificateTable" class="table table-bordered">
         <thead>
             <tr>
                 <th>Student ID</th>
@@ -47,3 +52,37 @@
     </div>
 </div>
 @endsection
+@push('scripts')
+<!-- Custom JavaScript -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function () {
+    // Handle keyup event for search box
+    $('#searchBox').on('keyup', function () {
+        let query = $(this).val(); // Get the search query
+
+        // Send AJAX request to search certificates
+        $.ajax({
+            url: '{{ route('certificate.search') }}', // Define the route for searching
+            method: 'GET',
+            data: { query: query },
+            success: function (response) {
+                // Update the table with filtered certificates
+                $('#certificateTable tbody').html(response);
+            },
+            error: function (xhr, status, error) {
+                // Check if the error is a server-side issue
+                if (xhr.status === 500 && xhr.responseJSON && xhr.responseJSON.error) {
+                    // Display the error message from the backend in an alert box
+                    alert('Error: ' + xhr.responseJSON.error);
+                } else {
+                    // Display a generic error message for other types of errors
+                    alert('Something went wrong. Please try again later.');
+                }
+            }
+        });
+    });
+});
+
+    </script>
+@endpush

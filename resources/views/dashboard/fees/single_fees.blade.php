@@ -1,63 +1,67 @@
 @extends('dashboard.app')
-@section('title', 'Single Fees')
 @section('content')
-<div class="container">
-    <h3>Fee Details for {{ $student->name }}</h3>
-    <h3>Fee Details for {{ $student->student_id }}</h3>
-    <p><strong>Course:</strong> {{ $student->course->name }}</p>
-    <p><strong>Total Fees:</strong> ₹{{ $student->course->total_fees }}</p>
-    <p><strong>Installment Amount:</strong> ₹ {{$defaultInstallmentAmount}}</p>
-    <p><strong>Total Installments:</strong> {{ $fees->count() }}</p> <!-- Total Installments -->
-    <p><strong>Total Fees Paid:</strong> ₹{{ $fees->sum('amount_paid') }}</p> <!-- Total Fees Paid -->
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-body">
+            <h2 class="mb-4">Fee Details for {{ $student->name }}</h2>
 
-    <!-- Responsive Table -->
-    <div class="table-responsive">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Payment Date</th>
-                    <th>Admission Date</th>
-                    <th>Amount Paid</th>
-                    <th>Due Date</th>
-                    <th>Fees Due</th>
-                    <th>Status</th>
-                    <th>Receipt number</th>
-                    <th>Receipt</th>
-                    <th>Actions</th> <!-- Added this column -->
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($fees as $fee)
-                    <tr>
-                        <td>{{ $fee->payment_date ? $fee->payment_date->format('Y-m-d') : 'N/A' }}</td>
-                        <td>{{ $student->doa }}</td>
-                        <td>₹{{ $fee->amount_paid }}</td>
-                        <td>{{ $fee->due_date ? $fee->due_date->format('Y-m-d') : 'N/A' }}</td>
-                        <td>₹{{ $fee->fees_due }}</td>
-                        <td>{{ $fee->status }}</td>
-                        <td>{{ $fee->receipt_number }}</td>
-                        <td>
-                            @if ($fee->receipt_image)
-                                <a href="{{ asset('/receipts/' . $fee->receipt_image) }}" target="_blank">View Receipt</a>
-                            @else
-                                No Receipt
-                            @endif
-                        </td>
-                        <td>
-                            <!-- Edit Button -->
-                            <a href="{{ route('fees.edit', $fee->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                            
-                            <!-- Delete Form -->
-                            <form action="{{ route('fees.destroy', $fee->id) }}" method="POST" style="display:inline-block;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this record?')">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+            @if($hasFees)
+                <p><strong>Course:</strong> {{ optional($student->fees->first()->course)->course_title ?? 'No Course Assigned' }}</p>
+                <p><strong>Total Fees Paid:</strong> ₹{{ $student->fees->sum('amount_paid') }}</p>
+
+                <div class="table-responsive mt-4">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">Installment</th>
+                                <th scope="col">Amount Paid</th>
+                                <th scope="col">Payment Date</th>
+                                <th scope="col">Due Date</th>
+                                <th scope="col">Receipt</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($student->fees as $index => $fee)
+                                <tr>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>₹{{ $fee->amount_paid }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($fee->payment_date)->format('d-m-Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($fee->payment_date)->addMonth()->format('d-m-Y') }}</td>
+                                    <td>
+                                        @if($fee->receipt_image)
+                                            <a href="{{ asset('storage/' . $fee->receipt_image) }}" target="_blank" class="btn btn-primary btn-sm">View Receipt</a>
+                                        @else
+                                            <span class="text-muted">N/A</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <span class="badge 
+                                            {{ $fee->status == 'Paid' ? 'bg-success' : 'bg-danger' }}">
+                                            {{ $fee->status }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <form action="{{ route('fees.destroy', $fee->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this fee record?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <i class="bi bi-trash"></i> Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <div class="alert alert-warning mt-4" role="alert">
+                    <strong>No fees submitted yet for this student.</strong>
+                </div>
+            @endif
+        </div>
     </div>
 </div>
 @endsection

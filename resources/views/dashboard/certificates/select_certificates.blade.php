@@ -1,5 +1,5 @@
 @extends('dashboard.app')
-@section('title', 'Student ID Cards')
+@section('title', 'Student certificate')
 @section('content')
 
 <div class="container mt-4">
@@ -12,13 +12,19 @@
     <h1>Selected Certificates</h1>
 
 
+    <!-- Search Box -->
+    <div class="mb-4">
+        <input type="text" id="certificateSearchBox" class="form-control" placeholder="Search by Student ID, Name, or Course" >
+    </div>
+
+
 <div class="container">
 
 
 <!-- Form for selecting and downloading certificates -->
 <form action="{{ route('certificates.downloadSelected') }}" method="POST">
     @csrf
-    <div class="row">
+    <div class="row" id="certificateRow">
         @foreach($certificates as $certificate)
             <div class="col-md-6 mb-3">
                 <div class="form-check">
@@ -64,7 +70,7 @@
 </div>
 
 
-<div class="row">
+<div class="row" id="certificateCardRow">
     @foreach ($certificates as $certificate)
         <div class="col-12 col-md-6 col-lg-3 mb-4">
             <div class="certificate card">
@@ -95,3 +101,27 @@
         {{ $certificates->links('pagination::bootstrap-4') }}
     </div>
 @endsection
+ @push('scripts')
+<!-- Custom JavaScript -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // Real-time search function using AJAX
+    $('#certificateSearchBox').on('keyup', function() {
+        var searchQuery = $(this).val();
+        
+        // Make an AJAX request to search and update the certificate list
+        $.ajax({
+            url: "{{ route('certificate.selectsearch') }}", // Updated route name
+            type: 'GET',
+            data: { query: searchQuery },
+            success: function(data) {
+                $('#certificateRow').html(data.certificates);
+                $('#certificateCardRow').html(data.certificates);
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+            }
+        });
+    });
+</script>
+@endpush

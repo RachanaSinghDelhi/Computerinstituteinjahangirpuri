@@ -42,9 +42,9 @@ class Course extends Model
 
 
 public function fees()
-{
-    return $this->hasMany(Fee::class);
-}
+    {
+        return $this->hasMany(Fee::class, 'course_id', 'id'); // Adjust 'course_id' as per your schema
+    }
 
 
 

@@ -32,6 +32,11 @@
     </div>
     <br/>
 
+    <!-- Search Box -->
+    <div class="mb-3">
+        <input type="text" id="searchBox" class="form-control" placeholder="Search Courses...">
+    </div>
+
     <!-- Responsive Table -->
     <div class="table-responsive">
         <table id="coursesTable" class="table table-bordered">
@@ -48,8 +53,8 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach (  $courselist as $course)
+            <tbody id="coursesBody">
+                @foreach ($courselist as $course)
                 <tr id="course-row-{{ $course->id }}">
                     <td>
                         <img src="{{ asset('storage/courses/'.$course->course_image) }}" alt="{{ $course->course_title }}" style="max-width: 100px; height:100px;">
@@ -63,11 +68,6 @@
                     <td class="d-none d-sm-table-cell">{{ $course->installments }}</td>
                     <td>
                         <a href="{{ route('course.edit', $course->id) }}" class="btn btn-primary btn-sm">Edit</a>
-                        <form action="{{ route('course.destroy', ['id' => $course->id]) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </form>
                     </td>
                 </tr>
                 @endforeach
@@ -77,7 +77,29 @@
 
     <!-- Pagination Links -->
     <div class="d-flex justify-content-center">
-        {{   $courselist->links('pagination::bootstrap-4') }}
+        {{ $courselist->links('pagination::bootstrap-4') }}
     </div>
 </div>
 @endsection
+@push('scripts')
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#searchBox').on('keyup', function() {
+            let query = $(this).val();
+            $.ajax({
+                url: "{{ route('course.search') }}", // Define a route for search
+                method: 'GET',
+                data: { query: query },
+                success: function(data) {
+                    $('#coursesBody').html(data);
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+@endpush

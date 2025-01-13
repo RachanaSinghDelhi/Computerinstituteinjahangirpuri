@@ -28,25 +28,28 @@ Route::prefix('dashboard')->group(function () {
 
 Route::post('/upload-receipts', [ReceiptController::class, 'upload'])->name('upload.receipts');
 
-    Route::get('/fees', [FeeController::class, 'index'])->name('fees.index'); // List all students' fees
-    Route::get('/fees/{student}/single-fees', [FeeController::class, 'show'])->name('fees.single_fees');
- Route::get('/fees/{student}/add-fees', [FeeController::class, 'create'])->name('fees.add_fees'); // Route for the add_fees page
-Route::post('/fees/{student}/add-fees', [FeeController::class, 'store'])->name('fees.store_fees'); // Form submission for fees
+Route::get('/fees', [FeeController::class, 'index'])->name('fees.index');
+Route::get('/fees/{student_id}', [FeeController::class, 'show'])->name('fees.show');
+Route::get('/fees/add/{student_id}', [FeeController::class, 'addStudentFees'])->name('add_fees');
+Route::post('/fees/store', [FeeController::class, 'saveStudentFee'])->name('save_student_fee');
+
+
+
 Route::get('/{fee}/edit', [FeeController::class, 'edit'])->name('fees.edit'); // Edit form
     Route::put('/{fee}', [FeeController::class, 'update'])->name('fees.update'); // Update route
-    Route::delete('/{fee}', [FeeController::class, 'destroy'])->name('fees.destroy'); // Delete route
+    Route::delete('/fees/{id}', [FeeController::class, 'destroy'])->name('fees.destroy');
+
     Route::get('/search-fees', [FeeController::class, 'search'])->name('search.fees');   
+ // Route for updating student fees (total fees and installments)
+ Route::put('/fees/update/{student_id}', [FeeController::class, 'updateStudentFees'])->name('fees.updateStudentFees');
+
+
 });
 
 // In web.php
 
 
 
-Route::get('/sync-student-fees', [StudentFeesController::class, 'syncStudentFees'])->name('student.fees.sync');
-
-
-// Route to display the add fee form
-//Route::get('fees/add', [FeeController::class, 'create'])->name('fees.create');
 
 // Route to store the fee data
 //Route::post('fees/store', [FeeController::class, 'store'])->name('fees.store');
@@ -57,8 +60,8 @@ Route::get('/import-excel', [ExcelImportController::class, 'import']);
 
 Route::get('/import-courses', [ExcelImportController::class, 'importCourses']);
 
-Route::prefix('certificates')->group(function () {
-    Route::get('/', [CertificateController::class, 'index'])->name('certificates.index');
+Route::prefix('dashboard')->group(function () {
+  //  Route::get('/certificates', [CertificateController::class, 'index'])->name('certificates.index');
     Route::get('/show/{studentId}/{courseId}', [CertificateController::class, 'show'])->name('certificates.show');
     Route::get('/generate/{studentId}/{courseId}', [CertificateController::class, 'generate'])->name('certificates.generate');
 });
@@ -85,9 +88,7 @@ Route::get('/blogs', [PostController::class, 'blogs'])->name('posts.blogs');
 Route::get('/courses_list',[PageController::class,'courses'])->name('courses');
 Route::get('/courses',[PageController::class,'list'])->name('courses.list');
 # Single Post Route
-Route::get('/posts/{url}', [PostController::class, 'show'])->name('posts.show');
-
-Route::get('/updates/{id}', [PostController::class, 'show'])->name('posts.show');
+//Route::get('/posts/{url}', [PostController::class, 'show'])->name('posts.show');
 Route::get('/about', [PostController::class, 'showSidebar'])->name('posts.about');
 
 # Authenticated Routes
@@ -123,6 +124,9 @@ Route::middleware(['auth'])->group(function () {
         
         Route::put('/course/{id}', [CourseController::class, 'update'])->name('course.update'); 
         Route::delete('/course/{id}', [CourseController::class, 'destroy'])->name('course.destroy');
+
+        Route::get('/course/search', [CourseController::class, 'search'])->name('course.search');
+
     });
     
 });
@@ -150,7 +154,7 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
 
     // Create Student Route
     Route::get('/add-student', [StudentController::class, 'create'])->name('students.create'); // Show form
-    Route::post('/add-student', [StudentController::class, 'store'])->name('students.store');
+    Route::post('/add-student', [StudentController::class, 'store'])->name('students.liststore');//changed
     
     // List All Students (index)
     Route::get('/students', [StudentController::class, 'index'])->name('students.index');
@@ -191,6 +195,7 @@ Route::post('students/update', [StudentableController::class, 'update'])->name('
 Route::post('students/photo/update', [StudentableController::class, 'updatePhoto'])->name('update.student.photo');
 Route::post('/students/store', [StudentableController::class, 'store'])->name('students.store');
 Route::delete('/dashboard/student/{student_id}', [StudentableController::class, 'destroy'])->name('delete.student');
+Route::get('student_table/search', [StudentableController::class, 'search'])->name('student_table.search');
 
 
 
@@ -199,12 +204,19 @@ Route::get('/certificates', [CertificateController::class, 'index'])->name('cert
 Route::get('/certificate/view/{id}', [CertificateController::class, 'viewCertificate'])->name('dashboard.certificates.view');
 Route::post('/certificates/download-selected', [CertificateController::class, 'downloadSelected'])->name('certificates.downloadSelected');
 Route::get('/certificates/select_certificates', [CertificateController::class, 'selectCertificates'])->name('certificates.select');
+// routes/web.php
+Route::get('/certificate-search', [CertificateController::class, 'search'])->name('certificate.search');
+
+//select_certificate search
+
+Route::get('certificates/selectsearch', [CertificateController::class, 'selectSearch'])->name('certificate.selectsearch');
+
 
 });
 
 
 
-Route::delete('/students/delete-multiple', [StudentController::class, 'deleteMultiple'])->name('students.deleteMultiple');
+//Route::delete('/students/delete-multiple', [StudentController::class, 'deleteMultiple'])->name('students.deleteMultiple');
 
 Route::post('students/import', [StudentController::class, 'import'])->name('students.import');
 

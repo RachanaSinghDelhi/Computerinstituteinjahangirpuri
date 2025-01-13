@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Certificate; // Make sure this is added
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Log; // Import the Log facade
 use PDF;
 
 class CertificateController extends Controller
@@ -118,4 +120,50 @@ public function downloadSelected(Request $request)
         return view('dashboard.certificates.view_certificates', ['certificates' => [$certificate]]);
     }
 
+
+
+
+
+    public function search(Request $request)
+{
+    try {
+        $query = $request->input('query');
+
+        // Fetch certificates based on search query using LIKE
+        $certificates = Certificate::where('student_id', 'LIKE', "%{$query}%")
+                                    ->orWhere('name', 'LIKE', "%{$query}%")
+                                    ->orWhere('course', 'LIKE', "%{$query}%")
+                                    ->get();
+
+        // Return the filtered certificates as a partial view (table rows only)
+        return view('dashboard.certificates.certificate_search', compact('certificates'))->render();
+    } catch (\Exception $e) {
+        // Log the error
+        Log::error('Error occurred during certificate search: ' . $e->getMessage());
+
+        // Return an error response
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
+
+
+// Method to handle search
+// Method to handle search
+    public function selectSearch(Request $request)
+    {
+        // Validate the search query
+        $query = $request->input('query');
+
+        // Fetch certificates based on the search query
+        $certificates = Certificate::where('student_id', 'like', "%{$query}%")
+            ->orWhere('name', 'like', "%{$query}%")
+            ->orWhere('course', 'like', "%{$query}%")
+            ->get();
+
+        // Return the partial view with filtered certificates
+        $view = view('dashboard.certificates.search_select_certificates', compact('certificates'))->render();
+
+        return response()->json(['certificates' => $view]);
+    }
+    
 }

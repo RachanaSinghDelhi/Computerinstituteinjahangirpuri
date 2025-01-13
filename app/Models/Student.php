@@ -22,7 +22,8 @@ class Student extends Model
         'status',
     ];
 
-
+    protected $primaryKey = 'student_id'; // Set the correct primary key
+  
     // Define the relationship to the Course model
     public function course()
     {
@@ -30,10 +31,11 @@ class Student extends Model
 
     }
 
-public function fees()
-{
-    return $this->hasMany(Fee::class);
-}
+    public function fees()
+    {
+        return $this->hasMany(Fee::class, 'student_id', 'student_id'); // Adjust 'student_id' if necessary
+    }
+    
 
     
 }

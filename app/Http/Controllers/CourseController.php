@@ -158,4 +158,20 @@ class CourseController extends Controller
         // Return the view for displaying the course details, passing the course data and breadcrumbs
         return view('show', compact('course', 'breadcrumbs'));  // 'show' corresponds to resources/views/show.blade.php
     }
+
+
+    public function search(Request $request)
+{
+    $query = $request->input('query');
+    $courselist = Course::where('course_title', 'LIKE', "%{$query}%")
+                        ->orWhere('course_desc', 'LIKE', "%{$query}%")
+                        ->paginate(10); // Adjust pagination as needed
+    
+    $html = '';
+    foreach (   $courselist as $course) {
+        $html .= view('dashboard.courses.courses_search', compact('courselist'))->render();
+    }
+    return response()->json($html);
+}
+
 }

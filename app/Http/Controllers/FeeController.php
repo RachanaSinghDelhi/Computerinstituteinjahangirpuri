@@ -1,190 +1,197 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\Student;
+use App\Models\StudentFeesStatus;
 use App\Models\Fee;
-use Carbon\Carbon;
+use App\Models\Student;
+use App\Models\Course;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FeeController extends Controller
 {
-    // List all students' fees
     public function index()
-    {
-        $students = Student::with(['course', 'fees'])
-        ->orderBy('student_id', 'desc') // Order by 'id' in ascending order
-        ->paginate(50);
-        return view('dashboard.fees.fees', compact('students'));
+{
+    // Retrieve the fees data
+    $feesData = DB::table('students')
+        ->join('courses', 'students.course_id', '=', 'courses.id')
+        ->leftJoin('fees', 'students.student_id', '=', 'fees.student_id')
+        ->select(
+            'students.student_id', // Student ID
+            'students.name as student_name', // Student Name
+            'courses.course_title', // Course Title
+            'courses.total_fees', // Total Fees
+            'courses.installments', // Installments
+            'courses.id as course_id', // Course ID
+            DB::raw('IFNULL(SUM(fees.amount_paid), 0) as fees_paid'), // Ensure fees_paid is 0 if no data exists
+            DB::raw('courses.total_fees - IFNULL(SUM(fees.amount_paid), 0) as fees_due'), // Ensure fees_due calculation is correct
+            DB::raw(
+                "CASE 
+                    WHEN SUM(fees.amount_paid) >= courses.total_fees THEN 'Paid'
+                    WHEN MAX(fees.payment_date) >= CURDATE() AND SUM(fees.amount_paid) < courses.total_fees THEN 'Paid but Pending Next Month'
+                    ELSE 'Pending'
+                END as status" // Determine status
+            )
+        )
+        ->where('students.status', 'active') // Only active students
+        ->groupBy(
+            'students.student_id',
+            'students.name',
+            'courses.course_title',
+            'courses.total_fees',
+            'courses.installments',
+            'courses.id'// Ensure that course_id is included in the group
+        )
+        ->get();
+
+    // Sync the data to the student_fees_status table
+    foreach ($feesData as $fee) {
+        DB::table('student_fees_status')->updateOrInsert(
+            ['student_id' => $fee->student_id], // Match by student ID
+            [
+                'student_name' => $fee->student_name,
+                'course_id' => $fee->course_id, // Add course_id here
+                'course_title' => $fee->course_title,
+                'total_fees' => $fee->total_fees,
+                'installments' => $fee->installments,
+                'fees_paid' => $fee->fees_paid,
+                'fees_due' => $fee->fees_due,
+                'status' => $fee->status,
+                'updated_at' => now(), // Update timestamp
+            ]
+        );
     }
 
-    // Show fee details of a specific student
-    public function show(Student $student)
-    {
-        $fees = $student->fees;
-        $course = $student->course;
-        $defaultInstallmentAmount = round($course->total_fees / $course->installments);
-        return view('dashboard.fees.single_fees', compact('student', 'fees','defaultInstallmentAmount'));
-    }
+    // Return the view with the fees data
+    return view('dashboard.fees.fees', compact('feesData'));
+}
 
-    // Form to pay fees
-    public function create(Student $student)
+
+
+    public function show($student_id)
     {
-        $course = $student->course;
-    
-        // Calculate the monthly installment
+
       
-        $defaultInstallmentAmount = round($course->total_fees / $course->installments);
-
-        $lastReceipt = Fee::latest('receipt_number')->first();
-        $receiptNumber = $lastReceipt ? $lastReceipt->receipt_number + 1 : 1; 
-        return view('dashboard.fees.add_fees', compact('student', 'defaultInstallmentAmount','receiptNumber'));
-    }
+        // Fetch the student details along with fees and courses
+        $student = Student::with(['fees.course'])->where('student_id', $student_id)->first();
     
-
-  
-    public function store(Request $request, Student $student)
-    {
-        // Fetch the student's course details
-        $course = $student->course;
-        $defaultInstallmentAmount = round($course->total_fees / $course->installments);
-    
-        // Validate the form input
-        $request->validate([
-            'amount_paid' => ['required', 'numeric', 'min:1'],
-            'installment_amount' => 'nullable|numeric|min:1',
-            'receipt_image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
-            'payment_date' => 'required|date',
-        ]);
-    
-        // Determine the installment amount (use custom if provided)
-        $installmentAmount = $request->installment_amount ?: $defaultInstallmentAmount;
-    
-          // Fetch the last used receipt number and increment it
-    if ($request->filled('receipt_number')) {
-        $receiptNumber = $request->receipt_number; // Use the provided receipt number
-    } else {
-        $lastReceipt = Fee::latest('receipt_number')->first();
-        $receiptNumber = $lastReceipt ? $lastReceipt->receipt_number + 1 : 1; // Increment based on the last receipt
-    }
-    
-        // Handle receipt image
-        if ($request->hasFile('receipt_image')) {
-            $receiptImageName = $receiptNumber . '.' . $request->receipt_image->getClientOriginalExtension();
-            $request->receipt_image->move(public_path('assets/receipts'), $receiptImageName);
-        } else {
-            $receiptImageName = $receiptNumber . '.jpg';
+        if (!$student) {
+            return redirect()->route('fees.index')->with('error', 'Student not found.');
         }
     
-       
- // Parse dates
-$admissionDate = Carbon::parse($student->doa); // Admission date
-$paymentDate = Carbon::parse($request->payment_date); // Payment date
-
-// Admission day of the month
-$admissionDay = $admissionDate->day;
-
-// Calculate the due date
-if ($paymentDate->day >= $admissionDay) {
-    // Payment made on or after the admission day -> Due in the next month
-    $dueDate = $paymentDate->copy()->addMonthNoOverflow()->setDay($admissionDay);
-} else {
-    // Payment made before the admission day -> Due in the current month
-    $dueDate = $paymentDate->copy()->setDay($admissionDay);
-}
-
-// Handle edge cases for invalid days (e.g., 31st in February)
-if (!$dueDate->isValid()) {
-    $dueDate = $dueDate->lastOfMonth();
-}
-
-
-
-        // Set payment status based on the payment date
-        $status = $paymentDate->isCurrentMonth() ? 'Paid' : 'Unpaid';
+        // Check if the student has any fees submitted
+        $hasFees = $student->fees->isNotEmpty();
     
-        // Save fee record in the database
-        Fee::create([
-            'student_id' => $student->id,
-            'course_id' => $course->id,
-            'amount_paid' => $request->amount_paid,
-            'payment_date' => $request->payment_date,
-            'due_date' => $dueDate, // Save the calculated due date
-            'receipt_number' => $receiptNumber,
-            'receipt_image' => $receiptImageName,
-            'status' => $status,
-        ]);
-    
-        // Redirect to the fee details page with success message
-        return redirect()->route('fees.single_fees', $student->id)->with('success', 'Fee payment recorded successfully!');
+        // Pass the data to the view
+        return view('dashboard.fees.single_fees', compact('student', 'hasFees'));
     }
-        
 
+    
+    
 
-    public function search(Request $request)
+    public function addStudentFees($student_id)
     {
-        $query = $request->input('query');
+        try {
+            // Fetch the student fee status details using the student_id
+            $student = Student::where('student_id', $student_id)->first();
+            if (!$student) {
+                throw new \Exception('Student not found with the provided ID.');
+            }
     
-        // Get students based on search query (adjust to your need)
-        $students = Student::with(['course', 'fees'])
-            ->where('name', 'like', '%' . $query . '%')
-            ->orWhere('student_id', 'like', '%' . $query . '%')
-            ->orWhereHas('course', function($q) use ($query) {
-                $q->where('course_title', 'like', '%' . $query . '%');
-            })
-            ->paginate(10);  // Adjust pagination as needed
+            // Fetch the student fee status details
+            $studentFeesStatus = StudentFeesStatus::where('student_id', $student_id)->first();
     
-        // Return the filtered student rows
-        return view('dashboard.fees.search_fees_table', compact('students'))->render();
+            // Fetch course details
+            $course = Course::find($student->course_id);
+            if (!$course) {
+                throw new \Exception('Course details not found for the student.');
+            }
+    
+            // Pass data to the view
+            return view('dashboard.fees.add_fees', compact('studentFeesStatus', 'student', 'course'));
+        } catch (\Exception $e) {
+            return redirect()->route('fees.index')->with('error', 'Error: ' . $e->getMessage());
+        }
     }
-
-
-
-    public function edit($id)
+    
+   
+    public function saveStudentFee(Request $request)
 {
-    $fee = Fee::findOrFail($id);
-     $fee->payment_date = $fee->payment_date ? \Carbon\Carbon::parse($fee->payment_date) : null;
-    return view('dashboard.fees.edit_fees', compact('fee'));
+    try {
+        // Log the input request data
+        \Log::info('Request Data: ', $request->all());
+
+        // Retrieve student
+        $student = Student::find($request->student_id);
+        if (!$student) {
+            \Log::error('Student not found with ID: ' . $request->student_id);
+            return redirect()->back()->with('error', 'Invalid student ID.');
+        }
+
+        // Retrieve course ID from the student record
+        if (!$student->course_id) {
+            \Log::error('Course ID not assigned to student ID: ' . $request->student_id);
+            return redirect()->back()->with('error', 'No course assigned to the selected student.');
+        }
+
+        $course = Course::find($student->course_id);
+        if (!$course) {
+            \Log::error('Course not found with ID: ' . $student->course_id);
+            return redirect()->back()->with('error', 'Invalid course associated with the student.');
+        }
+
+        // Log payment info
+        \Log::info('Proceeding to store fee for student: ' . $student->name);
+
+        // Create Fee entry
+        $fee = new Fee();
+        $fee->student_id = $student->student_id;
+        $fee->course_id = $course->id; // Use course ID from the student's record
+        $fee->amount_paid = $request->amount_paid;
+        $fee->payment_date = $request->payment_date;
+        $fee->due_date = $request->due_date;
+        $fee->receipt_number = $request->receipt_number;
+        $fee->receipt_image = $request->receipt_number . '.jpg'; // Default image name
+        $fee->status = 'Paid';
+
+        
+        $fee->save();
+
+
+        // Update StudentFeesStatus
+        $studentFeesStatus = StudentFeesStatus::where('student_id', $student->student_id)
+        ->where('course_id', $course->id)
+        ->first();
+        if ($studentFeesStatus) {
+            $studentFeesStatus->fees_paid += $request->amount_paid;
+            $studentFeesStatus->fees_due = $studentFeesStatus->total_fees - $studentFeesStatus->fees_paid;
+
+            $studentFeesStatus->status = $studentFeesStatus->fees_due <= 0 ? 'Paid' : 'Paid but Pending Next Month';
+            $studentFeesStatus->save();
+        }
+
+        \Log::info('Fee payment successfully added for student ID: ' . $student->student_id);
+        return redirect()->route('add_fees', ['student_id' => $student->student_id])
+            ->with('success', 'Payment added successfully!');
+    } catch (\Exception $e) {
+        \Log::error('Error occurred: ' . $e->getMessage());
+        return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+    }
 }
+
+    
 
 public function destroy($id)
 {
     $fee = Fee::findOrFail($id);
-    $fee->delete();
 
-    return redirect()->back()->with('success', 'Fee record deleted successfully!');
+    if ($fee) {
+        $fee->delete();
+        return redirect()->back()->with('success', 'Fee record deleted successfully.');
+    }
+
+    return redirect()->back()->with('error', 'Unable to delete fee record.');
 }
 
 
-
-
-public function update(Request $request, $id)
-{
-    // Retrieve the fee record
-    $fee = Fee::findOrFail($id);
-
-    // Validate the input
-    $validatedData = $request->validate([
-        'receipt_number' => 'required|numeric|unique:fees,receipt_number,' . $fee->id,
-        'amount_paid' => 'required|numeric',
-        'receipt_image' => 'required|string|max:255',
-        'payment_date' => 'required|date',
-        'due_date' => 'nullable|date|after_or_equal:payment_date', // Optional field
-    ]);
-
-    // Update the fee record
-    $fee->update([
-        'receipt_number' => $validatedData['receipt_number'],
-        'amount_paid' => $validatedData['amount_paid'],
-        'receipt_image' => $validatedData['receipt_image'],
-        'payment_date' => $validatedData['payment_date'],
-        'due_date' => $validatedData['due_date'], // This will handle null values
-    ]);
-
-    // Redirect to the single fees page with the required student parameter
-    return redirect(url()->previous())->with('success', 'Fee record updated successfully!');
-
-}
-
-
-    
 }

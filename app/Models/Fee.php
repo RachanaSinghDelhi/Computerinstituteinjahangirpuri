@@ -48,11 +48,14 @@ class Fee extends Model
     // Relationships
     public function student()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Student::class, 'student_id', 'student_id'); // Adjust 'student_id' if necessary
     }
+    
+
+   
 
     public function course()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Course::class, 'course_id', 'id'); // Adjust 'course_id' as per your schema
     }
 }

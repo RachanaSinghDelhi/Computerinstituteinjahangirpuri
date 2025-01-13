@@ -3,14 +3,18 @@
 @section('content')
 
     <!-- Search Box -->
-    <div class="d-flex justify-content-between mb-3">
-        <input type="text" id="searchBox" class="form-control w-50" placeholder="Search students...">
-    </div>
+   
+<div class="container">
 
+ <!-- Search Box -->
+ <div class="mb-3">
+            <input type="text" id="searchBox" class="form-control" placeholder="Search by Student ID or Name">
+        </div>
     <div class="table-responsive">
         <table id="studentTable" class="table table-bordered table-striped">
             <thead>
                 <tr>
+                    <th><th>
                     <th>Student ID</th>
                     <th>Name</th>
                     <th>Father's Name</th>
@@ -86,27 +90,27 @@
                     </td>
                     <td><input type="text" name="contact_number" class="editable" data-column="contact_number" value="{{ $student->contact_number }}" /></td>
                     <td>
-    <input type="file" class="photo-upload" data-student-id="{{ $student->id }}" />
+    <input type="file" class="photo-upload" data-student-id="{{ $student->student_id }}" />
 </td>
 <td>
-    <img id="image-preview-{{ $student->id }}" class="image-preview" style="display:none; max-width: 100%; height: auto;" />
-    <div id="crop-controls-{{ $student->id }}" class="crop-controls" style="display:none; margin-top: 10px;">
-        <label for="rotation-angle-{{ $student->id }}">Rotation Angle:</label>
-        <input type="number" id="rotation-angle-{{ $student->id }}" class="rotation-angle" placeholder="Enter angle (e.g., 45)" />
-        <button type="button" class="rotate-custom" data-student-id="{{ $student->id }}">Rotate</button>
-        <button type="button" class="crop-button" data-student-id="{{ $student->id }}">Crop and Upload</button>
+    <img id="image-preview-{{ $student->student_id }}" class="image-preview" style="display:none; max-width: 100%; height: auto;" />
+    <div id="crop-controls-{{ $student->student_id }}" class="crop-controls" style="display:none; margin-top: 10px;">
+        <label for="rotation-angle-{{ $student->student_id }}">Rotation Angle:</label>
+        <input type="number" id="rotation-angle-{{ $student->student_id}}" class="rotation-angle" placeholder="Enter angle (e.g., 45)" />
+        <button type="button" class="rotate-custom" data-student-id="{{ $student->student_id }}">Rotate</button>
+        <button type="button" class="crop-button" data-student-id="{{ $student->student_id}}">Crop and Upload</button>
     </div>
 </td>
-                    <td> <img src="{{ asset('storage/students/' . $student->photo) }}" alt="Photo" class="img-thumbnail" style="width: 50px;" data-student-id="{{ $student->id }}" /></td>
+                    <td> <img src="{{ asset('storage/students/' . $student->photo) }}" alt="Photo" class="img-thumbnail" style="width: 50px;" data-student-id="{{ $student->student_id }}" /></td>
                     <td>
-                        <button class="btn btn-danger btn-sm remove-row" data-student-id="{{ $student->id }}">Remove</button>
+                        <button class="btn btn-danger btn-sm remove-row" data-student-id="{{ $student->student_id }}">Remove</button>
                     </td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
-
+</div>
     <div class="pagination-container">
     {{ $students->links('pagination::bootstrap-4') }}
     </div>
@@ -124,13 +128,24 @@
     $(document).ready(function() {
 
         // Implement Search Functionality
-        $('#searchBox').on('keyup', function() {
-            var value = $(this).val().toLowerCase();
-            $('#studentTable tbody tr').filter(function() {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+        $(document).ready(function () {
+        // Handle search input
+        $('#searchBox').on('input', function () {
+            let query = $(this).val(); // Get the search query
+
+            // Send AJAX request to search students
+            $.ajax({
+                url: '{{ route('student_table.search') }}', // Define the route for searching
+                method: 'GET',
+                data: { query: query },
+                success: function (response) {
+                    // Update the table with filtered students
+                    $('#studentTable tbody').html(response); 
+                }
             });
         });
-
+    });
+   
         // Edit fields with AJAX on change
         $('.editable').on('change', function() {
             var column = $(this).data('column');
@@ -214,7 +229,7 @@ $(document).on('click', '.crop-button', function () {
         formData.append('photo', blob, originalFilename); // Add cropped image
         formData.append('student_id', student_id); // Add student ID
         formData.append('_token', '{{ csrf_token() }}'); // CSRF Token
-
+alert(student_id);
         $.ajax({
             url: '{{ route("update.student.photo") }}',
             method: 'POST',
@@ -236,15 +251,18 @@ $(document).on('click', '.crop-button', function () {
                 $('#image-preview-' + student_id).hide();
                 $('#crop-controls-' + student_id).hide(); // Hide crop controls after upload
             },
-            error: function (error) {
-                console.error(error);
-                alert('An error occurred while uploading the photo.');
+            error: function (xhr, status, error) {
+                // Extract error message from response
+                var errorMessage = 'An error occurred: ' + error;
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMessage += '\nException: ' + xhr.responseJSON.message;
+                }
+                console.error(errorMessage);
+                alert(errorMessage);
             },
         });
     });
 });
-
-
 
         // Remove row on click
         $(document).on('click', '.remove-row', function() {

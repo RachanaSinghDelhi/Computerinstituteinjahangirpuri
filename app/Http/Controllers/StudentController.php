@@ -20,7 +20,7 @@ class StudentController extends Controller
     }
 
     // Handle Form Submission
-    public function store(Request $request)
+    public function liststore(Request $request)
     {
         $request->validate([
             'student_id' => 'required|unique:students,student_id',
