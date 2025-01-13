@@ -39,7 +39,9 @@ Route::get('/{fee}/edit', [FeeController::class, 'edit'])->name('fees.edit'); //
     Route::put('/{fee}', [FeeController::class, 'update'])->name('fees.update'); // Update route
     Route::delete('/fees/{id}', [FeeController::class, 'destroy'])->name('fees.destroy');
 
-    Route::get('/search-fees', [FeeController::class, 'search'])->name('search.fees');   
+   // routes/web.php
+Route::get('/search-fees', [FeeController::class, 'search'])->name('search.fees');
+
  // Route for updating student fees (total fees and installments)
  Route::put('/fees/update/{student_id}', [FeeController::class, 'updateStudentFees'])->name('fees.updateStudentFees');
 

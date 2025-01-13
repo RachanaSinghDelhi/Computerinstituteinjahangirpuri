@@ -194,4 +194,21 @@ public function destroy($id)
 }
 
 
+// app/Http/Controllers/StudentController.php
+
+// app/Http/Controllers/StudentController.php
+public function search(Request $request)
+{
+    $query = $request->input('query');
+
+    // Filter fees data based on student_id or student_name
+    $feesData = StudentFeesStatus::where('student_id', 'LIKE', "%{$query}%")
+                    ->orWhere('student_name', 'LIKE', "%{$query}%")
+                    ->get();
+
+    // Return the filtered results as a partial view
+    return view('dashboard.fees.search_fees_table', compact('feesData'));
+}
+
+
 }
