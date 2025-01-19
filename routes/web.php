@@ -26,7 +26,8 @@ use App\Http\Controllers\ReceiptController;
 Route::prefix('dashboard')->group(function () {
  
 
-Route::post('/upload-receipts', [ReceiptController::class, 'upload'])->name('upload.receipts');
+    Route::post('/upload-receipts', [FeeController::class, 'uploadReceipts'])->name('upload.receipts');
+
 
 Route::get('/fees', [FeeController::class, 'index'])->name('fees.index');
 Route::get('/fees/{student_id}', [FeeController::class, 'show'])->name('fees.show');

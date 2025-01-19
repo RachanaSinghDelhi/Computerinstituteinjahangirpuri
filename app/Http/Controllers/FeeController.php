@@ -90,29 +90,40 @@ class FeeController extends Controller
     
 
     public function addStudentFees($student_id)
-    {
-        try {
-            // Fetch the student fee status details using the student_id
-            $student = Student::where('student_id', $student_id)->first();
-            if (!$student) {
-                throw new \Exception('Student not found with the provided ID.');
-            }
-    
-            // Fetch the student fee status details
-            $studentFeesStatus = StudentFeesStatus::where('student_id', $student_id)->first();
-    
-            // Fetch course details
-            $course = Course::find($student->course_id);
-            if (!$course) {
-                throw new \Exception('Course details not found for the student.');
-            }
-    
-            // Pass data to the view
-            return view('dashboard.fees.add_fees', compact('studentFeesStatus', 'student', 'course'));
-        } catch (\Exception $e) {
-            return redirect()->route('fees.index')->with('error', 'Error: ' . $e->getMessage());
+{
+    try {
+        // Fetch the student details using the student_id
+        $student = Student::where('student_id', $student_id)->first();
+        if (!$student) {
+            throw new \Exception('Student not found with the provided ID.');
         }
+
+        // Fetch the student fee status details
+        $studentFeesStatus = StudentFeesStatus::where('student_id', $student_id)->first();
+
+        // Fetch course details
+        $course = Course::find($student->course_id);
+        if (!$course) {
+            throw new \Exception('Course details not found for the student.');
+        }
+
+        // Fetch the last receipt number and calculate the next receipt number
+        $lastReceiptNumber = Fee::max('receipt_number') ?? 0;
+        $nextReceiptNumber = $lastReceiptNumber + 1;
+
+        // Pass all necessary data to the view
+        return view('dashboard.fees.add_fees', compact(
+            'studentFeesStatus',
+            'student',
+            'course',
+            'nextReceiptNumber'
+        ));
+    } catch (\Exception $e) {
+        // Redirect back with an error message
+        return redirect()->route('fees.index')->with('error', 'Error: ' . $e->getMessage());
     }
+}
+
     
    
     public function saveStudentFee(Request $request)
@@ -171,7 +182,7 @@ class FeeController extends Controller
         }
 
         \Log::info('Fee payment successfully added for student ID: ' . $student->student_id);
-        return redirect()->route('add_fees', ['student_id' => $student->student_id])
+        return redirect()->route('fees.index', ['student_id' => $student->student_id])
             ->with('success', 'Payment added successfully!');
     } catch (\Exception $e) {
         \Log::error('Error occurred: ' . $e->getMessage());
@@ -208,6 +219,31 @@ public function search(Request $request)
 
     // Return the filtered results as a partial view
     return view('dashboard.fees.search_fees_table', compact('feesData'));
+}
+
+
+public function uploadReceipts(Request $request)
+{
+    $request->validate([
+        'startingNumber' => 'required|integer|min:1',
+        'receipts' => 'required|array',
+        'receipts.*' => 'file|mimes:jpg,png,pdf|max:2048', // Adjust file types and size as needed
+    ]);
+
+    $startingNumber = $request->input('startingNumber');
+    $files = $request->file('receipts');
+    $uploadPath = public_path('assets/receipts');
+
+    if (!file_exists($uploadPath)) {
+        mkdir($uploadPath, 0777, true);
+    }
+
+    foreach ($files as $index => $file) {
+        $fileName = ($startingNumber + $index) . '.' . $file->getClientOriginalExtension();
+        $file->move($uploadPath, $fileName);
+    }
+
+    return redirect()->back()->with('success', 'Receipts uploaded successfully!');
 }
 
 

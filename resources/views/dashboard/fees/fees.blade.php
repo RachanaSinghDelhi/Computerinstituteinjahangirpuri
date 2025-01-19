@@ -10,6 +10,25 @@
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
+<!--receipts-->
+    <div class="container mt-4">
+    <h2>Bulk Upload Receipts</h2>
+    <form action="{{ route('upload.receipts') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div class="mb-3">
+            <label for="startingNumber" class="form-label">Starting Number</label>
+            <input type="number" name="startingNumber" id="startingNumber" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="receipts" class="form-label">Upload Receipts</label>
+            <input type="file" name="receipts[]" id="receipts" class="form-control" multiple required>
+        </div>
+        <button type="submit" class="btn btn-success">Upload Receipts</button>
+    </form>
+</div>
+
+
+
      <!-- Search Box -->
      <div class="mb-3">
         <input type="text" id="searchBox" class="form-control" placeholder="Search Courses...">
