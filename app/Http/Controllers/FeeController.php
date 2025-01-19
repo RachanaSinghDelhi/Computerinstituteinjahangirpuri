@@ -41,7 +41,7 @@ class FeeController extends Controller
             'courses.total_fees',
             'courses.installments',
             'courses.id'// Ensure that course_id is included in the group
-        )
+        )  ->orderBy('students.student_id', 'desc')
         ->get();
 
     // Sync the data to the student_fees_status table
