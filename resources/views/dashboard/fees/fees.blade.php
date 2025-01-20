@@ -35,10 +35,10 @@
                     <th>Student ID</th>
                     <th>Student Name</th>
                     <th>Course Title</th>
-                    <th>Total Fees</th>
-                    <th>Installments</th>
-                    <th>Fees Paid</th>
-                    <th>Fees Due</th>
+                    <th  class="d-none d-md-table-cell">Total Fees</th>
+                    <th  class="d-none d-md-table-cell">Installments</th>
+                    <th  class="d-none d-md-table-cell">Fees Paid</th>
+                    <th  class="d-none d-md-table-cell">Fees Due</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
@@ -49,10 +49,10 @@
                         <td>{{ $fee->student_id }}</td>
                         <td>{{ $fee->student_name }}</td>
                         <td>{{ $fee->course_title }}</td>
-                        <td>{{ $fee->total_fees }}</td>
-                        <td>{{ $fee->installments }}</td>
-                        <td>{{ $fee->fees_paid }}</td>
-                        <td>{{ $fee->fees_due }}</td>
+                        <td  class="d-none d-md-table-cell">{{ $fee->total_fees }}</td>
+                        <td  class="d-none d-md-table-cell">{{ $fee->installments }}</td>
+                        <td  class="d-none d-md-table-cell">{{ $fee->fees_paid }}</td>
+                        <td  class="d-none d-md-table-cell">{{ $fee->fees_due }}</td>
                         <td>
                             <span class="badge 
                                 @if($fee->status == 'Paid') 
