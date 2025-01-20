@@ -232,7 +232,7 @@ public function uploadReceipts(Request $request)
 
     $startingNumber = $request->input('startingNumber');
     $files = $request->file('receipts');
-    $uploadPath = public_path('public/receipts');
+    $uploadPath = public_path('/storage/receipts');
 
     if (!file_exists($uploadPath)) {
         mkdir($uploadPath, 0777, true);
