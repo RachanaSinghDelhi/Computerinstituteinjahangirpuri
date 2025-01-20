@@ -98,3 +98,12 @@ html, body {
 .topbar .right-align {
     margin-left: auto;
 }
+
+#sidebar.collapsed {
+    width: 0;
+    padding: 0;
+}
+
+#page-content-wrapper.expanded {
+    margin-left: 0;
+}

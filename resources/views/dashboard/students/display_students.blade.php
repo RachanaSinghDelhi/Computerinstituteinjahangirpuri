@@ -258,33 +258,7 @@
    
 
    // Export to Excel
-    // Export to Excel
-    $('#exportExcel').click(function () {
-        $.ajax({
-    url: '{{ route('students.exportExcel') }}',
-    method: 'POST',
-    data: { _token: '{{ csrf_token() }}' },
-    success: function(response) {
-        const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-        saveAs(blob, 'students.xlsx');
-    },
-    error: function(xhr, status, error) {
-        console.error('Export failed:', error);
-    }
-});
-    });
-
-    // Export to SQL
-    $('#exportSQL').click(function () {
-        $.ajax({
-            url: '{{ route('students.exportSQL') }}',
-            method: 'GET',
-            success: function (response) {
-                const blob = new Blob([response], { type: 'application/sql' });
-                saveAs(blob, 'students.sql');
-            }
-        });
-    });
+   
 </script>
 
 @endpush

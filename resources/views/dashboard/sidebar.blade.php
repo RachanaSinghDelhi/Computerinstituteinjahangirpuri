@@ -141,16 +141,27 @@
                 arrowIcon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
             }
         });
-
+    });
       
     // Handle the sidebar toggle
-    $('#toggleSidebar').click(function() {
-        $('#sidebar').toggleClass('active');  // Toggle sidebar visibility
-        $('#page-content-wrapper').toggleClass('active');  // Adjust content area when sidebar is toggled
+    $(document).ready(function() {
+        // Ensure sidebar is collapsed when the page loads
+        $('#sidebar').css('width', '0');  // Collapse sidebar
+        $('#page-content-wrapper').css('margin-left', '0');  // Adjust content area
+
+        // Handle the sidebar toggle
+        $('#toggleSidebar').click(function() {
+            // Toggle sidebar width and content margin
+            if ($('#sidebar').width() === 0) {
+                $('#sidebar').animate({ width: '250px' }, 300);  // Expand sidebar
+                $('#page-content-wrapper').animate({ marginLeft: '250px' }, 300);  // Adjust content area
+            } else {
+                $('#sidebar').animate({ width: '0' }, 300);  // Collapse sidebar
+                $('#page-content-wrapper').animate({ marginLeft: '0' }, 300);  // Adjust content area
+            }
+        });
     });
 
 
-    });
-</script>
 
 </script>
