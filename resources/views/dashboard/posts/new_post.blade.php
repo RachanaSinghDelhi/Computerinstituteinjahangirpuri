@@ -14,7 +14,7 @@
 
     <!-- Responsive Table -->
     <div class="table-responsive">
-        <table class="table table-bordered table-striped">
+        <table id="postsTable" class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>#</th>
@@ -55,8 +55,32 @@
             </tbody>
         </table>
     </div>
-    <div class="d-flex justify-content-center">
-        {{ $posts->links('pagination::bootstrap-4') }}
-    </div>
 </div>
+
 @endsection
+
+@push('scripts')
+
+<!-- Initialize DataTables -->
+<script>
+$(document).ready(function () {
+    $('#postsTable').DataTable({
+        paging: true,
+            searching: true,
+            lengthChange: true, // Enable the "Show entries" dropdown
+            pageLength: 10, // Default number of rows
+            lengthMenu: [5, 10, 15, 20], // Dropdown options
+            responsive: true,
+            autoWidth: false,
+            language: {
+                searchPlaceholder: "Search records...",
+                lengthMenu: "Show _MENU_ entries",
+                paginate: {
+                    next: "Next",
+                    previous: "Previous"
+                }
+            }
+    });
+});
+</script>
+@endpush

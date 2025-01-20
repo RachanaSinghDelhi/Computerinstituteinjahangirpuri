@@ -10,111 +10,98 @@
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
-<!--receipts-->
+    <!-- Receipts -->
     <div class="container mt-4">
-    <h2>Bulk Upload Receipts</h2>
-    <form action="{{ route('upload.receipts') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <div class="mb-3">
-            <label for="startingNumber" class="form-label">Starting Number</label>
-            <input type="number" name="startingNumber" id="startingNumber" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label for="receipts" class="form-label">Upload Receipts</label>
-            <input type="file" name="receipts[]" id="receipts" class="form-control" multiple required>
-        </div>
-        <button type="submit" class="btn btn-success">Upload Receipts</button>
-    </form>
-</div>
-
-
-
-     <!-- Search Box -->
-     <div class="mb-3">
-        <input type="text" id="searchBox" class="form-control" placeholder="Search Courses...">
+        <h2>Bulk Upload Receipts</h2>
+        <form action="{{ route('upload.receipts') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="mb-3">
+                <label for="startingNumber" class="form-label">Starting Number</label>
+                <input type="number" name="startingNumber" id="startingNumber" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="receipts" class="form-label">Upload Receipts</label>
+                <input type="file" name="receipts[]" id="receipts" class="form-control" multiple required>
+            </div>
+            <button type="submit" class="btn btn-success">Upload Receipts</button>
+        </form>
     </div>
-    <table class="table table-bordered table-responsive">
-        <thead>
-            <tr>
-                <!-- Visible on mobile and larger screens -->
-                <th>Student ID</th>
-                <th>Student Name</th>
-                <th>Course Title</th>
 
-                <!-- Visible only on larger screens -->
-                <th class="d-none d-md-table-cell">Total Fees</th>
-                <th class="d-none d-md-table-cell">Installments</th>
-                <th class="d-none d-md-table-cell">Fees Paid</th>
-                <th class="d-none d-md-table-cell">Fees Due</th>
-
-                <!-- Always visible (Status and Actions) -->
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody id="feesBody">
-            @foreach($feesData as $fee)
+    <!-- Fees Table -->
+    <div class="mt-4">
+        <table id="feesTable" class="table table-bordered table-striped">
+            <thead>
                 <tr>
-                    <!-- Visible on mobile and larger screens -->
-                    <td>{{ $fee->student_id }}</td>
-                    <td>{{ $fee->student_name }}</td>
-                    <td>{{ $fee->course_title }}</td>
-
-                    <!-- Visible only on larger screens -->
-                    <td class="d-none d-md-table-cell">{{ $fee->total_fees }}</td>
-                    <td class="d-none d-md-table-cell">{{ $fee->installments }}</td>
-                    <td class="d-none d-md-table-cell">{{ $fee->fees_paid }}</td>
-                    <td class="d-none d-md-table-cell">{{ $fee->fees_due }}</td>
-
-                    <!-- Always visible (Status and Actions) -->
-                    <td>
-                        <span class="badge 
-                            @if($fee->status == 'Paid') 
-                                bg-success 
-                            @elseif($fee->status == 'Paid but Pending Next Month') 
-                                bg-warning 
-                            @else 
-                                bg-danger 
-                            @endif
-                        ">
-                            {{ $fee->status }}
-                        </span>
-                    </td>
-                    <td>
-                        <!-- Pay Now Button -->
-                        <a href="{{ route('add_fees', $fee->student_id) }}" class="btn btn-primary">Pay Now</a>
-                    </td>
-                    <td>
-                        <a href="{{ route('fees.show', $fee->student_id) }}" class="btn btn-info">View Details</a>
-                    </td>
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Course Title</th>
+                    <th>Total Fees</th>
+                    <th>Installments</th>
+                    <th>Fees Paid</th>
+                    <th>Fees Due</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach($feesData as $fee)
+                    <tr>
+                        <td>{{ $fee->student_id }}</td>
+                        <td>{{ $fee->student_name }}</td>
+                        <td>{{ $fee->course_title }}</td>
+                        <td>{{ $fee->total_fees }}</td>
+                        <td>{{ $fee->installments }}</td>
+                        <td>{{ $fee->fees_paid }}</td>
+                        <td>{{ $fee->fees_due }}</td>
+                        <td>
+                            <span class="badge 
+                                @if($fee->status == 'Paid') 
+                                    bg-success 
+                                @elseif($fee->status == 'Paid but Pending Next Month') 
+                                    bg-warning 
+                                @else 
+                                    bg-danger 
+                                @endif
+                            ">
+                                {{ $fee->status }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{{ route('add_fees', $fee->student_id) }}" class="btn btn-primary btn-sm">Pay Now</a>
+                            <a href="{{ route('fees.show', $fee->student_id) }}" class="btn btn-info btn-sm">View Details</a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 </div>
 
 @endsection
 
+
 @push('scripts')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     $(document).ready(function() {
-        $('#searchBox').on('keyup', function() {
-            let query = $(this).val();
-
-            $.ajax({
-                url: "{{ route('search.fees') }}", // Ensure the correct route
-                method: 'GET',
-                data: { query: query },
-                success: function(data) {
-                    $('#feesBody').html(data); // Update the fees table body with the response
-                },
-                error: function(xhr) {
-                    console.error(xhr.responseText);
+        // Initialize DataTable with options for pagination, search, and records per page
+        $('#feesTable').DataTable({
+            paging: true,
+            searching: true,
+            lengthChange: true, // Enable the "Show entries" dropdown
+            pageLength: 10, // Default number of rows
+            lengthMenu: [5, 10, 15, 20], // Dropdown options
+            responsive: true,
+            autoWidth: false,
+            language: {
+                searchPlaceholder: "Search records...",
+                lengthMenu: "Show _MENU_ entries",
+                paginate: {
+                    next: "Next",
+                    previous: "Previous"
                 }
-            });
+            }
         });
     });
 </script>
-
 @endpush
