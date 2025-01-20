@@ -1,33 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap');
 
 body {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
 }
 
-
-
 * {
-    font-family: 'Montserrat';
     font-family: 'Montserrat', sans-serif;
 }
 
 p {
-    font-family: 'Montserrat', sans-serif;
     font-size: 16px;
     letter-spacing: 2px;
-
 }
 
-
-/*table*/
-
-/* Ensure the table doesn't overflow */
+/* Table responsive styles */
 .table-responsive {
     overflow-x: auto;
 }
 
-/* Hide extra columns on small screens */
 @media (max-width: 768px) {
     #coursesTable th:nth-child(3),
     #coursesTable td:nth-child(3),
@@ -46,13 +37,13 @@ p {
 }
 
 html, body {
-    height: 100%; /* Ensures the body and html take full height */
+    height: 100%;
     margin: 0;
 }
 
 #wrapper {
     display: flex;
-    height: 100vh; /* Full viewport height */
+    height: 100vh;
 }
 
 #sidebar {
@@ -61,31 +52,31 @@ html, body {
     position: fixed;
     top: 0;
     left: 0;
+    background-color: #343a40; /* Sidebar background */
     transition: all 0.3s ease;
-    z-index: 1; /* Sidebar has a lower z-index */
+    z-index: 1;
+}
+
+#sidebar.active {
+    left: -250px; /* Collapsed sidebar off-screen */
 }
 
 #page-content-wrapper {
     flex-grow: 1;
     transition: margin-left 0.3s ease;
     padding-top: 20px;
+    margin-left: 0; /* Initially no margin */
 }
 
-#sidebar.active {
-    left: -250px; /* Sidebar slides off-screen when collapsed */
-}
 
-#page-content-wrapper.active {
-    margin-left: 0; /* Content shifts back when sidebar is hidden */
-}
 
 /* Topbar styles */
 .topbar {
-    position: fixed; /* Ensures the topbar stays at the top */
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100%; /* Ensures full width */
-    z-index: 2; /* Ensures topbar is above the sidebar */
+    width: 100%;
+    z-index: 2;
 }
 
 #toggleSidebar {
@@ -97,13 +88,4 @@ html, body {
 
 .topbar .right-align {
     margin-left: auto;
-}
-
-#sidebar.collapsed {
-    width: 0;
-    padding: 0;
-}
-
-#page-content-wrapper.expanded {
-    margin-left: 0;
 }

@@ -6,7 +6,7 @@
                 <img src="{{ asset('assets/images/logo1_3D_half.png') }}" alt="Logo" width="150" style="margin-top:30px;">
             </a>
             <a href="{{ route('course.index') }}" class="nav-link text-white">
-                <i class="fa fa-graduation-cap"></i> <span>Dashbaord</span>
+                <i class="fa fa-graduation-cap"></i> <span>Dashboard</span>
             </a>
 
             <!-- Divider -->
@@ -97,6 +97,7 @@
                 </a>
             </div>
 
+            <!-- Logout Form -->
             <form action="{{ route('admin.logout') }}" method="POST" class="mt-3">
                 @csrf
                 <button type="submit" class="btn btn-danger w-100">Logout</button>
@@ -118,6 +119,7 @@
     </div>
 </div>
 
+<!-- jQuery Script -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
@@ -141,27 +143,19 @@
                 arrowIcon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
             }
         });
-    });
       
+        $(document).ready(function() {
+    // Initially collapse the sidebar on page load
+    $('#sidebar').addClass('active');
+    $('#page-content-wrapper').addClass('active'); // Move content to the left initially
+    
     // Handle the sidebar toggle
-    $(document).ready(function() {
-        // Ensure sidebar is collapsed when the page loads
-        $('#sidebar').css('width', '0');  // Collapse sidebar
-        $('#page-content-wrapper').css('margin-left', '0');  // Adjust content area
-
-        // Handle the sidebar toggle
-        $('#toggleSidebar').click(function() {
-            // Toggle sidebar width and content margin
-            if ($('#sidebar').width() === 0) {
-                $('#sidebar').animate({ width: '250px' }, 300);  // Expand sidebar
-                $('#page-content-wrapper').animate({ marginLeft: '250px' }, 300);  // Adjust content area
-            } else {
-                $('#sidebar').animate({ width: '0' }, 300);  // Collapse sidebar
-                $('#page-content-wrapper').animate({ marginLeft: '0' }, 300);  // Adjust content area
-            }
-        });
+    $('#toggleSidebar').click(function() {
+        // Toggle the 'active' class on both the sidebar and the content wrapper
+        $('#sidebar').toggleClass('active');
+        $('#page-content-wrapper').toggleClass('active');
     });
+});
 
-
-
+    });
 </script>
