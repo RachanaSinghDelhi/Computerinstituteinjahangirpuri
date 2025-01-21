@@ -31,7 +31,8 @@ class FeeController extends Controller
                     WHEN MAX(fees.payment_date) >= CURDATE() AND SUM(fees.amount_paid) < courses.total_fees THEN 'Paid but Pending Next Month'
                     ELSE 'Pending'
                 END as status" // Determine status
-            )
+            ),
+            DB::raw('MAX(fees.updated_at) as last_updated') // Capture the latest update time
         )
         ->where('students.status', 'active') // Only active students
         ->groupBy(
@@ -41,7 +42,8 @@ class FeeController extends Controller
             'courses.total_fees',
             'courses.installments',
             'courses.id'// Ensure that course_id is included in the group
-        )  ->orderBy('students.student_id', 'desc')
+        )  ->orderBy('last_updated', 'desc') // Sort by latest update time
+         ->orderBy('students.student_id', 'desc')
         ->get();
 
     // Sync the data to the student_fees_status table

@@ -39,6 +39,7 @@
                     <th  class="d-none d-md-table-cell">Installments</th>
                     <th  class="d-none d-md-table-cell">Fees Paid</th>
                     <th  class="d-none d-md-table-cell">Fees Due</th>
+                    <th class="text-muted">Last Updated</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
@@ -53,6 +54,7 @@
                         <td  class="d-none d-md-table-cell">{{ $fee->installments }}</td>
                         <td  class="d-none d-md-table-cell">{{ $fee->fees_paid }}</td>
                         <td  class="d-none d-md-table-cell">{{ $fee->fees_due }}</td>
+                        <td class="text-muted">{{ $fee->last_updated }}</td> <!-- Include the updated_at column -->
                         <td>
                             <span class="badge 
                                 @if($fee->status == 'Paid') 
@@ -93,6 +95,12 @@
             lengthMenu: [5, 10, 15, 20], // Dropdown options
             responsive: true,
             autoWidth: false,
+            order: [[7, 'desc']], // Sort by the 6th column (updated_at) in descending order
+        columnDefs: [
+            { targets: 7, type: 'date' }, // Specify column index 5 as a date type
+
+            { targets: [7], visible: false } // Hide the first column (e.g., Student ID)
+        ],
             language: {
                 searchPlaceholder: "Search records...",
                 lengthMenu: "Show _MENU_ entries",
