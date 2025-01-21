@@ -20,9 +20,13 @@
             </ul>
         </div>
     @endif
-
+    <div>
+        <a href="{{ route('students.index') }}">
+            <button class="btn btn-sm btn-success">Student List</button>
+        </a>
+    </div>
     <!-- Student Form -->
-    <form action="{{ route('students.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('students.liststore') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="row mb-3">
@@ -50,7 +54,7 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label for="course" class="form-label">Course</label>
-                <select class="form-select" id="course" name="course_id">
+                <select class="form-select" id="course" name="course">
                     <option selected disabled>Select Course</option>
                     @foreach($courses as $course)
                         <option value="{{ $course->id }}" {{ old('course_id') == $course->id ? 'selected' : '' }}>{{ $course->course_title }}</option>

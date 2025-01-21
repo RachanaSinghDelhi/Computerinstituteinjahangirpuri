@@ -59,7 +59,11 @@
     </div>
 </div>
 </div>
-
+<div>
+        <a href="{{ route('students.create') }}">
+            <button class="btn btn-sm btn-success">Add New Student</button>
+        </a>
+    </div>
     <!-- Responsive Table -->
 <div class="table-responsive">
     <table class="table table-bordered table-striped" id="studentTable">
@@ -96,14 +100,14 @@
                     @endif
                 </td>
                 <td>
-                    <select name="status" class="form-control form-control-sm student-status" data-student-id="{{ $student->id }}">
+                    <select name="status" class="form-control form-control-sm student-status" data-student-id="{{ $student->student_id  }}">
                         <option value="Active" {{ strtoupper(trim($student->status)) === 'ACTIVE' ? 'selected' : '' }}>Active</option>
                         <option value="Inactive" {{ strtoupper(trim($student->status)) === 'INACTIVE' ? 'selected' : '' }}>Inactive</option>
                         <option value="Left" {{ strtoupper(trim($student->status)) === 'LEFT' ? 'selected' : '' }}>Left</option>
                         <option value="Completed" {{ strtoupper(trim($student->status)) === 'COMPLETED' ? 'selected' : '' }}>Completed</option>
                     </select>
-                    <a href="{{ route('students.edit', $student->id) }}" class="btn btn-primary btn-sm">Edit</a>
-                    <button type="button" class="btn btn-danger btn-sm delete-student" data-student-id="{{ $student->id }}">Delete</button>
+                    <a href="{{ route('students.edit', $student->student_id ) }}" class="btn btn-primary btn-sm">Edit</a>
+                    <button type="button" class="btn btn-danger btn-sm delete-student" data-student-id="{{ $student->student_id }}">Delete</button>
                 </td>
             </tr>
             @endforeach

@@ -14,7 +14,7 @@
         <table id="studentTable" class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th><th>
+                   
                     <th>Student ID</th>
                     <th>Name</th>
                     <th>Father's Name</th>

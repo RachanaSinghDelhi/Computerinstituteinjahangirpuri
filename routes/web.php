@@ -157,7 +157,7 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
 
     // Create Student Route
     Route::get('/add-student', [StudentController::class, 'create'])->name('students.create'); // Show form
-    Route::post('/add-student', [StudentController::class, 'store'])->name('students.liststore');//changed
+    Route::post('/add-student', [StudentController::class, 'liststore'])->name('students.liststore');//changed
     
     // List All Students (index)
     Route::get('/students', [StudentController::class, 'index'])->name('students.index');

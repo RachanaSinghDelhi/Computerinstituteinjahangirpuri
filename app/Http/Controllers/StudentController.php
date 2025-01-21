@@ -36,8 +36,11 @@ class StudentController extends Controller
       // Handle photo upload if provided
 $photoPath = null;
 if ($request->hasFile('photo')) {
-    // Store photo in the 'public/students' directory within the 'public' disk
-    $photoPath = $request->file('photo')->storeAs('students', $request->file('photo')->getClientOriginalName(), 'public');
+      // Get the original file name
+      $fileName = $request->file('photo')->getClientOriginalName();
+
+      // Store the file using the original file name
+      $photoPath = $request->file('photo')->storeAs('students', $fileName, 'public');
 }
 
 
@@ -49,7 +52,7 @@ if ($request->hasFile('photo')) {
             'doa' => $request->doa,
             'course_id' => $request->course, // Use course_id instead of course
             'batch' => $request->batch,
-            'photo' => $photoPath,
+            'photo' =>  $fileName,
             'contact_number' => $request->contact_number,
         ]);
 
@@ -85,7 +88,6 @@ public function edit($id)
     return view('dashboard.students.edit_student', compact('student', 'courses'));
 }
 
-// Update the specified student in storage.
 public function update(Request $request, $id)
 {
     // Validate the incoming data
@@ -95,9 +97,9 @@ public function update(Request $request, $id)
         'doa' => 'required|date',
         'course_id' => 'nullable|exists:courses,id',
         'batch' => 'required|string|max:255',
-        'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Validate uploaded image
+        'cropped_photo' => 'nullable|string', // Validate cropped image Base64 string
         'contact_number' => 'required|string|max:15', // Validate contact number
-       
     ]);
 
     // Find the student by ID
@@ -109,20 +111,39 @@ public function update(Request $request, $id)
     $student->doa = $validatedData['doa'];
     $student->course_id = $validatedData['course_id'];
     $student->batch = $validatedData['batch'];
-    $student->contact_number = $request->input('contact_number'); // Update contact number
+    $student->contact_number = $validatedData['contact_number'];
 
-    // Handle file upload if a photo is provided
-    if ($request->hasFile('photo')) {
-        $photoPath = $request->file('photo')->storeAs('students', $request->file('photo')->getClientOriginalName(), 'public');
-        $student->photo = $photoPath;
+    // Handle cropped image if provided
+    if ($request->filled('cropped_photo')) {
+        $croppedImage = $request->input('cropped_photo'); // Get Base64 string
+        $imageData = explode(',', $croppedImage)[1]; // Extract the Base64 data
+        $decodedImage = base64_decode($imageData); // Decode the Base64 string
+
+        // Generate a unique file name for the cropped image
+        $fileName = $id.'.jpg';
+
+        // Define the storage path
+        $path = 'storage/students/' . $fileName;
+
+        // Save the cropped image to storage
+        file_put_contents(public_path($path), $decodedImage);
+
+        // Update the student's photo field with the path to the cropped image
+        $student->photo = $fileName;
+    } elseif ($request->hasFile('photo')) {
+        // Handle the uploaded file if no cropped image is provided
+        $fileName = $request->file('photo')->getClientOriginalName();
+        $photoPath = $request->file('photo')->storeAs('students', $fileName, 'public');
+        $student->photo = $fileName;
     }
 
-    // Save the student data to the database
+    // Save the updated student data to the database
     $student->save();
 
     // Redirect to a success page or back to the student list with a success message
     return redirect()->route('students.index')->with('success', 'Student updated successfully.');
 }
+
 
 
 

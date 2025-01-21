@@ -21,10 +21,14 @@
             </ul>
         </div>
     @endif
-
+    <div>
+        <a href="{{ route('students.index') }}">
+            <button class="btn btn-sm btn-success">Students List</button>
+        </a>
+    </div>
 
     <!-- Form for editing a student -->
-    <form action="{{ route('students.update', $student->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('students.update', $student->student_id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -102,16 +106,42 @@
             </div>
 
             <!-- Photo -->
+            <!-- Photo Upload -->
             <div class="col-md-12 mb-3">
                 <label for="photo" class="form-label">Photo</label>
-                @if($student->photo)
-                    <div class="mb-2">
-                        <img src="{{ asset('storage/' . $student->photo) }}" alt="Student Photo" width="100">
+                <div class="mb-2">
+                    @if($student->photo)
+                        <img src="{{ asset('storage/students/' . $student->photo) }}" id="current-photo" alt="Student Photo" width="100">
+                    @endif
+                </div>
+                <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
+
+                <!-- Image Crop Modal -->
+                <div id="crop-modal" class="modal fade" tabindex="-1" aria-labelledby="cropModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="cropModalLabel">Crop Photo</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="img-container">
+                                    <img id="image-to-crop" src="" alt="Image to Crop">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="rotate-left">Rotate Left</button>
+                                <button type="button" class="btn btn-primary" id="rotate-right">Rotate Right</button>
+                                <button type="button" class="btn btn-success" id="crop-image">Crop & Save</button>
+                            </div>
+                        </div>
                     </div>
-                @endif
-                <input type="file" class="form-control" id="photo" name="photo">
+                </div>
+                <!-- Hidden Input for Cropped Image -->
+                <input type="hidden" id="cropped-photo" name="cropped_photo">
             </div>
         </div>
+
             <!-- Photo -->
           
      
@@ -125,3 +155,54 @@
     </form>
 </div>
 @endsection
+@push('scripts')
+<!-- Cropper.js -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const photoInput = document.getElementById('photo');
+        const cropModal = new bootstrap.Modal(document.getElementById('crop-modal'));
+        const imageToCrop = document.getElementById('image-to-crop');
+        const croppedPhotoInput = document.getElementById('cropped-photo');
+        let cropper;
+
+        photoInput.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    imageToCrop.src = event.target.result;
+                    cropModal.show();
+
+                    if (cropper) {
+                        cropper.destroy();
+                    }
+                    cropper = new Cropper(imageToCrop, {
+                        aspectRatio: 1,
+                        viewMode: 2,
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('rotate-left').addEventListener('click', function () {
+            cropper.rotate(-45);
+        });
+
+        document.getElementById('rotate-right').addEventListener('click', function () {
+            cropper.rotate(45);
+        });
+
+        document.getElementById('crop-image').addEventListener('click', function () {
+            const canvas = cropper.getCroppedCanvas();
+            croppedPhotoInput.value = canvas.toDataURL('image/jpeg');
+            cropModal.hide();
+        });
+    });
+</script>
+@endpush
+
+
