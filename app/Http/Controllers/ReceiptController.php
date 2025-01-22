@@ -45,7 +45,7 @@ public function uploadReceipts(Request $request)
     // Display receipts
     public function showReceipts()
     {
-        $receipts = Receipt::orderBy('uploaded_at', 'desc')->paginate(10); // Adjust the pagination number as needed
+        $receipts = Receipt::orderBy('uploaded_at', 'desc')->paginate(100); // Adjust the pagination number as needed
         return view('dashboard.fees.receipts', compact('receipts')); // Updated path
     }
     
