@@ -31,7 +31,7 @@
                                     <td>{{ \Carbon\Carbon::parse($fee->payment_date)->addMonth()->format('d-m-Y') }}</td>
                                     <td>
                                         @if($fee->receipt_image)
-                                            <a href="{{ asset('storage/' . $fee->receipt_image) }}" target="_blank" class="btn btn-primary btn-sm">View Receipt</a>
+                                            <a href="{{ asset('storage/receipts/' . $fee->receipt_image) }}" target="_blank" class="btn btn-primary btn-sm">View Receipt</a>
                                         @else
                                             <span class="text-muted">N/A</span>
                                         @endif
