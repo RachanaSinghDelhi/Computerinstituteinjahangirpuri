@@ -1,13 +1,55 @@
 @extends('dashboard.app')
+
 @section('content')
 <div class="container mt-5">
     <div class="card shadow">
         <div class="card-body">
             <h2 class="mb-4">Fee Details for {{ $student->name }}</h2>
 
+            <!-- Link to Edit Course -->
+            <form action="{{ route('fees.updateCourse', $student->student_id) }}" method="POST" class="mb-4">
+                @csrf
+                @method('PUT') <!-- Use PUT as per the route -->
+                <div class="mb-3">
+                    <label for="course_id" class="form-label"><strong>Course:</strong></label>
+                    <select name="course_id" id="course_id" class="form-select">
+                        @foreach ($courses as $course)
+                            <option value="{{ $course->id }}" 
+                                {{ $student->course_id == $course->id ? 'selected' : '' }}>
+                                {{ $course->course_title }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-pencil-square"></i> Update Course
+                </button>
+            </form>
+
+            <!-- Link to Edit Total Fees -->
+            <form action="{{ route('updateTotalFees', $student->student_id) }}" method="POST" class="mb-4">
+                @csrf
+                @method('PUT') <!-- Use PUT as per the route -->
+                <div class="mb-3">
+                    <label for="total_fees" class="form-label"><strong>Total Fees:</strong></label>
+                    <input type="number" name="total_fees" id="total_fees" class="form-control" 
+                        value="{{ $totalFees }}" min="0" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-pencil-square"></i> Update Total Fees
+                </button>
+            </form>
+
+            <p><strong>Total Fees of the Course:</strong> ₹{{ $totalFees }}</p>
+
             @if($hasFees)
-                <p><strong>Course:</strong> {{ optional($student->fees->first()->course)->course_title ?? 'No Course Assigned' }}</p>
                 <p><strong>Total Fees Paid:</strong> ₹{{ $student->fees->sum('amount_paid') }}</p>
+
+                <div class="d-flex justify-content-end mb-3">
+                    <a href="{{ route('add_fees', $student->student_id) }}" class="btn btn-success">
+                        <i class="bi bi-plus-circle"></i> Add Fees
+                    </a>
+                </div>
 
                 <div class="table-responsive mt-4">
                     <table class="table table-bordered">

@@ -12,18 +12,22 @@
 
     <!-- Receipts -->
     <div class="container mt-4">
-        <h2>Bulk Upload Receipts</h2>
-        <form action="{{ route('upload.receipts') }}" method="POST" enctype="multipart/form-data">
+        <h1 class="text-center">Upload Receipts</h1>
+        <form action="{{ route('receipts.upload') }}" method="POST" enctype="multipart/form-data">
             @csrf
+            <!-- Input for starting number -->
             <div class="mb-3">
-                <label for="startingNumber" class="form-label">Starting Number</label>
-                <input type="number" name="startingNumber" id="startingNumber" class="form-control" required>
+                <label for="starting_number" class="form-label">Starting Number:</label>
+                <input type="number" name="starting_number" id="starting_number" class="form-control" required>
             </div>
+
+            <!-- File input -->
             <div class="mb-3">
-                <label for="receipts" class="form-label">Upload Receipts</label>
+                <label for="receipts" class="form-label">Select Receipts:</label>
                 <input type="file" name="receipts[]" id="receipts" class="form-control" multiple required>
             </div>
-            <button type="submit" class="btn btn-success">Upload Receipts</button>
+
+            <button type="submit" class="btn btn-primary">Upload</button>
         </form>
     </div>
 
@@ -49,12 +53,34 @@
                     <tr>
                         <td>{{ $fee->student_id }}</td>
                         <td>{{ $fee->student_name }}</td>
-                        <td>{{ $fee->course_title }}</td>
-                        <td  class="d-none d-md-table-cell">{{ $fee->total_fees }}</td>
+                        <td>
+                            <form action="{{ route('fees.updateCourse', $fee->student_id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <select name="course_id" class="form-control" onchange="this.form.submit()">
+                                    @foreach($courses as $course)
+                                        <option value="{{ $course->id }}" @if($course->id == $fee->course_id) selected @endif>
+                                            {{ $course->course_title }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </form>
+                        </td>
+                        <td  class="d-none d-md-table-cell">
+                        <form action="{{ route('updateTotalFees', $fee->student_id) }}" method="POST">
+            @csrf
+            @method('PUT')
+
+            <!-- Use the updated fee value from the session or the current fee value -->
+            <input type="number" name="total_fees" value="{{ $fee->student_total_fees }}" class="form-control" required>
+            
+            <button type="submit" class="btn btn-sm btn-primary mt-2">Update Fees</button>
+        </form>
+                        </td>
                         <td  class="d-none d-md-table-cell">{{ $fee->installments }}</td>
                         <td  class="d-none d-md-table-cell">{{ $fee->fees_paid }}</td>
                         <td  class="d-none d-md-table-cell">{{ $fee->fees_due }}</td>
-                        <td class="text-muted">{{ $fee->last_updated }}</td> <!-- Include the updated_at column -->
+                        <td class="text-muted">{{ $fee->last_updated }}</td>
                         <td>
                             <span class="badge 
                                 @if($fee->status == 'Paid') 
@@ -64,9 +90,7 @@
                                 @else 
                                     bg-danger 
                                 @endif
-                            ">
-                                {{ $fee->status }}
-                            </span>
+                            ">{{ $fee->status }}</span>
                         </td>
                         <td>
                             <a href="{{ route('add_fees', $fee->student_id) }}" class="btn btn-primary btn-sm">Pay Now</a>
@@ -81,26 +105,22 @@
 
 @endsection
 
-
 @push('scripts')
-
 <script>
     $(document).ready(function() {
-        // Initialize DataTable with options for pagination, search, and records per page
         $('#feesTable').DataTable({
             paging: true,
             searching: true,
-            lengthChange: true, // Enable the "Show entries" dropdown
-            pageLength: 10, // Default number of rows
-            lengthMenu: [5, 10, 15, 20], // Dropdown options
+            lengthChange: true,
+            pageLength: 10,
+            lengthMenu: [5, 10, 15, 20],
             responsive: true,
             autoWidth: false,
-            order: [[7, 'desc']], // Sort by the 6th column (updated_at) in descending order
-        columnDefs: [
-            { targets: 7, type: 'date' }, // Specify column index 5 as a date type
-
-            { targets: [7], visible: false } // Hide the first column (e.g., Student ID)
-        ],
+            order: [[7, 'desc']],
+            columnDefs: [
+                { targets: 7, type: 'date' },
+                { targets: [7], visible: false }
+            ],
             language: {
                 searchPlaceholder: "Search records...",
                 lengthMenu: "Show _MENU_ entries",

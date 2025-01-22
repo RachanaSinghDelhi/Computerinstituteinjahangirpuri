@@ -3,51 +3,43 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
+use App\Models\Receipt;
+use Illuminate\Support\Facades\Storage;
 
 class ReceiptController extends Controller
 {
-    /**
-     * Handle the bulk upload of receipt images.
-     */
-    public function upload(Request $request)
+    // Upload bulk receipts
+    public function uploadReceipts(Request $request)
     {
-        // Validate the uploaded files
-        $validated = $request->validate([
-            'receipt_images' => 'required|array',
-            'receipt_images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validation for each image
+        $request->validate([
+            'starting_number' => 'required|integer|min:1',
+            'receipts.*' => 'required|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        // Initialize an array to hold the paths of uploaded files
-        $uploadedFiles = [];
+        $files = $request->file('receipts');
+        $startingNumber = $request->input('starting_number');
 
-        // Loop through each uploaded file and store it
-        if ($request->hasFile('receipt_images')) {
-            foreach ($request->file('receipt_images') as $file) {
-                // Get the original file name
-                $originalFileName = $file->getClientOriginalName();
-                $fileExtension = $file->getClientOriginalExtension();
-                $baseFileName = pathinfo($originalFileName, PATHINFO_FILENAME); // Get the file name without extension
+        foreach ($files as $index => $file) {
+            $receiptNumber = $startingNumber + $index; // Generate receipt number
+            $extension = $file->getClientOriginalExtension(); // Get file extension
+            $fileName = $receiptNumber . '.' . $extension; // Generate file name like "7148.jpg"
+            $filePath = $file->storeAs('receipts', $fileName, 'public');
 
-                // Define the file path in the public/receipts folder
-                $filePath = public_path('receipts/' . $originalFileName);
-
-                // Check if the file already exists
-                if (File::exists($filePath)) {
-                    // If the file exists, append a unique identifier to the base file name
-                    $uniqueFileName = $baseFileName . '_' . time() . '.' . $fileExtension;
-                    $filePath = public_path('receipts/' . $uniqueFileName);
-                }
-
-                // Move the file to the public/receipts folder
-                $file->move(public_path('receipts'), basename($filePath));
-
-                // Store the file path
-                $uploadedFiles[] = 'receipts/' . basename($filePath);
-            }
+            // Save receipt details to the database
+            Receipt::create([
+                'file_name' => $fileName,
+                'file_path' => $filePath,
+            ]);
         }
 
-        // Redirect back with success message and uploaded files info
-        return back()->with('success', 'Receipts uploaded successfully!')->with('files', $uploadedFiles);
+        return back()->with('success', 'Receipts uploaded successfully.');
     }
+
+    // Display receipts
+    public function showReceipts()
+    {
+        $receipts = Receipt::orderBy('uploaded_at', 'desc')->paginate(10); // Adjust the pagination number as needed
+        return view('dashboard.fees.receipts', compact('receipts')); // Updated path
+    }
+    
 }

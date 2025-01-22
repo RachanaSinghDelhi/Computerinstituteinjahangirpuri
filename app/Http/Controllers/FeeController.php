@@ -12,60 +12,79 @@ class FeeController extends Controller
 {
     public function index()
 {
-    // Retrieve the fees data
+    // Retrieve the fees data along with course options
     $feesData = DB::table('students')
         ->join('courses', 'students.course_id', '=', 'courses.id')
         ->leftJoin('fees', 'students.student_id', '=', 'fees.student_id')
+        ->leftJoin('student_fees_status', 'students.student_id', '=', 'student_fees_status.student_id') // Correct join with student_fees_status
         ->select(
-            'students.student_id', // Student ID
-            'students.name as student_name', // Student Name
-            'courses.course_title', // Course Title
-            'courses.total_fees', // Total Fees
-            'courses.installments', // Installments
-            'courses.id as course_id', // Course ID
-            DB::raw('IFNULL(SUM(fees.amount_paid), 0) as fees_paid'), // Ensure fees_paid is 0 if no data exists
-            DB::raw('courses.total_fees - IFNULL(SUM(fees.amount_paid), 0) as fees_due'), // Ensure fees_due calculation is correct
+            'students.student_id',
+            'students.name as student_name',
+            'courses.course_title',
+            'courses.total_fees',
+            'courses.installments',
+            'courses.id as course_id',
+            DB::raw('IFNULL(SUM(fees.amount_paid), 0) as fees_paid'),
+            DB::raw('courses.total_fees - IFNULL(SUM(fees.amount_paid), 0) as fees_due'),
             DB::raw(
                 "CASE 
                     WHEN SUM(fees.amount_paid) >= courses.total_fees THEN 'Paid'
                     WHEN MAX(fees.payment_date) >= CURDATE() AND SUM(fees.amount_paid) < courses.total_fees THEN 'Paid but Pending Next Month'
                     ELSE 'Pending'
-                END as status" // Determine status
+                END as status"
             ),
-            DB::raw('MAX(fees.updated_at) as last_updated') // Capture the latest update time
+            DB::raw('MAX(fees.updated_at) as last_updated'),
+            'student_fees_status.total_fees as student_total_fees' // Select from student_fees_status
         )
-        ->where('students.status', 'active') // Only active students
+        ->where('students.status', 'active')
         ->groupBy(
             'students.student_id',
             'students.name',
             'courses.course_title',
             'courses.total_fees',
             'courses.installments',
-            'courses.id'// Ensure that course_id is included in the group
-        )  ->orderBy('last_updated', 'desc') // Sort by latest update time
-         ->orderBy('students.student_id', 'desc')
+            'courses.id',
+            'student_fees_status.total_fees' // Group by total_fees in student_fees_status
+        )
+        ->orderBy('last_updated', 'desc')
+        ->orderBy('students.student_id', 'desc')
         ->get();
 
-    // Sync the data to the student_fees_status table
-    foreach ($feesData as $fee) {
-        DB::table('student_fees_status')->updateOrInsert(
-            ['student_id' => $fee->student_id], // Match by student ID
-            [
-                'student_name' => $fee->student_name,
-                'course_id' => $fee->course_id, // Add course_id here
-                'course_title' => $fee->course_title,
-                'total_fees' => $fee->total_fees,
-                'installments' => $fee->installments,
-                'fees_paid' => $fee->fees_paid,
-                'fees_due' => $fee->fees_due,
-                'status' => $fee->status,
-                'updated_at' => now(), // Update timestamp
-            ]
-        );
-    }
+    // Fetch available courses
+    $courses = DB::table('courses')->get();
 
-    // Return the view with the fees data
-    return view('dashboard.fees.fees', compact('feesData'));
+    return view('dashboard.fees.fees', compact('feesData', 'courses'));
+}
+
+public function updateCourse(Request $request, $student_id)
+{
+    // Update the course for a student
+    DB::table('students')
+        ->where('student_id', $student_id)
+        ->update(['course_id' => $request->course_id]);
+
+    return redirect()->route('fees.index')->with('success', 'Course updated successfully.');
+}
+
+public function updateTotalFees(Request $request, $student_id)
+{
+     
+     // Validate the input to ensure it's a valid number
+     $request->validate([
+         'total_fees' => 'required|numeric|min:0',
+     ]);
+ 
+     // Update the total fees for the specific student in the student_fees_status table
+     DB::table('student_fees_status')
+         ->where('student_id', $student_id)
+         ->update(['total_fees' => $request->total_fees]);
+ 
+     // Retrieve the updated total fees to pass it back to the view
+     $updatedFee = DB::table('student_fees_status')
+                     ->where('student_id', $student_id)
+                     ->value('total_fees');
+ 
+     return redirect()->route('fees.index')->with('success', 'Total Fees updated successfully.')->with('updatedFee', $updatedFee);
 }
 
 
@@ -81,11 +100,16 @@ class FeeController extends Controller
             return redirect()->route('fees.index')->with('error', 'Student not found.');
         }
     
+
+            // Fetch total fees for the student from the student_fees_status table
+    $totalFees = DB::table('student_fees_status')
+    ->where('student_id', $student_id)
+    ->value('total_fees');
         // Check if the student has any fees submitted
         $hasFees = $student->fees->isNotEmpty();
     
         // Pass the data to the view
-        return view('dashboard.fees.single_fees', compact('student', 'hasFees'));
+        return view('dashboard.fees.single_fees', compact('student', 'hasFees','totalFees'));
     }
 
     
@@ -209,7 +233,7 @@ public function destroy($id)
 
 // app/Http/Controllers/StudentController.php
 
-// app/Http/Controllers/StudentController.php
+/* app/Http/Controllers/StudentController.php
 public function search(Request $request)
 {
     $query = $request->input('query');
@@ -221,7 +245,7 @@ public function search(Request $request)
 
     // Return the filtered results as a partial view
     return view('dashboard.fees.search_fees_table', compact('feesData'));
-}
+}*/
 
 
 public function uploadReceipts(Request $request)

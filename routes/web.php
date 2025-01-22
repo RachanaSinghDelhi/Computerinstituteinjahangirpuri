@@ -26,7 +26,7 @@ use App\Http\Controllers\ReceiptController;
 Route::prefix('dashboard')->group(function () {
  
 
-    Route::post('/upload-receipts', [FeeController::class, 'uploadReceipts'])->name('upload.receipts');
+  // Route::post('/upload-receipts', [FeeController::class, 'uploadReceipts'])->name('upload.receipts');
 
 
 Route::get('/fees', [FeeController::class, 'index'])->name('fees.index');
@@ -45,6 +45,14 @@ Route::get('/search-fees', [FeeController::class, 'search'])->name('search.fees'
 
  // Route for updating student fees (total fees and installments)
  Route::put('/fees/update/{student_id}', [FeeController::class, 'updateStudentFees'])->name('fees.updateStudentFees');
+// Route to display the receipt upload form and uploaded receipts
+Route::get('/receipts', [ReceiptController::class, 'showReceipts'])->name('receipts.index');
+Route::post('/receipts/upload', [ReceiptController::class, 'uploadReceipts'])->name('receipts.upload');
+
+
+Route::put('/fees/updateCourse/{student_id}', [FeeController::class, 'updateCourse'])->name('fees.updateCourse');
+Route::put('/fees/{student_id}/update-total-fees', [FeeController::class, 'updateTotalFees'])->name('updateTotalFees');
+
 
 
 });

@@ -78,6 +78,9 @@
                 <a href="{{ route('fees.index') }}" class="nav-link text-white ms-3">
                     <i class="fa fa-money-check"></i> <span>Fees</span>
                 </a>
+                <a href="{{ route('receipts.index') }}" class="nav-link text-white ms-3">
+    <i class="fa fa-money-check"></i> <span>Receipts</span>
+</a>
             </div>
 
             <!-- Divider -->
