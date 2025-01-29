@@ -8,7 +8,7 @@
     <meta name="keywords" content="computer institute in Jahangirpuri, nice computer institute, computer institute in Delhi, computer institute in Rohini, computer center reviews, computer institute reviews, best reviews for computer institute, computer courses, graphic design, advanced excel, tally, python, web design, digital marketing, job-oriented computer training">
     <meta name="robots" content="index, follow" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>@yield('title') - Computer institute in Jahangirpuri</title>
+    <title>@yield('title') - Computer Institute in Jahangirpuri</title>
     <link rel="canonical" href="https://www.computerinstituteindelhijahangirpuri.com" />
 
     <!-- Open Graph (OG) Meta Tags for Social Media -->
@@ -240,6 +240,15 @@
 }
 </script>
 
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-831453913"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-831453913');
+</script>
 
 
     <!-- CSS Links -->
