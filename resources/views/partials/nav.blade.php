@@ -9,13 +9,16 @@
                 <a class="nav-link"><i class="fa fa-clock-o"></i> Mon - Fri 8AM-8PM</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="tel:9312945741"><i class="fa fa-phone"></i> 9312945741</a>
+                    <a class="nav-link" href="tel:9312945741"><i class="fa fa-phone"></i> Call Now</a> 
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="mailto:nicewebtechnologies@gmail.com"><i class="fa fa-envelope"></i> nicewebtechnologies@gmail.com</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#"><i class="fa fa-map-marker"></i> A1- 9/10, Jahangirpuri Rd, Delhi</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="tel:9312945741"><i class="fa fa-phone"></i> 9312945741</a> 
                 </li>
             </ul>
         </div>

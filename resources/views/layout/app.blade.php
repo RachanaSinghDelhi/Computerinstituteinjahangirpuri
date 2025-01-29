@@ -314,6 +314,25 @@
   gtag('config', 'AW-831453913');
 </script>
 
+
+<!-- Event snippet for Call Now conversion page
+In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
+<script>
+function gtag_report_conversion(url) {
+  var callback = function () {
+    if (typeof(url) != 'undefined') {
+      window.location = url;
+    }
+  };
+  gtag('event', 'conversion', {
+      'send_to': 'AW-831453913/nlUwCKyKsJYaENn1u4wD',
+      'value': 1.0,
+      'currency': 'INR',
+      'event_callback': callback
+  });
+  return false;
+}
+</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
 <link rel="icon" href="{{ asset('favicon.ico') }}"  type="image/x-icon">
