@@ -100,6 +100,25 @@
                 </a>
             </div>
 
+
+
+ <!-- Divider -->
+ <hr class="text-white">
+
+            <a href="#usersMenu" class="nav-link text-white" data-bs-toggle="collapse" aria-expanded="false" aria-controls="usersMenu">
+    <i class="fa fa-users"></i> <span>Users</span>
+    <i class="fa fa-chevron-down ms-2 arrow"></i>
+</a>
+<div class="collapse" id="usersMenu">
+    <a href="{{ route('users.index') }}" class="nav-link text-white ms-3">
+        <i class="fa fa-list"></i> <span>User List</span>
+    </a>
+    <a href="{{ route('users.create') }}" class="nav-link text-white ms-3">
+        <i class="fa fa-plus"></i> <span>Create User</span>
+    </a>
+</div>
+
+
             <!-- Logout Form -->
             <form action="{{ route('admin.logout') }}" method="POST" class="mt-3">
                 @csrf

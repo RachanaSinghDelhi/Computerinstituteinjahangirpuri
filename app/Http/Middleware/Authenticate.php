@@ -17,6 +17,6 @@ class Authenticate extends Middleware
         }
 
         // Redirect to the custom admin login route
-        return route('admin.login');
+      //  return route('admin.login');
     }
 }

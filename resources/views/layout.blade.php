@@ -9,20 +9,20 @@
     <meta name="robots" content="index, follow" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title') - Computer Institute in Jahangirpuri</title>
-    <link rel="canonical" href="https://www.computerinstituteindelhijahangirpuri.com" />
+    <link rel="canonical" href="https://www.computerinstituteindelhijahangirpuri.com/" />
    <!-- Open Graph (OG) Meta Tags for Social Media -->
     <meta property="og:title" content="Nice Computer Institute - Computer Institute in Jahangirpuri">
     <meta property="og:description" content="Nice Computer Institute offers professional courses like Graphic Design, Web Development, Python, Tally, and Advanced Excel. Enroll today in Jahangirpuri, Delhi.">
     <meta property="og:url" content="https://www.computerinstituteindelhijahangirpuri.com/">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="http://www.computerinstituteindelhijahangirpuri.com/assets/images/manager_computer-institute-in-jahangirpuri.jpeg">
+    <meta property="og:image" content="https://www.computerinstituteindelhijahangirpuri.com/assets/images/manager_computer-institute-in-jahangirpuri.jpeg">
     <meta property="og:site_name" content="Nice Computer Institute">
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Nice Computer Institute in Jahangirpuri">
     <meta name="twitter:description" content="Enroll in Nice Computer Institute for courses in Web Design, Python, Graphic Design, Tally, and more. Get the best job-oriented computer training in Jahangirpuri.">
-    <meta name="twitter:image" content="http://www.computerinstituteindelhijahangirpuri.com/assets/images/manager_computer-institute-in-jahangirpuri.jpeg">
+    <meta name="twitter:image" content="https://www.computerinstituteindelhijahangirpuri.com/assets/images/manager_computer-institute-in-jahangirpuri.jpeg">
     <meta name="twitter:site" content="@nicewebtechno">
     <meta name="google-site-verification" content="k_wn2HhZyY74S3ieDOBGbjRIaVSmTuNit2gClOSDbgU"/>
 
@@ -34,7 +34,7 @@
             "@type": "EducationalOrganization",
             "name": "Nice Computer Institute",
             "url": "https://www.computerinstituteindelhijahangirpuri.com/",
-            "logo": "http://www.computerinstituteindelhijahangirpuri.com/assets/images/manager_computer-institute-in-jahangirpuri.jpeg",
+            "logo": "https://www.computerinstituteindelhijahangirpuri.com/assets/images/manager_computer-institute-in-jahangirpuri.jpeg",
             "description": "Nice Computer Institute, located in Jahangirpuri, Delhi, offers a variety of job-oriented computer courses such as Graphic Design, Web Design, Python, Tally, and more. Learn from experienced instructors.",
             "sameAs": [
                 "https://www.facebook.com/nicewebtechnologies",
@@ -356,16 +356,27 @@
     </div>
 
 
-    <div class="container container-fluid py-4">
+    <div class="container py-4">
+    @if (Request::routeIs('login.form'))
+        <div class="d-flex justify-content-center align-items-center min-vh-100">
+            <div class="col-md-8 col-lg-4 bg-white p-4 rounded shadow">
+                @yield('content')
+            </div>
+        </div>
+    @else
         <div class="row">
             <div class="col-md-8">
+          
                 @yield('content')
+
             </div>
             <div class="col-md-4">
                 @include('partials.sidebar', ['latestPosts' => $latestPosts ?? []])
             </div>
         </div>
-    </div>
+    @endif
+</div>
+
 
     @include('partials.footer')
     <script>

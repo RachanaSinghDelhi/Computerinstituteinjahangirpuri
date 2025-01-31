@@ -15,6 +15,7 @@
         </div>
     @endif
 
+    <!-- Import Students via Excel -->
     <h2>Import Students via Excel</h2>
     <form action="{{ route('students.import') }}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -26,95 +27,68 @@
         <button type="submit" class="btn btn-success mt-2">Import</button>
     </form>
 
- <!-- Table and Search Section -->
-<div class="row mt-4">
-    <div class="col-12 col-md-4">
-        <!-- Bulk Action Section -->
-        <div class="mb-3 d-flex align-items-center">
-            <input type="checkbox" id="selectAll" onclick="toggleSelectAll()" class="me-2">
-            <label for="selectAll" class="me-3">Select All</label>
-            <select id="bulkActionDropdown" class="form-select form-select-sm me-2" style="width: 150px;">
-                <option value="">Choose Action</option>
-                <option value="Active">Set as Active</option>
-                <option value="Inactive">Set as Inactive</option>
-                <option value="Completed">Set as Completed</option>
-                <option value="Left">Set as Left</option>
-                <option value="Delete">Delete Selected</option>
-            </select>
-            <button type="button" class="btn btn-primary btn-sm" id="bulkActionApply">Apply</button>
+    <!-- Table and Search Section -->
+    <div class="row mt-4">
+        <div class="col-12 col-md-4">
+            <!-- Bulk Action Section -->
+            <div class="mb-3 d-flex align-items-center">
+                <input type="checkbox" id="selectAll" onclick="toggleSelectAll()" class="me-2">
+                <label for="selectAll" class="me-3">Select All</label>
+                <select id="bulkActionDropdown" class="form-select form-select-sm me-2" style="width: 150px;">
+                    <option value="">Choose Action</option>
+                    <option value="Active">Set as Active</option>
+                    <option value="Inactive">Set as Inactive</option>
+                    <option value="Completed">Set as Completed</option>
+                    <option value="Left">Set as Left</option>
+                    <option value="Delete">Delete Selected</option>
+                </select>
+                <button type="button" class="btn btn-primary btn-sm" id="bulkActionApply">Apply</button>
+            </div>
         </div>
+
+        <div class="col-12 col-md-4">
+            <!-- Search Box -->
+            <div class="mb-3">
+                <input type="text" id="searchBox" class="form-control" placeholder="Search by Student ID or Name">
+            </div>
+        </div>
+
+      <!--  <div class="col-12 col-md-4">
+            <div class="mb-3">
+                <button type="button" class="btn btn-info btn-sm" id="exportExcel">Export to Excel</button>
+                <button type="button" class="btn btn-warning btn-sm" id="exportSQL">Export to SQL</button>
+            </div>
+        </div>-->
     </div>
 
-    <div class="col-12 col-md-4">
-        <!-- Search Box -->
-        <div class="mb-3">
-            <input type="text" id="searchBox" class="form-control" placeholder="Search by Student ID or Name">
-        </div>
-    </div>
-
-    <div class="col-12 col-md-4">
-    <div class="mb-3">
-    <button type="button" class="btn btn-info btn-sm" id="exportExcel">Export to Excel</button>
-    <button type="button" class="btn btn-warning btn-sm" id="exportSQL">Export to SQL</button>
-    </div>
-</div>
-</div>
-<div>
+    <!-- Add New Student Button -->
+    <div>
         <a href="{{ route('students.create') }}">
             <button class="btn btn-sm btn-success">Add New Student</button>
         </a>
     </div>
-    <!-- Responsive Table -->
-<div class="table-responsive">
-    <table class="table table-bordered table-striped" id="studentTable">
-        <thead>
-            <tr>
-                <th>Select</th>
-                <th>Student ID</th>
-                <th>Name</th>
-                <th class="d-none d-md-table-cell">Father's Name</th>
-                <th class="d-none d-md-table-cell">Date of Admission</th>
-                <th>Course</th>
-                <th class="d-none d-md-table-cell">Batch</th>
-                <th>Photo</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($students as $student)
-            <tr>
-                <td>
-                    <input type="checkbox" name="student_ids[]" value="{{ $student->id }}" class="student-checkbox">
-                </td>
-                <td>{{ $student->student_id }}</td>
-                <td>{{ $student->name }}</td>
-                <td class="d-none d-md-table-cell">{{ $student->father_name }}</td>
-                <td class="d-none d-md-table-cell">{{ \Carbon\Carbon::parse($student->doa)->format('d-m-Y') }}</td>
-                <td>{{ $student->course->course_title ?? 'N/A' }}</td>
-                <td class="d-none d-md-table-cell">{{ $student->batch }}</td>
-                <td>
-                    @if($student->photo)
-                        <img src="{{ asset('storage/students/' . $student->photo) }}" alt="Student Photo" width="50">
-                    @else
-                        No Photo
-                    @endif
-                </td>
-                <td>
-                    <select name="status" class="form-control form-control-sm student-status" data-student-id="{{ $student->student_id  }}">
-                        <option value="Active" {{ strtoupper(trim($student->status)) === 'ACTIVE' ? 'selected' : '' }}>Active</option>
-                        <option value="Inactive" {{ strtoupper(trim($student->status)) === 'INACTIVE' ? 'selected' : '' }}>Inactive</option>
-                        <option value="Left" {{ strtoupper(trim($student->status)) === 'LEFT' ? 'selected' : '' }}>Left</option>
-                        <option value="Completed" {{ strtoupper(trim($student->status)) === 'COMPLETED' ? 'selected' : '' }}>Completed</option>
-                    </select>
-                    <a href="{{ route('students.edit', $student->student_id ) }}" class="btn btn-primary btn-sm">Edit</a>
-                    <button type="button" class="btn btn-danger btn-sm delete-student" data-student-id="{{ $student->student_id }}">Delete</button>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
 
+    <!-- Responsive Table -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped" id="studentTable">
+            <thead>
+                <tr>
+                    <th>Select</th>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th class="d-none d-md-table-cell">Father's Name</th>
+                    <th class="d-none d-md-table-cell">Date of Admission</th>
+                    <th>Course</th>
+                    <th class="d-none d-md-table-cell">Batch</th>
+                    <th>Photo</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @include('dashboard.students.student_search', ['students' => $students]) <!-- Include search results -->
+            </tbody>
+        </table>
+    </div>
 
     <!-- Pagination Links -->
     <div class="d-flex justify-content-center">
@@ -137,7 +111,7 @@
 
     $(document).ready(function () {
         // Update status for a single student
-        $('.student-status').on('change', function () {
+        $(document).on('change', '.student-status', function () {
             const studentId = $(this).data('student-id');
             const status = $(this).val();
             $.ajax({
@@ -158,7 +132,7 @@
         });
 
         // Delete a single student
-        $('.delete-student').on('click', function () {
+        $(document).on('click', '.delete-student', function () {
             const studentId = $(this).data('student-id');
             if (confirm('Are you sure you want to delete this student?')) {
                 $.ajax({
@@ -237,12 +211,7 @@
                 }
             }
         });
-    });
 
-
-
-
-    $(document).ready(function () {
         // Handle search input
         $('#searchBox').on('input', function () {
             let query = $(this).val(); // Get the search query
@@ -254,15 +223,10 @@
                 data: { query: query },
                 success: function (response) {
                     // Update the table with filtered students
-                    $('#studentTable tbody').html(response); 
+                    $('#studentTable tbody').html(response);
                 }
             });
         });
     });
-   
-
-   // Export to Excel
-   
 </script>
-
 @endpush
