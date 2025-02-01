@@ -18,9 +18,16 @@ use App\Http\Controllers\StudentFeesController;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Teacher\TeacherController;
+use App\Http\Controllers\Student\StudentDashboardController;
+use App\Http\Controllers\Admin\StudentController as AdminStudentController;
+
+
+
 
 // Public Routes (No Authentication Required)
-Route::get('/', [IndexController::class, 'index'])->name('home');
+Route::get('/', [IndexController::class, 'index'])->name('index');
 Route::get('/faq', [PageController::class, 'faq'])->name('faq');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
@@ -139,6 +146,32 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
 Route::middleware(['auth', 'role:admin'])->get('/admin', function () {
     return view('admin.index');
 })->name('admin.dashboard');
+
+// Admin Routes
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::patch('/admin/students/bulk-update-status', [AdminController::class, 'bulkUpdateStatus'])
+    ->name('admin.students.bulkUpdateStatus');
+
+    // Individual status update
+Route::patch('/students/update-status/{student}', [AdminController::class, 'updateStatus'])
+->name('students.updateStatus');
+  // Add Student Routes
+  Route::get('/admin/students/add', [AdminStudentController::class, 'create'])
+  ->name('admin.students.add');
+Route::post('/admin/students/add', [AdminStudentController::class, 'store'])
+  ->name('admin.students.store');
+   // Student Management Routes (AdminStudentController)
+   Route::get('/admin/students', [AdminStudentController::class, 'index'])
+   ->name('admin.students.index');
+
+
+   // Edit Student Route
+   Route::get('/admin/students/edit_student/{student}', [AdminStudentController::class, 'edit'])
+   ->name('admin.students.edit');
+Route::patch('/admin/students/edit_student/{student}', [AdminStudentController::class, 'update'])
+   ->name('admin.students.update');
+});
 
 // Teacher Routes
 Route::middleware(['auth', 'role:teacher'])->get('/teacher', function () {

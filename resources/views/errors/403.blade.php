@@ -1,4 +1,4 @@
-@extends('layout')
+
 @section('title', 'Errors')
 
 @section('content')
