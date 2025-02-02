@@ -37,6 +37,7 @@ class CourseController extends Controller
         // Validate the incoming request
     $request->validate([
         'course_title' => 'required|string|max:255',
+        'course_name' => 'required|string|max:255',
         'course_desc' => 'required|string',
         'course_content' => 'required|string',
         'course_url' => 'nullable|string',
@@ -65,6 +66,7 @@ class CourseController extends Controller
         // Create the new course
         Course::create([
             'course_title' => $request->course_title,
+            'course_name' => $request->course_name,
             'course_desc' => $request->course_desc,
             'course_content' => $request->course_content,
             'course_url' => $courseUrl,  // Save course_url in lowercase
@@ -90,6 +92,7 @@ class CourseController extends Controller
     {
         $request->validate([
             'course_title' => 'required|string|max:255',
+            'course_name' => 'required|string|max:255',
             'course_image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
             'course_desc' => 'nullable|string',
             'course_content' => 'nullable|string',
@@ -118,6 +121,7 @@ class CourseController extends Controller
 
         // Update the course details
         $course->course_title = $request->course_title;
+        $course->course_name = $request->course_name;
         $course->course_desc = $request->course_desc;
         $course->course_content = $request->course_content;
         $course->course_url = $courseUrl;  // Save course_url in lowercase

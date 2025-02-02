@@ -32,6 +32,14 @@
                 <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
+        <!-- Course Title Field -->
+        <div class="form-group">
+            <label for="course_name">Course Name</label>
+            <input type="text" class="form-control" name="course_name" id="course_name" value="{{ old('course_name', $course->course_name) }}">
+            @error('course_name')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
 
         <!-- Course Description Field -->
         <div class="form-group">

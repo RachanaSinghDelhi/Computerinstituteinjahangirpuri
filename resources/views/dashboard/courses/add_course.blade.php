@@ -17,6 +17,13 @@
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </div>
+                <div class="mb-3">
+                    <label for="course_name" class="form-label">Course Name:</label>
+                    <input type="text" class="form-control" id="course_name" name="course_name" value="{{ old('course_name') }}">
+                    @error('course_name')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
 
                 <div class="mb-3">
                     <label for="course_desc" class="form-label">Description:</label>

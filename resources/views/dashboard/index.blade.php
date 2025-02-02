@@ -38,6 +38,7 @@
             <thead>
                 <tr>
                     <th>Image</th>
+                    <th>Name</th>
                     <th>Title</th>
                     <th>Course URL</th>
                     <th>Description</th>
@@ -54,10 +55,11 @@
                     <td>
                         <img src="{{ asset('storage/courses/'.$course->course_image) }}" alt="{{ $course->course_title }}" style="max-width: 100px; height:100px;">
                     </td>
+                    <td>{{ $course->course_name }}</td>
                     <td>{{ $course->course_title }}</td>
                     <td>{{ $course->course_url }}</td>
                     <td>{{ \Illuminate\Support\Str::limit($course->course_desc, 50, '...') }}</td>
-                    <td>{{ \Illuminate\Support\Str::limit($course->course_content, 50, '...') }}</td>
+                    <td>{{ \Illuminate\Support\Str::limit($course->course_content, 20, '...') }}</td>
                     <td>{{ $course->duration }}</td>
                     <td>{{ $course->total_fees }}</td>
                     <td>{{ $course->installments }}</td>
