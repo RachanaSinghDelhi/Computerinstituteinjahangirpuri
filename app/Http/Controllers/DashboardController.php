@@ -9,7 +9,7 @@ class DashboardController extends Controller
    
         public function index()
         {
-            $courselist = Course::paginate(10); // Add order and pagination
+            $courselist = Course::all();
             return view('dashboard.index', compact('courselist')); // Pass 'courses' to view
         }
     

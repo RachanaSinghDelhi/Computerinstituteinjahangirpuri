@@ -12,7 +12,7 @@ class CourseController extends Controller
 {
     public function index()
 {
-    $courselist = Course::query()->paginate(10); // Or any other pagination setup
+    $courselist = Course::all();
     return view('dashboard.courses.display_courses', compact('courselist'));
 }
     /**
