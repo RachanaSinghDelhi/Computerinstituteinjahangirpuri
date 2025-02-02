@@ -78,7 +78,7 @@
                     </td>
                     <td>
                         <a href="{{ route('admin.students.edit', $student->student_id) }}" class="btn btn-sm btn-warning">Edit</a>
-                        <button class="btn btn-sm btn-danger delete-btn" data-id="{{ $student->student_id }}">Delete</button>
+                     
                     </td>
                 </tr>
                 @endforeach
