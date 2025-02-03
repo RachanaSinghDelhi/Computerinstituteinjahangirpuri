@@ -333,9 +333,13 @@
             </div>
         </div>
         <!--- navabr ends -->
-        <div class="banner" style="background-image: url('{{  asset('assets/images/Sliders_image/medal1_nice_computer_institute_jahangirpuri.jpg')}}'); height: 400px; background-size: cover; background-position: center;">
+        @if(Route::currentRouteName() !== 'login.form')
+    <div class="banner" style="background-image: url('{{ asset('assets/images/Sliders_image/medal1_nice_computer_institute_jahangirpuri.jpg') }}'); height: 400px; background-size: cover; background-position: center;" role="img" aria-label="Banner Image for Nice Computer Institute">
         <div class="overlay" style="background-color: rgba(0, 0, 0, 0.5); height: 100%; display: flex; justify-content: center; align-items: center;">
-          
+            <!-- Add your banner content here, such as headings, calls-to-action, etc. -->
+        </div>
+    </div>
+
                   <!-- Spinner Start -->
 
         <!-- Spinner End -->
@@ -355,8 +359,8 @@
         </div>
     </div>
 
-
-    <div class="container py-4">
+    @endif
+    <div class="container">
     @if (Request::routeIs('login.form'))
         <div class="d-flex justify-content-center align-items-center min-vh-100">
             <div class="col-md-8 col-lg-4 bg-white p-4 rounded shadow">

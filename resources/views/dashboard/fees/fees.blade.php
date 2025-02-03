@@ -38,7 +38,7 @@
                 <tr>
                     <th>Student ID</th>
                     <th>Student Name</th>
-                    <th>Course Title</th>
+                    <th>Course Name</th>
                     <th  class="d-none d-md-table-cell">Total Fees</th>
                     <th  class="d-none d-md-table-cell">Installments</th>
                     <th  class="d-none d-md-table-cell">Fees Paid</th>
@@ -60,7 +60,7 @@
                                 <select name="course_id" class="form-control" onchange="this.form.submit()">
                                     @foreach($courses as $course)
                                         <option value="{{ $course->id }}" @if($course->id == $fee->course_id) selected @endif>
-                                            {{ $course->course_title }}
+                                            {{ $course->course_name }}
                                         </option>
                                     @endforeach
                                 </select>

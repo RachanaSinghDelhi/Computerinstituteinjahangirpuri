@@ -1,4 +1,4 @@
-@section('title', "$course->course_title")
+@section('title', "$course->course_name")
 
 @include('partials.course_header',['courses' => $courses])
 <!-- {{ asset('assets/images/Sliders_image/medal_nice_computer_institute_jahangirpuri.jpg') }}-->
@@ -21,7 +21,7 @@
 
      <!-- Course details section -->
     <div class="container mt-4">
-        <h2>{{ $course->course_title }}</h2>
+        <h2>{{ $course->course_name }}</h2>
         <p>{!! $course->course_desc !!}</p>
     
         <p>{!! $course->course_content !!}</p>
