@@ -1,7 +1,14 @@
-@extends('layout')
+
+@php
+    // Set banner image and breadcrumbs
+    $bannerImage = asset('assets/images/Sliders_image/medal1_nice_computer_institute_jahangirpuri.jpg');
+  
+@endphp
+
+@extends('layout.app')
 @section('title', 'About Us')
 @section('content')
-
+<div class="container">
 
 <h1>Nice Computer Institute</h1>
      <p class="animate__animated animate__fadeInDown">
@@ -86,7 +93,7 @@ are:</p>
 
 
         
-        
+</div>       
        
 
 

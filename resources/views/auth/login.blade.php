@@ -1,10 +1,10 @@
-@extends('layout')
+@extends('layout.app')
 @section('title', 'Login')
 @section('content')
 
 <div class="container ">
     <div class="row justify-content-center">
-        <div class="col-md-12">
+    
             <h2 class="text-center mb-4">Login</h2>
             <form action="{{ route('login.form') }}" method="POST">
                 @csrf
@@ -30,7 +30,9 @@
 
                 <button type="submit" class="btn btn-primary w-100">Login</button>
             </form>
-        </div>
+  
     </div>
 </div>
+
+<br><br><br>
 @endsection

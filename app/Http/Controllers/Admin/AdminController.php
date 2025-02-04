@@ -50,4 +50,5 @@ public function updateStatus(Request $request, Student $student)
 }
 
 
+
 }
