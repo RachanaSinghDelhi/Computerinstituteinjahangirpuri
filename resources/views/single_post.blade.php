@@ -1,5 +1,9 @@
+@php
+    // Set banner image and breadcrumbs
+    $bannerImage = !empty($post->image) ? asset('storage/' . $post->image) : asset('assets/images/Sliders_image/medal1_nice_computer_institute_jahangirpuri.jpg');
+  
+@endphp
 @extends('layout.app')
-
 @section('content')
     <div class="container my-5">
 

@@ -46,7 +46,7 @@
                         <a class="nav-link dropdown-toggle" href="#" id="coursesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Courses</a>
                         <ul class="dropdown-menu" aria-labelledby="coursesDropdown">
                             @foreach($courses->take(7) as $course)
-                                <li><a class="dropdown-item" href="{{ url('/courses/' . $course->course_url) }}">{{ $course->course_name }}</a></li>
+                                <li><a class="dropdown-item"  href="{{ url('/courses/' . $course->course_url) }}">{{ $course->course_name }}</a></li>
                             @endforeach
                             <li><a class="dropdown-item" href="/courses_list">More ..</a></li>
                         </ul>

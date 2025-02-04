@@ -1,3 +1,8 @@
+@php
+    // Set banner image and breadcrumbs
+    $bannerImage = asset('assets/images/Sliders_image/medal1_nice_computer_institute_jahangirpuri.jpg');
+  
+@endphp
 @extends('layout.app')
 
 @section('title', 'Updates')

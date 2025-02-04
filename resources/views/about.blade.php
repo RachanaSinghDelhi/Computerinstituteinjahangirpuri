@@ -8,7 +8,7 @@
 @extends('layout.app')
 @section('title', 'About Us')
 @section('content')
-<div class="container">
+<div class="py-5">
 
 <h1>Nice Computer Institute</h1>
      <p class="animate__animated animate__fadeInDown">
