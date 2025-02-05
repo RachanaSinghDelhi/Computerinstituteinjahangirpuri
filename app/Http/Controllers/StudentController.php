@@ -207,7 +207,9 @@ public function downloadSelectedIdCards(Request $request)
 
     $pdf->setPaper([0, 0, 158, 252], 'portrait');
     // Return the PDF for download
-    return $pdf->download('Selected_ID_Cards.pdf');
+    $filename = 'student_id_' . now()->format('d-F-Y') . '.pdf';
+ 
+    return $pdf->download($filename);
 }
 
 public function import(Request $request)

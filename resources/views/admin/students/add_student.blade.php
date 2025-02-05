@@ -21,7 +21,7 @@
         </div>
     @endif
     <div>
-        <a href="{{ route('students.index') }}">
+        <a href="{{ route('admin.students.index') }}">
             <button class="btn btn-sm btn-success">Student List</button>
         </a>
     </div>
