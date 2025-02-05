@@ -137,7 +137,7 @@ $(document).ready(function() {
             orderable: false,
             targets: [0, 7, 9] // Make checkbox, photo, and actions columns non-orderable
         }],
-        order: [[2, 'asc']] // Default sorting by Student ID
+        order: [[1, 'desc']] // Default sorting by Student ID
     });
 
     // Select/Deselect All
