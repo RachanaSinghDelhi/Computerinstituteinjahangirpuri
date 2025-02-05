@@ -152,6 +152,69 @@ public function update(Request $request, $id)
 }
 
 
+public function showIdCards()
+    {
+        // Fetch all students
+        $students = Student::with('course')->orderBy('id', 'desc')->paginate(50);
+        
+        // Return the view with the students data
+        return view('admin.id-cards.id-cards', compact('students'));
+    }
+
+   
+
+
+    public function downloadIdCard($id)
+    {
+        // Fetch the student data using the student_id column
+        $student = Student::with('course')->where('student_id', $id)->firstOrFail();
+    
+        // Load the Blade template into a PDF
+        $pdf = PDF::loadView('admin.id-cards.student-id-card', compact('student'));
+    
+
+        $pdf->setPaper([0, 0, 162, 256], 'portrait');
+        // Return the PDF for download with a descriptive filename
+        return $pdf->download('Student_ID_' . $student->student_id . '.pdf');
+
+    }
+    
+
+public function downloadSelectedIdCards(Request $request)
+{
+    // Validate that at least one ID is selected
+    $request->validate([
+        'selected_ids' => 'required|array|min:1', // Ensure at least one ID is selected
+        'selected_ids.*' => 'exists:students,student_id', // Ensure each selected ID exists in the database
+           ]);
+
+    // Check if selected_ids is not empty
+    if (empty($request->selected_ids)) {
+        return back()->withErrors(['selected_ids' => 'Please select at least one ID card to download.']);
+    }
+
+    // Fetch the selected students and their details
+    $students = Student::with('course')
+        ->whereIn('student_id', $request->selected_ids)
+        ->get();
+
+    // Check if any students were found
+    if ($students->isEmpty()) {
+        return back()->withErrors(['selected_ids' => 'No students found for the selected IDs.']);
+    }
+
+    // Load the Blade view and pass the student data
+    $pdf = PDF::loadView('admin.id-cards.selected-id-cards', compact('students'));
+
+
+    $pdf->setPaper([0, 0, 158, 252], 'portrait');
+    // Return the PDF for download
+    $filename = 'student_id_' . now()->format('d-F-Y') . '.pdf';
+ 
+    return $pdf->download($filename);
+}
+
+
 
 
     }

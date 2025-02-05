@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Teacher\TeacherController;
 use App\Http\Controllers\Student\StudentDashboardController;
 use App\Http\Controllers\Admin\StudentController as AdminStudentController;
+use App\Http\Controllers\Admin\PostController as AdminPostController;
 
 
 
@@ -171,6 +172,33 @@ Route::post('/admin/students/add', [AdminStudentController::class, 'store'])
    ->name('admin.students.edit');
 Route::patch('/admin/students/edit_student/{student}', [AdminStudentController::class, 'update'])
    ->name('admin.students.update');
+
+
+   // Student ID Cards Route
+// View all student ID cards
+Route::get('/admin/students/id-cards', [AdminStudentController::class, 'showIdCards'])
+->name('admin.students.id-cards');
+
+// Download a single student's ID card
+Route::get('/admin/student/{student_id}/student-id-card', [AdminStudentController::class, 'downloadIdCard'])
+->name('admin.students.downloadIdCard');
+
+// View a specific student's ID card
+Route::get('/admin/students/student-id-card/{student_id}', [AdminStudentController::class, 'viewIdCard'])
+->name('admin.students.viewIdCard');
+
+// Download multiple selected student ID cards
+Route::post('/admin/students/download-selected-id-cards', [AdminStudentController::class, 'downloadSelectedIdCards'])
+->name('admin.students.downloadSelectedIdCards');
+
+// Student Post Route
+Route::get('admin/posts/create-post', [AdminPostController::class, 'create'])->name('admin.posts.create_post');
+Route::post('admin/posts/store-post', [AdminPostController::class, 'store'])->name('admin.posts.store_post');
+Route::get('admin/posts/new-posts', [AdminPostController::class, 'index'])->name('admin.posts.new_posts');
+//::get('admin/posts/{id}/edit', [AdminPostController::class, 'edit'])->name('admin.posts.edit_edit');
+//Route::get('admin/posts/edit_posts', [AdminPostController::class, 'update'])->name('admin.posts.update_post');
+Route::get('admin/posts/{id}/edit', [AdminPostController::class, 'edit'])->name('admin.posts.edit');
+Route::put('admin/posts/{id}', [AdminPostController::class, 'update'])->name('admin.posts.update');
 });
 
 // Teacher Routes

@@ -24,7 +24,7 @@
     <a href="{{ route('admin.students.index') }}" class="nav-link text-white ms-3">
         <i class="fa fa-list"></i> <span>Student List</span>
     </a>
-    <a href="{{ route('students.id-cards') }}" class="nav-link text-white ms-3">
+    <a href="{{ route('admin.students.id-cards') }}" class="nav-link text-white ms-3">
         <i class="fa fa-id-card"></i> <span>ID Cards</span>
     </a>
 </div>
@@ -37,10 +37,10 @@
                 <i class="fa fa-chevron-down ms-2 arrow"></i>
             </a>
             <div class="collapse" id="postMenu">
-                <a href="{{ route('posts.create_post') }}" class="nav-link text-white ms-3">
+                <a href="{{ route('admin.posts.create_post') }}" class="nav-link text-white ms-3">
                     <i class="fa fa-plus"></i> <span>Add Post</span>
                 </a>
-                <a href="{{ route('posts.new_posts') }}" class="nav-link text-white ms-3">
+                <a href="{{ route('admin.posts.new_posts') }}" class="nav-link text-white ms-3">
                     <i class="fa fa-list"></i> <span>Post List</span>
                 </a>
             </div>
@@ -68,21 +68,7 @@
 
 
 
- <!-- Divider -->
- <hr class="text-white">
-
-            <a href="#usersMenu" class="nav-link text-white" data-bs-toggle="collapse" aria-expanded="false" aria-controls="usersMenu">
-    <i class="fa fa-users"></i> <span>Users</span>
-    <i class="fa fa-chevron-down ms-2 arrow"></i>
-</a>
-<div class="collapse" id="usersMenu">
-    <a href="{{ route('users.index') }}" class="nav-link text-white ms-3">
-        <i class="fa fa-list"></i> <span>User List</span>
-    </a>
-    <a href="{{ route('users.create') }}" class="nav-link text-white ms-3">
-        <i class="fa fa-plus"></i> <span>Create User</span>
-    </a>
-</div>
+ 
 
 
             <!-- Logout Form -->
