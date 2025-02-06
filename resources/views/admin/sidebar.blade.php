@@ -5,7 +5,7 @@
             <a href="/" class="nav-link mb-3">
                 <img src="{{ asset('assets/images/logo1_3D_half.png') }}" alt="Logo" width="150" style="margin-top:30px;">
             </a>
-            <a href="{{ route('students.index') }}" class="nav-link text-white">
+            <a href="{{ route('admin.students.index') }}" class="nav-link text-white">
                 <i class="fa fa-graduation-cap"></i> <span>Dashboard</span>
             </a>
 
@@ -97,39 +97,45 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-    $(document).ready(function() {
-        // Handle the toggle-down functionality (unchanged)
-        $('.nav-link[data-bs-toggle="collapse"]').on('click', function(e) {
-            var targetMenu = $($(this).attr('href'));
-            var arrowIcon = $(this).find('.arrow');
-
-            // Close all other open menus
-            $('.collapse.show').not(targetMenu).collapse('hide');
-            $('.nav-link[data-bs-toggle="collapse"] .arrow').not(arrowIcon).removeClass('fa-chevron-up').addClass('fa-chevron-down');
-
-            // Toggle the clicked menu
-            targetMenu.collapse('toggle');
-
-            // Toggle the arrow icon for the current menu
-            if (targetMenu.hasClass('show')) {
-                arrowIcon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
-            } else {
-                arrowIcon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
-            }
-        });
-      
-        $(document).ready(function() {
+   $(document).ready(function() {
     // Initially collapse the sidebar on page load
     $('#sidebar').addClass('active');
     $('#page-content-wrapper').addClass('active'); // Move content to the left initially
-    
+
     // Handle the sidebar toggle
-    $('#toggleSidebar').click(function() {
-        // Toggle the 'active' class on both the sidebar and the content wrapper
+    $('#toggleSidebar').click(function(event) {
+        event.stopPropagation(); // Prevent the click from propagating to the document
         $('#sidebar').toggleClass('active');
         $('#page-content-wrapper').toggleClass('active');
     });
+
+    // Close sidebar if clicking outside of it
+    $(document).click(function(event) {
+        if (!$(event.target).closest('#sidebar, #toggleSidebar').length) {
+            $('#sidebar').addClass('active'); // Hide sidebar
+            $('#page-content-wrapper').addClass('active');
+        }
+    });
+
+    // Handle the toggle-down functionality for submenus
+    $('.nav-link[data-bs-toggle="collapse"]').on('click', function(e) {
+        var targetMenu = $($(this).attr('href'));
+        var arrowIcon = $(this).find('.arrow');
+
+        // Close all other open menus
+        $('.collapse.show').not(targetMenu).collapse('hide');
+        $('.nav-link[data-bs-toggle="collapse"] .arrow').not(arrowIcon).removeClass('fa-chevron-up').addClass('fa-chevron-down');
+
+        // Toggle the clicked menu
+        targetMenu.collapse('toggle');
+
+        // Toggle the arrow icon for the current menu
+        if (targetMenu.hasClass('show')) {
+            arrowIcon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+        } else {
+            arrowIcon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+        }
+    });
 });
 
-    });
 </script>
