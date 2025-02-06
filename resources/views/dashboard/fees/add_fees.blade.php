@@ -17,7 +17,7 @@
         @csrf
         <input type="hidden" name="student_id" value="{{ $student->student_id }}">
         <input type="hidden" name="course_id" value="{{ $course->id }}">
-        <input type="hidden" id="course_fee" value="{{ $course->total_fees }}">
+        <input type="hidden" id="course_fee" value="{{ $studentFeesStatus->total_fees }}">
         <input type="hidden" id="installments" value="{{ $course->installments }}">
         <input type="hidden" id="course_type" value="{{ $course->course_title}}">
 

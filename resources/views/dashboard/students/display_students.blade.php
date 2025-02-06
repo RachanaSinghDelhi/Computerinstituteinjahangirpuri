@@ -214,20 +214,21 @@
         });
 
         // Handle search input
-        $('#searchBox').on('input', function () {
-            let query = $(this).val(); // Get the search query
+     
+    $('#searchBox').on('keyup', function () {
+        let query = $(this).val().toLowerCase().trim(); // Convert input to lowercase and trim spaces
+        $('#studentTable tbody tr').each(function () {
+            let studentID = $(this).find('td:nth-child(3)').text().trim(); // Student ID column
+            let name = $(this).find('td:nth-child(4)').text().toLowerCase().trim(); // Name column
 
-            // Send AJAX request to search students
-            $.ajax({
-                url: '{{ route('students.search') }}', // Define the route for searching
-                method: 'GET',
-                data: { query: query },
-                success: function (response) {
-                    // Update the table with filtered students
-                    $('#studentTable tbody').html(response);
-                }
-            });
+            // Convert studentID to a number only if the query is numeric
+            let isMatch = name.includes(query) || (isNaN(query) ? false : studentID.includes(query));
+
+            $(this).toggle(isMatch); // Show/hide rows based on match
         });
+    });
+
+
     });
 </script>
 @endpush
