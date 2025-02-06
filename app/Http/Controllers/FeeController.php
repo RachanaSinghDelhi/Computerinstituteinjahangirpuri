@@ -11,50 +11,89 @@ use Illuminate\Support\Facades\DB;
 class FeeController extends Controller
 {
     public function index()
-{
-    // Retrieve the fees data along with course options
-    $feesData = DB::table('students')
-        ->join('courses', 'students.course_id', '=', 'courses.id')
-        ->leftJoin('fees', 'students.student_id', '=', 'fees.student_id')
-        ->leftJoin('student_fees_status', 'students.student_id', '=', 'student_fees_status.student_id') // Correct join with student_fees_status
-        ->select(
-            'students.student_id',
-            'students.name as student_name',
-            'courses.course_title',
-            'courses.total_fees',
-            'courses.installments',
-            'courses.id as course_id',
-            DB::raw('IFNULL(SUM(fees.amount_paid), 0) as fees_paid'),
-            DB::raw('courses.total_fees - IFNULL(SUM(fees.amount_paid), 0) as fees_due'),
-            DB::raw(
-                "CASE 
-                    WHEN SUM(fees.amount_paid) >= courses.total_fees THEN 'Paid'
-                    WHEN MAX(fees.payment_date) >= CURDATE() AND SUM(fees.amount_paid) < courses.total_fees THEN 'Paid but Pending Next Month'
-                    ELSE 'Pending'
-                END as status"
-            ),
-            DB::raw('MAX(fees.updated_at) as last_updated'),
-            'student_fees_status.total_fees as student_total_fees' // Select from student_fees_status
-        )
-        ->where('students.status', 'active')
-        ->groupBy(
-            'students.student_id',
-            'students.name',
-            'courses.course_title',
-            'courses.total_fees',
-            'courses.installments',
-            'courses.id',
-            'student_fees_status.total_fees' // Group by total_fees in student_fees_status
-        )
-        ->orderBy('last_updated', 'desc')
-        ->orderBy('students.student_id', 'desc')
-        ->get();
-
-    // Fetch available courses
-    $courses = DB::table('courses')->get();
-
-    return view('dashboard.fees.fees', compact('feesData', 'courses'));
-}
+    {
+        // Fetch all active students along with their course details
+        $activeStudents = DB::table('students')
+            ->join('courses', 'students.course_id', '=', 'courses.id')
+            ->where('students.status', 'active')
+            ->select(
+                'students.student_id',
+                'students.name as student_name',
+                'courses.id as course_id',
+                'courses.course_title',
+                'courses.total_fees',
+                'courses.installments'
+            )
+            ->get();
+    
+        foreach ($activeStudents as $student) {
+            // Check if the student already exists in student_fees_status
+            $existingRecord = DB::table('student_fees_status')
+                ->where('student_id', $student->student_id)
+                ->first();
+    
+            if (!$existingRecord) {
+                // Insert new record into student_fees_status
+                DB::table('student_fees_status')->insert([
+                    'student_id' => $student->student_id,
+                    'student_name' => $student->student_name,
+                    'course_id' => $student->course_id,
+                    'course_title' => $student->course_title,
+                    'total_fees' => $student->total_fees,
+                    'installments' => $student->installments,
+                    'fees_paid' => 0.00, // Initially no fees paid
+                    'fees_due' => $student->total_fees, // Full fees due
+                    'status' => 'Pending',
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            }
+        }
+    
+        // Retrieve fees data for display
+        $feesData = DB::table('students')
+            ->join('courses', 'students.course_id', '=', 'courses.id')
+            ->leftJoin('fees', 'students.student_id', '=', 'fees.student_id')
+            ->leftJoin('student_fees_status', 'students.student_id', '=', 'student_fees_status.student_id')
+            ->select(
+                'students.student_id',
+                'students.name as student_name',
+                'courses.course_title',
+                'courses.total_fees',
+                'courses.installments',
+                'courses.id as course_id',
+                DB::raw('IFNULL(SUM(fees.amount_paid), 0) as fees_paid'),
+                DB::raw('courses.total_fees - IFNULL(SUM(fees.amount_paid), 0) as fees_due'),
+                DB::raw(
+                    "CASE 
+                        WHEN SUM(fees.amount_paid) >= courses.total_fees THEN 'Paid'
+                        WHEN MAX(fees.payment_date) >= CURDATE() AND SUM(fees.amount_paid) < courses.total_fees THEN 'Paid but Pending Next Month'
+                        ELSE 'Pending'
+                    END as status"
+                ),
+                DB::raw('MAX(fees.updated_at) as last_updated'),
+                'student_fees_status.total_fees as student_total_fees'
+            )
+            ->where('students.status', 'active')
+            ->groupBy(
+                'students.student_id',
+                'students.name',
+                'courses.course_title',
+                'courses.total_fees',
+                'courses.installments',
+                'courses.id',
+                'student_fees_status.total_fees'
+            )
+            ->orderBy('last_updated', 'desc')
+            ->orderBy('students.student_id', 'desc')
+            ->get();
+    
+        // Fetch available courses
+        $courses = DB::table('courses')->get();
+    
+        return view('dashboard.fees.fees', compact('feesData', 'courses'));
+    }
+    
 
 public function updateCourse(Request $request, $student_id)
 {

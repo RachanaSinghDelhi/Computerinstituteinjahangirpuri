@@ -31,6 +31,7 @@
         </form>
     </div>
     <div>
+        <br>
         <a href="{{ route('students.create') }}">
             <button class="btn btn-sm btn-success">Add New Student</button>
         </a>
