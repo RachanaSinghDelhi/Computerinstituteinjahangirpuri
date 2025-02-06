@@ -30,7 +30,11 @@
             <button type="submit" class="btn btn-primary">Upload</button>
         </form>
     </div>
-
+    <div>
+        <a href="{{ route('students.create') }}">
+            <button class="btn btn-sm btn-success">Add New Student</button>
+        </a>
+    </div>
     <!-- Fees Table -->
     <div class="mt-4">
         <table id="feesTable" class="table table-bordered table-striped">

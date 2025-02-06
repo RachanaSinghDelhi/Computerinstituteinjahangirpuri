@@ -3,6 +3,7 @@
         <td>
             <input type="checkbox" name="student_ids[]" value="{{ $student->student_id }}" class="student-checkbox">
         </td>
+        <td>{{ $student->id }}</td>
         <td>{{ $student->student_id }}</td>
         <td>{{ $student->name }}</td>
         <td class="d-none d-md-table-cell">{{ $student->father_name }}</td>

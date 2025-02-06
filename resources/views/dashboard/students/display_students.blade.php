@@ -74,6 +74,7 @@
             <thead>
                 <tr>
                     <th>Select</th>
+                    <th>ID</th>
                     <th>Student ID</th>
                     <th>Name</th>
                     <th class="d-none d-md-table-cell">Father's Name</th>
