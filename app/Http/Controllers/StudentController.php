@@ -19,49 +19,54 @@ class StudentController extends Controller
         return view('dashboard.students.add_student'); // Ensure the Blade file is named add_student.blade.php
     }
 
-    // Handle Form Submission
     public function liststore(Request $request)
     {
-        
-            $request->validate([
-                'student_id' => 'required|unique:students,student_id',
-                'name' => 'required|string|max:255',
-                'father_name' => 'required|string|max:255',
-                'doa' => 'required|date',
-                'course' => 'required|exists:courses,id',
-                'batch' => 'required|string',
-                'contact_number' => 'required|numeric|regex:/^[0-9]{10}$/',
-              'cropped_photo' => 'required',
-            ]);
-        
-        
-         // Decode base64 image
-         $croppedImage = $request->input('cropped_photo');
-         $imageData = substr($croppedImage, strpos($croppedImage, ',') + 1);
-         $imageData = base64_decode($imageData);
-        
-         // Define the filename and path
-         $fileName = $request->student_id . '.jpg';
-         $filePath = 'students/' . $fileName;
-        
-         // Store the image in storage/students/
-         Storage::disk('public')->put($filePath, $imageData);
-          
-            // Save student data
-            Student::create([
-                'student_id' => $request->student_id,
-                'name' => $request->name,
-                'father_name' => $request->father_name,
-                'doa' => $request->doa,
-                'course_id' => $request->course,
-                'batch' => $request->batch,
-                'photo' => $fileName, // Ensure photo is saved
-                'contact_number' => $request->contact_number,
-            ]);
-        
-            return redirect()->route('students.index')->with('success', 'Student added successfully.');
+        $request->validate([
+            'student_id' => 'required|unique:students,student_id',
+            'name' => 'required|string|max:255',
+            'course' => 'required|exists:courses,id',
+        ]);
+    
+        // Handle optional fields
+        $fatherName = $request->father_name ?? null;
+        $doa = $request->doa ?? null;
+        $batch = $request->batch ?? null;
+        $contactNumber = $request->contact_number ?? null;
+    
+        // Handle image upload
+        if ($request->filled('cropped_photo')) {
+            // Decode base64 image
+            $croppedImage = $request->input('cropped_photo');
+            $imageData = substr($croppedImage, strpos($croppedImage, ',') + 1);
+            $imageData = base64_decode($imageData);
+    
+            // Define the filename and path
+            $fileName = $request->student_id . '.jpg';
+            $filePath = 'students/' . $fileName;
+    
+            // Store the image in storage/students/
+            Storage::disk('public')->put($filePath, $imageData);
+        } else {
+            // Use default image if no image is uploaded
+            $fileName = 'default_image.jpg';
+            $filePath = 'assets/' . $fileName;
         }
-        
+    
+        // Save student data
+        Student::create([
+            'student_id' => $request->student_id,
+            'name' => $request->name,
+            'father_name' => $fatherName,
+            'doa' => $doa,
+            'course_id' => $request->course,
+            'batch' => $batch,
+            'photo' => $fileName, // Ensure photo is saved
+            'contact_number' => $contactNumber,
+        ]);
+    
+        return redirect()->route('students.index')->with('success', 'Student added successfully.');
+    }
+    
     
 // Display Paginated Students
 public function index()
