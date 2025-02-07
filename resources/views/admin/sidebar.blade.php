@@ -28,6 +28,26 @@
         <i class="fa fa-id-card"></i> <span>ID Cards</span>
     </a>
 </div>
+
+ <!-- Divider -->
+ <hr class="text-white">
+
+<!-- ToggleDown Menu for Fees -->
+<a href="#feesMenu" class="nav-link text-white" data-bs-toggle="collapse" aria-expanded="false" aria-controls="feesMenu">
+    <i class="fa fa-money"></i> <span>Fees</span>
+    <i class="fa fa-chevron-down ms-2 arrow"></i>
+</a>
+<div class="collapse" id="feesMenu">
+    <a href="{{ route('admin.fees.index') }}" class="nav-link text-white ms-3">
+        <i class="fa fa-money-check"></i> <span>Fees</span>
+    </a>
+</div>
+
+
+
+
+
+
             <!-- Divider -->
             <hr class="text-white">
 

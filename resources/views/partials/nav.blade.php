@@ -28,7 +28,7 @@
 <header1>
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
-            <a class="navbar-brand d-flex align-items-center" href="#">
+            <a class="navbar-brand d-flex align-items-center" href="/">
                 <img src="{{ asset('assets/images/logo1_3D_half.png') }}" alt="Logo" width="100" height="80" class="me-2">
                 <div>
                     <span>Nice Computer Institute</span><br>

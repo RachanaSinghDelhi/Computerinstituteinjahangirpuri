@@ -1,4 +1,4 @@
-@extends('dashboard.app')
+@extends('admin.app')
 @section('title', 'Add Fees')
 
 @section('content')
@@ -13,7 +13,7 @@
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
-    <form action="{{ route('save_student_fee') }}" method="POST">
+    <form action="{{ route('admin.save_student_fee') }}" method="POST">
         @csrf
         <input type="hidden" name="student_id" value="{{ $student->student_id }}">
         <input type="hidden" name="course_id" value="{{ $course->id }}">

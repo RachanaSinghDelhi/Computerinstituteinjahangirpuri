@@ -10,7 +10,8 @@ class Fee extends Model
 
     protected $fillable = [
         'student_id', 'course_id', 'payment_date','due_date', 'amount_paid',
-        'receipt_number', 'receipt_image', 'status',
+        'receipt_number', 'receipt_image', 'status','installment_no',
+
     ];
 
 

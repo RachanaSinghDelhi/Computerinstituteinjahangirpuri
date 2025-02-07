@@ -1,4 +1,4 @@
-@extends('dashboard.app')
+@extends('admin.app')
 
 @section('content')
 
@@ -10,29 +10,10 @@
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
-    <!-- Receipts -->
-    <div class="container mt-4">
-        <h1 class="text-center">Upload Receipts</h1>
-        <form action="{{ route('receipts.upload') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <!-- Input for starting number -->
-            <div class="mb-3">
-                <label for="starting_number" class="form-label">Starting Number:</label>
-                <input type="number" name="starting_number" id="starting_number" class="form-control" required>
-            </div>
-
-            <!-- File input -->
-            <div class="mb-3">
-                <label for="receipts" class="form-label">Select Receipts:</label>
-                <input type="file" name="receipts[]" id="receipts" class="form-control" multiple required>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Upload</button>
-        </form>
-    </div>
+    
     <div>
         <br>
-        <a href="{{ route('students.create') }}">
+        <a href="{{ route('admin.students.add') }}">
             <button class="btn btn-sm btn-success">Add New Student</button>
         </a>
     </div>
@@ -60,7 +41,7 @@
                         <td>{{ $fee->student_id }}</td>
                         <td>{{ $fee->student_name }}</td>
                         <td>
-                            <form action="{{ route('fees.updateCourse', $fee->student_id) }}" method="POST">
+                            <form action="{{ route('admin.fees.updateCourse', $fee->student_id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
                                 <select name="course_id" class="form-control" onchange="this.form.submit()">
@@ -73,7 +54,7 @@
                             </form>
                         </td>
                         <td  class="d-none d-md-table-cell">
-                        <form action="{{ route('updateTotalFees', $fee->student_id) }}" method="POST">
+                        <form action="{{ route('admin.updateTotalFees', $fee->student_id) }}" method="POST">
             @csrf
             @method('PUT')
 
@@ -100,8 +81,8 @@
                             ">{{ $fee->status }}</span>
                         </td>
                         <td>
-                            <a href="{{ route('add_fees', $fee->student_id) }}" class="btn btn-primary btn-sm">Pay Now</a>
-                            <a href="{{ route('fees.show', $fee->student_id) }}" class="btn btn-info btn-sm">View Details</a>
+                            <a href="{{ route('admin.add_fees', $fee->student_id) }}" class="btn btn-primary btn-sm">Pay Now</a>
+                            <a href="{{ route('admin.fees.show', $fee->student_id) }}" class="btn btn-info btn-sm">View Details</a>
                         </td>
                     </tr>
                 @endforeach

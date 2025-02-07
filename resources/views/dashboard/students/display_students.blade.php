@@ -62,11 +62,18 @@
     </div>
 
     <!-- Add New Student Button -->
-    <div>
-        <a href="{{ route('students.create') }}">
-            <button class="btn btn-sm btn-success">Add New Student</button>
+    <div class="row">
+    <div class="col">
+        <a href="{{ route('students.index') }}">
+            <button class="btn btn-sm btn-success">Student List</button>
         </a>
     </div>
+    <div class="col">
+        <a href="{{ route('fees.index') }}">
+            <button class="btn btn-sm btn-primary">Fees List</button>
+        </a>
+    </div>
+</div>
 
     <!-- Responsive Table -->
     <div class="table-responsive">

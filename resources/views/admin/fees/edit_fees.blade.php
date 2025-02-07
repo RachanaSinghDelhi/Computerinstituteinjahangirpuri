@@ -1,4 +1,4 @@
-@extends('dashboard.app')
+@extends('admin.app')
 @section('title', 'Edit Fees')
 @section('content')
 
@@ -22,7 +22,7 @@
         <div class="card-body">
             <h2 class="mb-4">Edit Fee Record</h2>
             
-            <form action="{{ route('fees.update', $fee->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.fees.update', $fee->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 
@@ -71,7 +71,7 @@
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-save"></i> Update Fee
                 </button>
-                <a href="{{ route('fees.show', $fee->student_id) }}" class="btn btn-secondary">
+                <a href="{{ route('admin.fees.show', $fee->student_id) }}" class="btn btn-secondary">
                  Fees Detail
                 </a>
             </form>

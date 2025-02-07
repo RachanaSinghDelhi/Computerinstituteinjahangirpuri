@@ -23,6 +23,7 @@ use App\Http\Controllers\Teacher\TeacherController;
 use App\Http\Controllers\Student\StudentDashboardController;
 use App\Http\Controllers\Admin\StudentController as AdminStudentController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
+use App\Http\Controllers\Admin\FeeController as AdminFeeController;
 
 
 
@@ -67,8 +68,9 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
         Route::get('/fees/{student_id}', [FeeController::class, 'show'])->name('fees.show');
         Route::get('/fees/add/{student_id}', [FeeController::class, 'addStudentFees'])->name('add_fees');
         Route::post('/fees/store', [FeeController::class, 'saveStudentFee'])->name('save_student_fee');
-        Route::get('/{fee}/edit', [FeeController::class, 'edit'])->name('fees.edit');
-        Route::put('/{fee}', [FeeController::class, 'update'])->name('fees.update');
+      // For editing fee records
+Route::get('fees/{fee}/edit', [FeeController::class, 'edit'])->name('fees.edit');
+Route::put('fees/{fee}', [FeeController::class, 'update'])->name('fees.update');
         Route::delete('/fees/{id}', [FeeController::class, 'destroy'])->name('fees.destroy');
         Route::get('/search-fees', [FeeController::class, 'search'])->name('search.fees');
         Route::put('/fees/update/{student_id}', [FeeController::class, 'updateStudentFees'])->name('fees.updateStudentFees');
@@ -199,6 +201,24 @@ Route::get('admin/posts/new-posts', [AdminPostController::class, 'index'])->name
 //Route::get('admin/posts/edit_posts', [AdminPostController::class, 'update'])->name('admin.posts.update_post');
 Route::get('admin/posts/{id}/edit', [AdminPostController::class, 'edit'])->name('admin.posts.edit');
 Route::put('admin/posts/{id}', [AdminPostController::class, 'update'])->name('admin.posts.update');
+
+    // Fees Routes
+    Route::get('admin/fees', [AdminFeeController::class, 'index'])->name('admin.fees.index');
+    Route::get('admin/fees/{student_id}', [AdminFeeController::class, 'show'])->name('admin.fees.show');
+    Route::get('admin/fees/add/{student_id}', [AdminFeeController::class, 'addStudentFees'])->name('admin.add_fees');
+    Route::post('admin/fees/store', [AdminFeeController::class, 'saveStudentFee'])->name('admin.save_student_fee');
+  // For editing fee records
+Route::get('admin/fees/{fee}/edit', [AdminFeeController::class, 'edit'])->name('admin.fees.edit');
+Route::put('admin/fees/{fee}', [AdminFeeController::class, 'update'])->name('admin.fees.update');
+    Route::delete('admin//fees/{id}', [AdminFeeController::class, 'destroy'])->name('admin.fees.destroy');
+    //Route::get('admin/search-fees', [FeeController::class, 'search'])->name('search.fees');
+    Route::put('admin/fees/update/{student_id}', [AdminFeeController::class, 'updateStudentFees'])->name('admin.fees.updateStudentFees');
+    Route::put('admin/fees/updateCourse/{student_id}', [AdminFeeController::class, 'updateCourse'])->name('admin.fees.updateCourse');
+    Route::put('admin/fees/{student_id}/update-total-fees', [AdminFeeController::class, 'updateTotalFees'])->name('admin.updateTotalFees');
+
+
+
+
 });
 
 // Teacher Routes

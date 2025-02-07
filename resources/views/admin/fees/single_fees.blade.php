@@ -1,4 +1,4 @@
-@extends('dashboard.app')
+@extends('admin.app')
 
 @section('content')
 <div class="container mt-5">
@@ -7,7 +7,7 @@
             <h2 class="mb-4">Fee Details for {{ $student->name }}</h2>
 
             <!-- Link to Edit Course -->
-            <form action="{{ route('fees.updateCourse', $student->student_id) }}" method="POST" class="mb-4">
+            <form action="{{ route('admin.fees.updateCourse', $student->student_id) }}" method="POST" class="mb-4">
                 @csrf
                 @method('PUT') <!-- Use PUT as per the route -->
                 <div class="mb-3">
@@ -27,7 +27,7 @@
             </form>
 
             <!-- Link to Edit Total Fees -->
-            <form action="{{ route('updateTotalFees', $student->student_id) }}" method="POST" class="mb-4">
+            <form action="{{ route('admin.updateTotalFees', $student->student_id) }}" method="POST" class="mb-4">
                 @csrf
                 @method('PUT') <!-- Use PUT as per the route -->
                 <div class="mb-3">
@@ -47,12 +47,12 @@
 
                 <div class="row mb-3">
     <div class="col-md-6">
-        <a href="{{ route('fees.index') }}" class="btn btn-primary">
+        <a href="{{ route('admin.fees.index') }}" class="btn btn-primary">
             <i class="bi bi-list"></i> View All Fees
         </a>
     </div>
     <div class="col-md-6 d-flex justify-content-end">
-        <a href="{{ route('add_fees', $student->student_id) }}" class="btn btn-success">
+        <a href="{{ route('admin.add_fees', $student->student_id) }}" class="btn btn-success">
             <i class="bi bi-plus-circle"></i> Add Fees
         </a>
     </div>
@@ -97,10 +97,10 @@
                                         </span>
                                     </td>
                                     <td>
-                                    <a href="{{ route('fees.edit', $fee->id) }}" class="btn btn-warning btn-sm mb-1">
+                                    <a href="{{ route('admin.fees.edit', $fee->id) }}" class="btn btn-warning btn-sm mb-1">
         <i class="bi bi-pencil"></i> Edit
     </a>
-                                        <form action="{{ route('fees.destroy', $fee->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this fee record?');">
+                                        <form action="{{ route('admin.fees.destroy', $fee->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this fee record?');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm">

@@ -1,5 +1,6 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Controller;
 
 use App\Models\StudentFeesStatus;
 use App\Models\Fee;
@@ -95,7 +96,7 @@ $feesData = DB::table('students')
 // Fetch available courses
 $courses = DB::table('courses')->get();
 
-return view('dashboard.fees.fees', compact('feesData', 'courses'));
+return view('admin.fees.fees', compact('feesData', 'courses'));
     }
 
 public function updateCourse(Request $request, $student_id)
@@ -105,7 +106,7 @@ public function updateCourse(Request $request, $student_id)
         ->where('student_id', $student_id)
         ->update(['course_id' => $request->course_id]);
 
-    return redirect()->route('fees.index')->with('success', 'Course updated successfully.');
+    return redirect()->route('admin.fees.index')->with('success', 'Course updated successfully.');
 }
 
 public function updateTotalFees(Request $request, $student_id)
@@ -126,7 +127,7 @@ public function updateTotalFees(Request $request, $student_id)
                      ->where('student_id', $student_id)
                      ->value('total_fees');
  
-     return redirect()->route('fees.index')->with('success', 'Total Fees updated successfully.')->with('updatedFee', $updatedFee);
+     return redirect()->route('admin.fees.index')->with('success', 'Total Fees updated successfully.')->with('updatedFee', $updatedFee);
 }
 
 
@@ -139,7 +140,7 @@ public function updateTotalFees(Request $request, $student_id)
         $student = Student::with(['fees.course'])->where('student_id', $student_id)->first();
     
         if (!$student) {
-            return redirect()->route('fees.index')->with('error', 'Student not found.');
+            return redirect()->route('admin.fees.index')->with('error', 'Student not found.');
         }
     
 
@@ -151,7 +152,7 @@ public function updateTotalFees(Request $request, $student_id)
         $hasFees = $student->fees->isNotEmpty();
     
         // Pass the data to the view
-        return view('dashboard.fees.single_fees', compact('student', 'hasFees','totalFees'));
+        return view('admin.fees.single_fees', compact('student', 'hasFees','totalFees'));
     }
 
     
@@ -180,7 +181,7 @@ public function updateTotalFees(Request $request, $student_id)
         $nextReceiptNumber = $lastReceiptNumber + 1;
 
         // Pass all necessary data to the view
-        return view('dashboard.fees.add_fees', compact(
+        return view('admin.fees.add_fees', compact(
             'studentFeesStatus',
             'student',
             'course',
@@ -188,7 +189,7 @@ public function updateTotalFees(Request $request, $student_id)
         ));
     } catch (\Exception $e) {
         // Redirect back with an error message
-        return redirect()->route('fees.index')->with('error', 'Error: ' . $e->getMessage());
+        return redirect()->route('admin.fees.index')->with('error', 'Error: ' . $e->getMessage());
     }
 }
 
@@ -259,7 +260,7 @@ public function updateTotalFees(Request $request, $student_id)
         }
 
         \Log::info('Fee payment successfully added for student ID: ' . $student->student_id);
-        return redirect()->route('fees.index', ['student_id' => $student->student_id])
+        return redirect()->route('admin.fees.index', ['student_id' => $student->student_id])
             ->with('success', 'Payment added successfully!');
     } catch (\Exception $e) {
         \Log::error('Error occurred: ' . $e->getMessage());
@@ -303,7 +304,7 @@ public function search(Request $request)
 
 public function edit(Fee $fee)
 {
-    return view('dashboard.fees.edit_fees', compact('fee'));
+    return view('admin.fees.edit_fees', compact('fee'));
 }
 
 public function update(Request $request, Fee $fee)
@@ -341,7 +342,7 @@ public function update(Request $request, Fee $fee)
 
     $fee->update($validated);
 
-    return redirect()->route('fees.show', $fee->student_id)
+    return redirect()->route('admin.fees.show', $fee->student_id)
         ->with('success', 'Fee record updated successfully');
 }
 
