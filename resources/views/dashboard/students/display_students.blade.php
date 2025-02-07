@@ -65,7 +65,7 @@
     <div class="row">
     <div class="col">
         <a href="{{ route('students.create') }}">
-            <button class="btn btn-sm btn-success">Student List</button>
+            <button class="btn btn-sm btn-success">Add Student</button>
         </a>
     </div>
     <div class="col">
