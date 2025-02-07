@@ -1,4 +1,4 @@
-@extends('dashboard.app')
+@extends('admin.app')
 @section('title', 'Add Students')
 @section('content')
 <div class="container mt-5">
@@ -26,7 +26,7 @@
         </a>
     </div>
     <!-- Student Form -->
-    <form action="{{ route('students.liststore') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('students.liststore') }}" method="POST" enctype="multipart/form-data" id="studentForm">
         @csrf
 
         <div class="row mb-3">
@@ -87,81 +87,91 @@
                 <input type="text" class="form-control" id="contact_number" name="contact_number">
             </div>
         </div>
-
         <div class="mb-3">
             <label for="photo" class="form-label">Photo</label>
             <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
-            <div>
-                <img id="imagePreview" src="" style="display:none; width: 100%; max-height: 300px; object-fit: cover;" />
+            <input type="hidden" id="cropped-photo" name="cropped_photo">
+            <div class="mt-2">
+                <img id="imagePreview" src="" style="display: none; width: 100%; max-height: 300px; object-fit: cover; border: 1px solid #ddd; padding: 5px;">
+            </div>
+      
+        </div>
+
+        <div class="row mb-3">
+            <div class="mt-3">
+                <label for="rotationSlider" class="form-label">Rotate Image</label>
+                <input type="range" id="rotationSlider" class="form-range" min="-180" max="180" step="1" value="0">
+                <span id="rotationValue">0°</span>
             </div>
         </div>
-        <div class="row mb-3">
-        <div class="mt-3">
-        <label for="rotationSlider" class="form-label">Rotate Image</label>
-        <input type="range" id="rotationSlider" class="form-range" min="0" max="360" step="1" value="0">
-        <span id="rotationValue">0°</span>
-    </div>
-                        </div>
+
+               <!-- Canvas to store cropped image -->
+        <canvas id="canvas" style="display: none;"></canvas>
+
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
 @endsection
 
 @push('scripts')
-<!-- Include the CropperJS CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" />
-
-<!-- Include CropperJS JavaScript -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 
 <script>
-   
-let image = document.getElementById('imagePreview');
-let input = document.getElementById('photo');
-let rotationSlider = document.getElementById('rotationSlider');
-let rotationValue = document.getElementById('rotationValue');
-let cropper;
+document.addEventListener('DOMContentLoaded', function () {
+    const image = document.getElementById('imagePreview');
+    const input = document.getElementById('photo');
+    const rotationSlider = document.getElementById('rotationSlider');
+    const rotationValue = document.getElementById('rotationValue');
+    const croppedPhotoField = document.getElementById('cropped-photo');
+    let cropper;
 
-input.addEventListener('change', function (e) {
-    let file = e.target.files[0];
-    let reader = new FileReader();
+    // Image input change event to initialize cropping
+    input.addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        if (!file) return;
 
-    reader.onload = function (event) {
-        image.src = event.target.result;
-        image.style.display = 'block';
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            image.src = event.target.result;
+            image.style.display = 'block';
 
-        // Initialize the cropper
-        if (cropper) {
-            cropper.destroy();  // Destroy the previous instance before creating a new one
-        }
+            if (cropper) cropper.destroy();
 
-        cropper = new Cropper(image, {
-            aspectRatio: 1,
-            viewMode: 2,
-            autoCropArea: 1,
-            crop(event) {
-                // You can get the cropped image data here
-            }
-        });
-
-        // Reset rotation slider to 0 when a new image is loaded
-        rotationSlider.value = 0;
-        rotationValue.innerText = "0°";
-    };
-
-    if (file) {
+            cropper = new Cropper(image, {
+                aspectRatio: 1,
+                viewMode: 2,
+                autoCropArea: 1
+            });
+        };
         reader.readAsDataURL(file);
+    });
+
+    // Image rotation slider
+    rotationSlider.addEventListener('input', function () {
+        if (cropper) {
+            const rotateValue = parseInt(this.value);
+            cropper.rotateTo(rotateValue);
+            rotationValue.textContent = `${rotateValue}°`;
+        }
+    });
+
+    // Crop the image and set base64 to hidden input before form submit
+    function getCroppedImageData() {
+        if (cropper) {
+            const canvasData = cropper.getCroppedCanvas();
+            const croppedDataUrl = canvasData.toDataURL(); // base64 encoded image
+            croppedPhotoField.value = croppedDataUrl;  // Set the cropped image in the hidden field
+        }
     }
+
+    // Handle the form submission
+    document.getElementById('studentForm').addEventListener('submit', function (e) {
+        e.preventDefault(); // Prevent form from submitting immediately
+        getCroppedImageData(); // Ensure the cropped image data is saved in the hidden input
+        this.submit(); // Now submit the form after setting the cropped image data
+    });
 });
 
-// Slider for rotating the image
-rotationSlider.addEventListener('input', function () {
-    if (cropper) {
-        let angle = rotationSlider.value;
-        cropper.rotateTo(angle);  // Rotate the image based on slider value
-        rotationValue.innerText = `${angle}°`;  // Display the current rotation angle
-    }
-});
 </script>
 @endpush
-

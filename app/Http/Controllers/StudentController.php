@@ -22,44 +22,46 @@ class StudentController extends Controller
     // Handle Form Submission
     public function liststore(Request $request)
     {
-        $request->validate([
-            'student_id' => 'required|unique:students,student_id',
-            'name' => 'required|string|max:255',
-            'father_name' => 'required|string|max:255',
-            'doa' => 'required|date',
-            'course' => 'required|exists:courses,id', // Ensure the selected course exists in the database
-            'batch' => 'required|string',
-           'contact_number' => 'required|numeric|regex:/^[0-9]{10}$/',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-      // Handle photo upload if provided
-$photoPath = null;
-if ($request->hasFile('photo')) {
-      // Get the original file name
-      $fileName = $request->file('photo')->getClientOriginalName();
-
-      // Store the file using the original file name
-      $photoPath = $request->file('photo')->storeAs('students', $fileName, 'public');
-}
-
-
-        // Save student data
-        Student::create([
-            'student_id' => $request->student_id,
-            'name' => $request->name,
-            'father_name' => $request->father_name,
-            'doa' => $request->doa,
-            'course_id' => $request->course, // Use course_id instead of course
-            'batch' => $request->batch,
-            'photo' =>  $fileName,
-            'contact_number' => $request->contact_number,
-        ]);
-
-        // Redirect with success message
-        return redirect()->route('students.index')->with('success', 'Student added successfully.');
-    }
-
+        
+            $request->validate([
+                'student_id' => 'required|unique:students,student_id',
+                'name' => 'required|string|max:255',
+                'father_name' => 'required|string|max:255',
+                'doa' => 'required|date',
+                'course' => 'required|exists:courses,id',
+                'batch' => 'required|string',
+                'contact_number' => 'required|numeric|regex:/^[0-9]{10}$/',
+              'cropped_photo' => 'required',
+            ]);
+        
+        
+         // Decode base64 image
+         $croppedImage = $request->input('cropped_photo');
+         $imageData = substr($croppedImage, strpos($croppedImage, ',') + 1);
+         $imageData = base64_decode($imageData);
+        
+         // Define the filename and path
+         $fileName = $request->student_id . '.jpg';
+         $filePath = 'students/' . $fileName;
+        
+         // Store the image in storage/students/
+         Storage::disk('public')->put($filePath, $imageData);
+          
+            // Save student data
+            Student::create([
+                'student_id' => $request->student_id,
+                'name' => $request->name,
+                'father_name' => $request->father_name,
+                'doa' => $request->doa,
+                'course_id' => $request->course,
+                'batch' => $request->batch,
+                'photo' => $fileName, // Ensure photo is saved
+                'contact_number' => $request->contact_number,
+            ]);
+        
+            return redirect()->route('students.index')->with('success', 'Student added successfully.');
+        }
+        
     
 // Display Paginated Students
 public function index()
