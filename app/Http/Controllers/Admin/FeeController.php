@@ -23,7 +23,7 @@ $activeStudents = DB::table('students')
     'students.student_id',
     'students.name as student_name',
     'courses.id as course_id',
-    'courses.course_title',
+    'courses.course_name',
     'courses.total_fees',
     'courses.installments'
 )
@@ -41,7 +41,7 @@ if (!$existingRecord) {
         'student_id' => $student->student_id,
         'student_name' => $student->student_name,
         'course_id' => $student->course_id,
-        'course_title' => $student->course_title,
+        'course_title' => $student->course_name,
         'total_fees' => $student->total_fees,
         'installments' => $student->installments,
         'fees_paid' => 0.00, // Initially no fees paid
@@ -62,7 +62,7 @@ $feesData = DB::table('students')
 ->select(
     'students.student_id',
     'students.name as student_name',
-    'courses.course_title',
+    'courses.course_name',
     'courses.total_fees',
     'courses.installments',
     'courses.id as course_id',
@@ -83,7 +83,7 @@ $feesData = DB::table('students')
 ->groupBy(
     'students.student_id',
     'students.name',
-    'courses.course_title',
+    'courses.course_name',
     'courses.total_fees',
     'courses.installments',
     'courses.id',
