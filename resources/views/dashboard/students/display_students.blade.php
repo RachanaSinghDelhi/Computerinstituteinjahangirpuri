@@ -64,7 +64,7 @@
     <!-- Add New Student Button -->
     <div class="row">
     <div class="col">
-        <a href="{{ route('students.index') }}">
+        <a href="{{ route('students.create') }}">
             <button class="btn btn-sm btn-success">Student List</button>
         </a>
     </div>
