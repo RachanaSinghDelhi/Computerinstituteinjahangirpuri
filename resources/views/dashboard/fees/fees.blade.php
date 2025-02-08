@@ -117,7 +117,8 @@
     @endphp
     @php
     $installmentAmount = ($fee->student_total_fees - 350) / max($fee->installments, 1);
-    $message = "Hello " . urlencode($fee->student_name) . ", your pending installment is Rs. " . number_format($installmentAmount, 2) . ". Please pay soon to avoid a fine of Rs. 200 per week.\n\nPay via Google Pay:\n👉 https://pay.google.com\n\nScan the QR Code:\n👉 https://www.nicewebtechnologies.com/qrcode.jpg";
+    $studentName = urldecode(urlencode($fee->student_name)); // Decode the URL-encoded name
+    $message = "Hello " . $studentName . ", your pending installment is Rs. " . number_format($installmentAmount, 2) . ". Please pay soon to avoid a fine of Rs. 200 per week.\n\nPay via Google Pay:\n👉 https://pay.google.com\n\nScan the QR Code:\n👉 https://www.nicewebtechnologies.com/qrcode.jpg";
 @endphp
 
 <a href="https://wa.me/{{ $whatsappNumber }}?text={{ urlencode($message) }}" 
