@@ -116,7 +116,7 @@
         $whatsappNumber = $student ? $student->contact_number : '9625277739'; // Default if not found
     @endphp
 
-    <a href="https://wa.me/{{ $whatsappNumber }}?text=Hello%20{{ urlencode($fee->student_name) }},%20your%20pending%20fees%20for%20{{ urlencode($student->course_name) }}%20is%20Rs.%20{{ urlencode($fee->fees_due) }}.%20Pay%20soon%20to%20avoid%20a%20fine%20of%20Rs.%20200%20per%20week."
+    <a href="https://wa.me/{{ $whatsappNumber }}?text=Hello%20{{ urlencode($fee->student_name) }},%20your%20pending%20fees%20for%20{{ urlencode($student->course_name) }}%20is%20Rs.%20{{ urlencode($fee->fees_due) }}.%20Pay%20soon%20to%20avoid%20a%20fine%20of%20Rs.%20200%20per%20week.%0A%0A📌%20Scan%20the%20QR%20Code%20to%20pay:%20{{ urlencode('https://www.computerinstituteindelhijahangirpuri.com/assets/images/qrcode.jpg') }}"
    target="_blank"
    class="btn btn-success btn-sm">
    📲 WhatsApp Reminder
