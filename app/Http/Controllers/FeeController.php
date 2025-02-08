@@ -197,8 +197,8 @@ public function updateTotalFees(Request $request, $student_id)
 
 
             // Retrieve the latest installment number for the student
-            $lastInstallment = Fee::max('installment_no') ?? 1;
-            $nextInstallmentNo = $lastInstallment + 1 ;
+            $lastInstallment = Fee::where('student_id', $student_id)->max('installment_no') ?? 0;
+            $nextInstallmentNo = $lastInstallment + 1;
    
    
         // Pass all necessary data to the view
