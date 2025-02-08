@@ -39,6 +39,7 @@ if (!$existingRecord) {
     DB::table('student_fees_status')->insert([
         'student_id' => $student->student_id,
         'student_name' => $student->student_name,
+        'doa' => $student->doa,
         'course_id' => $student->course_id,
         'course_title' => $student->course_title,
         'total_fees' => $student->total_fees,
@@ -61,19 +62,22 @@ $feesData = DB::table('students')
 ->select(
     'students.student_id',
     'students.name as student_name',
+    'students.doa as admission_date',
     'courses.course_title',
     'courses.total_fees',
     'courses.installments',
     'courses.id as course_id',
     DB::raw('IFNULL(SUM(fees.amount_paid), 0) as fees_paid'),
-    DB::raw('courses.total_fees - IFNULL(SUM(fees.amount_paid), 0) as fees_due'),
+    DB::raw('IFNULL(student_fees_status.total_fees, 0) - IFNULL(SUM(fees.amount_paid), 0) as fees_due'),
     DB::raw(
         "CASE 
-            WHEN SUM(fees.amount_paid) >= courses.total_fees THEN 'Paid'
-            WHEN MAX(fees.payment_date) >= CURDATE() AND SUM(fees.amount_paid) < courses.total_fees THEN 'Paid but Pending Next Month'
+            WHEN SUM(fees.amount_paid) >= IFNULL(student_fees_status.total_fees, 0) THEN 'Paid'
+            WHEN MAX(fees.payment_date) >= CURDATE() AND SUM(fees.amount_paid) < IFNULL(student_fees_status.total_fees, 0) THEN 'Paid but Pending Next Month'
             ELSE 'Pending'
         END as status"
     ),
+    
+     
     DB::raw('MAX(fees.updated_at) as last_updated'),
     'student_fees_status.total_fees as student_total_fees',
     DB::raw('COUNT(fees.id) as installments_paid') // Counting the number of installments paid
@@ -82,6 +86,7 @@ $feesData = DB::table('students')
 ->groupBy(
     'students.student_id',
     'students.name',
+    'students.doa',
     'courses.course_title',
     'courses.total_fees',
     'courses.installments',
@@ -92,6 +97,16 @@ $feesData = DB::table('students')
 ->orderBy('students.student_id', 'desc')
 ->get();
 
+
+
+// Automatically update students status to "complete" if fees are fully paid
+foreach ($feesData as $student) {
+    if ($student->fees_paid >= $student->student_total_fees) {
+        DB::table('students')
+            ->where('student_id', $student->student_id)
+            ->update(['status' => 'completed']);
+    }
+}
 // Fetch available courses
 $courses = DB::table('courses')->get();
 
@@ -179,12 +194,20 @@ public function updateTotalFees(Request $request, $student_id)
         $lastReceiptNumber = Fee::max('receipt_number') ?? 0;
         $nextReceiptNumber = $lastReceiptNumber + 1;
 
+
+
+            // Retrieve the latest installment number for the student
+            $lastInstallment = Fee::max('installment_no') ?? 1;
+            $nextInstallmentNo = $lastInstallment + 1 ;
+   
+   
         // Pass all necessary data to the view
         return view('dashboard.fees.add_fees', compact(
             'studentFeesStatus',
             'student',
             'course',
-            'nextReceiptNumber'
+            'nextReceiptNumber',
+            'nextInstallmentNo'
         ));
     } catch (\Exception $e) {
         // Redirect back with an error message

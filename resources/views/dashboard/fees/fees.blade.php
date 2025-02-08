@@ -43,7 +43,9 @@
                 <tr>
                     <th>Student ID</th>
                     <th>Student Name</th>
+                    <th>Admission Date</th>
                     <th>Course Name</th>
+               
                     <th  class="d-none d-md-table-cell">Total Fees</th>
                     <th  class="d-none d-md-table-cell">Installments</th>
                     <th>Installments Paid</th>
@@ -59,6 +61,7 @@
                     <tr>
                         <td>{{ $fee->student_id }}</td>
                         <td>{{ $fee->student_name }}</td>
+                        <td>{{ $fee->admission_date }}</td>
                         <td>
                             <form action="{{ route('fees.updateCourse', $fee->student_id) }}" method="POST">
                                 @csrf

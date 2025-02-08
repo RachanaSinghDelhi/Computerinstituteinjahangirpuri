@@ -36,7 +36,7 @@
         </div>
         <div class="mb-3">
     <label for="installment_no" class="form-label">Installment Number</label>
-    <input type="number" class="form-control" id="installment_no" name="installment_no" value="{{ $studentFeesStatus->installment_no ?? 1 }}" required>
+    <input type="text" class="form-control" id="installment_no" name="installment_no" value="{{ $nextInstallmentNo }}" required>
 </div>
 
         <div class="mb-3">
