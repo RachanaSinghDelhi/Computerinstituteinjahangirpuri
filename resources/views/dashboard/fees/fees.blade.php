@@ -115,10 +115,10 @@
         $student = \App\Models\Student::find($fee->student_id);
         $whatsappNumber = $student ? $student->contact_number : '9625277739'; // Default if not found
     @endphp
-    <a href="https://wa.me/{{ $whatsappNumber }}?text=Hello%20{{ urlencode($fee->student_name) }},%20your%20pending%20fees%20for%20{{ urlencode($student->course_name) }}%20is%20Rs.%20{{ urlencode($fee->fees_due) }}.%20Pay%20soon%20to%20avoid%20a%20fine%20of%20Rs.%20200%20per%20week.%0A%0A💳%20Click%20below%20to%20pay%20via%20Google%20Pay:%0A🔗%20{{ urlencode('upi://pay?pa=9312945741@okbizaxis&pn=Nice Web Technologies&tn=Pending Fees Payment&am='.$fee->fees_due.'&cu=INR') }}%0A%0A🖼️%20Scan%20the%20QR%20Code%20to%20Pay:%0A🔗%20{{ urlencode('https://www.computerinstituteindelhijahangirpuri.com/assets/images/qrcode.jpg') }}"
+    <a href="https://wa.me/{{ $whatsappNumber }}?text=Hello%20{{ urlencode($fee->student_name) }},%20your%20pending%20fees%20for%20{{ urlencode($student->course_name) }}%20is%20Rs.%20{{ urlencode($fee->fees_due) }}.%20Pay%20soon%20to%20avoid%20a%20fine%20of%20Rs.%20200%20per%20week.%0A%0A💳%20Click%20here%20to%20pay%20via%20Google%20Pay,%20PhonePe,%20or%20Paytm:%0A👉%20{{ urlencode('https://pay.google.com/gp/p/ui/pay?pa=9312945741@okbizaxis&pn=Nice Web Technologies&tn=Pending Fees Payment&am='.$fee->fees_due.'&cu=INR') }}%0A%0A🖼️%20Scan%20the%20QR%20Code%20to%20Pay:%0A👉%20{{ urlencode('https://www.computerinstituteindelhijahangirpuri.com/assets/images/qrcode.jpg') }}"
    target="_blank"
    class="btn btn-success btn-sm">
-   📲 WhatsApp Reminder
+   📲 WhatsApp Payment Reminder
 </a>
 
 
