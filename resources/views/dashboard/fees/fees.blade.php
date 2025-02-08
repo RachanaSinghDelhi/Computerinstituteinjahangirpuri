@@ -115,11 +115,17 @@
         $student = \App\Models\Student::find($fee->student_id);
         $whatsappNumber = $student ? $student->contact_number : '9625277739'; // Default if not found
     @endphp
-    <a href="https://wa.me/{{ $whatsappNumber }}?text=Hello%20{{ urlencode($fee->student_name) }},%20your%20pending%20fees%20for%20is%20Rs.%20{{ urlencode($fee->fees_due) }}.%20Pay%20soon%20to%20avoid%20a%20fine%20of%20Rs.%20200%20per%20week.%0A%0AOr%20pay%20online%20via%20Google%20Pay:%0A👉%20https://pay.google.com%0A%0AScan%20the%20QR%20Code%20to%20Pay:%0A👉%20https://www.nicewebtechnologies.com/qrcode.jpg"
+    @php
+    $installmentAmount = ($fee->student_total_fees - 350) / max($fee->installments, 1);
+    $message = "Hello " . urlencode($fee->student_name) . ", your pending installment is Rs. " . number_format($installmentAmount, 2) . ". Please pay soon to avoid a fine of Rs. 200 per week.\n\nPay via Google Pay:\n👉 https://pay.google.com\n\nScan the QR Code:\n👉 https://www.nicewebtechnologies.com/qrcode.jpg";
+@endphp
+
+<a href="https://wa.me/{{ $whatsappNumber }}?text={{ urlencode($message) }}" 
    target="_blank"
    class="btn btn-success btn-sm">
    📲 WhatsApp Payment Reminder
 </a>
+
 
 
 
