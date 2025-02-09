@@ -61,7 +61,7 @@
                     <tr>
                         <td>{{ $fee->student_id }}</td>
                         <td>{{ $fee->student_name }}</td>
-                        <td>{{ $fee->admission_date }}</td>
+                        <td>{{ \Carbon\Carbon::parse($fee->admission_date)->format('d') }}</td>
                         <td>
                             <form action="{{ route('fees.updateCourse', $fee->student_id) }}" method="POST">
                                 @csrf
@@ -151,6 +151,7 @@
 
 <script>
     $(document).ready(function() {
+
         $('#feesTable').DataTable({
             paging: true,
             searching: true,
