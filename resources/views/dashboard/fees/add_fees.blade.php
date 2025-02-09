@@ -36,7 +36,7 @@
         </div>
         <div class="mb-3">
     <label for="installment_no" class="form-label">Installment Number</label>
-    <input type="text" class="form-control" id="installment_no" name="installment_no" value="{{ $nextInstallmentNo }}" required>
+    <input type="text" class="form-control" id="installment_no" name="installment_no" value="{{ old('installment_no', $nextInstallmentNo) }}" required>
 </div>
 
         <div class="mb-3">
