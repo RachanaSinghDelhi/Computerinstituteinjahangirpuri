@@ -113,12 +113,17 @@
                         <td>
                             <a href="{{ route('add_fees', $fee->student_id) }}" class="btn btn-primary btn-sm">Pay Now</a>
                             <a href="{{ route('fees.show', $fee->student_id) }}" class="btn btn-info btn-sm">View Details</a>
+                            
                             @php
-        // Fetch student's WhatsApp number from the students table
-        $student = \App\Models\Student::find($fee->student_id);
-        $whatsappNumber = $student ? $student->contact_number : '9625277739'; // Default if not found
-    @endphp
-    @php
+    // Fetch student's WhatsApp number from the students table
+    $student = \App\Models\Student::find($fee->student_id);
+    $whatsappNumber = $student ? $student->contact_number : '9625277739'; // Default if not found
+
+    // Remove any spaces from the WhatsApp number
+    $whatsappNumber = str_replace(' ', '', $whatsappNumber);
+@endphp
+
+@php
     $installmentAmount = ($fee->student_total_fees - 350) / max($fee->installments, 1);
     $studentName = urldecode(urlencode($fee->student_name)); // Decode the URL-encoded name
     $message = "Hello " . $studentName . ", your pending installment is Rs. " . number_format($installmentAmount, 2) . ". Please pay soon to avoid a fine of Rs. 200 per week.\n\nPay via Google Pay:\n👉 https://pay.google.com\n\nScan the QR Code:\n👉 https://www.nicewebtechnologies.com/qrcode.jpg";
