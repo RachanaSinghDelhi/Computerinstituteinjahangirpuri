@@ -74,7 +74,7 @@ public function index()
      // Fetch all students with their related courses
      $students = Student::with('course')
      ->orderBy('student_id', 'desc') // Order by `id` in descending order
-     ->paginate(50);// Eager load 'course' relationship
+     ->paginate(5);// Eager load 'course' relationship
     $courses = Course::all();
     // Pass the students to the view
     return view('dashboard.students.display_students', compact('students','courses'));
@@ -307,13 +307,13 @@ public function search(Request $request)
 {
     $query = $request->input('query');
 
-    // Filter students based on student_id or name
-    $students = Student::where('student_id', 'LIKE', "%{$query}%")
-                    ->orWhere('name', 'LIKE', "%{$query}%")
-                    ->get();
+    $students = Student::select('id', 'student_id', 'name', 'father_name', 'doa', 'course_id', 'batch', 'photo', 'status')
+        ->where('name', 'LIKE', "%{$query}%")
+        ->orWhere('student_id', 'LIKE', "%{$query}%")
+        ->paginate(10);
 
-    // Return the filtered results as a partial view
-    return view('dashboard.students.student_search', compact('students'));
+    return view('dashboard.students.student_search', compact('students'))->render();
+  
 }
 
 

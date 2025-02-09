@@ -93,7 +93,37 @@
                 </tr>
             </thead>
             <tbody>
-                @include('dashboard.students.student_search', ['students' => $students]) <!-- Include search results -->
+            @foreach($students as $student)
+    <tr>
+        <td>
+            <input type="checkbox" name="student_ids[]" value="{{ $student->student_id }}" class="student-checkbox">
+        </td>
+        <td>{{ $student->id }}</td>
+        <td>{{ $student->student_id }}</td>
+        <td>{{ $student->name }}</td>
+        <td class="d-none d-md-table-cell">{{ $student->father_name }}</td>
+        <td class="d-none d-md-table-cell">{{ \Carbon\Carbon::parse($student->doa)->format('d-m-Y') }}</td>
+        <td>{{ $student->course->course_title ?? 'N/A' }}</td>
+        <td class="d-none d-md-table-cell">{{ $student->batch }}</td>
+        <td>
+            @if($student->photo)
+                <img src="{{ asset('storage/students/' . $student->photo) }}" alt="Student Photo" width="50">
+            @else
+                No Photo
+            @endif
+        </td>
+        <td>
+            <select name="status" class="form-control form-control-sm student-status" data-student-id="{{ $student->student_id }}">
+                <option value="Active" {{ strtoupper(trim($student->status)) === 'ACTIVE' ? 'selected' : '' }}>Active</option>
+                <option value="Inactive" {{ strtoupper(trim($student->status)) === 'INACTIVE' ? 'selected' : '' }}>Inactive</option>
+                <option value="Left" {{ strtoupper(trim($student->status)) === 'LEFT' ? 'selected' : '' }}>Left</option>
+                <option value="Completed" {{ strtoupper(trim($student->status)) === 'COMPLETED' ? 'selected' : '' }}>Completed</option>
+            </select>
+            <a href="{{ route('students.edit', $student->student_id) }}" class="btn btn-primary btn-sm">Edit</a>
+            <button type="button" class="btn btn-danger btn-sm delete-student" data-student-id="{{ $student->student_id }}">Delete</button>
+        </td>
+    </tr>
+@endforeach
             </tbody>
         </table>
     </div>
@@ -221,20 +251,17 @@
         });
 
         // Handle search input
-     
-    $('#searchBox').on('keyup', function () {
-        let query = $(this).val().toLowerCase().trim(); // Convert input to lowercase and trim spaces
-        $('#studentTable tbody tr').each(function () {
-            let studentID = $(this).find('td:nth-child(3)').text().trim(); // Student ID column
-            let name = $(this).find('td:nth-child(4)').text().toLowerCase().trim(); // Name column
-
-            // Convert studentID to a number only if the query is numeric
-            let isMatch = name.includes(query) || (isNaN(query) ? false : studentID.includes(query));
-
-            $(this).toggle(isMatch); // Show/hide rows based on match
+        $("#searchBox").on("keyup", function () {
+        let query = $(this).val();
+        $.ajax({
+            url: "{{ route('students.search') }}", // Ensure this route exists in your web.php
+            method: "GET",
+            data: { query: query },
+            success: function (data) {
+                $("tbody").html(data); // Replace table body with filtered results
+            }
         });
     });
-
 
     });
 </script>
