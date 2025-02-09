@@ -72,8 +72,16 @@ $feesData = DB::table('students')
     DB::raw(
         "CASE 
             WHEN SUM(fees.amount_paid) >= IFNULL(student_fees_status.total_fees, 0) THEN 'Paid'
-            WHEN MAX(fees.payment_date) >= CURDATE() AND SUM(fees.amount_paid) < IFNULL(student_fees_status.total_fees, 0) THEN 'Paid but Pending Next Month'
-            ELSE 'Pending'
+           WHEN 
+        SUM(CASE 
+                WHEN MONTH(fees.payment_date) = MONTH(CURDATE()) 
+                AND YEAR(fees.payment_date) = YEAR(CURDATE()) 
+             THEN fees.amount_paid 
+             ELSE 0 
+             END) > 0
+        AND SUM(fees.amount_paid) < IFNULL(student_fees_status.total_fees, 0) 
+    THEN 'Paid but Pending Next Month'
+    ELSE 'Pending'
         END as status"
     ),
     
@@ -195,7 +203,7 @@ public function updateTotalFees(Request $request, $student_id)
         $nextReceiptNumber = $lastReceiptNumber + 1;
 
 
-
+ 
             // Retrieve the latest installment number for the student
             $lastInstallment = Fee::where('student_id', $student_id)->max('installment_no') ?? 0;
             $nextInstallmentNo = $lastInstallment + 1;
