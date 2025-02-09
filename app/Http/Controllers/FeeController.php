@@ -21,7 +21,6 @@ $activeStudents = DB::table('students')
 ->select(
     'students.student_id',
     'students.name as student_name',
-    'students.doa as admission_date',
     'courses.id as course_id',
     'courses.course_title',
     'courses.total_fees',
