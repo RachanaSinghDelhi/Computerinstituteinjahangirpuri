@@ -20,8 +20,9 @@ $activeStudents = DB::table('students')
 ->join('courses', 'students.course_id', '=', 'courses.id')
 ->where('students.status', 'active')
 ->select(
-    'students.student_id',
+   'students.student_id',
     'students.name as student_name',
+    'students.doa',  // Add this line
     'courses.id as course_id',
     'courses.course_name',
     'courses.total_fees',
