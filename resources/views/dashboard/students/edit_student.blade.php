@@ -30,7 +30,7 @@
     <!-- Form for editing a student -->
     <form action="{{ route('students.update', $student->student_id) }}" method="POST" enctype="multipart/form-data">
         @csrf
-        @method('PUT')
+     
 
         <div class="row">
             <!-- Student ID (Read-Only) -->

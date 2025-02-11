@@ -42,37 +42,44 @@ public function store(Request $request)
     $request->validate([
         'student_id' => 'required|unique:students,student_id',
         'name' => 'required|string|max:255',
-        'father_name' => 'required|string|max:255',
-        'doa' => 'required|date',
         'course' => 'required|exists:courses,id',
-        'batch' => 'required|string',
-        'contact_number' => 'required|numeric|regex:/^[0-9]{10}$/',
-      'cropped_photo' => 'required',
     ]);
 
+    // Handle optional fields
+    $fatherName = $request->father_name ?? null;
+    $doa = $request->doa ?? null;
+    $batch = $request->batch ?? null;
+    $contactNumber = $request->contact_number ?? null;
 
- // Decode base64 image
- $croppedImage = $request->input('cropped_photo');
- $imageData = substr($croppedImage, strpos($croppedImage, ',') + 1);
- $imageData = base64_decode($imageData);
+    // Handle image upload
+    if ($request->filled('cropped_photo')) {
+        // Decode base64 image
+        $croppedImage = $request->input('cropped_photo');
+        $imageData = substr($croppedImage, strpos($croppedImage, ',') + 1);
+        $imageData = base64_decode($imageData);
 
- // Define the filename and path
- $fileName = $request->student_id . '.jpg';
- $filePath = 'students/' . $fileName;
+        // Define the filename and path
+        $fileName = $request->student_id . '.jpg';
+        $filePath = 'students/' . $fileName;
 
- // Store the image in storage/students/
- Storage::disk('public')->put($filePath, $imageData);
-  
+        // Store the image in storage/students/
+        Storage::disk('public')->put($filePath, $imageData);
+    } else {
+        // Use default image if no image is uploaded
+        $fileName = 'default_image.jpg';
+        $filePath = 'assets/' . $fileName;
+    }
+
     // Save student data
     Student::create([
         'student_id' => $request->student_id,
         'name' => $request->name,
-        'father_name' => $request->father_name,
-        'doa' => $request->doa,
+        'father_name' => $fatherName,
+        'doa' => $doa,
         'course_id' => $request->course,
-        'batch' => $request->batch,
+        'batch' => $batch,
         'photo' => $fileName, // Ensure photo is saved
-        'contact_number' => $request->contact_number,
+        'contact_number' => $contactNumber,
     ]);
 
     return redirect()->route('admin.students.index')->with('success', 'Student added successfully.');

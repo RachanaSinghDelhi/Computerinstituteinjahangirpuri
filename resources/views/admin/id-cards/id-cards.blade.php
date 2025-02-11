@@ -4,13 +4,16 @@
 
 <div class="container mt-4">
     <h2 class="mb-4">Student ID Cards</h2>
+    
+    <!-- Search Box -->
+    <input type="text" id="searchBox" class="form-control mb-3" placeholder="Search for students...">
 
     <!-- Form for selecting and downloading ID cards -->
     <form action="{{ route('admin.students.downloadSelectedIdCards') }}" method="POST">
         @csrf
-        <div class="row">
+        <div class="row" id="studentList">
             @foreach($students as $student)
-                <div class="col-md-6 mb-3">
+                <div class="col-md-6 mb-3 student-item">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="selected_ids[]" value="{{ $student->student_id }}" id="student-{{ $student->student_id }}">
                         <label class="form-check-label" for="student-{{ $student->student_id }}">
@@ -38,24 +41,10 @@
         <div class="alert alert-danger mt-3">{{ session('error') }}</div>
     @endif
 
-    <!-- Pagination -->
-    <div class="mt-4">
-        {{ $students->links() }}
-    </div>
-
-
-
-
-
-    <!-- Success/Error Messages -->
-    @if(session('error'))
-        <div class="alert alert-danger">{{ session('error') }}</div>
-    @endif
-
     <!-- Display all student ID cards -->
-    <div class="row">
+    <div class="row" id="studentCards">
         @foreach($students as $student)
-            <div class="col-md-4 mb-4">
+            <div class="col-md-4 mb-4 student-item">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">{{ $student->name }}</h5>
@@ -64,38 +53,55 @@
 
                         <!-- Display ID Card Template with student details -->
                         <div class="id-card">
-            <img src="{{ asset('assets/images/id_card.jpg') }}" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; object-fit: cover;">
-            <div class="image">
-                <img src="{{ asset('storage/students/' . $student->photo) }}" style="width: 60px; height: 70px;top: 50px; border-radius: 50%; border: 2px solid white;">
-            </div>
-            <div class="text-container">
-                <div>{{ $student->name }}</div>
-                <div>{{ $student->course->course_title ?? 'N/A' }}</div>
-            </div>
-            <div style="position: absolute; top: 180px; left:30px; font-size: 10px; color: black;">
-                <p class="ele"><b>ID:</b> {{ $student->student_id }}</p>
-                <p class="ele"><b>Father:</b> {{ $student->father_name ?? 'N/A' }} </p>
-                <p class="ele"><b>Admission dt:</b> {{ $student->doa ?? 'N/A' }}</p>
-                <p class="ele"><b>Contact:</b> {{ $student->contact_number ?? 'N/A' }}</p>
-            </div>
-        </div>
+                            <img src="{{ asset('assets/images/id_card.jpg') }}" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; object-fit: cover;">
+                            <div class="image">
+                                <img src="{{ asset('storage/students/' . $student->photo) }}" style="width: 60px; height: 70px;top: 50px; border-radius: 50%; border: 2px solid white;">
+                            </div>
+                            <div class="text-container">
+                                <div>{{ $student->name }}</div>
+                                <div>{{ $student->course->course_title ?? 'N/A' }}</div>
+                            </div>
+                            <div style="position: absolute; top: 180px; left:30px; font-size: 10px; color: black;">
+                                <p class="ele"><b>ID:</b> {{ $student->student_id }}</p>
+                                <p class="ele"><b>Father:</b> {{ $student->father_name ?? 'N/A' }} </p>
+                                <p class="ele"><b>Admission dt:</b> {{ $student->doa ?? 'N/A' }}</p>
+                                <p class="ele"><b>Contact:</b> {{ $student->contact_number ?? 'N/A' }}</p>
+                            </div>
+                        </div>
 
                         <!-- Download Button -->
                         <a href="{{ route('admin.students.downloadIdCard', $student->student_id) }}" 
                            class="btn btn-primary btn-sm mt-3">Download ID Card</a>
 
-                           <a href="{{ route('admin.students.viewIdCard', $student->student_id) }}" class="btn btn-secondary btn-sm">View ID Card</a>
+                     <!--   <a href="{{ route('admin.students.viewIdCard', $student->student_id) }}" class="btn btn-secondary btn-sm">View ID Card</a>-->
                     </div>
                 </div>
             </div>
         @endforeach
     </div>
 </div>
+
 <div class="container">
-{{ $students->links() }}
+    {{ $students->links() }}
 </div>
 
+<script>
+    document.getElementById('searchBox').addEventListener('keyup', function () {
+        let filter = this.value.toLowerCase();
+        let studentItems = document.querySelectorAll('.student-item');
+        
+        studentItems.forEach(function (item) {
+            let text = item.textContent.toLowerCase();
+            if (text.includes(filter)) {
+                item.style.display = '';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    });
+</script>
 @endsection
+@pushstyles
 <style>
         @page {
             margin: 0;
@@ -160,4 +166,5 @@
             font-size: 12px;
             font-weight: bold;
         }
-    </style>
+    </style>  
+    @endpushstyles

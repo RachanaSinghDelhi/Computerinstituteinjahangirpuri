@@ -172,7 +172,7 @@ Route::post('/admin/students/add', [AdminStudentController::class, 'store'])
    // Edit Student Route
    Route::get('/admin/students/edit_student/{student}', [AdminStudentController::class, 'edit'])
    ->name('admin.students.edit');
-Route::patch('/admin/students/edit_student/{student}', [AdminStudentController::class, 'update'])
+Route::put('/admin/students/edit_student/{student}', [AdminStudentController::class, 'update'])
    ->name('admin.students.update');
 
 

@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (cropper) cropper.destroy();
 
             cropper = new Cropper(image, {
-                aspectRatio: 1,
+              
                 viewMode: 2,
                 autoCropArea: 1
             });
