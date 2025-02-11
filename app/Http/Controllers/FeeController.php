@@ -255,13 +255,12 @@ public function updateTotalFees(Request $request, $student_id)
         \Log::info('Proceeding to store fee for student: ' . $student->name);
 
 
-      // Retrieve the latest installment number for the student
-$lastInstallment = Fee::where('student_id', $student->student_id)
-->where('course_id', $course->id)
-->max('installment_no');
+         // Retrieve the latest installment number for the student
+         $lastInstallment = Fee::where('student_id', $student->student_id)
+         ->where('course_id', $course->id)
+         ->max('installment_no');
 
-// Use user input if provided, otherwise default to next installment number
-$nextInstallmentNo = $request->installment_no ?: ($lastInstallment ? $lastInstallment + 1 : 1);
+     $nextInstallmentNo = $lastInstallment ? $lastInstallment + 1 : 1;
 
         // Create Fee entry
         $fee = new Fee();
@@ -292,7 +291,7 @@ $nextInstallmentNo = $request->installment_no ?: ($lastInstallment ? $lastInstal
         }
 
         \Log::info('Fee payment successfully added for student ID: ' . $student->student_id);
-        return redirect()->route('fees.show', ['student_id' => $student->student_id])
+        return redirect()->route('admin.fees.index', ['student_id' => $student->student_id])
             ->with('success', 'Payment added successfully!');
     } catch (\Exception $e) {
         \Log::error('Error occurred: ' . $e->getMessage());

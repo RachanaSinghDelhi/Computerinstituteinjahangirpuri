@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
+use App\Http\Controllers;
 use App\Models\StudentFeesStatus;
 use App\Models\Fee;
 use App\Models\Student;
@@ -20,11 +22,11 @@ $activeStudents = DB::table('students')
 ->join('courses', 'students.course_id', '=', 'courses.id')
 ->where('students.status', 'active')
 ->select(
-   'students.student_id',
+    'students.student_id',
     'students.name as student_name',
-    'students.doa',  // Add this line
+    'students.doa', // Date of Admission
     'courses.id as course_id',
-    'courses.course_name',
+    'courses.course_title',
     'courses.total_fees',
     'courses.installments'
 )
@@ -41,8 +43,9 @@ if (!$existingRecord) {
     DB::table('student_fees_status')->insert([
         'student_id' => $student->student_id,
         'student_name' => $student->student_name,
+        'doa' => $student->doa,
         'course_id' => $student->course_id,
-        'course_title' => $student->course_name,
+        'course_title' => $student->course_title,
         'total_fees' => $student->total_fees,
         'installments' => $student->installments,
         'fees_paid' => 0.00, // Initially no fees paid
@@ -63,19 +66,30 @@ $feesData = DB::table('students')
 ->select(
     'students.student_id',
     'students.name as student_name',
-    'courses.course_name',
+    'students.doa as admission_date',
+    'courses.course_title',
     'courses.total_fees',
     'courses.installments',
     'courses.id as course_id',
     DB::raw('IFNULL(SUM(fees.amount_paid), 0) as fees_paid'),
-    DB::raw('courses.total_fees - IFNULL(SUM(fees.amount_paid), 0) as fees_due'),
+    DB::raw('IFNULL(student_fees_status.total_fees, 0) - IFNULL(SUM(fees.amount_paid), 0) as fees_due'),
     DB::raw(
         "CASE 
-            WHEN SUM(fees.amount_paid) >= courses.total_fees THEN 'Paid'
-            WHEN MAX(fees.payment_date) >= CURDATE() AND SUM(fees.amount_paid) < courses.total_fees THEN 'Paid but Pending Next Month'
-            ELSE 'Pending'
+            WHEN SUM(fees.amount_paid) >= IFNULL(student_fees_status.total_fees, 0) THEN 'Paid'
+           WHEN 
+        SUM(CASE 
+                WHEN MONTH(fees.payment_date) = MONTH(CURDATE()) 
+                AND YEAR(fees.payment_date) = YEAR(CURDATE()) 
+             THEN fees.amount_paid 
+             ELSE 0 
+             END) > 0
+        AND SUM(fees.amount_paid) < IFNULL(student_fees_status.total_fees, 0) 
+    THEN 'Paid but Pending Next Month'
+    ELSE 'Pending'
         END as status"
     ),
+    
+     
     DB::raw('MAX(fees.updated_at) as last_updated'),
     'student_fees_status.total_fees as student_total_fees',
     DB::raw('COUNT(fees.id) as installments_paid') // Counting the number of installments paid
@@ -84,7 +98,8 @@ $feesData = DB::table('students')
 ->groupBy(
     'students.student_id',
     'students.name',
-    'courses.course_name',
+    'students.doa',
+    'courses.course_title',
     'courses.total_fees',
     'courses.installments',
     'courses.id',
@@ -94,6 +109,16 @@ $feesData = DB::table('students')
 ->orderBy('students.student_id', 'desc')
 ->get();
 
+
+
+// Automatically update students status to "complete" if fees are fully paid
+foreach ($feesData as $student) {
+    if ($student->fees_paid >= $student->student_total_fees) {
+        DB::table('students')
+            ->where('student_id', $student->student_id)
+            ->update(['status' => 'completed']);
+    }
+}
 // Fetch available courses
 $courses = DB::table('courses')->get();
 
@@ -181,12 +206,20 @@ public function updateTotalFees(Request $request, $student_id)
         $lastReceiptNumber = Fee::max('receipt_number') ?? 0;
         $nextReceiptNumber = $lastReceiptNumber + 1;
 
+
+ 
+            // Retrieve the latest installment number for the student
+            $lastInstallment = Fee::where('student_id', $student_id)->max('installment_no') ?? 0;
+            $nextInstallmentNo = $lastInstallment + 1;
+   
+   
         // Pass all necessary data to the view
         return view('admin.fees.add_fees', compact(
             'studentFeesStatus',
             'student',
             'course',
-            'nextReceiptNumber'
+            'nextReceiptNumber',
+            'nextInstallmentNo'
         ));
     } catch (\Exception $e) {
         // Redirect back with an error message

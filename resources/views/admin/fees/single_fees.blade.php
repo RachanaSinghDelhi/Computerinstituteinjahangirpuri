@@ -27,7 +27,7 @@
             </form>
 
             <!-- Link to Edit Total Fees -->
-            <form action="{{ route('admin.updateTotalFees', $student->student_id) }}" method="POST" class="mb-4">
+            <form action="{{ route('updateTotalFees', $student->student_id) }}" method="POST" class="mb-4">
                 @csrf
                 @method('PUT') <!-- Use PUT as per the route -->
                 <div class="mb-3">
@@ -59,27 +59,26 @@
 </div>
 
 
-                <div class="table-responsive mt-4">
-                    <table class="table table-bordered">
-                        <thead class="table-light">
-                            <tr>
-                                <th scope="col">Installment</th>
-                                <th scope="col">Installment No.</th>
-                                <th scope="col">Receipt No.</th>
-                                <th scope="col">Amount Paid</th>
-                                <th scope="col">Payment Date</th>
-                                <th scope="col">Due Date</th>
-                                <th scope="col">Receipt</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Actions</th>
-                            </tr>
-                        </thead>
+<table id="feesTable" class="table table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">Installment</th>
+                            <th scope="col">Installment No.</th>
+                            <th scope="col">Receipt No.</th>
+                            <th scope="col">Amount Paid</th>
+                            <th scope="col">Payment Date</th>
+                            <th scope="col">Due Date</th>
+                            <th scope="col">Receipt</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
                         <tbody>
                             @foreach($student->fees as $index => $fee)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{  $fee->installment_no }}</td>
-                                    <td>{{ $fee->receipt_number_no }}</td>
+                                    <td>{{ $fee->receipt_number }}</td>
                                     <td>₹{{ $fee->amount_paid }}</td>
                                     <td>{{ \Carbon\Carbon::parse($fee->payment_date)->format('d-m-Y') }}</td>
                                     <td>{{ \Carbon\Carbon::parse($fee->payment_date)->addMonth()->format('d-m-Y') }}</td>
@@ -122,3 +121,21 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<!-- Include jQuery & DataTables -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#feesTable').DataTable({
+            "order": [[1, "desc"]], // Sort by Payment Date in Descending Order
+            "paging": true,
+            "searching": true,
+            "info": true
+        });
+    });
+</script>
+@endpush

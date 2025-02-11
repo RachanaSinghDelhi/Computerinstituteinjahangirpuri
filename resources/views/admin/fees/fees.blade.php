@@ -24,7 +24,10 @@
                 <tr>
                     <th>Student ID</th>
                     <th>Student Name</th>
+                    <th>Admission Date</th>
+                    <th>Admission Date</th>
                     <th>Course Name</th>
+               
                     <th  class="d-none d-md-table-cell">Total Fees</th>
                     <th  class="d-none d-md-table-cell">Installments</th>
                     <th>Installments Paid</th>
@@ -40,6 +43,8 @@
                     <tr>
                         <td>{{ $fee->student_id }}</td>
                         <td>{{ $fee->student_name }}</td>
+                        <td>{{ $fee->admission_date }}</td>
+                        <td>{{ \Carbon\Carbon::parse($fee->admission_date)->format('d') }}</td>
                         <td>
                             <form action="{{ route('admin.fees.updateCourse', $fee->student_id) }}" method="POST">
                                 @csrf
@@ -53,17 +58,11 @@
                                 </select>
                             </form>
                         </td>
-                        <td  class="d-none d-md-table-cell">
-                        <form action="{{ route('admin.updateTotalFees', $fee->student_id) }}" method="POST">
-            @csrf
-            @method('PUT')
+                        <td class="d-none d-md-table-cell">
+                        {{ $fee->total_fees }}
+</td>
 
-            <!-- Use the updated fee value from the session or the current fee value -->
-            <input type="number" name="total_fees" value="{{ $fee->student_total_fees }}" class="form-control" required>
-            
-            <button type="submit" class="btn btn-sm btn-primary mt-2">Update Fees</button>
-        </form>
-                        </td>
+
                         <td  class="d-none d-md-table-cell">{{ $fee->installments }}</td>
                         <td>{{ $fee->installments_paid }}</td> <!-- Display number of paid installments -->
                         <td  class="d-none d-md-table-cell">{{ $fee->fees_paid }}</td>
@@ -82,7 +81,32 @@
                         </td>
                         <td>
                             <a href="{{ route('admin.add_fees', $fee->student_id) }}" class="btn btn-primary btn-sm">Pay Now</a>
-                            <a href="{{ route('admin.fees.show', $fee->student_id) }}" class="btn btn-info btn-sm">View Details</a>
+                            <a href="{{ route('admin.fees.show', $fee->student_id) }}" class="btn btn-info btn-sm">Details</a>
+                            
+                            @php
+    // Fetch student's WhatsApp number from the students table
+    $student = \App\Models\Student::find($fee->student_id);
+    $whatsappNumber = $student ? $student->contact_number : '9625277739'; // Default if not found
+
+    // Remove any spaces from the WhatsApp number
+    $whatsappNumber = str_replace(' ', '', $whatsappNumber);
+@endphp
+
+@php
+    $installmentAmount = ($fee->student_total_fees - 350) / max($fee->installments, 1);
+    $studentName = urldecode(urlencode($fee->student_name)); // Decode the URL-encoded name
+    $message = "Hello " . $studentName . ", your pending installment is Rs. " . number_format($installmentAmount, 2) . ". Please pay soon to avoid a fine of Rs. 200 per week.\n\nPay via Google Pay:\n👉 https://pay.google.com\n\nScan the QR Code:\n👉 https://www.nicewebtechnologies.com/qrcode.jpg";
+@endphp
+
+<a href="https://wa.me/{{ $whatsappNumber }}?text={{ urlencode($message) }}" 
+   target="_blank"
+   class="btn btn-success btn-sm">
+   📲Reminder
+</a>
+
+
+
+
                         </td>
                     </tr>
                 @endforeach
@@ -94,8 +118,14 @@
 @endsection
 
 @push('scripts')
+
+   
+   
+
+
 <script>
     $(document).ready(function() {
+
         $('#feesTable').DataTable({
             paging: true,
             searching: true,
@@ -117,6 +147,85 @@
                     previous: "Previous"
                 }
             }
+        });
+ 
+        $('.calculate-btn').click(function () {
+            let targetInput = $(this).data('target');
+
+            let calcHtml = `
+                <div id="calc-container">
+                    <input type="text" id="calc-display" class="form-control mb-2" readonly>
+                    <div class="d-grid gap-2">
+                        <div class="row">
+                            ${[7, 8, 9, '/'].map(val => `<button class="btn btn-light col calc-btn" data-value="${val}">${val}</button>`).join('')}
+                        </div>
+                        <div class="row">
+                            ${[4, 5, 6, '*'].map(val => `<button class="btn btn-light col calc-btn" data-value="${val}">${val}</button>`).join('')}
+                        </div>
+                        <div class="row">
+                            ${[1, 2, 3, '-'].map(val => `<button class="btn btn-light col calc-btn" data-value="${val}">${val}</button>`).join('')}
+                        </div>
+                        <div class="row">
+                            ${[0, '.', '=', '+'].map(val => `<button class="btn btn-light col calc-btn" data-value="${val}">${val}</button>`).join('')}
+                        </div>
+                        <button class="btn btn-danger w-100 mt-2" id="calc-clear">Clear</button>
+                    </div>
+                </div>
+            `;
+
+            // Open Bootstrap Modal
+            let modalHtml = `
+                <div class="modal fade" id="calculatorModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Calculator</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">${calcHtml}</div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="calc-ok">OK</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Remove old modal and append new
+            $('#calculatorModal').remove();
+            $('body').append(modalHtml);
+
+            // Show modal
+            var modal = new bootstrap.Modal(document.getElementById('calculatorModal'));
+            modal.show();
+
+            // Calculator Logic
+            let calcDisplay = $('#calc-display');
+
+            $(document).on('click', '.calc-btn', function () {
+                let value = $(this).data('value');
+                if (value === '=') {
+                    try {
+                        calcDisplay.val(eval(calcDisplay.val()));
+                    } catch (e) {
+                        calcDisplay.val('Error');
+                    }
+                } else {
+                    calcDisplay.val(calcDisplay.val() + value);
+                }
+            });
+
+            $('#calc-clear').click(function () {
+                calcDisplay.val('');
+            });
+
+            $('#calc-ok').click(function () {
+                let result = calcDisplay.val();
+                $(targetInput).val(result);
+                modal.hide();
+            });
+
         });
     });
 </script>
