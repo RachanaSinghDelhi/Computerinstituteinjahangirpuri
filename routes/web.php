@@ -24,6 +24,7 @@ use App\Http\Controllers\Student\StudentDashboardController;
 use App\Http\Controllers\Admin\StudentController as AdminStudentController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\FeeController as AdminFeeController;
+use App\Http\Controllers\Admin\CertificateController as AdminCertificateController;
 
 
 
@@ -217,6 +218,13 @@ Route::put('admin/fees/{fee}', [AdminFeeController::class, 'update'])->name('adm
     Route::put('admin/fees/{student_id}/update-total-fees', [AdminFeeController::class, 'updateTotalFees'])->name('admin.updateTotalFees');
 
 
+  // Certificate Routes
+  Route::get('admin/certificates', [AdminCertificateController::class, 'index'])->name('admin.certificates.index');
+  Route::get('admin/certificate/view/{id}', [AdminCertificateController::class, 'viewCertificate'])->name('admin.certificates.view');
+  Route::post('admin/certificates/download-selected', [AdminCertificateController::class, 'downloadSelected'])->name('admin.certificates.downloadSelected');
+  Route::get('admin/certificates/select_certificates', [AdminCertificateController::class, 'selectCertificates'])->name('admin.certificates.select');
+  Route::get('admin/certificate-search', [AdminCertificateController::class, 'search'])->name('admin.certificate.search');
+  Route::get('admin/certificates/selectsearch', [AdminCertificateController::class, 'selectSearch'])->name('admin.certificate.selectsearch');
 
 
 });

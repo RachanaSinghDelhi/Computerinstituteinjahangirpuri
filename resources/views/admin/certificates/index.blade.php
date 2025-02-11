@@ -1,4 +1,4 @@
-@extends('dashboard.app')
+@extends('admin.app')
 @section('title', 'Certificates')
 @section('content')
 <div class="container">

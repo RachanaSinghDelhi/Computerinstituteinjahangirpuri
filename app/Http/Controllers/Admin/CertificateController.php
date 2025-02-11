@@ -1,6 +1,8 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Controller;
 
+use App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use App\Models\Certificate; // Make sure this is added
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -78,11 +80,10 @@ $allCertificates = DB::table('certificates')
     ->select('student_id', 'name', 'father', 'dt', 'date', 'course', 'photo', 'certificate_type', 'duration', 'description', 'grade', 'code')
     ->distinct()
     ->orderBy('student_id', 'desc')
-    ->limit(10)
     ->get();
 
 // Return the certificates to the view
-return view('dashboard.certificates.certificates', compact('allCertificates'));
+return view('admin.certificates.index', compact('allCertificates'));
     }
     
   
@@ -94,7 +95,7 @@ public function downloadSelected(Request $request)
 
     $certificates = Certificate::whereIn('id', $request->selected_certificates)->get();
 
-    $pdf = Pdf::loadView('dashboard.certificates.selected_certificates', compact('certificates'))
+    $pdf = Pdf::loadView('admin.certificates.selected_certificates', compact('certificates'))
     ->setPaper([0, 0, 595.276, 841.890], 'portrait'); // Enforce A4 size in portrait mode $pdf->setPaper([0, 0, 162, 256], 'portrait');
 
     return $pdf->download('selected_certificates.pdf');
@@ -111,14 +112,14 @@ public function downloadSelected(Request $request)
             ->paginate(10);
    
         // Pass the data to the view
-        return view('dashboard.certificates.select_certificates', ['certificates' => $paginatedCertificates]);
+        return view('admin.certificates.select_certificates', ['certificates' => $paginatedCertificates]);
     }
     
     public function viewCertificate($id)
     {
         $certificate = Certificate::with('course')->findOrFail($id);
 
-        return view('dashboard.certificates.view_certificates', ['certificates' => [$certificate]]);
+        return view('admin.certificates.view_certificates', ['certificates' => [$certificate]]);
     }
 
 
@@ -137,7 +138,7 @@ public function downloadSelected(Request $request)
                                     ->get();
 
         // Return the filtered certificates as a partial view (table rows only)
-        return view('dashboard.certificates.certificate_search', compact('certificates'))->render();
+        return view('admin.certificates.certificate_search', compact('certificates'))->render();
     } catch (\Exception $e) {
         // Log the error
         Log::error('Error occurred during certificate search: ' . $e->getMessage());
@@ -163,7 +164,7 @@ public function downloadSelected(Request $request)
             ->get();
 
         // Return the partial view with filtered certificates
-        $view = view('dashboard.certificates.search_select_certificates', compact('certificates'))->render();
+        $view = view('admin.certificates.search_select_certificates', compact('certificates'))->render();
 
         return response()->json(['certificates' => $view]);
     }

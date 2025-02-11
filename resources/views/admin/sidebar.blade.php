@@ -78,10 +78,10 @@
                 <i class="fa fa-chevron-down ms-2 arrow"></i>
             </a>
             <div class="collapse" id="certificateMenu">
-                <a href="{{ route('certificates.index') }}" class="nav-link text-white ms-3">
+                <a href="{{ route('admin.certificates.index') }}" class="nav-link text-white ms-3">
                     <i class="fa fa-certificate"></i> <span>Certificates</span>
                 </a>
-                <a href="{{ route('certificates.select') }}" class="nav-link text-white ms-3">
+                <a href="{{ route('admin.certificates.select') }}" class="nav-link text-white ms-3">
                     <i class="fa fa-check"></i> <span>Select Certificates</span>
                 </a>
             </div>
