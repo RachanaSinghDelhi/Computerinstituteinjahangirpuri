@@ -68,7 +68,7 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
         Route::get('/fees', [FeeController::class, 'index'])->name('fees.index');
         Route::get('/fees/{student_id}', [FeeController::class, 'show'])->name('fees.show');
         Route::get('/fees/add/{student_id}', [FeeController::class, 'addStudentFees'])->name('add_fees');
-        Route::post('/fees/store', [FeeController::class, 'saveStudentFee'])->name('save_student_fee');
+        Route::post('/fees/store', [FeeController::class, 'saveStudentFee'])->name('save_fee');
       // For editing fee records
 Route::get('fees/{fee}/edit', [FeeController::class, 'edit'])->name('fees.edit');
 Route::put('fees/{fee}', [FeeController::class, 'update'])->name('fees.update');

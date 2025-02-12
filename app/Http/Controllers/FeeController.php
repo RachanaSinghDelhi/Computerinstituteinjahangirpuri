@@ -291,7 +291,7 @@ public function updateTotalFees(Request $request, $student_id)
         }
 
         \Log::info('Fee payment successfully added for student ID: ' . $student->student_id);
-        return redirect()->route('admin.fees.index', ['student_id' => $student->student_id])
+        return redirect()->route('fees.show', ['student_id' => $student->student_id])
             ->with('success', 'Payment added successfully!');
     } catch (\Exception $e) {
         \Log::error('Error occurred: ' . $e->getMessage());
