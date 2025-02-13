@@ -66,25 +66,28 @@ class DashboardController extends Controller
                                            ->pluck('total', 'month')
                                            ->toArray();
 
+                                           $currentDate = Carbon::now()->toDateString(); // Get today's date
 
-          $currentDate = Carbon::now(); // Today's date
-
-                                           // Fetch students with overdue fees
-                                         
-       $currentDate = Carbon::now(); // Get today's date
-                                           
-                                               // Fetch overdue students with due date from fees table and status from student_fees_status table
-   $overdueFees = DB::table('fees as f')
-       ->join('student_fees_status as sfs', 'f.student_id', '=', 'sfs.student_id')
-       ->join('students as s', 'f.student_id', '=', 's.id')
-       ->select('f.due_date', 'sfs.status', 's.id as student_id', 's.name')
-       ->where('f.due_date', '<', $currentDate) // Due date has passed
-          ->where('sfs.status', 'pending') // Fee is still pending
-        ->get();
-                                           
-      
-                             
-      
+                                           // Fetch students with pending fees that are overdue
+                                           $overdueFees = DB::table('student_fees_status as sfs')
+                                               ->join('fees as f', function ($join) {
+                                                   $join->on('sfs.student_id', '=', 'f.student_id')
+                                                        ->on('sfs.course_id', '=', 'f.course_id'); // Match both student and course
+                                               })
+                                               ->select(
+                                                   'f.due_date', 
+                                                   'sfs.status as fee_status', // Status from student_fees_status
+                                                   'sfs.student_id', 
+                                                   'sfs.student_name', 
+                                                   'f.amount_paid', 
+                                                   'sfs.fees_due'
+                                               )
+                                               ->whereDate('f.due_date', '<=', $currentDate) // Fees due date is today or past
+                                               ->where('sfs.status', 'Pending') // Ensure fees status is still pending
+                                               ->get();
+                                       
+        
+    
               return view('dashboard.index', compact(
                   'totalFeesReceived', 
                   'feesPending', 

@@ -4,23 +4,21 @@
 <div class="container mt-4">
     <h2 class="mb-4">Dashboard Overview</h2>
     
-    <div class="row">
-        <div class="col">
-            <h3>Fees Overdue</h3>
-    @if(count($overdueFees) > 0)
+    @if(isset($overdueFees) && count($overdueFees) > 0)
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
         @foreach($overdueFees as $fee)
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Overdue Fees Alert!</strong><br>
-                Student: <b>{{ $fee->name }}</b> (ID: {{ $fee->student_id }})<br>
-                Due Date: {{ \Carbon\Carbon::parse($fee->due_date)->format('d M Y') }}
+                <strong>⚠️ Fees Overdue Alert!</strong><br>
+                <b>Student:</b> {{ $fee->student_name }} (ID: {{ $fee->student_id }})<br>
+                <b>Due Date:</b> {{ \Carbon\Carbon::parse($fee->due_date)->format('d M Y') }}<br>
+                <b>Pending Amount:</b> ₹{{ number_format($fee->fees_due, 2) }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endforeach
-</div>
     </div>
-</div>
 @endif
+
+
 
     <div class="row">
         <!-- Total Fees Received -->
