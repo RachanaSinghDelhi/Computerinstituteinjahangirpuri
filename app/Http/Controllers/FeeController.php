@@ -426,7 +426,10 @@ public function received()
 public function pending()
 {
     $fees = DB::table('student_fees_status as sfs')
-        ->join('fees as f', 'sfs.id', '=', 'f.id') // Get fee details
+        ->join('fees as f', function ($join) {
+            $join->on('sfs.student_id', '=', 'f.student_id')
+                 ->on('sfs.course_id', '=', 'f.course_id'); // Match both student and course
+        })
         ->join('students as s', 'sfs.student_id', '=', 's.id') // Get student details
         ->where('sfs.status', 'Pending') // Only pending fees
         ->orderBy('f.due_date', 'asc') // Order by due date
@@ -434,13 +437,13 @@ public function pending()
             's.id as student_id', 
             's.name as student_name', 
             'f.receipt_number', 
-            'sfs.status', 
-            'f.amount_paid', 
+            'sfs.fees_due as amount_due', // Correct field for pending amount
             'f.due_date'
         )
         ->get();
 
     return view('dashboard.fees.pending', compact('fees'));
 }
+
 
 }
