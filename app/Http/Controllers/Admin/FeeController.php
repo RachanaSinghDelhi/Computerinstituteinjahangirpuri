@@ -402,21 +402,22 @@ public function received()
 
 public function pending()
 {
-    $fees = DB::table('student_fees_status as sfs')
-        ->join('fees as f', 'sfs.id', '=', 'f.id') // Get fee details
-        ->join('students as s', 'sfs.student_id', '=', 's.id') // Get student details
-        ->where('sfs.status', 'Pending') // Only pending fees
-        ->orderBy('f.due_date', 'asc') // Order by due date
-        ->select(
-            's.id as student_id', 
-            's.name as student_name', 
-            'f.receipt_number', 
-            'sfs.status', 
-            'f.amount_paid', 
-            'f.due_date'
-        )
-        ->get();
-
+    $fees = DB::table('fees as f')
+    ->join('student_fees_status as sfs', function ($join) {
+        $join->on('f.student_id', '=', 'sfs.student_id')
+             ->on('f.course_id', '=', 'sfs.course_id'); // Ensure correct mapping
+    })
+    ->where('sfs.status', 'Pending') // Get only pending fees
+    ->select(
+        'sfs.student_name',
+        'f.student_id',
+        'sfs.fees_due',
+        'f.due_date',
+        'sfs.status as fee_status'
+    )
+    ->orderBy('f.due_date', 'asc') // Order by due date
+    ->get();
+    
     return view('admin.fees.pending', compact('fees'));
 }
 

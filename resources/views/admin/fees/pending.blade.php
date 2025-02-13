@@ -8,7 +8,6 @@
             <tr>
                 <th>Student ID</th>
                 <th>Student Name</th>
-                <th>Receipt No.</th>
                 <th>Amount Due</th>
                 <th>Due Date</th>
             </tr>
@@ -18,15 +17,16 @@
                 <tr>
                     <td>{{ $fee->student_id }}</td>
                     <td>{{ $fee->student_name }}</td>
-                    <td>{{ $fee->receipt_number }}</td>
-                    <td>₹{{ number_format($fee->amount_due, 2) }}</td>
+                    <td>₹{{ number_format($fee->fees_due, 2) }}</td>
                     <td>{{ \Carbon\Carbon::parse($fee->due_date)->format('d M Y') }}</td>
                 </tr>
             @endforeach
         </tbody>
     </table>
 </div>
+@endsection
 
+@push('scripts')
 <!-- Include DataTables -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -40,11 +40,11 @@
             "ordering": true,
             "info": true,
             "lengthMenu": [10, 25, 50, 100],
-            "order": [[4, "asc"]], // Default sort by Due Date (Earliest first)
+            "order": [[3, "asc"]], // Default sort by Due Date (Earliest first)
             "language": {
                 "search": "Search by any field:"
             }
         });
     });
 </script>
-@endsection
+@endpush
