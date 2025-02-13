@@ -423,27 +423,30 @@ public function received()
     return view('dashboard.fees.received', compact('fees'));
 }
 
+
+
 public function pending()
 {
-    $fees = DB::table('student_fees_status as sfs')
-        ->join('fees as f', function ($join) {
-            $join->on('sfs.student_id', '=', 'f.student_id')
-                 ->on('sfs.course_id', '=', 'f.course_id'); // Match both student and course
-        })
-        ->join('students as s', 'sfs.student_id', '=', 's.id') // Get student details
-        ->where('sfs.status', 'Pending') // Only pending fees
-        ->orderBy('f.due_date', 'asc') // Order by due date
-        ->select(
-            's.id as student_id', 
-            's.name as student_name', 
-            'f.receipt_number', 
-            'sfs.fees_due as amount_due', // Correct field for pending amount
-            'f.due_date'
-        )
-        ->get();
+    $fees = DB::table('fees as f')
+    ->join('student_fees_status as sfs', function ($join) {
+        $join->on('f.student_id', '=', 'sfs.student_id')
+             ->on('f.course_id', '=', 'sfs.course_id'); // Ensure correct mapping
+    })
+    ->where('sfs.status', 'Pending') // Get only pending fees
+    ->select(
+        'sfs.student_name',
+        'f.student_id',
+        'sfs.fees_due',
+        'f.due_date',
+        'sfs.status as fee_status'
+    )
+    ->orderBy('f.due_date', 'asc') // Order by due date
+    ->get();
+    
 
     return view('dashboard.fees.pending', compact('fees'));
 }
+
 
 
 }
