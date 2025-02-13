@@ -77,23 +77,27 @@ class DashboardController extends Controller
 
                                            $currentDate = Carbon::now()->toDateString(); // Get today's date
 
-                                           // Fetch students with pending fees that are overdue
                                            $overdueFees = DB::table('student_fees_status as sfs')
                                                ->join('fees as f', function ($join) {
                                                    $join->on('sfs.student_id', '=', 'f.student_id')
                                                         ->on('sfs.course_id', '=', 'f.course_id'); // Match both student and course
                                                })
+                                               ->join('students as s', 'sfs.student_id', '=', 's.student_id') // Get student details
                                                ->select(
-                                                   'f.due_date', 
+                                                   's.student_id',
+                                                   's.name as student_name',
+                                                   's.status as student_status',
+                                                   'f.due_date',
                                                    'sfs.status as fee_status', // Status from student_fees_status
-                                                   'sfs.student_id', 
-                                                   'sfs.student_name', 
-                                                   'f.amount_paid', 
+                                                   'f.amount_paid',
                                                    'sfs.fees_due'
                                                )
+                                               ->where('s.status', 'Active') // Only active students
                                                ->whereDate('f.due_date', '<=', $currentDate) // Fees due date is today or past
                                                ->where('sfs.status', 'Pending') // Ensure fees status is still pending
+                                               ->orderBy('f.due_date', 'asc')
                                                ->get();
+                                       
                                        
         
     
