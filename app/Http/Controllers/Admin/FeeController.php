@@ -381,29 +381,45 @@ public function update(Request $request, Fee $fee)
 }
 
 
-public function uploadReceipts(Request $request)
+public function received()
 {
-    $request->validate([
-        'startingNumber' => 'required|integer|min:1',
-        'receipts' => 'required|array',
-        'receipts.*' => 'file|mimes:jpg,png,pdf|max:2048', // Adjust file types and size as needed
-    ]);
+    $fees = DB::table('fees')
+        ->join('students', 'fees.student_id', '=', 'students.student_id') // Fetch student details
+        ->select(
+            'fees.id',
+            'fees.student_id',
+            'students.name as student_name',  // Fetch student name
+            'fees.amount_paid',
+            'fees.payment_date',  // Fetch payment date from fees table
+            'fees.receipt_number'  // Fetch payment date from fees table
+        )
+        ->where('fees.status', 'Paid')
+        ->orderBy('fees.payment_date', 'desc')
+        ->get();
 
-    $startingNumber = $request->input('startingNumber');
-    $files = $request->file('receipts');
-    $uploadPath = public_path('/storage/receipts');
-
-    if (!file_exists($uploadPath)) {
-        mkdir($uploadPath, 0777, true);
-    }
-
-    foreach ($files as $index => $file) {
-        $fileName = ($startingNumber + $index) . '.' . $file->getClientOriginalExtension();
-        $file->move($uploadPath, $fileName);
-    }
-
-    return redirect()->back()->with('success', 'Receipts uploaded successfully!');
+    return view('admin.fees.received', compact('fees'));
 }
+
+public function pending()
+{
+    $fees = DB::table('student_fees_status as sfs')
+        ->join('fees as f', 'sfs.id', '=', 'f.id') // Get fee details
+        ->join('students as s', 'sfs.student_id', '=', 's.id') // Get student details
+        ->where('sfs.status', 'Pending') // Only pending fees
+        ->orderBy('f.due_date', 'asc') // Order by due date
+        ->select(
+            's.id as student_id', 
+            's.name as student_name', 
+            'f.receipt_number', 
+            'sfs.status', 
+            'f.amount_paid', 
+            'f.due_date'
+        )
+        ->get();
+
+    return view('admin.fees.pending', compact('fees'));
+}
+
 
 
 }

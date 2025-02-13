@@ -223,7 +223,8 @@ Route::put('admin/fees/{fee}', [AdminFeeController::class, 'update'])->name('adm
     Route::put('admin/fees/updateCourse/{student_id}', [AdminFeeController::class, 'updateCourse'])->name('admin.fees.updateCourse');
     Route::put('admin/fees/{student_id}/update-total-fees', [AdminFeeController::class, 'updateTotalFees'])->name('admin.updateTotalFees');
     
-
+    Route::get('admin/fees-received', [AdminFeeController::class, 'received'])->name('admin.fees.received');
+    Route::get('admin/fees-pending', [AdminFeeController::class, 'pending'])->name('admin.fees.pending');
 
 
 
@@ -237,6 +238,9 @@ Route::put('admin/fees/{fee}', [AdminFeeController::class, 'update'])->name('adm
   Route::get('admin/certificates/selectsearch', [AdminCertificateController::class, 'selectSearch'])->name('admin.certificate.selectsearch');
 
 
+
+  
+  
 });
 
 // Teacher Routes
