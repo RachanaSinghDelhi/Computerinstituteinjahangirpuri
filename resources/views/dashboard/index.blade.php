@@ -3,6 +3,10 @@
 @section('content')
 <div class="container mt-4">
     <h2 class="mb-4">Dashboard Overview</h2>
+    
+    <div class="row">
+        <div class="col">
+            <h3>Fees Overdue</h3>
     @if(count($overdueFees) > 0)
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
         @foreach($overdueFees as $fee)
@@ -13,7 +17,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endforeach
+</div>
     </div>
+</div>
 @endif
 
     <div class="row">

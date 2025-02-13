@@ -82,7 +82,8 @@ class DashboardController extends Controller
           ->where('sfs.status', 'pending') // Fee is still pending
         ->get();
                                            
-                                              
+      
+                             
       
               return view('dashboard.index', compact(
                   'totalFeesReceived', 
