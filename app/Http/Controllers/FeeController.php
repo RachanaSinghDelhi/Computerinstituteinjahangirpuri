@@ -426,11 +426,18 @@ public function received()
 public function pending()
 {
     $fees = DB::table('student_fees_status as sfs')
-        ->join('fees as f', 'sfs.id', '=', 'f.id') // Join with fees table to get due date
-        ->join('students as s', 'sfs.student_id', '=', 's.id') // Join with students table to get student name
-        ->where('sfs.status', 'Pending') // Fetch only pending fees
-        ->orderBy('f.due_date', 'asc') // Order by due date (earliest first)
-        ->select('s.id as student_id', 's.name as student_name', 'f.receipt_number', 'sfs.fees_due', 'f.due_date')
+        ->join('fees as f', 'sfs.id', '=', 'f.id') // Get fee details
+        ->join('students as s', 'sfs.student_id', '=', 's.id') // Get student details
+        ->where('sfs.status', 'Pending') // Only pending fees
+        ->orderBy('f.due_date', 'asc') // Order by due date
+        ->select(
+            's.id as student_id', 
+            's.name as student_name', 
+            'f.receipt_number', 
+            'sfs.status', 
+            'f.amount_paid', 
+            'f.due_date'
+        )
         ->get();
 
     return view('dashboard.fees.pending', compact('fees'));
