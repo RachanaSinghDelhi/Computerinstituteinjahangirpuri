@@ -77,6 +77,12 @@ Route::put('fees/{fee}', [FeeController::class, 'update'])->name('fees.update');
         Route::put('/fees/update/{student_id}', [FeeController::class, 'updateStudentFees'])->name('fees.updateStudentFees');
         Route::put('/fees/updateCourse/{student_id}', [FeeController::class, 'updateCourse'])->name('fees.updateCourse');
         Route::put('/fees/{student_id}/update-total-fees', [FeeController::class, 'updateTotalFees'])->name('updateTotalFees');
+        
+        Route::get('/fees-received', [FeeController::class, 'received'])->name('fees.received');
+        Route::get('/fees-pending', [FeeController::class, 'pending'])->name('fees.pending');
+        
+
+
 
         // Receipt Routes
         Route::get('/receipts', [ReceiptController::class, 'showReceipts'])->name('receipts.index');
@@ -216,6 +222,10 @@ Route::put('admin/fees/{fee}', [AdminFeeController::class, 'update'])->name('adm
     Route::put('admin/fees/update/{student_id}', [AdminFeeController::class, 'updateStudentFees'])->name('admin.fees.updateStudentFees');
     Route::put('admin/fees/updateCourse/{student_id}', [AdminFeeController::class, 'updateCourse'])->name('admin.fees.updateCourse');
     Route::put('admin/fees/{student_id}/update-total-fees', [AdminFeeController::class, 'updateTotalFees'])->name('admin.updateTotalFees');
+    
+
+
+
 
 
   // Certificate Routes

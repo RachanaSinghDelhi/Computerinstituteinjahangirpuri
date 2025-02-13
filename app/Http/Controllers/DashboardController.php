@@ -30,6 +30,15 @@ class DashboardController extends Controller
       
               // Fetch total fees received
               $totalFeesReceived = Fee::sum('amount_paid');
+
+
+ // Fetch total fees received this month
+ $currentMonthStart = Carbon::now()->startOfMonth()->toDateString();
+    $currentMonthEnd = Carbon::now()->endOfMonth()->toDateString();
+              $totalFeesPaidThisMonth = DB::table('fees')
+        ->whereBetween('payment_date', [$currentMonthStart, $currentMonthEnd])
+        ->where('status', 'Paid') // Only count fully paid fees
+        ->sum('amount_paid');
       
               // Fetch fees pending for the current month
               $feesPending = Fee::join('student_fees_status', 'fees.student_id', '=', 'student_fees_status.student_id')
@@ -96,7 +105,8 @@ class DashboardController extends Controller
                   'completedOrLeftStudents', 
                   'monthlyFees', 
                   'monthlyEnrollments',
-                  'overdueFees'
+                  'overdueFees',
+                  'totalFeesPaidThisMonth'
               ));
 
 

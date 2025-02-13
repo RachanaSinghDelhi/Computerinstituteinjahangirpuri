@@ -403,4 +403,37 @@ public function uploadReceipts(Request $request)
 }
 
 
+
+public function received()
+{
+    $fees = DB::table('fees')
+        ->join('students', 'fees.student_id', '=', 'students.student_id') // Fetch student details
+        ->select(
+            'fees.id',
+            'fees.student_id',
+            'students.name as student_name',  // Fetch student name
+            'fees.amount_paid',
+            'fees.payment_date',  // Fetch payment date from fees table
+            'fees.receipt_number'  // Fetch payment date from fees table
+        )
+        ->where('fees.status', 'Paid')
+        ->orderBy('fees.payment_date', 'desc')
+        ->get();
+
+    return view('dashboard.fees.received', compact('fees'));
+}
+
+public function pending()
+{
+    $fees = DB::table('student_fees_status as sfs')
+        ->join('fees as f', 'sfs.id', '=', 'f.id') // Join with fees table to get due date
+        ->join('students as s', 'sfs.student_id', '=', 's.id') // Join with students table to get student name
+        ->where('sfs.status', 'Pending') // Fetch only pending fees
+        ->orderBy('f.due_date', 'asc') // Order by due date (earliest first)
+        ->select('s.id as student_id', 's.name as student_name', 'f.receipt_number', 'sfs.fees_due', 'f.due_date')
+        ->get();
+
+    return view('dashboard.fees.pending', compact('fees'));
+}
+
 }

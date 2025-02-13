@@ -21,25 +21,39 @@
 
 
     <div class="row">
-        <!-- Total Fees Received -->
+       <!-- Total Fees Received (Clickable) -->
+<div class="col-md-4">
+    <a href="{{ route('fees.received') }}" class="text-decoration-none">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-header">Total Fees Received</div>
+            <div class="card-body">
+                <h4 class="card-title">₹{{ number_format($totalFeesReceived, 2) }}</h4>
+            </div>
+        </div>
+    </a>
+</div>
+
+        <!-- Total Fees Received this month -->
         <div class="col-md-4">
             <div class="card text-white bg-success mb-3">
                 <div class="card-header">Total Fees Received</div>
                 <div class="card-body">
-                    <h4 class="card-title">₹{{ number_format($totalFeesReceived, 2) }}</h4>
+                    <h4 class="card-title">₹{{ number_format($totalFeesPaidThisMonth, 2) }}</h4>
                 </div>
             </div>
         </div>
 
-        <!-- Fees Pending -->
-        <div class="col-md-4">
-            <div class="card text-white bg-danger mb-3">
-                <div class="card-header">Fees Pending (This Month)</div>
-                <div class="card-body">
-                    <h4 class="card-title">₹{{ number_format($feesPending, 2) }}</h4>
-                </div>
+       <!-- Fees Pending (Clickable) -->
+<div class="col-md-4">
+    <a href="{{ route('fees.pending') }}" class="text-decoration-none">
+        <div class="card text-white bg-danger mb-3">
+            <div class="card-header">Fees Pending (This Month)</div>
+            <div class="card-body">
+                <h4 class="card-title">₹{{ number_format($feesPending, 2) }}</h4>
             </div>
         </div>
+    </a>
+</div>
 
         <!-- Active Students -->
         <div class="col-md-4">
