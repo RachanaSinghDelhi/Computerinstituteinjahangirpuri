@@ -1,3 +1,4 @@
+/* Global Styles */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap');
 
 body {
@@ -36,14 +37,17 @@ p {
     }
 }
 
+/* Full viewport height for body */
 html, body {
     height: 100%;
     margin: 0;
 }
 
+/* Wrapper layout */
 #wrapper {
     display: flex;
-    height: 100vh;
+    flex-direction: column; /* Stack content vertically */
+    height: 100%;
 }
 
 #sidebar {
@@ -68,7 +72,17 @@ html, body {
     margin-left: 0; /* Initially no margin */
 }
 
-
+/* Footer Styles */
+.footer {
+    width: 100%;
+    position: relative;
+    bottom: 0;
+    margin-top: auto; /* Ensure the footer sticks at the bottom */
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
 
 /* Topbar styles */
 .topbar {
@@ -89,10 +103,3 @@ html, body {
 .topbar .right-align {
     margin-left: auto;
 }
-
-
-.footer { width: 100%;}
-
-
-
-
