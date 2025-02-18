@@ -21,6 +21,12 @@
         <input type="hidden" id="installments" value="{{ $course->installments }}">
         <input type="hidden" id="course_type" value="{{ $course->course_title}}">
 
+        {{-- Admission Date --}}
+        <div class="mb-3">
+            <label for="admission_date" class="form-label">Admission Date</label>
+            <input type="date" class="form-control" id="admission_date" name="admission_date" value="{{ $student->doa}}" readonly>
+        </div>
+
         <div class="mb-3">
             <label for="amount_paid" class="form-label">Amount Paid</label>
             <input type="number" class="form-control" id="amount_paid" name="amount_paid" required>
@@ -39,11 +45,12 @@
     <input type="text" class="form-control" id="installment_no" name="installment_no" value="{{ old('installment_no', $nextInstallmentNo) }}" required>
 </div>
 
-        <div class="mb-3">
+<div class="mb-3">
             <label for="payment_date" class="form-label">Payment Date</label>
             <input type="date" class="form-control" id="payment_date" name="payment_date" required>
         </div>
 
+        {{-- Due Date --}}
         <div class="mb-3">
             <label for="due_date" class="form-label">Due Date</label>
             <input type="date" class="form-control" id="due_date" name="due_date" readonly>
@@ -90,15 +97,7 @@
             document.getElementById('installment_type').dispatchEvent(new Event('change'));
         }
 
-        // Auto-calculate due date based on payment date
-        document.getElementById('payment_date').addEventListener('change', function () {
-            const paymentDate = new Date(this.value);
-            if (!isNaN(paymentDate)) {
-                const dueDate = new Date(paymentDate);
-                dueDate.setMonth(dueDate.getMonth() + 1);
-                document.getElementById('due_date').value = dueDate.toISOString().split('T')[0];
-            }
-        });
+     
     });
 
 
@@ -115,6 +114,49 @@
             // Ensure the current receipt number is used
             receiptInput.value = lastReceiptValue;
         });
+    });
+
+
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const admissionDateInput = document.getElementById('admission_date');
+        const paymentDateInput = document.getElementById('payment_date');
+        const dueDateInput = document.getElementById('due_date');
+
+        if (admissionDateInput && paymentDateInput && dueDateInput) {
+            const admissionDate = new Date(admissionDateInput.value);
+
+            paymentDateInput.addEventListener('change', function () {
+                if (this.value) {
+                    let paymentDate = new Date(this.value);
+                    let dueDay = admissionDate.getDate(); // Keep the same day
+                    let dueMonth = paymentDate.getMonth() + 1; // Move to next month
+                    let dueYear = paymentDate.getFullYear();
+
+                    if (dueMonth > 11) { 
+                        dueMonth = 0; // If December, move to January
+                        dueYear += 1;
+                    }
+
+                    // Create a new due date with the correct year, month, and same admission day
+                    let dueDate = new Date(dueYear, dueMonth, dueDay);
+
+                    // If the due date exceeds the number of days in the month, adjust it to the last valid date
+                    if (dueDate.getDate() !== dueDay) {
+                        dueDate.setDate(0); // This sets it to the last day of the previous month (valid max date)
+                    }
+
+                    dueDateInput.value = dueDate.toISOString().split('T')[0];
+                }
+            });
+
+            // Auto-trigger change if payment date is already set
+            if (paymentDateInput.value) {
+                paymentDateInput.dispatchEvent(new Event('change'));
+            }
+        }
     });
 </script>
 @endsection

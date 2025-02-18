@@ -256,11 +256,12 @@ public function updateTotalFees(Request $request, $student_id)
 
 
          // Retrieve the latest installment number for the student
-         $lastInstallment = Fee::where('student_id', $student->student_id)
-         ->where('course_id', $course->id)
-         ->max('installment_no');
+       // Check if an installment number already exists for this student
+       $lastInstallment = Fee::where('student_id', $request->student_id)->max('installment_no');
+       $nextInstallmentNo = $lastInstallment ? $lastInstallment + 1 : 1;
 
-     $nextInstallmentNo = $lastInstallment ? $lastInstallment + 1 : 1;
+       // Use the user-entered installment number if provided, otherwise, auto-increment
+       $installmentNo = $request->installment_no ?? $nextInstallmentNo;
 
         // Create Fee entry
         $fee = new Fee();
@@ -271,7 +272,7 @@ public function updateTotalFees(Request $request, $student_id)
         $fee->due_date = $request->due_date;
         $fee->receipt_number = $request->receipt_number;
         $fee->receipt_image = $request->receipt_number . '.jpg'; // Default image name
-        $fee->installment_no = $nextInstallmentNo; // Auto-increment installment number
+        $fee->installment_no = $installmentNo;
         $fee->status = 'Paid';
 
         

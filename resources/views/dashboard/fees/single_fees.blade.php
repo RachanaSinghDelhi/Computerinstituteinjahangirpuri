@@ -81,7 +81,7 @@
                                     <td>{{ $fee->receipt_number }}</td>
                                     <td>₹{{ $fee->amount_paid }}</td>
                                     <td>{{ \Carbon\Carbon::parse($fee->payment_date)->format('d-m-Y') }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($fee->payment_date)->addMonth()->format('d-m-Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($fee->due_date)->format('d-m-Y') }}</td>
                                     <td>
                                         @if($fee->receipt_image)
                                             <a href="{{ asset('storage/receipts/' . $fee->receipt_image) }}" target="_blank" class="btn btn-primary btn-sm">View Receipt</a>
