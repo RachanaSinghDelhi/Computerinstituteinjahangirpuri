@@ -1,4 +1,4 @@
-@extends('dashboard.app')
+@extends('adminlte::page')
 @section('title', 'Students List')
 @section('content')
 

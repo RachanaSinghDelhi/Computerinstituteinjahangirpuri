@@ -74,7 +74,7 @@ public function index()
      // Fetch all students with their related courses
      $students = Student::with('course')
      ->orderBy('student_id', 'desc') // Order by `id` in descending order
-     ->paginate(30);// Eager load 'course' relationship
+     ->paginate(5);// Eager load 'course' relationship
     $courses = Course::all();
     // Pass the students to the view
     return view('dashboard.students.display_students', compact('students','courses'));
@@ -283,7 +283,7 @@ public function destroy(Request $request)
 
 public function deleteMultiple(Request $request)
 {
-    Student::whereIn('id', $request->ids)->delete();
+    Student::whereIn('student_id', $request->ids)->delete();
 
     return response()->json(['message' => 'Selected students deleted successfully']);
 }
@@ -291,16 +291,17 @@ public function deleteMultiple(Request $request)
 
 public function bulkUpdateStatus(Request $request)
 {
-    $validated = $request->validate([
-        'ids' => 'required|array',
-        'status' => 'required|string',
-    ]);
+    $ids = $request->input('ids');
+    $status = $request->input('status');
 
-    Student::whereIn('id', $validated['ids'])->update(['status' => $validated['status']]);
+    if (!$ids || !$status) {
+        return response()->json(['message' => 'Invalid data'], 400);
+    }
 
-    return response()->json(['message' => 'Status updated successfully for selected students']);
+    Student::whereIn('student_id', $ids)->update(['status' => $status]);
+
+    return response()->json(['message' => 'Status updated successfully']);
 }
-
 
 // app/Http/Controllers/StudentController.php
 public function search(Request $request)

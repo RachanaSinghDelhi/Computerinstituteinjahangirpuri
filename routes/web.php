@@ -25,8 +25,27 @@ use App\Http\Controllers\Admin\StudentController as AdminStudentController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\FeeController as AdminFeeController;
 use App\Http\Controllers\Admin\CertificateController as AdminCertificateController;
+use App\Http\Controllers\ExpenseController;
+use App\Livewire\Auth\Login;
+use App\Livewire\Auth\Logout;
 
 
+
+
+
+
+
+
+
+Route::get('/logout', Logout::class)->name('logout');
+
+
+// Livewire Login Page
+Route::get('/login', Login::class)->name('login');
+
+
+// Logout Route
+//Route::get('/logout', [LogoutController::class, 'logout'])->name('logout')->middleware('auth');
 
 
 // Public Routes (No Authentication Required)
@@ -44,15 +63,14 @@ Route::get('/introduction', [PageController::class, 'showIntroductionPage'])->na
 // Single Post Route
 Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
 
-// Login and Logout Routes
+/* Login and Logout Routes
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login.form');
 Route::post('login', [LoginController::class, 'login'])->name('login');
-Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');*/
 // Admin Login Routes
 Route::get('admin/login', [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
 Route::post('admin/login', [AdminLoginController::class, 'login']);
-Route::post('admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
+Route::get('admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 
 // Super Admin Routes
 Route::middleware(['auth', 'role:super_admin'])->group(function () {
@@ -121,6 +139,7 @@ Route::put('fees/{fee}', [FeeController::class, 'update'])->name('fees.update');
         Route::get('/certificates/select_certificates', [CertificateController::class, 'selectCertificates'])->name('certificates.select');
         Route::get('/certificate-search', [CertificateController::class, 'search'])->name('certificate.search');
         Route::get('certificates/selectsearch', [CertificateController::class, 'selectSearch'])->name('certificate.selectsearch');
+        Route::get('/certificate/searchCertificate', [CertificateController::class, 'searchCertificate'])->name('certificate.searchCertificate');
 
         // Course Routes
         Route::get('/add_course', [CourseController::class, 'create'])->name('course.create');
@@ -150,6 +169,10 @@ Route::put('fees/{fee}', [FeeController::class, 'update'])->name('fees.update');
     Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
     Route::post('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+
+    Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses.index');
+    Route::get('/expenses/create', [ExpenseController::class, 'create'])->name('expenses.create');
+
 });
 
 // Admin Routes
@@ -236,6 +259,7 @@ Route::put('admin/fees/{fee}', [AdminFeeController::class, 'update'])->name('adm
   Route::get('admin/certificates/select_certificates', [AdminCertificateController::class, 'selectCertificates'])->name('admin.certificates.select');
   Route::get('admin/certificate-search', [AdminCertificateController::class, 'search'])->name('admin.certificate.search');
   Route::get('admin/certificates/selectsearch', [AdminCertificateController::class, 'selectSearch'])->name('admin.certificate.selectsearch');
+  Route::get('admin/certificate/searchCertificate', [CertificateController::class, 'searchCertificate'])->name('admin.certificate.searchCertificate');
 
 
 

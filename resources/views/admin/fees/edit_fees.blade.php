@@ -1,4 +1,4 @@
-@extends('admin.app')
+@extends('adminlte::page')
 @section('title', 'Edit Fees')
 @section('content')
 
@@ -19,8 +19,11 @@
 
 <div class="container mt-5">
     <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+            <h3 class="card-title">Edit Fees</h3>
+        </div>
         <div class="card-body">
-            <h2 class="mb-4">Edit Fee Record</h2>
+       
             
             <form action="{{ route('admin.fees.update', $fee->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -36,6 +39,11 @@
                     <label for="amount_paid" class="form-label">Amount Paid</label>
                     <input type="number" class="form-control" id="amount_paid" name="amount_paid" 
                            value="{{ old('amount_paid', $fee->amount_paid) }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="blanaces" class="form-label">Balances</label>
+                    <input type="number" class="form-control" id="Balance" name="Balance" 
+                           value="{{ old('balances', $fee->Balances) }}" required>
                 </div>
 
                 <div class="mb-3">
@@ -71,7 +79,7 @@
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-save"></i> Update Fee
                 </button>
-                <a href="{{ route('admin.fees.show', $fee->student_id) }}" class="btn btn-secondary">
+                <a href="{{ route('fees.show', $fee->student_id) }}" class="btn btn-secondary">
                  Fees Detail
                 </a>
             </form>

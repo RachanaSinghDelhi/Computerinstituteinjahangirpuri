@@ -356,69 +356,22 @@
 @elseif(request()->routeIs('index'))
     {{-- Homepage Carousel --}}
     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="{{ asset('assets/images/Sliders_image/computer-institute-in-jahangirpuri-1-1024x771.jpg') }}" class="d-block w-100" alt="Computer Institute in Jahangirpuri">
-                <div class="carousel-caption">
-                    <h5 class="animate__animated animate__bounceInRight animate__delay-1s">Best Computer Training in Jahangirpuri, Delhi</h5>
+    <div class="carousel-inner">
+        @foreach ($slides as $key => $slide)
+            <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
+                <img src="{{ asset($slide['image']) }}" class="d-block w-100" alt="{{ $slide['alt'] }}">
+                <div class="carousel-caption p-3 rounded animate__animated animate__bounceInRight animate__delay-1s" style="background-color: rgba(0, 0, 0, 0.6);">
+                    <h5 class="animate__animated animate__bounceInRight animate__delay-1s">{{ $slide['title'] }}</h5>
                     <p class="animate__animated animate__bounceInLeft animate__delay-2s d-none d-md-block">
-                        Since 2001, Nice Computer Institute in Jahangirpuri offers top courses like Graphic Design, Tally, Marg ERP, Web Dev. Enroll now to upgrade your skills!
+                        {{ $slide['description'] }}
                     </p>
                     <p class="know">
-                        <a href="/introduction" class="btn btn-primary animate__animated animate__bounceInRight animate__delay-3s know">Know More</a>
+                        <a href="{{ $slide['link'] }}" class="btn btn-primary animate__animated animate__bounceInRight animate__delay-3s know">Know More</a>
                     </p>
                 </div>
             </div>
-            <!-- Other carousel items here -->
-            <div class="carousel-item">
-                <img src="{{ asset('assets/images/Sliders_image/medal1_nice_computer_institute_jahangirpuri.jpg') }}" class="d-block w-100" alt="Medal at Nice Computer Institute in Jahangirpuri">
-                <div class="carousel-caption">
-                    <h5 class="animate__animated animate__bounceInRight animate__delay-1s">Basic Courses</h5>
-                    <p class="animate__animated animate__bounceInLeft animate__delay-2s d-none d-md-block">
-                        Nice Computer Institute provides the best job-oriented computer courses in Jahangirpuri. This course comprises of...
-                    </p>
-                    <p class="know">
-                        <a href="/courses/basic" class="btn btn-primary animate__animated animate__bounceInRight animate__delay-3s know">Know More</a>
-                    </p>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img src="{{ asset('assets/images/Sliders_image/annual_function_nice_computer_institute_jahangirpuri.jpg') }}" class="d-block w-100" alt="Annual Function at Nice Computer Institute in Jahangirpuri">
-                <div class="carousel-caption">
-                    <h5 class="animate__animated animate__bounceInRight animate__delay-1s">Advance Excel</h5>
-                    <p class="animate__animated animate__bounceInLeft animate__delay-2s d-none d-md-block">
-                        Advanced Excel institute in Jahangirpuri. Nice Computer is known for Excel developers who channel their skills into building applications and dashboards.
-                    </p>
-                    <p class="know">
-                        <a href="/courses/advance-excel" class="btn btn-primary animate__animated animate__bounceInRight animate__delay-3s know">Know More</a>
-                    </p>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img src="{{ asset('assets/images/Sliders_image/autocad_nice_computer_institute_jahangirpri.jpg') }}" class="d-block w-100" alt="AutoCAD at Nice Computer Institute in Jahangirpuri">
-                <div class="carousel-caption">
-                    <h5 class="animate__animated animate__bounceInRight animate__delay-1s">Python Training</h5>
-                    <p class="animate__animated animate__bounceInLeft animate__delay-2s d-none d-md-block">
-                        Learn Python Programming from scratch at Nice Web Technologies, Jahangirpuri. Our comprehensive course is designed for beginners.
-                    </p>
-                    <p class="know">
-                        <a href="/courses/python" class="btn btn-primary animate__animated animate__bounceInRight animate__delay-3s">Know More</a>
-                    </p>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img src="{{ asset('assets/images/Sliders_image/graphic_design_nice_computer_institute_jahangirpuri.jpg') }}" class="d-block w-100" alt="Graphic Design at Nice Computer Institute in Jahangirpuri">
-                <div class="carousel-caption">
-                    <h5 class="animate__animated animate__bounceInRight animate__delay-1s">Graphic Design</h5>
-                    <p class="animate__animated animate__bounceInLeft animate__delay-2s d-none d-md-block">
-                        Explore Graphic Design Concepts & Practices including typography, color, layout, and more.
-                    </p>
-                    <p class="know">
-                        <a href="/courses/graphic-design" class="btn btn-primary animate__animated animate__bounceInRight animate__delay-3s">Know More</a>
-                    </p>
-                </div>
-            </div>
-        </div>
+        @endforeach
+    </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>

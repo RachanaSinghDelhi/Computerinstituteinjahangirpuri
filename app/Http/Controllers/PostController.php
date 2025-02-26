@@ -39,7 +39,7 @@ class PostController extends Controller
 
         $post->save();
 
-        return redirect()->route('dashboard.posts.new_posts')->with('success', 'Post created successfully.');
+        return redirect()->route('posts.new_posts')->with('success', 'Post created successfully.');
     }
 
 
@@ -51,6 +51,12 @@ class PostController extends Controller
     }
 
     public function update(Request $request, $id){
+        $post = Post::find($id);
+
+        if (!$post) {
+            return redirect()->back()->with('error', 'Post not found.');
+        }
+    
         $request->validate([
             'title' =>'required|string|max:255',
             'content' =>'required',
@@ -98,7 +104,7 @@ class PostController extends Controller
         // Breadcrumbs for the 'Updates' page
         $breadcrumbs = [
             ['name' => 'Home', 'url' => url('/')],
-            ['name' => 'Updates', 'url' => route('posts.index')],
+            ['name' => 'Updates', 'url' => route('posts.new_posts')],
         ];
 
         return view('dashboard.posts.new_post', compact('posts', 'breadcrumbs'));

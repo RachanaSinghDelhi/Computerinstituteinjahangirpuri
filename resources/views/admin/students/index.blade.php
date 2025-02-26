@@ -1,4 +1,4 @@
-@extends('admin.app')
+@extends('adminlte::page')
 @section('title', 'Students List')
 @section('content')
 <div class="container container-fluid mt-4">

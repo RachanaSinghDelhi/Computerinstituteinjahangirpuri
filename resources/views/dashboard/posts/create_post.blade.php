@@ -1,97 +1,104 @@
-@extends('dashboard.app')
+@extends('adminlte::page')
+
+@section('title', 'Create Post')
+
+@section('content_header')
+ 
+@endsection
 
 @section('content')
-<div class="container mt-4">
-    <h2>Create New Post</h2>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        {{-- Success Message --}}
+        @if (session('success'))
+            <x-adminlte-alert theme="success" title="Success">
+                {{ session('success') }}
+            </x-adminlte-alert>
+        @endif
 
-    {{-- Display success message --}}
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
+        {{-- Validation Errors --}}
+        @if ($errors->any())
+            <x-adminlte-alert theme="danger" title="Error">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </x-adminlte-alert>
+        @endif
 
-    {{-- Display validation errors --}}
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+        {{-- Post Creation Form --}}
+        <x-adminlte-card title="New Post" theme="primary" icon="fas fa-edit">
+            <form id="postform" action="{{ route('posts.store_post') }}" method="POST" enctype="multipart/form-data">
+                @csrf
 
-    {{-- Post creation form --}}
-    <form id="form" action="{{ route('posts.store_post') }}" method="POST" enctype="multipart/form-data" class="mt-4">
+                {{-- Title --}}
+                <x-adminlte-input name="title" label="Title" placeholder="Enter post title" required />
 
-        @csrf
-        <div class="mb-3">
-            <label for="title" class="form-label">Title:</label>
-            <input type="text" name="title" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-                    <label for="content" class="form-label">Content:</label>
-                    <div id="quill-editor"></div>
+                {{-- Content Editor --}}
+                <div class="form-group">
+                    <label for="content">Content:</label>
+                    <div id="quill-editor" class="border p-2" style="min-height: 150px;"></div>
                     <input type="hidden" id="content" name="content">
                     @error('content')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </div>
 
-        <div class="mb-3">
-            <label for="image" class="form-label">Image:</label>
-            <input type="file" name="image" class="form-control">
-        </div>
+                {{-- Image Upload --}}
+                <x-adminlte-input-file name="image" label="Upload Image" placeholder="Choose an image" />
 
-        <div class="mb-3">
-        <label for="tags" class="form-label">Tags:</label>
-        <input type="text" name="tags" class="form-control" placeholder="Enter tags separated by commas">
+                {{-- Tags --}}
+                <x-adminlte-input name="tags" label="Tags" placeholder="Enter tags separated by commas" />
+
+                {{-- URL --}}
+                <x-adminlte-input name="url" label="URL" placeholder="Enter an optional URL" />
+
+                {{-- Submit Button --}}
+                <x-adminlte-button type="submit" label="Create Post" theme="success" icon="fas fa-save" />
+            </form>
+        </x-adminlte-card>
     </div>
-
-    <div class="mb-3">
-        <label for="url" class="form-label">URL:</label>
-        <input type="text" name="url" class="form-control" placeholder="Enter an optional URL">
-    </div>
-
-        <button type="submit" class="btn btn-primary">Create Post</button>
-    </form>
 </div>
 @endsection
 
-@push('scripts')
+@push('css')
+    {{-- Quill Editor Styles --}}
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+@endpush
+
+@push('js')
+    {{-- Quill Editor --}}
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-    
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
-<script>
-    var quillContent = new Quill('#quill-editor', {
-        theme: 'snow',
-        placeholder: 'Write the course content...',
-        modules: {
-            toolbar: [
-                [{ 'header': '1'}, { 'header': '2' }, { 'font': [] }],
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                ['bold', 'italic', 'underline'],
-                ['link'],
-                [{ 'align': [] }],
-                ['image', 'video']
-            ]
-        }
-    });
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
 
-        document.getElementById('form').onsubmit = function(event) {
-        const content = quillContent.root.innerHTML.trim();
-        if (content === '<p><br></p>' || content === '') {
-            alert('Please write some content before submitting.');
-            event.preventDefault();
-            return false;
-        }
+    <script>
+        var quillContent = new Quill('#quill-editor', {
+            theme: 'snow',
+            placeholder: 'Write your post content here...',
+            modules: {
+                toolbar: [
+                    [{ 'header': '1'}, { 'header': '2' }, { 'font': [] }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['bold', 'italic', 'underline'],
+                    ['link'],
+                    [{ 'align': [] }],
+                    ['image', 'video']
+                ]
+            }
+        });
 
-        // Sanitize and update hidden input
-        const sanitizedContent = DOMPurify.sanitize(content);
-        document.getElementById('content').value = sanitizedContent;
-    };
+        document.getElementById('postform').onsubmit = function(event) {
+            const content = quillContent.root.innerHTML.trim();
+            if (content === '<p><br></p>' || content === '') {
+                alert('Please write some content before submitting.');
+                event.preventDefault();
+                return false;
+            }
+
+            // Sanitize and update hidden input
+            const sanitizedContent = DOMPurify.sanitize(content);
+            document.getElementById('content').value = sanitizedContent;
+        };
     </script>
 @endpush

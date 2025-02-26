@@ -1,6 +1,14 @@
-@extends('dashboard.app')
+@extends('adminlte::page')
+@section('title', 'Fees Pending')
 
 @section('content')
+<div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Fees Pending</h3>
+        </div>
+
+        
+        <div class="card-body">
 <div class="container mt-4">
     <h2>Pending Fees</h2>
     <table id="pendingFeesTable" class="table table-striped">
@@ -24,13 +32,18 @@
         </tbody>
     </table>
 </div>
+</div>
+</div>
 @endsection
+@push('css')
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+@endpush
 
-@push('scripts')
-<!-- Include DataTables -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+@push('js')
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
 
 <script>
     $(document).ready(function() {

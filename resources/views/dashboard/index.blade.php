@@ -1,9 +1,13 @@
-@extends('dashboard.app')
+@extends('adminlte::page')
+
+@section('title', 'Admin Dashboard')
+
+@section('content_header')
+    <h1>Dashboard Overview</h1>
+@stop
 
 @section('content')
-<div class="container mt-4">
-    <h2 class="mb-4">Dashboard Overview</h2>
-    
+<div class="container-fluid">
     @if(isset($overdueFees) && count($overdueFees) > 0)
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
         @foreach($overdueFees as $fee)
@@ -16,92 +20,84 @@
             </div>
         @endforeach
     </div>
-@endif
-
-
+    @endif
 
     <div class="row">
-       <!-- Total Fees Received (Clickable) -->
-<div class="col-md-4">
-    <a href="{{ route('fees.received') }}" class="text-decoration-none">
-        <div class="card text-white bg-success mb-3">
-            <div class="card-header">Total Fees Received</div>
-            <div class="card-body">
-                <h4 class="card-title">₹{{ number_format($totalFeesReceived, 2) }}</h4>
-            </div>
-        </div>
-    </a>
-</div>
-
-        <!-- Total Fees Received this month -->
-        <div class="col-md-4">
-            <div class="card text-white bg-success mb-3">
-                <div class="card-header">Total Fees Received</div>
-                <div class="card-body">
-                    <h4 class="card-title">₹{{ number_format($totalFeesPaidThisMonth, 2) }}</h4>
+        <div class="col-lg-4 col-6">
+            <div class="small-box bg-success">
+                <div class="inner">
+                    <h3>₹{{ number_format($totalFeesReceived, 2) }}</h3>
+                    <p>Total Fees Received</p>
                 </div>
-            </div>
-        </div>
-
-       <!-- Fees Pending (Clickable) -->
-<div class="col-md-4">
-    <a href="{{ route('fees.pending') }}" class="text-decoration-none">
-        <div class="card text-white bg-danger mb-3">
-            <div class="card-header">Fees Pending (This Month)</div>
-            <div class="card-body">
-                <h4 class="card-title">₹{{ number_format($feesPending, 2) }}</h4>
-            </div>
-        </div>
-    </a>
-</div>
-
-        <!-- Active Students -->
-        <div class="col-md-4">
-            <div class="card text-white bg-info mb-3">
-                <div class="card-header">Active Students</div>
-                <div class="card-body">
-                    <h4 class="card-title">{{ $activeStudents }}</h4>
+                <div class="icon">
+                    <i class="fas fa-wallet"></i>
                 </div>
+                <a href="{{ route('fees.received') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
-
-        <!-- New Enrollments -->
-        <div class="col-md-4">
-            <div class="card text-white bg-primary mb-3">
-                <div class="card-header">New Enrollments (This Month)</div>
-                <div class="card-body">
-                    <h4 class="card-title">{{ $newEnrollments }}</h4>
+        <div class="col-lg-4 col-6">
+            <div class="small-box bg-danger">
+                <div class="inner">
+                    <h3>₹{{ number_format($feesPending, 2) }}</h3>
+                    <p>Fees Pending (This Month)</p>
                 </div>
+                <div class="icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <a href="{{ route('fees.pending') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
-
-        <!-- Completed/Left Students -->
-        <div class="col-md-4">
-            <div class="card text-white bg-warning mb-3">
-                <div class="card-header">Completed/Left (This Month)</div>
-                <div class="card-body">
-                    <h4 class="card-title">{{ $completedOrLeftStudents }}</h4>
+        <div class="col-lg-4 col-6">
+            <div class="small-box bg-info">
+                <div class="inner">
+                    <h3>{{ $activeStudents }}</h3>
+                    <p>Active Students</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-users"></i>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Monthly Fees and Enrollment Graphs -->
-    <div class="row mt-5">
-        <div class="col-md-6">
-            <canvas id="feesChart"></canvas>
+    
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">Monthly Fees Received</div>
+                <div class="card-body">
+                    <canvas id="feesChart"></canvas>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6">
-            <canvas id="enrollmentChart"></canvas>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">New Enrollments</div>
+                <div class="card-body">
+                    <canvas id="enrollmentChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">Completed/Left Students</div>
+            <div class="card-body">
+                <canvas id="completedLeftChart"></canvas>
+            </div>
         </div>
     </div>
-</div>
 
-@endsection
-@push('scripts')
+</div>
+    </div>
+    <!-- New Chart for Completed/Left Students -->
+
+ 
+@stop
+
+@push('js')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Monthly Fees Data
     var feesCtx = document.getElementById('feesChart').getContext('2d');
     var feesChart = new Chart(feesCtx, {
         type: 'line',
@@ -121,7 +117,6 @@
         }
     });
 
-    // Monthly Enrollments Data
     var enrollCtx = document.getElementById('enrollmentChart').getContext('2d');
     var enrollChart = new Chart(enrollCtx, {
         type: 'bar',
@@ -140,5 +135,26 @@
             maintainAspectRatio: false
         }
     });
+
+
+    var completedLeftCtx = document.getElementById('completedLeftChart').getContext('2d');
+var completedLeftChart = new Chart(completedLeftCtx, {
+    type: 'bar',
+    data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [{
+            label: 'Completed/Left Students',
+            data: @json(array_values($completedOrLeftStudents)),
+            backgroundColor: 'rgba(153, 102, 255, 0.2)',
+            borderColor: 'rgba(153, 102, 255, 1)',
+            borderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false
+    }
+});
+
 </script>
 @endpush

@@ -27,7 +27,7 @@ class AdminController extends Controller
         $totalFeesReceived = Fee::sum('amount_paid');
 
 
-// Fetch total fees received this month
+//Fetch total fees received this month
 $currentMonthStart = Carbon::now()->startOfMonth()->toDateString();
 $currentMonthEnd = Carbon::now()->endOfMonth()->toDateString();
         $totalFeesPaidThisMonth = DB::table('fees')
@@ -50,11 +50,11 @@ $currentMonthEnd = Carbon::now()->endOfMonth()->toDateString();
                                  ->whereYear('created_at', $currentYear)
                                  ->count();
 
-        // Fetch students who completed/left this month
-        $completedOrLeftStudents = Student::whereMonth('updated_at', $currentMonth)
-                                          ->whereYear('updated_at', $currentYear)
-                                          ->whereIn('status', ['completed', 'left'])
-                                          ->count();
+           // Fetch completed or left students per month
+  $completedOrLeftStudents = Student::select(DB::raw("COUNT(id) as total"), DB::raw("MONTH(updated_at) as month"))
+  ->whereIn('status', ['completed', 'left'])
+  ->groupBy(DB::raw("MONTH(updated_at)"))
+  ->pluck('total', 'month')->toArray();
 
         // Fetch monthly fees received for graph
         $monthlyFees = Fee::selectRaw('MONTH(due_date) as month, SUM(amount_paid) as total')
@@ -96,7 +96,8 @@ $currentMonthEnd = Carbon::now()->endOfMonth()->toDateString();
                                  
   
 
-        return view('admin.index', compact(
+
+           return view('admin.index', compact(
             'totalFeesReceived', 
             'feesPending', 
             'activeStudents', 
@@ -105,7 +106,8 @@ $currentMonthEnd = Carbon::now()->endOfMonth()->toDateString();
             'monthlyFees', 
             'monthlyEnrollments',
             'overdueFees',
-            'totalFeesPaidThisMonth'
+            'totalFeesPaidThisMonth',
+            'completedOrLeftStudents',
         ));
 
 

@@ -270,6 +270,7 @@ public function updateTotalFees(Request $request, $student_id)
         $fee->student_id = $student->student_id;
         $fee->course_id = $course->id; // Use course ID from the student's record
         $fee->amount_paid = $request->amount_paid;
+        $fee->balances = $request->balance;
         $fee->payment_date = $request->payment_date;
         $fee->due_date = $request->due_date;
         $fee->receipt_number = $request->receipt_number;

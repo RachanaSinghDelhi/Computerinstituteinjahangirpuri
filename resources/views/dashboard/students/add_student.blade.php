@@ -1,4 +1,4 @@
-@extends('admin.app')
+@extends('adminlte::page')
 @section('title', 'Add Students')
 @section('content')
 <div class="container mt-5">
@@ -20,12 +20,21 @@
             </ul>
         </div>
     @endif
-    <div>
-        <a href="{{ route('students.index') }}">
-            <button class="btn btn-sm btn-success">Student List</button>
+    <!-- Add Course Button -->
+    <div class="mb-3">
+        <a href="{{ route('students.index') }}" class="btn btn-success btn-sm">
+            <i class="fas fa-plus"></i> Student List
         </a>
     </div>
     <!-- Student Form -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Post List</h3>
+        </div>
+
+        
+        <div class="card-body">
+            
     <form action="{{ route('students.liststore') }}" method="POST" enctype="multipart/form-data" id="studentForm">
         @csrf
 
@@ -111,9 +120,11 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
+                        </div>
+                        </div>
 @endsection
 
-@push('scripts')
+@push('js')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 

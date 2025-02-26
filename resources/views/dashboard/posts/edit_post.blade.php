@@ -1,4 +1,4 @@
-@extends('dashboard.app')
+@extends('adminlte::page')
 
 @section('content')
 <div class="container">
@@ -16,7 +16,7 @@
     @endif
 
     <!-- Edit Post Form -->
-    <form action="{{ route('posts.update', $post->id) }}" method="POST" enctype="multipart/form-data" id="edit-post-form">
+    <form action="{{ route('posts.update_post', $post->id) }}" method="POST" enctype="multipart/form-data" id="edit-post-form">
         @csrf
         @method('PUT')
 

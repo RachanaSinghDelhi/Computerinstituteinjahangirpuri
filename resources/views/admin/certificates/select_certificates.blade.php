@@ -1,4 +1,4 @@
-@extends('admin.app')
+@extends('adminlte::page')
 @section('title', 'Student certificate')
 @section('content')
 
@@ -20,7 +20,10 @@
 
 <div class="container">
 
-
+<div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Select Certificates </h3>
+            <div class="card-body">
 <!-- Form for selecting and downloading certificates -->
 <form action="{{ route('admin.certificates.downloadSelected') }}" method="POST">
     @csrf
@@ -97,11 +100,12 @@
 </div>
 
 </div>
+</div></div>
 <div class="mt-4">
         {{ $certificates->links('pagination::bootstrap-4') }}
     </div>
 @endsection
- @push('scripts')
+ @push('js')
 <!-- Custom JavaScript -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>

@@ -168,5 +168,29 @@ public function downloadSelected(Request $request)
 
         return response()->json(['certificates' => $view]);
     }
+
+
+    public function searchCertificate(Request $request)
+{
+    try {
+        $query = $request->input('query');
+
+        // Fetch certificates based on search query using LIKE
+        $certificates = Certificate::whereRaw('LOWER(student_id) LIKE ?', ["%".strtolower($query)."%"])
+        ->orWhereRaw('LOWER(name) LIKE ?', ["%".strtolower($query)."%"])
+        ->orWhereRaw('LOWER(course) LIKE ?', ["%".strtolower($query)."%"])
+        ->get();
+        // Return the filtered certificates as a partial view (table rows only)
+        return response()->json(['certificates' => view('admin.certificates.search_certificates', compact('certificates'))->render()]);
+
+        } catch (\Exception $e) {
+        // Log the error
+        Log::error('Error occurred during certificate search: ' . $e->getMessage());
+
+        // Return an error response
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
+
     
 }

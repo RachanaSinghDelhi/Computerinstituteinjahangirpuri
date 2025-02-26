@@ -1,11 +1,14 @@
-@extends('admin.app')
+@extends('adminlte::page')
+@section('title', 'Fees Details')
 
 @section('content')
 <div class="container mt-5">
     <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+            <h3 class="card-title">Fee Details for {{ $student->name }} ID number {{ $student->student_id }} </h3>
+        </div>
         <div class="card-body">
-            <h2 class="mb-4">Fee Details for {{ $student->name }}</h2>
-
+        
             <!-- Link to Edit Course -->
             <form action="{{ route('admin.fees.updateCourse', $student->student_id) }}" method="POST" class="mb-4">
                 @csrf
@@ -27,7 +30,7 @@
             </form>
 
             <!-- Link to Edit Total Fees -->
-            <form action="{{ route('updateTotalFees', $student->student_id) }}" method="POST" class="mb-4">
+            <form action="{{ route('admin.updateTotalFees', $student->student_id) }}" method="POST" class="mb-4">
                 @csrf
                 @method('PUT') <!-- Use PUT as per the route -->
                 <div class="mb-3">
@@ -62,7 +65,7 @@
 <table id="feesTable" class="table table-bordered">
                     <thead class="table-light">
                         <tr>
-                            <th scope="col">Installment</th>
+                            <th scope="col">Balaces</th>
                             <th scope="col">Installment No.</th>
                             <th scope="col">Receipt No.</th>
                             <th scope="col">Amount Paid</th>
@@ -76,12 +79,12 @@
                         <tbody>
                             @foreach($student->fees as $index => $fee)
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $fee->balances}}</td>
                                     <td>{{  $fee->installment_no }}</td>
                                     <td>{{ $fee->receipt_number }}</td>
                                     <td>₹{{ $fee->amount_paid }}</td>
                                     <td>{{ \Carbon\Carbon::parse($fee->payment_date)->format('d-m-Y') }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($fee->payment_date)->addMonth()->format('d-m-Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($fee->due_date)->format('d-m-Y') }}</td>
                                     <td>
                                         @if($fee->receipt_image)
                                             <a href="{{ asset('storage/receipts/' . $fee->receipt_image) }}" target="_blank" class="btn btn-primary btn-sm">View Receipt</a>

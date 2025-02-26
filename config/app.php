@@ -173,6 +173,12 @@ return [
      
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\VoltServiceProvider::class,
+      
+    // Other providers...
+    App\Providers\AdminMenuServiceProvider::class,
+
+
 
     ])->toArray(),
 
@@ -188,7 +194,8 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-
+         'Auth' => Illuminate\Support\Facades\Auth::class,  
+    'Route' => Illuminate\Support\Facades\Route::class, 
         'PDF' => Barryvdh\DomPDF\Facade::class,  // Add PDF alias
 
     ])->toArray(),

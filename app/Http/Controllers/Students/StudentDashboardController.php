@@ -1,13 +1,14 @@
 <?php
+namespace App\Http\Controllers\Students;
 
-namespace App\Http\Controllers;
+use App\Http\Controllers\Controller; // Correct import for the base Controller class
 
 use Illuminate\Http\Request;
 
-class StudentController extends Controller
+class StudentDashboardController extends Controller
 {
     public function index()
     {
-        return view('student.dash'); // Your student dashboard view
+        return view('students.index'); // Your student dashboard view
     }
 }

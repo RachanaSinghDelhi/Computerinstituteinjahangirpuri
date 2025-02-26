@@ -1,4 +1,4 @@
-@extends('dashboard.app')
+@extends('adminlte::page')
 @section('title', 'Edit Student')
 @section('content')
 <div class="container mt-4">
@@ -139,7 +139,7 @@
 </div>
 @endsection
 
-@push('scripts')
+@push('js')
 <!-- Cropper.js -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>

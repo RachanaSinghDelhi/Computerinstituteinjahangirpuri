@@ -1,4 +1,5 @@
-@extends('admin.app')
+@extends('adminlte::page')
+@section('title', 'Fees Status')
 
 @section('content')
 
@@ -10,13 +11,21 @@
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
-        <div>
+    
+    <div>
         <br>
         <a href="{{ route('admin.students.add') }}">
             <button class="btn btn-sm btn-success">Add New Student</button>
         </a>
     </div>
     <!-- Fees Table -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Fees List</h3>
+        </div>
+
+        
+        <div class="card-body">
     <div class="mt-4">
         <table id="feesTable" class="table table-bordered table-striped">
             <thead>
@@ -24,7 +33,6 @@
                     <th>Student ID</th>
                     <th>Student Name</th>
                     <th>Admission Date</th>
-                    <th>Admission Day</th>
                     <th>Course Name</th>
                
                     <th  class="d-none d-md-table-cell">Total Fees</th>
@@ -32,7 +40,7 @@
                     <th>Installments Paid</th>
                     <th  class="d-none d-md-table-cell">Fees Paid</th>
                     <th  class="d-none d-md-table-cell">Fees Due</th>
-                    <th class="text-muted">Last Updated</th>
+                 
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
@@ -42,7 +50,6 @@
                     <tr>
                         <td>{{ $fee->student_id }}</td>
                         <td>{{ $fee->student_name }}</td>
-                        <td>{{ $fee->admission_date }}</td>
                         <td>{{ \Carbon\Carbon::parse($fee->admission_date)->format('d') }}</td>
                         <td>
                             <form action="{{ route('admin.fees.updateCourse', $fee->student_id) }}" method="POST">
@@ -57,8 +64,22 @@
                                 </select>
                             </form>
                         </td>
-                        <td>
-                        {{ $fee->total_fees }}
+                        <td class="d-none d-md-table-cell">
+    <form action="{{ route('admin.updateTotalFees', $fee->student_id) }}" method="POST">
+        @csrf
+        @method('PUT')
+
+        <div class="input-group">
+            <input type="number" id="total_fees_{{ $fee->student_id }}" name="total_fees" 
+                   value="{{ $fee->student_total_fees }}" class="form-control" required>
+            
+        </div>
+        <button type="button" class="btn btn-secondary calculate-btn" 
+                    data-target="#total_fees_{{ $fee->student_id }}">
+                🧮
+            </button>
+        <button type="submit" class="btn btn-sm btn-primary mt-2">Update Fees</button>
+    </form>
 </td>
 
 
@@ -66,21 +87,18 @@
                         <td>{{ $fee->installments_paid }}</td> <!-- Display number of paid installments -->
                         <td  class="d-none d-md-table-cell">{{ $fee->fees_paid }}</td>
                         <td  class="d-none d-md-table-cell">{{ $fee->fees_due }}</td>
-                        <td class="text-muted">{{ $fee->last_updated }}</td>
+                     
+                        @php
+    $displayStatus = $fee->status == 'Paid but Pending Next Month' ? 'Paid but Pending' : $fee->status;
+    $statusClass = $fee->status == 'Paid' ? 'bg-success' : ($fee->status == 'Paid but Pending Next Month' ? 'bg-warning' : 'bg-danger');
+@endphp
+
+<td>
+    <span class="badge {{ $statusClass }}">{{ $displayStatus }}</span>
+</td>
                         <td>
-                            <span class="badge 
-                                @if($fee->status == 'Paid') 
-                                    bg-success 
-                                @elseif($fee->status == 'Paid but Pending Next Month') 
-                                    bg-warning 
-                                @else 
-                                    bg-danger 
-                                @endif
-                            ">{{ $fee->status }}</span>
-                        </td>
-                        <td>
-                            <a href="{{ route('admin.add_fees', $fee->student_id) }}" class="btn btn-primary btn-sm">Pay Now</a>
-                            <a href="{{ route('admin.fees.show', $fee->student_id) }}" class="btn btn-info btn-sm">View Details</a>
+                        <a href="{{ route('admin.add_fees', $fee->student_id) }}" class="btn btn-primary btn-sm">Pay Now</a>
+                        <a href="{{ route('admin.fees.show', $fee->student_id) }}" class="btn btn-info btn-sm">View Details</a>
                             
                             @php
     // Fetch student's WhatsApp number from the students table
@@ -89,7 +107,13 @@
 
     // Remove any spaces from the WhatsApp number
     $whatsappNumber = str_replace(' ', '', $whatsappNumber);
+
+    // Ensure the number starts with +91
+    if (!preg_match('/^\+91/', $whatsappNumber)) {
+        $whatsappNumber = '+91' . ltrim($whatsappNumber, '0'); // Remove leading zero if present
+    }
 @endphp
+
 
 @php
     $installmentAmount = ($fee->student_total_fees - 350) / max($fee->installments, 1);
@@ -113,14 +137,18 @@
         </table>
     </div>
 </div>
-
+    </div></div>
 @endsection
 
-@push('scripts')
+@push('css')
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+@endpush
 
-   
-   
-
+@push('js')
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
 
 <script>
     $(document).ready(function() {
@@ -133,7 +161,7 @@
             lengthMenu: [5, 10, 15, 20],
             responsive: true,
             autoWidth: false,
-            order: [[7, 'desc']],
+            order: [[9, 'desc']],
             columnDefs: [
                 { targets: 7, type: 'date' },
                 { targets: [7], visible: false }

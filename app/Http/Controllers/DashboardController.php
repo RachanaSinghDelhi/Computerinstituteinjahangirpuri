@@ -12,17 +12,16 @@ use App\Models\Fee;
 class DashboardController extends Controller
 {
    
-       // public function index()
-       // {
-       //     $courselist = Course::all();
-        //    return view('dashboard.index', compact('courselist')); // Pass 'courses' to view
-      //  }
-    
+   /*  public function index()
+     {
+         $courselist = Course::all();
+        return view('dashboard.index'); // Pass 'courses' to view
+      }
+    */
     
 
      
-      
-     
+   
           public function index()
           {
               $currentMonth = Carbon::now()->month;
@@ -32,7 +31,7 @@ class DashboardController extends Controller
               $totalFeesReceived = Fee::sum('amount_paid');
 
 
- // Fetch total fees received this month
+ //Fetch total fees received this month
  $currentMonthStart = Carbon::now()->startOfMonth()->toDateString();
     $currentMonthEnd = Carbon::now()->endOfMonth()->toDateString();
               $totalFeesPaidThisMonth = DB::table('fees')
@@ -55,11 +54,11 @@ class DashboardController extends Controller
                                        ->whereYear('created_at', $currentYear)
                                        ->count();
       
-              // Fetch students who completed/left this month
-              $completedOrLeftStudents = Student::whereMonth('updated_at', $currentMonth)
-                                                ->whereYear('updated_at', $currentYear)
-                                                ->whereIn('status', ['completed', 'left'])
-                                                ->count();
+                 // Fetch completed or left students per month
+        $completedOrLeftStudents = Student::select(DB::raw("COUNT(id) as total"), DB::raw("MONTH(updated_at) as month"))
+        ->whereIn('status', ['completed', 'left'])
+        ->groupBy(DB::raw("MONTH(updated_at)"))
+        ->pluck('total', 'month')->toArray();
       
               // Fetch monthly fees received for graph
               $monthlyFees = Fee::selectRaw('MONTH(due_date) as month, SUM(amount_paid) as total')
@@ -118,7 +117,6 @@ class DashboardController extends Controller
 
    
           }
-
 
 
 

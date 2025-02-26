@@ -1,140 +1,126 @@
-@extends('dashboard.app')
+@extends('adminlte::page')
+
+@section('title', 'Edit Course')
 
 @section('content')
 <div class="container">
-    <h1>Edit Course</h1>
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3 class="card-title">Edit Course</h3>
+        </div>
+        <div class="card-body">
+            <!-- Form for updating course using PUT method -->
+            <form action="{{ route('course.update', $course->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
 
-    <!-- Form for updating course using PUT method -->
-    <form action="{{ route('course.update', $course->id) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
+                <!-- Course Image Field -->
+                <x-adminlte-input-file name="course_image" label="Course Image" placeholder="Choose an image..." />
+                @if ($course->course_image)
+                    <div class="mt-2">
+                        <img src="{{ asset('storage/courses/' . $course->course_image) }}" alt="Course Image" width="100">
+                    </div>
+                @endif
+                @error('course_image')
+                    <x-adminlte-alert theme="danger">{{ $message }}</x-adminlte-alert>
+                @enderror
 
-        <!-- Course Image Field -->
-        <div class="form-group">
-            <label for="course_image">Course Image</label>
-            <input type="file" class="form-control" name="course_image" id="course_image">
-            <!-- Show the existing image if available -->
-            @if ($course->course_image)
-                <div>
-                    <img src="{{ asset('storage/courses/' . $course->course_image) }}" alt="Course Image" width="100">
+                <!-- Course Title & Course Name Fields in Row -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <x-adminlte-input name="course_title" label="Course Title" value="{{ old('course_title', $course->course_title) }}" />
+                        @error('course_title')
+                            <x-adminlte-alert theme="danger">{{ $message }}</x-adminlte-alert>
+                        @enderror
+                    </div>
+                    <div class="col-md-6">
+                        <x-adminlte-input name="course_name" label="Course Name" value="{{ old('course_name', $course->course_name) }}" />
+                        @error('course_name')
+                            <x-adminlte-alert theme="danger">{{ $message }}</x-adminlte-alert>
+                        @enderror
+                    </div>
                 </div>
-            @endif
-            @error('course_image')
-                <div class="text-danger">{{ $message }}</div>
-            @enderror
-        </div>
 
-        <!-- Course Title Field -->
-        <div class="form-group">
-            <label for="course_title">Course Title</label>
-            <input type="text" class="form-control" name="course_title" id="course_title" value="{{ old('course_title', $course->course_title) }}">
-            @error('course_title')
-                <div class="text-danger">{{ $message }}</div>
-            @enderror
-        </div>
-        <!-- Course Title Field -->
-        <div class="form-group">
-            <label for="course_name">Course Name</label>
-            <input type="text" class="form-control" name="course_name" id="course_name" value="{{ old('course_name', $course->course_name) }}">
-            @error('course_name')
-                <div class="text-danger">{{ $message }}</div>
-            @enderror
-        </div>
+                <!-- Course Description Field -->
+                <x-adminlte-textarea name="course_desc" label="Course Description">
+                    {{ old('course_desc', $course->course_desc) }}
+                </x-adminlte-textarea>
+                @error('course_desc')
+                    <x-adminlte-alert theme="danger">{{ $message }}</x-adminlte-alert>
+                @enderror
 
-        <!-- Course Description Field -->
-        <div class="form-group">
-            <label for="course_desc">Course Description</label>
-            <textarea class="form-control" name="course_desc" id="course_desc">{{ old('course_desc', $course->course_desc) }}</textarea>
-            @error('course_desc')
-                <div class="text-danger">{{ $message }}</div>
-            @enderror
+                <!-- Course Content Field with Quill Editor -->
+                <div class="form-group">
+                    <label for="course_content">Course Content</label>
+                    <div id="quill_editor">{!! old('course_content', $course->course_content) !!}</div>
+                    <input type="hidden" name="course_content" id="course_content" value="{{ old('course_content', $course->course_content) }}">
+                    @error('course_content')
+                        <x-adminlte-alert theme="danger">{{ $message }}</x-adminlte-alert>
+                    @enderror
+                </div>
+
+                <!-- Duration, Total Fees & Installments in Row -->
+                <div class="row">
+                    <div class="col-md-4">
+                        <x-adminlte-input type="number" name="duration" label="Duration (in months)" value="{{ old('duration', $course->duration) }}" min="1" />
+                        @error('duration')
+                            <x-adminlte-alert theme="danger">{{ $message }}</x-adminlte-alert>
+                        @enderror
+                    </div>
+                    <div class="col-md-4">
+                        <x-adminlte-input type="number" name="total_fees" label="Total Fees" value="{{ old('total_fees', $course->total_fees) }}" min="0" />
+                        @error('total_fees')
+                            <x-adminlte-alert theme="danger">{{ $message }}</x-adminlte-alert>
+                        @enderror
+                    </div>
+                    <div class="col-md-4">
+                        <x-adminlte-input type="number" name="installments" label="Installments" value="{{ old('installments', $course->installments) }}" min="1" />
+                        @error('installments')
+                            <x-adminlte-alert theme="danger">{{ $message }}</x-adminlte-alert>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Course URL Field -->
+                <x-adminlte-input name="course_url" label="Course URL (optional)" value="{{ old('course_url', $course->course_url) }}" />
+
+                <!-- Submit Button -->
+                <x-adminlte-button type="submit" theme="success" label="Update Course" class="mt-3" />
+            </form>
         </div>
-
-        <!-- Course Content Field with Quill Editor -->
-       <div class="form-group">
-    <label for="course_content">Course Content</label>
-    <!-- Div for Quill Editor -->
-    <div id="quill_editor">{!! old('course_content', $course->course_content) !!}</div>
-    
-  <!-- Hidden Input Field for storing Quill content -->
-  <input type="hidden" name="course_content" id="course_content" value="{{ old('course_content', $course->course_content) }}">
-
-    <!-- Error Message -->
-    @error('course_content')
-        <div class="text-danger">{{ $message }}</div>
-    @enderror
+    </div>
 </div>
-
-
-<div class="form-group">
-        <label for="duration">Duration (in months)</label>
-        <input type="number" class="form-control" name="duration" id="duration" 
-               value="{{ old('duration', $course->duration) }}" min="1">
-        @error('duration')
-            <div class="text-danger">{{ $message }}</div>
-        @enderror
-    </div>
-
-    <div class="form-group">
-        <label for="total_fees">Total Fees</label>
-        <input type="number" class="form-control" name="total_fees" id="total_fees" 
-               value="{{ old('total_fees', $course->total_fees) }}" min="0">
-        @error('total_fees')
-            <div class="text-danger">{{ $message }}</div>
-        @enderror
-    </div>
-
-    <div class="form-group">
-        <label for="installments">Installments</label>
-        <input type="number" class="form-control" name="installments" id="installments" 
-               value="{{ old('installments', $course->installments) }}" min="1">
-        @error('installments')
-            <div class="text-danger">{{ $message }}</div>
-        @enderror
-    </div>
-
-    <!-- Course URL Field -->
-        <div class="form-group">
-            <label for="course_url">Course URL (optional)</label>
-            <input type="text" class="form-control" name="course_url" id="course_url" value="{{ old('course_url', $course->course_url) }}">
-        </div>
-
-        <button type="submit" class="btn btn-primary">Update Course</button>
-    </form>
-</div>
-
-@push('scripts')
-<!-- Quill Library Scripts -->
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-
-<script>
-   // Initialize Quill editor
-var quill = new Quill('#quill_editor', {
-    theme: 'snow',
-    placeholder: 'Edit course content...',
-    modules: {
-        toolbar: [
-            [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            ['bold', 'italic', 'underline'],
-            ['link', 'image', 'video'],
-            [{ 'align': [] }]
-        ]
-    }
-});
-
-// Event listener to update hidden textarea
-quill.on('text-change', function() {
-    // Update hidden textarea with the HTML content of the editor
-    document.querySelector('#course_content').value = quill.root.innerHTML;
-});
-
-// Ensure textarea content is updated on form submit
-document.querySelector('form').onsubmit = function() {
-    document.querySelector('#course_content').value = quill.root.innerHTML;
-};
-
-</script>
-@endpush
 @endsection
+@push('css')
+    {{-- Quill Editor Styles --}}
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+@endpush
+
+@push('js')
+    {{-- Quill Editor --}}
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
+    <script>
+        var quill = new Quill('#quill_editor', {
+            theme: 'snow',
+            placeholder: 'Edit course content...',
+            modules: {
+                toolbar: [
+                    [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    ['bold', 'italic', 'underline'],
+                    ['link', 'image', 'video'],
+                    [{ 'align': [] }]
+                ]
+            }
+        });
+        
+        quill.on('text-change', function() {
+            document.querySelector('#course_content').value = quill.root.innerHTML;
+        });
+        
+        document.querySelector('form').onsubmit = function() {
+            document.querySelector('#course_content').value = quill.root.innerHTML;
+        };
+    </script>
+@endpush

@@ -1,128 +1,86 @@
-@extends('dashboard.app')
+@extends('adminlte::page')
+
 @section('title', 'Add Course')
+
 @section('content')
-<div class="container">
-<div class="row justify-content-center">
-        <br>
-        <div class="col-md-12">
-<h1>Add Course</h1>
-            <br>
-            <form method="POST" action="{{ route('course.store') }}" enctype="multipart/form-data" id="courseForm">
-                @csrf
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <x-adminlte-card title="Add Course" theme="primary" icon="fas fa-book">
+                <form method="POST" action="{{ route('course.store') }}" enctype="multipart/form-data" id="courseForm">
+                    @csrf
 
-                <div class="mb-3">
-                    <label for="course_title" class="form-label">Course Title:</label>
-                    <input type="text" class="form-control" id="course_title" name="course_title" value="{{ old('course_title') }}">
-                    @error('course_title')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label for="course_name" class="form-label">Course Name:</label>
-                    <input type="text" class="form-control" id="course_name" name="course_name" value="{{ old('course_name') }}">
-                    @error('course_name')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
+                    <x-adminlte-input name="course_title" label="Course Title" placeholder="Enter course title"
+                        value="{{ old('course_title') }}" required />
 
-                <div class="mb-3">
-                    <label for="course_desc" class="form-label">Description:</label>
-                    <textarea class="form-control" id="course_desc" name="course_desc">{{ old('course_desc') }}</textarea>
-                    @error('course_desc')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
+                    <x-adminlte-input name="course_name" label="Course Name" placeholder="Enter course name"
+                        value="{{ old('course_name') }}" required />
 
-                <div class="mb-3">
-                    <label for="course_content" class="form-label">Course Content:</label>
-                    <div id="quill-editor"></div>
-                    <input type="hidden" id="course_content" name="course_content">
-                    @error('course_content')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
+                    <x-adminlte-textarea name="course_desc" label="Description" placeholder="Enter course description">
+                        {{ old('course_desc') }}
+                    </x-adminlte-textarea>
 
-                <div class="mb-3">
-                    <label for="course_image" class="form-label">Course Image:</label>
-                    <input type="file" class="form-control" id="course_image" name="course_image">
-                    @error('course_image')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
+                    <div class="mb-3">
+                        <label for="course_content" class="form-label">Course Content:</label>
+                        <div id="quill-editor" class="border p-2" style="min-height: 200px;"></div>
+                        <input type="hidden" id="course_content" name="course_content">
+                    </div>
 
-                <div class="mb-3">
-                    <label for="course_url" class="form-label">Course URL (Optional):</label>
-                    <input type="text" class="form-control" id="course_url" name="course_url" value="{{ old('course_url') }}">
-                    @error('course_url')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
+                    <x-adminlte-input-file name="course_image" label="Course Image" />
 
-               <div class="mb-3">
-                   <label for="duration" class="form-label">Duration (in months)</label>
-                  <input type="number" name="duration" id="duration" class="form-control" placeholder="e.g., 6" min="1"> 
-                  @error('duration') <!-- This should match the field name -->
-                 <div class="text-danger">{{ $message }}</div>
-                  @enderror
-               </div>
+                    <x-adminlte-input name="course_url" label="Course URL (Optional)" placeholder="Enter course URL"
+                        value="{{ old('course_url') }}" />
 
-               <div class="mb-3">
-                   <label for="total_fees" class="form-label">Total Fees</label>
-                   <input type="number" name="total_fees" id="total_fees" class="form-control" placeholder="e.g., 5000">
-                   @error('total_fees') <!-- This should match the field name -->
-                       <div class="text-danger">{{ $message }}</div>
-                   @enderror
-               </div>
+                    <x-adminlte-input name="duration" type="number" label="Duration (in months)"
+                        placeholder="e.g., 6" min="1" />
 
-              <div class="mb-3">
-                  <label for="installments" class="form-label">Installments</label>
-                  <input type="number" name="installments" id="installments" class="form-control" placeholder="e.g., 3">
-                  @error('installments') <!-- This should match the field name -->
-                   <div class="text-danger">{{ $message }}</div>
-                  @enderror
-              </div>
+                    <x-adminlte-input name="total_fees" type="number" label="Total Fees" placeholder="e.g., 5000" />
 
+                    <x-adminlte-input name="installments" type="number" label="Installments" placeholder="e.g., 3" />
 
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-            <br>
+                    <x-adminlte-button type="submit" label="Submit" theme="success" icon="fas fa-save" />
+                </form>
+            </x-adminlte-card>
         </div>
     </div>
 </div>
-@push('scripts')
+
+@push('css')
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+@endpush
+
+@push('js')
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-    
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
-<script>
-    var quillContent = new Quill('#quill-editor', {
-        theme: 'snow',
-        placeholder: 'Write the course content...',
-        modules: {
-            toolbar: [
-                [{ 'header': '1'}, { 'header': '2' }, { 'font': [] }],
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                ['bold', 'italic', 'underline'],
-                ['link'],
-                [{ 'align': [] }],
-                ['image', 'video']
-            ]
-        }
-    });
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
+    <script>
+        var quillContent = new Quill('#quill-editor', {
+            theme: 'snow',
+            placeholder: 'Write the course content...',
+            modules: {
+                toolbar: [
+                    [{ 'header': '1'}, { 'header': '2' }, { 'font': [] }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['bold', 'italic', 'underline'],
+                    ['link'],
+                    [{ 'align': [] }],
+                    ['image', 'video']
+                ]
+            }
+        });
 
-    document.getElementById('courseForm').onsubmit = function(event) {
-        const content = quillContent.root.innerHTML.trim();
-        if (content === '<p><br></p>' || content === '') {
-            alert('Please write some content before submitting.');
-            event.preventDefault();
-            return false;
-        }
+        document.getElementById('courseForm').onsubmit = function(event) {
+            const content = quillContent.root.innerHTML.trim();
+            if (content === '<p><br></p>' || content === '') {
+                alert('Please write some content before submitting.');
+                event.preventDefault();
+                return false;
+            }
 
-        // Sanitize and update hidden input
-        const sanitizedContent = DOMPurify.sanitize(content);
-        document.getElementById('course_content').value = sanitizedContent;
-    };
-</script>
+            // Sanitize and update hidden input
+            const sanitizedContent = DOMPurify.sanitize(content);
+            document.getElementById('course_content').value = sanitizedContent;
+        };
+    </script>
 @endpush
 
 @endsection

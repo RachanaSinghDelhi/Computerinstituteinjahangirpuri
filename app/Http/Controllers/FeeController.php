@@ -270,6 +270,7 @@ public function updateTotalFees(Request $request, $student_id)
         $fee->amount_paid = $request->amount_paid;
         $fee->payment_date = $request->payment_date;
         $fee->due_date = $request->due_date;
+        $fee->balances = $request->balance;
         $fee->receipt_number = $request->receipt_number;
         $fee->receipt_image = $request->receipt_number . '.jpg'; // Default image name
         $fee->installment_no = $installmentNo;
@@ -344,6 +345,7 @@ public function update(Request $request, Fee $fee)
     $validated = $request->validate([
         'installment_no' => 'required|integer|min:1',
         'amount_paid' => 'required|numeric|min:0',
+        'balance' => 'required|numeric|min:0',
         'payment_date' => 'required|date',
         'receipt_number' => 'required|string|max:50|unique:fees,receipt_number,' . $fee->id,
         'status' => 'required|in:Paid,Unpaid',

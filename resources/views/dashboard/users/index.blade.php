@@ -1,4 +1,4 @@
-@extends('dashboard.app')
+@extends('adminlte::page')
 
 @section('content')
 <h2>Users List</h2>
@@ -8,6 +8,10 @@
 @endif
 
 <div class="container mt-4">
+<div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Users List </h3>
+            <div class="card-body">
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -37,5 +41,5 @@
         </tbody>
     </table>
 </div>
-
+</div></div>
 @endsection

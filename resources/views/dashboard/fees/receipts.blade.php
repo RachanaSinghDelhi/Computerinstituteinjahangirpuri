@@ -1,5 +1,6 @@
-@extends('dashboard.app')
+@extends('adminlte::page')
 
+@section('title', 'Receipts')
 @section('content')
 
     <div class="container mt-5">

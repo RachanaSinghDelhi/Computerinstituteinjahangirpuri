@@ -1,4 +1,4 @@
-@extends('dashboard.app')
+@extends('adminlte::page')
 
 @section('content')
 <h2>Edit User</h2>
@@ -8,6 +8,11 @@
 @endif
 
 <div class="container mt-4">
+<div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Edit Users </h3>
+            <div class="card-body">
+
     <form action="{{ route('users.update', $user->id) }}" method="POST">
         @csrf
        
@@ -34,5 +39,6 @@
         <button type="submit" class="btn btn-primary">Update User</button>
     </form>
 </div>
-
+</div>
+</div>
 @endsection
