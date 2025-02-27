@@ -4,219 +4,291 @@
 <div class="container container-fluid mt-4">
     <h2 class="mb-4">Student List</h2>
 
-    <!-- Success/Error Messages -->
+    <!-- Success and Error Messages -->
     @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
     @elseif(session('error'))
-        <div class="alert alert-danger">{{ session('error') }}</div>
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
     @endif
 
-    <div class="row mt-4">
-    <!-- Bulk Action Section -->
-    <div class="col-md-8">
-        <div class="d-flex align-items-center flex-wrap">
-            <input type="checkbox" id="selectAll" onclick="toggleSelectAll()" class="me-2">
-            <label for="selectAll" class="me-3">Select All</label>
-            <select id="bulkActionDropdown" class="form-select form-select-sm me-2" style="width: 150px;">
-                <option value="">Choose Action</option>
-                <option value="Active">Set as Active</option>
-                <option value="Inactive">Set as Inactive</option>
-                <option value="Completed">Set as Completed</option>
-                <option value="Left">Set as Left</option>
-            </select>
-            <button type="button" class="btn btn-primary btn-sm" id="bulkActionApply">Apply</button>
+    <!-- Import Students via Excel -->
+    <h2>Import Students via Excel</h2>
+    <form action="{{ route('students.import') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div class="form-group">
+            <label for="file">Upload Excel File</label>
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <input type="file" name="file" class="form-control" required>
         </div>
+        <button type="submit" class="btn btn-success mt-2">Import</button>
+    </form>
+<br>
+<!-- Table, Search, and Buttons in One Row -->
+<div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Student List</h3>
+        </div>
+
+        
+        <div class="card-body">
+            
+<div class="row mt-4 align-items-center">
+    <div class="col-auto">
+        <!-- Bulk Action Section -->
+        <input type="checkbox" id="selectAll" onclick="toggleSelectAll()" class="me-2">
+        <label for="selectAll" class="me-3">Select All</label>
+        <select id="bulkActionDropdown" class="form-select form-select-sm me-2" style="width: 150px;">
+            <option value="">Choose Action</option>
+            <option value="Active">Set as Active</option>
+            <option value="Inactive">Set as Inactive</option>
+            <option value="Completed">Set as Completed</option>
+            <option value="Left">Set as Left</option>
+            <option value="Delete">Delete Selected</option>
+        </select>
+        <button type="button" class="btn btn-primary btn-sm" id="bulkActionApply">Apply</button>
     </div>
-    
-    <!-- Add New Student Button -->
-    <div class="col-md-4 text-md-end mt-2 mt-md-0">
-        <a href="{{ route('admin.students.add') }}" class="btn btn-primary">Add New Student</a>
+
+    <div class="col-auto">
+        <!-- Search Box -->
+        <input type="text" id="searchBox" class="form-control" placeholder="Search by Student ID or Name">
+    </div>
+
+    <div class="col-auto">
+        <!-- Add Student Button -->
+        <a href="{{ route('admin.students.add') }}" class="btn btn-sm btn-success">Add Student</a>
+    </div>
+
+    <div class="col-auto">
+        <!-- Fees List Button -->
+        <a href="{{ route('admin.fees.index') }}" class="btn btn-sm btn-primary">Fees List</a>
     </div>
 </div>
 
-    <!-- DataTable -->
+
+    <!-- Responsive Table -->
     <div class="table-responsive">
-        <table class="table table-bordered table-striped" id="studentTable" style="width:100%">
+        <table class="table table-bordered table-striped" id="studentTable">
             <thead>
                 <tr>
-                    <th><input type="checkbox" id="selectAll"></th>
+                    <th>Select</th>
+                    <th>ID</th>
                     <th>Student ID</th>
                     <th>Name</th>
-                    <th>Father's Name</th>
-                    <th>Admission Date</th>
+                    <th class="d-none d-md-table-cell">Father's Name</th>
+                    <th class="d-none d-md-table-cell">Date of Admission</th>
                     <th>Course</th>
-                    <th>Batch</th>
+                    <th class="d-none d-md-table-cell">Batch</th>
                     <th>Photo</th>
-                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($students as $student)
-                <tr>
-                    <td><input type="checkbox" class="student-checkbox" value="{{ $student->student_id }}"></td>
-                    <td>{{ $student->student_id }}</td>
-                    <td>{{ $student->name }}</td>
-                    <td>{{ $student->father_name }}</td>
-                    <td>{{ \Carbon\Carbon::parse($student->doa)->format('d-m-Y') }}</td>
-                    <td>{{ $student->course->course_title ?? 'N/A' }}</td>
-                    <td>{{ $student->batch }}</td>
-                    <td>
-                        @if($student->photo)
-                        <img src="{{ asset('storage/students/' . $student->photo) }}" width="50" alt="Student Photo">
-                        @else
-                        No Photo
-                        @endif
-                    </td>
-                    <td>
-                        <select class="form-control status-select" data-id="{{ $student->student_id }}" >
-                        <option value="Active" {{ strtoupper(trim($student->status)) === 'ACTIVE' ? 'selected' : '' }}>Active</option>
+            @foreach($students as $student)
+    <tr>
+        <td>
+            <input type="checkbox" name="student_ids[]" value="{{ $student->student_id }}" class="student-checkbox">
+        </td>
+        <td>{{ $student->id }}</td>
+        <td>{{ $student->student_id }}</td>
+        <td>{{ $student->name }}</td>
+        <td class="d-none d-md-table-cell">{{ $student->father_name }}</td>
+        <td class="d-none d-md-table-cell">{{ \Carbon\Carbon::parse($student->doa)->format('d-m-Y') }}</td>
+        <td>{{ $student->course->course_title ?? 'N/A' }}</td>
+        <td class="d-none d-md-table-cell">{{ $student->batch }}</td>
+        <td>
+            @if($student->photo)
+                <img src="{{ asset('storage/students/' . $student->photo) }}" alt="Student Photo" width="50">
+            @else
+                No Photo
+            @endif
+        </td>
+        <td>
+            <select name="status" class="form-control form-control-sm student-status" data-student-id="{{ $student->student_id }}">
+                <option value="Active" {{ strtoupper(trim($student->status)) === 'ACTIVE' ? 'selected' : '' }}>Active</option>
                 <option value="Inactive" {{ strtoupper(trim($student->status)) === 'INACTIVE' ? 'selected' : '' }}>Inactive</option>
                 <option value="Left" {{ strtoupper(trim($student->status)) === 'LEFT' ? 'selected' : '' }}>Left</option>
                 <option value="Completed" {{ strtoupper(trim($student->status)) === 'COMPLETED' ? 'selected' : '' }}>Completed</option>
-                        </select>
-                    </td>
-                    <td>
-                        <a href="{{ route('admin.students.edit', $student->student_id) }}" class="btn btn-sm btn-warning">Edit</a>
-                     
-                    </td>
-                </tr>
-                @endforeach
+            </select>
+            <a href="{{ route('admin.students.edit', $student->student_id) }}" class="btn btn-primary btn-sm">Edit</a>
+          
+        </td>
+    </tr>
+@endforeach
             </tbody>
+        
         </table>
     </div>
+    <div class="card-footer clearfix">
+    <!--<ul class="pagination pagination-sm m-0 float-right">
+   
+    {{ $students->links('pagination::bootstrap-4') }}
+
+    </ul>-->
+</div>
+</div>
+
+</div>
+
 </div>
 @endsection
 
-@push('scripts')
-<!-- DataTables Dependencies -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap5.min.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.bootstrap5.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
+@push('css')
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+@endpush
+
+@push('js')
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
 <script>
-$(document).ready(function() {
-    // Initialize DataTable
-    var table = $('#studentTable').DataTable({
-        dom: 'Bfrtip',
-        buttons: [
-            {
-                extend: 'excelHtml5',
-                text: 'Export Excel',
-                className: 'btn btn-success',
-                exportOptions: {
-                    columns: [1,2,3,4,5,6,8] // Export all columns except checkbox and actions
-                }
-            },
-            {
-                extend: 'csvHtml5',
-                text: 'Export SQL',
-                className: 'btn btn-info',
-                filename: 'students_sql_export',
-                exportOptions: {
-                    columns: [1,2,3,4,5,6,8],
-                    format: {
-                        body: function(data, row, column, node) {
-                            // Format data for SQL import
-                            return "'" + data.replace(/'/g, "''") + "'";
-                        }
-                    }
-                }
-            }
-        ],
-        columnDefs: [{
-            orderable: false,
-            targets: [0, 7, 9] // Make checkbox, photo, and actions columns non-orderable
-        }],
-        order: [[1, 'desc']] // Default sorting by Student ID
+    function toggleSelectAll() {
+        const masterCheckbox = document.getElementById('selectAll');
+        const checkboxes = document.querySelectorAll('.student-checkbox');
+        checkboxes.forEach(checkbox => checkbox.checked = masterCheckbox.checked);
+    }
+
+
+
+    $(document).ready(function() {
+    let checkedRows = {}; // Store checkbox states
+
+    let table = $('#studentTable').DataTable({
+        "order": [[1, "desc"]], // Default sorting by ID column
+        "pageLength": 30, // Show 30 rows per page
+        "columnDefs": [
+            { "orderable": false, "targets": [0, 6, 7] } // Disable sorting for checkboxes, dropdowns, and actions
+        ]
     });
 
-    // Select/Deselect All
-    $('#selectAll').on('click', function() {
-        $('.student-checkbox').prop('checked', this.checked);
+    // ✅ Select All Checkbox Functionality
+    $('#select_all').on('click', function() {
+        $('.student-checkbox').prop('checked', this.checked).trigger('change');
     });
 
-    // Bulk Status Update
-    $('#bulkActionApply').on('click', function() {
-        const selectedIds = [];
-        $('.student-checkbox:checked').each(function() {
-            selectedIds.push($(this).val());
+    // ✅ Preserve Checkboxes After Sorting & Pagination
+    $('#studentTable tbody').on('change', '.student-checkbox', function() {
+        let rowId = $(this).val();
+        checkedRows[rowId] = $(this).prop('checked');
+    });
+
+    table.on('draw', function() {
+        $('.student-checkbox').each(function() {
+            let rowId = $(this).val();
+            $(this).prop('checked', checkedRows[rowId] || false);
+        });
+    });
+
+    // ✅ Initialize Multi-Select
+    $('.select-options').select2({
+        placeholder: "Select options",
+        allowClear: true
+    });
+
+    // ✅ Handle Delete Button
+    $(document).on('click', '.delete-student', function() {
+        let studentId = $(this).data('id');
+        if (confirm("Are you sure you want to delete this student?")) {
+            // Perform AJAX delete request
+            $.ajax({
+                url: `/students/${studentId}`,
+                type: "DELETE",
+                data: { _token: "{{ csrf_token() }}" },
+                success: function(response) {
+                    alert(response.message);
+                    table.ajax.reload();
+                }
+            });
+        }
+    });
+});
+
+    $(document).ready(function () {
+        // Update status for a single student
+        $(document).on('change', '.student-status', function () {
+            const studentId = $(this).data('student-id');
+            const status = $(this).val();
+            $.ajax({
+                url: '{{ url("admin/students/update-status") }}/' + studentId, // Pass studentId in the URL
+                type: 'PATCH',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: studentId,
+                    status: status
+                },
+                success: function (response) {
+                    alert('Status updated successfully');
+                },
+                error: function (xhr) {
+                    alert('Error: ' + xhr.responseJSON.message);
+                }
+            });
         });
 
-        if (selectedIds.length === 0) {
-            alert('Please select at least one student');
-            return;
-        }
+      
+        $('#bulkActionApply').on('click', function () {
+    const selectedIds = [];
+    $('.student-checkbox:checked').each(function () {
+        selectedIds.push($(this).val());
+    });
 
-        const action = $('#bulkActionDropdown').val();
-        if (!action) {
-            alert('Please select an action');
-            return;
-        }
+    console.log('Selected IDs:', selectedIds); // Debugging
 
-        if (confirm(`Are you sure you want to set the status to "${action}" for the selected students?`)) {
+    if (selectedIds.length === 0) {
+        alert('No students selected');
+        return;
+    }
+
+    const action = $('#bulkActionDropdown').val();
+    console.log('Selected Action:', action); // Debugging
+
+    if (!action) {
+        alert('Please select an action');
+        return;
+    }
+
+    else {
+        if (confirm(`Are you sure you want to set status to "${action}" for selected students?`)) {
             $.ajax({
-                url: '{{ route("admin.students.bulkUpdateStatus") }}',
-                method: 'PATCH',
+                url: '{{ route('admin.students.bulkUpdateStatus') }}',
+                type: 'PATCH',
                 data: {
                     _token: '{{ csrf_token() }}',
                     ids: selectedIds,
                     status: action
                 },
-                success: function(response) {
-                    alert(response.message);
+                success: function (response) {
+                    alert('Status updated successfully for selected students');
                     location.reload();
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     alert('Error: ' + xhr.responseJSON.message);
                 }
             });
         }
-    });
+    }
+});
 
-    // Individual Delete
-    $(document).on('click', '.delete-btn', function() {
-        var studentId = $(this).data('id');
-        if(confirm('Are you sure you want to delete this student?')) {
-            $.ajax({
-                url: '/students/' + studentId,
-                type: 'DELETE',
-                data: {
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    location.reload();
-                }
-            });
-        }
-    });
-
-    // Individual Status Update
-    $(document).on('change', '.status-select', function() {
-        var studentId = $(this).data('id');
-        var newStatus = $(this).val();
-        
+        // Handle search input
+        $("#searchBox").on("keyup", function () {
+        let query = $(this).val();
         $.ajax({
-            url: '/students/update-status/' + studentId,
-            type: 'PATCH',
-            data: {
-                _token: '{{ csrf_token() }}',
-                status: newStatus
-            },
-            success: function(response) {
-                alert('Status updated successfully');
+            url: "{{ route('admin.students.search') }}", // Ensure this route exists in your web.php
+            method: "GET",
+            data: { query: query },
+            success: function (data) {
+                $("tbody").html(data); // Replace table body with filtered results
             }
         });
     });
-});
+
+    });
 </script>
 @endpush

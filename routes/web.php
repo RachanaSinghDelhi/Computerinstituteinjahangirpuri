@@ -183,12 +183,14 @@ Route::middleware(['auth', 'role:admin'])->get('/admin', function () {
 // Admin Routes
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::patch('/admin/students/bulk-update-status', [AdminController::class, 'bulkUpdateStatus'])
+    Route::patch('/admin/students/bulk-update-status', [AdminStudentController::class, 'bulkUpdateStatus'])
     ->name('admin.students.bulkUpdateStatus');
 
     // Individual status update
-Route::patch('/students/update-status/{student}', [AdminController::class, 'updateStatus'])
-->name('students.updateStatus');
+Route::patch('admin/students/update-status/{student}', [AdminStudentController::class, 'updateStatus'])
+->name('admin.students.updateStatus');
+
+Route::get('admin/students/search', [AdminStudentController::class, 'search'])->name('admin.students.search');
   // Add Student Routes
   Route::get('/admin/students/add', [AdminStudentController::class, 'create'])
   ->name('admin.students.add');

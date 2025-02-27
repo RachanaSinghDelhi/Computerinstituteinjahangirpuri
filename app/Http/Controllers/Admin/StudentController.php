@@ -1,92 +1,86 @@
 <?php
-namespace App\Http\Controllers\Admin;
 
-use Illuminate\Support\Facades\Storage; // Correct placement
+namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Course;
 use PDF;
+use Illuminate\Support\Facades\Storage;
 use App\Imports\StudentsImport;
 use App\Exports\StudentsExport;
 use Maatwebsite\Excel\Facades\Excel;
-
 class StudentController extends Controller
 {
+    // Show the Add Student Form
+    public function create()
+    {
+        $courses = Course::all();
+        return view('admin.students.add_student'); // Ensure the Blade file is named add_student.blade.php
+    }
 
-
-    // Display Paginated Students
+    public function store(Request $request)
+    {
+        $request->validate([
+            'student_id' => 'required|unique:students,student_id',
+            'name' => 'required|string|max:255',
+            'course' => 'required|exists:courses,id',
+        ]);
+    
+        // Handle optional fields
+        $fatherName = $request->father_name ?? null;
+        $doa = $request->doa ?? null;
+        $batch = $request->batch ?? null;
+        $contactNumber = $request->contact_number ?? null;
+    
+        // Handle image upload
+        if ($request->filled('cropped_photo')) {
+            // Decode base64 image
+            $croppedImage = $request->input('cropped_photo');
+            $imageData = substr($croppedImage, strpos($croppedImage, ',') + 1);
+            $imageData = base64_decode($imageData);
+    
+            // Define the filename and path
+            $fileName = $request->student_id . '.jpg';
+            $filePath = 'students/' . $fileName;
+    
+            // Store the image in storage/students/
+            Storage::disk('public')->put($filePath, $imageData);
+        } else {
+            // Use default image if no image is uploaded
+            $fileName = 'default_image.jpg';
+            $filePath = 'assets/' . $fileName;
+        }
+    
+        // Save student data
+        Student::create([
+            'student_id' => $request->student_id,
+            'name' => $request->name,
+            'father_name' => $fatherName,
+            'doa' => $doa,
+            'course_id' => $request->course,
+            'batch' => $batch,
+            'photo' => $fileName, // Ensure photo is saved
+            'contact_number' => $contactNumber,
+        ]);
+    
+        return redirect()->route('admin.students.index')->with('success', 'Student added successfully.');
+    }
+    
+    
+// Display Paginated Students
 public function index()
 {
      // Fetch all students with their related courses
-     $students = Student::all(); // Order by `id` in descending order
-    
+     $students = Student::with('course')
+     ->orderBy('student_id', 'desc') // Order by `id` in descending order
+     ->paginate(5);// Eager load 'course' relationship
     $courses = Course::all();
     // Pass the students to the view
     return view('admin.students.index', compact('students','courses'));
 }
 
-    /**
-     * Display the add_students form.
-     */
-    public function create()
-    {
-        $courses = Course::all();
-        return view('admin.students.add_student');
-    }
-
-
-
-public function store(Request $request)
-{
-    $request->validate([
-        'student_id' => 'required|unique:students,student_id',
-        'name' => 'required|string|max:255',
-        'course' => 'required|exists:courses,id',
-    ]);
-
-    // Handle optional fields
-    $fatherName = $request->father_name ?? null;
-    $doa = $request->doa ?? null;
-    $batch = $request->batch ?? null;
-    $contactNumber = $request->contact_number ?? null;
-
-    // Handle image upload
-    if ($request->filled('cropped_photo')) {
-        // Decode base64 image
-        $croppedImage = $request->input('cropped_photo');
-        $imageData = substr($croppedImage, strpos($croppedImage, ',') + 1);
-        $imageData = base64_decode($imageData);
-
-        // Define the filename and path
-        $fileName = $request->student_id . '.jpg';
-        $filePath = 'students/' . $fileName;
-
-        // Store the image in storage/students/
-        Storage::disk('public')->put($filePath, $imageData);
-    } else {
-        // Use default image if no image is uploaded
-        $fileName = 'default_image.jpg';
-        $filePath = 'assets/' . $fileName;
-    }
-
-    // Save student data
-    Student::create([
-        'student_id' => $request->student_id,
-        'name' => $request->name,
-        'father_name' => $fatherName,
-        'doa' => $doa,
-        'course_id' => $request->course,
-        'batch' => $batch,
-        'photo' => $fileName, // Ensure photo is saved
-        'contact_number' => $contactNumber,
-    ]);
-
-    return redirect()->route('admin.students.index')->with('success', 'Student added successfully.');
-}
-
-
-    // Show the form for editing the specified student.
+// Show the form for editing the specified student.
 public function edit($id)
 {
     // Find the student by their ID
@@ -158,7 +152,12 @@ public function update(Request $request, $id)
 }
 
 
-public function showIdCards()
+
+
+
+
+
+ public function showIdCards()
     {
         // Fetch all students
         $students = Student::with('course')->orderBy('id', 'desc')->paginate(50);
@@ -167,7 +166,7 @@ public function showIdCards()
         return view('admin.id-cards.id-cards', compact('students'));
     }
 
-   
+  
 
 
     public function downloadIdCard($id)
@@ -220,7 +219,136 @@ public function downloadSelectedIdCards(Request $request)
     return $pdf->download($filename);
 }
 
+public function import(Request $request)
+{
+    // Validate the uploaded file
+    $request->validate([
+        'file' => 'required|mimes:xlsx,xls,csv'
+    ]);
+   
+    // Log the file name being uploaded for debugging
+    \Log::info('File uploaded: ' . $request->file('file')->getClientOriginalName());
 
+    try {
+        // Import the Excel file
+        Excel::import(new StudentsImport, $request->file('file'));
+     
+        // Log the number of records in the database after import
+        $studentCount = \App\Models\Student::count();
+        \Log::info('Number of students in the database after import: ' . $studentCount);
 
-
+        return redirect()->route('admin.students.index')->with('success', 'Students Imported Successfully!');
+    } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+        // Specific validation exception from Maatwebsite\Excel
+        $failures = $e->failures();
+        foreach ($failures as $failure) {
+            \Log::error("Row {$failure->row()} failed: " . json_encode($failure->values()));
+        }
+        return back()->with('error', 'Some rows failed validation. Check logs for details.');
+    } catch (\Illuminate\Database\QueryException $e) {
+        // Database query exception
+        \Log::error('Database error: ' . $e->getMessage());
+        return back()->with('error', 'Database error occurred during import: ' . $e->getMessage());
+    } catch (\Exception $e) {
+        // General exception
+        \Log::error('Import failed: ' . $e->getMessage());
+        return back()->with('error', 'An error occurred during the import: ' . $e->getMessage());
     }
+}
+
+
+
+public function updateStatus(Request $request)
+{
+    $student = Student::find($request->id);
+    if (!$student) {
+        return response()->json(['message' => 'Student not found'], 404);
+    }
+    $student->status = $request->status;
+    $student->save();
+
+    return response()->json(['message' => 'Status updated successfully']);
+}
+
+public function destroy(Request $request)
+{
+    $student = Student::find($request->id);
+    if (!$student) {
+        return response()->json(['message' => 'Student not found'], 404);
+    }
+    $student->delete();
+
+    return response()->json(['message' => 'Student deleted successfully']);
+}
+
+public function deleteMultiple(Request $request)
+{
+    Student::whereIn('student_id', $request->ids)->delete();
+
+    return response()->json(['message' => 'Selected students deleted successfully']);
+}
+
+
+public function bulkUpdateStatus(Request $request)
+{
+    $ids = $request->input('ids');
+    $status = $request->input('status');
+
+    if (!$ids || !$status) {
+        return response()->json(['message' => 'Invalid data'], 400);
+    }
+
+    Student::whereIn('student_id', $ids)->update(['status' => $status]);
+
+    return response()->json(['message' => 'Status updated successfully']);
+}
+
+// app/Http/Controllers/StudentController.php
+public function search(Request $request)
+{
+    $query = $request->input('query');
+
+    $students = Student::select('id', 'student_id', 'name', 'father_name', 'doa', 'course_id', 'batch', 'photo', 'status')
+        ->where('name', 'LIKE', "%{$query}%")
+        ->orWhere('student_id', 'LIKE', "%{$query}%")
+        ->paginate(10);
+
+    return view('admin.students.student_search', compact('students'))->render();
+  
+}
+
+
+ // Export Excel
+ public function exportExcel(Request $request)
+{
+    // Fetch students and export them to Excel
+   
+
+    // Return the Excel file as a response
+    return Excel::download(new StudentsExport, 'students.xlsx');
+}
+
+ public function exportSQL()
+    {
+        $students = Student::all([
+            'student_id', 'name', 'father_name', 'doa', 'batch', 
+            'photo', 'created_at', 'updated_at', 'course_id', 'contact_number', 'status'
+        ]);
+
+        $sql = "INSERT INTO students (student_id, name, father_name, doa, batch, photo, created_at, updated_at, course_id, contact_number, status) VALUES\n";
+        
+        foreach ($students as $student) {
+            $sql .= "('{$student->student_id}', '{$student->name}', '{$student->father_name}', '{$student->doa}', '{$student->batch}', 
+                    '{$student->photo}', '{$student->created_at}', '{$student->updated_at}', '{$student->course_id}', 
+                    '{$student->contact_number}', '{$student->status}'),\n";
+        }
+
+        // Remove the last comma and append semicolon
+        $sql = rtrim($sql, ",\n") . ";";
+
+        return response($sql, 200)
+            ->header('Content-Type', 'application/sql')
+            ->header('Content-Disposition', 'attachment; filename="students.sql"');
+    }
+
+}

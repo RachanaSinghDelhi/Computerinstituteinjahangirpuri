@@ -20,12 +20,21 @@
             </ul>
         </div>
     @endif
-    <div>
-        <a href="{{ route('admin.students.index') }}">
-            <button class="btn btn-sm btn-success">Student List</button>
+    <!-- Add Course Button -->
+    <div class="mb-3">
+        <a href="{{ route('admin.students.index') }}" class="btn btn-success btn-sm">
+            <i class="fas fa-plus"></i> Student List
         </a>
     </div>
     <!-- Student Form -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Post List</h3>
+        </div>
+
+        
+        <div class="card-body">
+            
     <form action="{{ route('admin.students.store') }}" method="POST" enctype="multipart/form-data" id="studentForm">
         @csrf
 
@@ -111,9 +120,11 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
+                        </div>
+                        </div>
 @endsection
 
-@push('scripts')
+@push('js')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 
@@ -139,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (cropper) cropper.destroy();
 
             cropper = new Cropper(image, {
-              
+                aspectRatio: 1,
                 viewMode: 2,
                 autoCropArea: 1
             });
