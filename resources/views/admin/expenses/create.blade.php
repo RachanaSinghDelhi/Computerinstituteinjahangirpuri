@@ -13,7 +13,7 @@
     </div>
 
     <div class="card-body">
-        <form action="{{ route('admin.expenses.store') }}" method="POST">
+        <form action="{{ route('expenses.store') }}" method="POST">
             @csrf
 
             <div class="form-group">

@@ -74,7 +74,7 @@ public function index()
      // Fetch all students with their related courses
      $students = Student::with('course')
      ->orderBy('student_id', 'desc') // Order by `id` in descending order
-     ->paginate(5);// Eager load 'course' relationship
+     ->get();// Eager load 'course' relationship
     $courses = Course::all();
     // Pass the students to the view
     return view('dashboard.students.display_students', compact('students','courses'));

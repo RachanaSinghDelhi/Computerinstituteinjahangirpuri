@@ -12,7 +12,7 @@
             <input type="email" wire:model="email" class="form-control" placeholder="Email" required>
             <div class="input-group-append">
                 <div class="input-group-text">
-                    <span class="fas fa-envelope"></span>
+                    <span class="fa fa-envelope"></span>
                 </div>
             </div>
         </div>
@@ -22,7 +22,7 @@
             <input type="password" wire:model="password" class="form-control" placeholder="Password" required>
             <div class="input-group-append">
                 <div class="input-group-text">
-                    <span class="fas fa-lock"></span>
+                    <span class="fa fa-lock"></span>
                 </div>
             </div>
         </div>

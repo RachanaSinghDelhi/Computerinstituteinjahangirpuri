@@ -1,7 +1,7 @@
 <?php
-namespace App\Http\Controllers\Admin; // Updated namespace
+namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Controller;
 
-use App\Http\Controllers\Controller; // Correct import for the base Controller class
 use Illuminate\Http\Request;
 use App\Models\Expense;
 
@@ -30,13 +30,13 @@ class ExpensesController extends Controller
 
         Expense::create($request->all());
 
-        return redirect()->route('admin.expenses.index')->with('success', 'Expense added successfully.');
+        return redirect()->route('expenses.index')->with('success', 'Expense added successfully.');
     }
 
     public function edit($id)
     {
         $expense = Expense::findOrFail($id);
-        return view('admin.expenses.edit', compact('expense'));
+        return view('dashboard.expenses.edit', compact('expense'));
     }
 
     public function update(Request $request, $id)

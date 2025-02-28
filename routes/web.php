@@ -261,7 +261,7 @@ Route::put('admin/fees/{fee}', [AdminFeeController::class, 'update'])->name('adm
 
 //expenses
 
-
+Route::resource('admin/expenses', AdminExpensesController::class);
   
   
 });
