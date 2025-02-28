@@ -73,8 +73,8 @@ public function index()
 {
      // Fetch all students with their related courses
      $students = Student::with('course')
-     ->orderBy('student_id', 'desc'); // Order by `id` in descending order
-     
+     ->orderBy('student_id', 'desc') // Order by `id` in descending order
+     ->get(); // Fetch all records instead of paginating
     $courses = Course::all();
     // Pass the students to the view
     return view('admin.students.index', compact('students','courses'));
