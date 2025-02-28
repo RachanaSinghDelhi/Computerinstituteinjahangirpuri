@@ -125,7 +125,7 @@
     <div class="card-footer clearfix">
     <!--<ul class="pagination pagination-sm m-0 float-right">
    
-    {{ $students->links('pagination::bootstrap-4') }}
+  
 
     </ul>-->
 </div>
