@@ -25,7 +25,7 @@ class IndexController extends Controller
                 'link' => '/courses/basic',
             ],
             [
-                'image' => 'assets/images/Sliders_image/banner_Niceweb2.gif',
+                'image' => 'assets/images/Sliders_image/medal_Nice_web.jpg',
                 'alt' => 'Annual Function at Nice Computer Institute in Jahangirpuri',
                 'title' => 'Advance Excel',
                 'description' => 'Advanced Excel institute in Jahangirpuri. Nice Computer is known for Excel developers who channel their skills into building applications and dashboards.',

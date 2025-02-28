@@ -14,7 +14,7 @@
 
         <!-- Logout Button -->
         <li class="nav-item">
-            <a class="nav-link text-danger" href="{{ route('admin.logout') }}">
+            <a class="nav-link text-danger" href="{{ route('livewire.logout') }}">
                 <i class="fas fa-sign-out-alt"></i> Logout
             </a>
            
