@@ -1,5 +1,4 @@
-@extends('adminlte::page')
-
+@extends('dashboard.layout.adminlte')
 @section('content')
 <h2>Users List</h2>
 

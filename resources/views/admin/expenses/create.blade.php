@@ -1,4 +1,4 @@
-@extends('dashboard.layout.adminlte')
+@extends('adminlte::page')
 
 @section('title', 'Add New Expense')
 
@@ -13,7 +13,7 @@
     </div>
 
     <div class="card-body">
-        <form action="{{ route('expenses.store') }}" method="POST">
+        <form action="{{ route('admin.expenses.store') }}" method="POST">
             @csrf
 
             <div class="form-group">

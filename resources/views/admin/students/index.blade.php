@@ -47,7 +47,7 @@
             <option value="Inactive">Set as Inactive</option>
             <option value="Completed">Set as Completed</option>
             <option value="Left">Set as Left</option>
-            <option value="Delete">Delete Selected</option>
+           
         </select>
         <button type="button" class="btn btn-primary btn-sm" id="bulkActionApply">Apply</button>
     </div>

@@ -1,4 +1,4 @@
-@extends('adminlte::page')
+@extends('dashboard.layout.adminlte')
 
 @section('title', 'Receipts')
 @section('content')

@@ -1,20 +1,21 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin; // Updated namespace
 
+use App\Http\Controllers\Controller; // Correct import for the base Controller class
 use Illuminate\Http\Request;
 use App\Models\Expense;
 
-class ExpenseController extends Controller
+class ExpensesController extends Controller
 {
     public function index()
     {
         $expenses = Expense::orderBy('expense_date', 'desc')->get();
-        return view('dashboard.expenses.index', compact('expenses'));
+        return view('admin.expenses.index', compact('expenses'));
     }
 
     public function create()
     {
-        return view('dashboard.expenses.create');
+        return view('admin.expenses.create');
     }
 
     public function store(Request $request)
@@ -29,13 +30,13 @@ class ExpenseController extends Controller
 
         Expense::create($request->all());
 
-        return redirect()->route('expenses.index')->with('success', 'Expense added successfully.');
+        return redirect()->route('admin.expenses.index')->with('success', 'Expense added successfully.');
     }
 
     public function edit($id)
     {
         $expense = Expense::findOrFail($id);
-        return view('dashboard.expenses.edit', compact('expense'));
+        return view('admin.expenses.edit', compact('expense'));
     }
 
     public function update(Request $request, $id)

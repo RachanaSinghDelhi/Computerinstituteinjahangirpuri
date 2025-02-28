@@ -27,6 +27,13 @@
         </a>
     </div>
 
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Post List</h3>
+        </div>
+
+        
+        <div class="card-body">
     <!-- Form for editing a student -->
     <form action="{{ route('admin.students.update', $student->student_id) }}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -137,9 +144,11 @@
         </div>
     </form>
 </div>
+                    </div>
+                    </div>
 @endsection
 
-@push('scripts')
+@push('js')
 <!-- Cropper.js -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>

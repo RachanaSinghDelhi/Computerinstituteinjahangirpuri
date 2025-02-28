@@ -1,4 +1,4 @@
-@extends('adminlte::page')
+@extends('dashboard.layout.adminlte')
 @section('title', 'Edit Student')
 @section('content')
 <div class="container mt-4">
@@ -26,7 +26,13 @@
             <button class="btn btn-sm btn-success">Students List</button>
         </a>
     </div>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Post List</h3>
+        </div>
 
+        
+        <div class="card-body">
     <!-- Form for editing a student -->
     <form action="{{ route('students.update', $student->student_id) }}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -137,6 +143,8 @@
         </div>
     </form>
 </div>
+                    </div>
+                    </div>
 @endsection
 
 @push('js')
