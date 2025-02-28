@@ -1,6 +1,7 @@
-@extends('adminlte::page')
+@extends('admin.layout.adminlte')
 
 @section('title', 'Admin Dashboard')
+
 
 @section('content_header')
     <h1>Dashboard Overview</h1>
@@ -8,6 +9,8 @@
 
 @section('content')
 <div class="container-fluid">
+
+<h1>Admin Dashboard</h1>
     @if(isset($overdueFees) && count($overdueFees) > 0)
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
         @foreach($overdueFees as $fee)

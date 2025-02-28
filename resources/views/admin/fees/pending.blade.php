@@ -1,5 +1,5 @@
-@extends('adminlte::page')
-
+@extends('admin.layout.adminlte')
+@section('title', 'Fees Pending')
 @section('content')
 <div class="container mt-4">
     <h2>Pending Fees</h2>

@@ -1,4 +1,4 @@
-@extends('adminlte::page')
+@extends('admin.layout.adminlte')
 @section('title', 'Student ID Cards')
 @section('content')
 

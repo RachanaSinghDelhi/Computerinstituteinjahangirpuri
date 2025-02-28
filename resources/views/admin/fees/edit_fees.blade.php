@@ -1,4 +1,4 @@
-@extends('adminlte::page')
+@extends('admin.layout.adminlte')
 @section('title', 'Edit Fees')
 @section('content')
 
