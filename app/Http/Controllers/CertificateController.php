@@ -104,13 +104,15 @@ public function downloadSelected(Request $request)
 
 public function downloadSingle($student_id)
 {
-    $certificates = Certificate::where('student_id', $student_id)->firstOrFail();
+    // Fetch the certificate data from the certificates table by student_id
+    $certificate = Certificate::where('student_id', $student_id)->firstOrFail();
 
-    $pdf = PDF::loadView('dashboard.certificates.view_certificates', compact('certificates'))
+    $pdf = Pdf::loadView('dashboard.certificates.single_certificate', compact('certificate'))
         ->setPaper([0, 0, 595.276, 841.890], 'portrait'); // A4 size in portrait mode
 
-    return $pdf->download("certificate_{$certificates->student_id}.pdf");
+    return $pdf->download("certificate_{$certificate->student_id}.pdf");
 }
+
 
 
     
@@ -127,11 +129,11 @@ public function downloadSingle($student_id)
         return view('dashboard.certificates.select_certificates', ['certificates' => $paginatedCertificates]);
     }
     
-    public function viewCertificate($id)
+    public function viewCertificate($student_id)
     {
-        $certificate = Certificate::with('course')->findOrFail($id);
+        $certificates = Certificate::with('course')->findOrFail($student_id);
 
-        return view('dashboard.certificates.view_certificates', ['certificates' => [$certificate]]);
+        return view('dashboard.certificates.view_certificates', ['certificates' => [$certificates]]);
     }
 
 

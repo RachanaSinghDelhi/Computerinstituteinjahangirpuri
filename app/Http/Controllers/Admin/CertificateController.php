@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
-
+ 
 use App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use App\Models\Certificate; // Make sure this is added
@@ -9,7 +9,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Log; // Import the Log facade
-use PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CertificateController extends Controller
 {
@@ -102,6 +102,17 @@ public function downloadSelected(Request $request)
 }
 
     
+
+public function downloadSingle($student_id)
+{
+    // Fetch the certificate data from the certificates table by student_id
+    $certificate = Certificate::where('student_id', $student_id)->firstOrFail();
+
+    $pdf = Pdf::loadView('dashboard.certificates.single_certificate', compact('certificate'))
+        ->setPaper([0, 0, 595.276, 841.890], 'portrait'); // A4 size in portrait mode
+
+    return $pdf->download("certificate_{$certificate->student_id}.pdf");
+}
     public function selectCertificates()
     {
         // Fetch paginated certificates from the certificates table

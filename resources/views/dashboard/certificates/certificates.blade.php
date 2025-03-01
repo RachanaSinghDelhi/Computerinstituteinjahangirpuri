@@ -44,11 +44,9 @@
         
             <td>{{ $certificate->grade }}</td>
             <td>
-    <form action="{{ route('certificates.downloadSingle', $certificate->student_id) }}" method="POST">
-        @csrf
-        <button type="submit" class="btn btn-success btn-sm">Download</button>
-    </form>
+            <a href="{{ route('certificates.downloadSingle', $certificate->student_id) }}" class="btn btn-success btn-sm">Download</a>
 </td>
+
         </tr>
         @endforeach
     </tbody>

@@ -40,7 +40,7 @@
         .ele {
             margin-bottom: 7px;
             font-size: 10px; /* Font size for elements */
-            color:#000000
+            color:#000000;
             text-transform: uppercase;
             font-weight: bold;
             left:10%;

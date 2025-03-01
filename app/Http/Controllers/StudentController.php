@@ -1,15 +1,16 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Course;
-use PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
 use App\Imports\StudentsImport;
 use App\Exports\StudentsExport;
 use Maatwebsite\Excel\Facades\Excel;
+
 class StudentController extends Controller
 {
     // Show the Add Student Form

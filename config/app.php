@@ -195,8 +195,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
          'Auth' => Illuminate\Support\Facades\Auth::class,  
-    'Route' => Illuminate\Support\Facades\Route::class, 
-       'PDF' => Barryvdh\DomPDF\Facade\Pdf::class
+         'Route' => Illuminate\Support\Facades\Route::class, 
+         'PDF' => Barryvdh\DomPDF\Facade\Pdf::class
 
     ])->toArray(),
 

@@ -135,7 +135,8 @@ Route::put('fees/{fee}', [FeeController::class, 'update'])->name('fees.update');
         Route::get('/certificate-search', [CertificateController::class, 'search'])->name('certificate.search');
         Route::get('certificates/selectsearch', [CertificateController::class, 'selectSearch'])->name('certificate.selectsearch');
         Route::get('/certificate/searchCertificate', [CertificateController::class, 'searchCertificate'])->name('certificate.searchCertificate');
-        Route::post('/certificates/download/{student_id}', [CertificateController::class, 'downloadSingle'])->name('certificates.downloadSingle');
+        Route::get('/certificates/download/{student_id}', [CertificateController::class, 'downloadSingle'])->name('certificates.downloadSingle');
+
 
         // Course Routes
         Route::get('/add_course', [CourseController::class, 'create'])->name('course.create');
