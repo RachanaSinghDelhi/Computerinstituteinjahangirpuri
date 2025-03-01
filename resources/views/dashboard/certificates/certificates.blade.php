@@ -21,12 +21,11 @@
             <th>Name</th>
             <th>Father's Name</th>
             <th>DOA</th>
-            <th>Completion Date</th>
+            <th>ISSUE Dt.</th>
             <th>Course</th>
             <th>Photo</th>
-            <th>Duration</th>
             <th>Grade</th>
-            <th>Certificate Code</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody id='certificateRow'>
@@ -42,9 +41,14 @@
             <td>
                 <img src="{{ asset('storage/students/' . $certificate->photo) }}" width="50" alt="Photo">
             </td>
-            <td>{{ $certificate->duration }}</td>
+        
             <td>{{ $certificate->grade }}</td>
-            <td>{{ $certificate->code }}</td>
+            <td>
+    <form action="{{ route('certificates.downloadSingle', $certificate->student_id) }}" method="POST">
+        @csrf
+        <button type="submit" class="btn btn-success btn-sm">Download</button>
+    </form>
+</td>
         </tr>
         @endforeach
     </tbody>
@@ -64,27 +68,28 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
 <script>
-
-    $(document).ready(function() {
-        // Initialize DataTable with options for pagination, search, and records per page
-        $('#certificateTable').DataTable({
-            paging: true,
-            searching: true,
-            lengthChange: true, // Enable the "Show entries" dropdown
-            pageLength: 10, // Default number of rows per page
-            lengthMenu: [5, 10, 15, 20], // Dropdown options
-            responsive: true,
-            autoWidth: false,
-            order: [[0, 'desc']],
-            language: {
-                searchPlaceholder: "Search records...",
-                lengthMenu: "Show _MENU_ entries",
-                paginate: {
-                    next: "Next",
-                    previous: "Previous"
-                }
+$(document).ready(function() {
+    // Initialize DataTable with options for pagination, search, and records per page
+    $('#certificateTable').DataTable({
+        paging: true,
+        searching: true,
+        lengthChange: true,
+        pageLength: 10,
+        lengthMenu: [5, 10, 15, 20],
+        responsive: true,
+        autoWidth: false, // Prevent automatic column width adjustments
+        order: [[0, 'desc']],
+        columnDefs: [
+            { targets: '_all', visible: true } // Ensure all columns are visible
+        ],
+        language: {
+            searchPlaceholder: "Search records...",
+            lengthMenu: "Show _MENU_ entries",
+            paginate: {
+                next: "Next",
+                previous: "Previous"
             }
-        });
+        }
     });
 
     // Real-time search function using AJAX
@@ -98,12 +103,13 @@
             data: { query: searchQuery },
             success: function(data) {
                 $('#certificateRow').html(data.certificates);
-              
             },
             error: function(xhr, status, error) {
                 console.log(error);
             }
         });
     });
+});
+
 </script>
 @endpush

@@ -3,11 +3,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use App\Models\Certificate; // Make sure this is added
+use Barryvdh\DomPDF\PDF as DomPDFPDF;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Log; // Import the Log facade
-use PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CertificateController extends Controller
 {
@@ -94,11 +95,23 @@ public function downloadSelected(Request $request)
 
     $certificates = Certificate::whereIn('id', $request->selected_certificates)->get();
 
-    $pdf = Pdf::loadView('dashboard.certificates.selected_certificates', compact('certificates'))
+    $pdf = PDF::loadView('dashboard.certificates.selected_certificates', compact('certificates'))
     ->setPaper([0, 0, 595.276, 841.890], 'portrait'); // Enforce A4 size in portrait mode $pdf->setPaper([0, 0, 162, 256], 'portrait');
 
     return $pdf->download('selected_certificates.pdf');
 }
+
+
+public function downloadSingle($student_id)
+{
+    $certificates = Certificate::where('student_id', $student_id)->firstOrFail();
+
+    $pdf = PDF::loadView('dashboard.certificates.view_certificates', compact('certificates'))
+        ->setPaper([0, 0, 595.276, 841.890], 'portrait'); // A4 size in portrait mode
+
+    return $pdf->download("certificate_{$certificates->student_id}.pdf");
+}
+
 
     
     public function selectCertificates()

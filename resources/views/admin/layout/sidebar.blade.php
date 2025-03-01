@@ -107,7 +107,30 @@
                     </ul>
                 </li>
 
+                <li class="nav-header">MANAGE CERTIFICATES</li> 
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-certificate"></i>
+                        <p>Certificates<i class="right fas fa-angle-left"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.certificates.index') }}" class="nav-link">
+                            <i class="fas fa-plus-circle nav-icon"></i>
+                                <p>Certificates List</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('amdin.certificates.select') }}" class="nav-link">
+                                <i class="fas fa-list nav-icon"></i>
+                                <p>PDF Certificate</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             
+
+
                 <li class="nav-header">MANAGE EXPENSES</li> 
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">

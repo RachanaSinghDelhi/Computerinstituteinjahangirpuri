@@ -71,7 +71,7 @@
     @foreach ($certificates as $certificate)
    
         <div class="certificate-container">
-        <img src="{{asset('assets/images/certificate.jpg') }}" alt="Certificate Background" class="background-image">
+        <img src="{{public_path('assets/images/certificate.jpg') }}" alt="Certificate Background" class="background-image">
             <div class="content" >
          
                 <div class="id"><strong><u> {{ $certificate->student_id }}</u></strong></div>
@@ -87,7 +87,7 @@
 </div>
                 <div class="code"> <u>{{ $certificate->code }}</u></div>
                 <div>
-            <img src="{{asset('storage/students/' . $certificate->photo) }}" 
+            <img src="{{public_path('storage/students/' . $certificate->photo) }}" 
                  alt="Student Photo" 
                  style="position: absolute; top: 90px; right: 150px; width: 90px; height: 100px;   border: 1px solid #000;" />
         </div>
