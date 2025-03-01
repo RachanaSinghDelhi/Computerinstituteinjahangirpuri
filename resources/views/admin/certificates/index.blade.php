@@ -24,9 +24,9 @@
             <th>Completion Date</th>
             <th>Course</th>
             <th>Photo</th>
-            <th>Duration</th>
+          
             <th>Grade</th>
-            <th>Certificate Code</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody id='certificateRow'>
@@ -42,9 +42,8 @@
             <td>
                 <img src="{{ asset('storage/students/' . $certificate->photo) }}" width="50" alt="Photo">
             </td>
-            <td>{{ $certificate->duration }}</td>
-            <td>{{ $certificate->grade }}</td>
-            <td>{{ $certificate->code }}</td>
+          
+            <td>{{ $certificate->grade }}</td> <a href="{{ route('admin.certificates.downloadSingle', $certificate->student_id) }}" class="btn btn-success btn-sm">Download</a> <td>{{ $certificate->code }}</td>
         </tr>
         @endforeach
     </tbody>

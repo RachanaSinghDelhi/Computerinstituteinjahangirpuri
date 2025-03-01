@@ -259,8 +259,8 @@ Route::put('admin/fees/{fee}', [AdminFeeController::class, 'update'])->name('adm
   Route::get('admin/certificates/select_certificates', [AdminCertificateController::class, 'selectCertificates'])->name('admin.certificates.select');
   Route::get('admin/certificate-search', [AdminCertificateController::class, 'search'])->name('admin.certificate.search');
   Route::get('admin/certificates/selectsearch', [AdminCertificateController::class, 'selectSearch'])->name('admin.certificate.selectsearch');
-  Route::get('admin/certificate/searchCertificate', [CertificateController::class, 'searchCertificate'])->name('admin.certificate.searchCertificate');
-
+  Route::get('admin/certificate/searchCertificate', [AdminCertificateController::class, 'searchCertificate'])->name('admin.certificate.searchCertificate');
+  Route::get('admin/certificates/download/{student_id}', [AdminCertificateController::class, 'downloadSingle'])->name('admin.certificates.downloadSingle');
 //expenses
 
 Route::resource('admin/expenses', AdminExpensesController::class);
