@@ -63,7 +63,7 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label for="course" class="form-label">Course</label>
-                <select class="form-select" id="course" name="course">
+                <select class="form-control" id="course" name="course">
                     <option selected disabled>Select Course</option>
                     @foreach($courses as $course)
                         <option value="{{ $course->id }}" {{ old('course_id') == $course->id ? 'selected' : '' }}>{{ $course->course_title }}</option>
@@ -73,17 +73,17 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="batch" class="form-label">Batch</label>
-                    <select class="form-select" id="batch" name="batch">
+                    <select class="form-control" id="batch" name="batch">
                         <option selected disabled>Select Batch</option>
                         @php
-                            $start = strtotime('08:00 AM');
-                            $end = strtotime('08:00 PM');
-                            while ($start < $end) {
-                                $slot = date('h:i A', $start) . ' - ' . date('h:i A', strtotime('+1 hour', $start));
-                                echo "<option value=\"$slot\">$slot</option>";
-                                $start = strtotime('+1 hour', $start);
-                            }
-                        @endphp
+                $start = strtotime('08:00 AM');
+                $end = strtotime('08:00 PM');
+                while ($start < $end) {
+                    $slot = date('h A', $start); // Changed to display only the start time
+                    echo "<option value=\"$slot\">$slot</option>";
+                    $start = strtotime('+1 hour', $start);
+                }
+            @endphp
                     </select>
                 </div>
             </div>

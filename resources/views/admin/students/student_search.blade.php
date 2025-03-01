@@ -24,8 +24,8 @@
                 <option value="Left" {{ strtoupper(trim($student->status)) === 'LEFT' ? 'selected' : '' }}>Left</option>
                 <option value="Completed" {{ strtoupper(trim($student->status)) === 'COMPLETED' ? 'selected' : '' }}>Completed</option>
             </select>
-            <a href="{{ route('students.edit', $student->student_id) }}" class="btn btn-primary btn-sm">Edit</a>
-         
+            <a href="{{ route('admin.students.edit', $student->student_id) }}" class="btn btn-primary btn-sm">Edit</a>
+          
         </td>
     </tr>
 @endforeach

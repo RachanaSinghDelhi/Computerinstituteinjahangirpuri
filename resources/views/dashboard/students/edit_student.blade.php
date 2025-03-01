@@ -83,13 +83,13 @@
             <!-- Batch -->
             <div class="col-md-6 mb-3">
                 <label for="batch" class="form-label">Batch</label>
-                <select class="form-select" id="batch" name="batch" required>
+                <select class="form-control" id="batch" name="batch" required>
                     <option disabled>Select Batch</option>
                     @php
                         $start = strtotime('08:00 AM');
                         $end = strtotime('08:00 PM');
                         while ($start < $end) {
-                            $slot = date('h:i A', $start) . ' - ' . date('h:i A', strtotime('+1 hour', $start));
+                            $slot = date('h A', $start); // Changed to display only the start time
                     @endphp
                             <option value="{{ $slot }}" {{ old('batch', $student->batch) == $slot ? 'selected' : '' }}>{{ $slot }}</option>
                     @php
