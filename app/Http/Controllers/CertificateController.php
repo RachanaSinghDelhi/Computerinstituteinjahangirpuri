@@ -38,7 +38,7 @@ class CertificateController extends Controller
                 'students.name',
                 'students.father_name',
                 'students.doa',
-                'courses.course_title',
+                'courses.course_name',
                 'students.photo',
                 'certificate_types.certificate_type',
                 'certificate_types.duration',
