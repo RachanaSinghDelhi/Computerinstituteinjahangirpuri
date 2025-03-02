@@ -121,7 +121,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('amdin.certificates.select') }}" class="nav-link">
+                            <a href="{{ route('admin.certificates.select') }}" class="nav-link">
                                 <i class="fas fa-list nav-icon"></i>
                                 <p>PDF Certificate</p>
                             </a>
