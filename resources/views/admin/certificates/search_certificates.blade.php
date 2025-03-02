@@ -1,5 +1,4 @@
-
-@foreach ($Certificates as $certificate)
+@foreach ($certificates as $certificate)
 <tr >
     <td>{{ $certificate->student_id }}</td>
     <td>{{ $certificate->name }}</td>
@@ -17,4 +16,4 @@
 </td>
 
 </tr>
-@endforeach
+        @endforeach
