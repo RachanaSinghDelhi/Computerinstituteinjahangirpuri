@@ -14,77 +14,81 @@ class CertificateController extends Controller
 {
     public function index(Request $request)
     {
-        // Fetch data with proper joins and grouping
-    $certificatesData = DB::table('students')
-    ->join('courses', 'students.course_id', '=', 'courses.id')
-    ->join('certificate_types', 'students.course_id', '=', 'certificate_types.course_id')
-    ->select(
-        'students.student_id',
-        'students.name',
-        'students.father_name as father',
-        'students.doa as dt',
-        DB::raw('DATE_ADD(students.doa, INTERVAL courses.duration MONTH) as date'),
-        'courses.course_title as course',
-        'students.photo',
-        'certificate_types.certificate_type',
-        'certificate_types.duration',
-        'certificate_types.description as desc',
-        DB::raw("ELT(FLOOR(1 + RAND() * 2), 'A', 'A+') as grade"), // Random grade
-        DB::raw("CONCAT('NWT', LPAD(students.student_id, 5, '0'), '/', YEAR(NOW()) % 100) as code")
-    )
-    ->groupBy(
-        'students.student_id',
-        'students.name',
-        'students.father_name',
-        'students.doa',
-        'courses.course_title',
-        'students.photo',
-        'certificate_types.certificate_type',
-        'certificate_types.duration',
-        'certificate_types.description',
-        'courses.duration'
-    )
-    ->get();
-
-// Prepare certificates data for insertion
-$certificates = $certificatesData->map(function ($cert) {
-    return [
-        'student_id' => $cert->student_id,
-        'name' => $cert->name,
-        'father' => $cert->father,
-        'dt' => $cert->dt,
-        'date' => $cert->date,
-        'course' => $cert->course,
-        'photo' => $cert->photo,
-        'certificate_type' => $cert->certificate_type,
-        'duration' => $cert->duration,
-        'description' => $cert->desc,
-        'grade' => $cert->grade,
-        'code' => $cert->code,
-        'created_at' => now(),
-        'updated_at' => now(),
-    ];
-})->toArray();
-
-// Insert the data if not already exists in the certificates table
-foreach ($certificates as $certificate) {
-    DB::table('certificates')->updateOrInsert(
-        ['student_id' => $certificate['student_id'], 'code' => $certificate['code']], // Unique constraints
-        $certificate
-    );
-}
-
-// Fetch all certificates from the certificates table without pagination
-$allCertificates = DB::table('certificates')
-    ->select('student_id', 'name', 'father', 'dt', 'date', 'course', 'photo', 'certificate_type', 'duration', 'description', 'grade', 'code')
-    ->distinct()
-    ->orderBy('student_id', 'desc')
-    ->limit(10)
-    ->get();
-
-// Return the certificates to the view
-return view('dashboard.certificates.certificates', compact('allCertificates'));
+        // Fetch data only for students with status = 'completed'
+        $certificatesData = DB::table('students')
+            ->join('courses', 'students.course_id', '=', 'courses.id')
+            ->join('certificate_types', 'students.course_id', '=', 'certificate_types.course_id')
+            ->select(
+                'students.student_id',
+                'students.name',
+                'students.father_name as father',
+                'students.doa as dt',
+                DB::raw('DATE_ADD(students.doa, INTERVAL courses.duration MONTH) as date'),
+                'courses.course_title as course',
+                'students.photo',
+                'certificate_types.certificate_type',
+                'certificate_types.duration',
+                'certificate_types.description as desc',
+                DB::raw("ELT(FLOOR(1 + RAND() * 2), 'A', 'A+') as grade"), // Random grade
+                DB::raw("CONCAT('NWT', LPAD(students.student_id, 5, '0'), '/', YEAR(NOW()) % 100) as code")
+            )
+            ->where('students.status', 'completed') // Filter only completed students
+            ->groupBy(
+                'students.student_id',
+                'students.name',
+                'students.father_name',
+                'students.doa',
+                'courses.course_title',
+                'students.photo',
+                'certificate_types.certificate_type',
+                'certificate_types.duration',
+                'certificate_types.description',
+                'courses.duration'
+            )
+            ->get();
+    
+        // Prepare certificates data for insertion
+        $certificates = $certificatesData->map(function ($cert) {
+            return [
+                'student_id' => $cert->student_id,
+                'name' => $cert->name,
+                'father' => $cert->father,
+                'dt' => $cert->dt,
+                'date' => $cert->date,
+                'course' => $cert->course,
+                'photo' => $cert->photo,
+                'certificate_type' => $cert->certificate_type,
+                'duration' => $cert->duration,
+                'description' => $cert->desc,
+                'grade' => $cert->grade,
+                'code' => $cert->code,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        })->toArray();
+    
+        // Insert only completed students into certificates table
+        foreach ($certificates as $certificate) {
+            DB::table('certificates')->updateOrInsert(
+                ['student_id' => $certificate['student_id'], 'code' => $certificate['code']], // Unique constraints
+                $certificate
+            );
+        }
+    
+        // Fetch only those certificates that belong to students with status = 'completed'
+        $allCertificates = DB::table('certificates')
+            ->join('students', 'certificates.student_id', '=', 'students.student_id') // Join to filter by status
+            ->where('students.status', 'completed') // Ensure only completed students are shown
+            ->select('certificates.*')
+            ->distinct()
+            ->orderBy('certificates.student_id', 'desc')
+            ->limit(10)
+            ->get();
+    
+        // Return the certificates to the view
+        return view('dashboard.certificates.certificates', compact('allCertificates'));
     }
+    
     
   
 public function downloadSelected(Request $request)
