@@ -3,6 +3,8 @@ namespace App\Livewire\Auth;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class Login extends Component
 {
@@ -16,12 +18,22 @@ class Login extends Component
             'role' => 'required|in:admin,teacher,student',
         ]);
 
-        $credentials = ['email' => $this->email, 'password' => $this->password, 'role' => $this->role];
+        // Find the user with the provided email
+        $user = User::where('email', $this->email)->first();
 
-        if (Auth::attempt($credentials)) {
+        // Check if user exists and verify password
+        if ($user && Hash::check($this->password, $user->password)) {
+            // Check if the role matches
+            if ($user->role !== $this->role) {
+                session()->flash('error', 'Invalid role selection.');
+                return;
+            }
+
+            // Log in the user
+            Auth::login($user);
             session()->regenerate();
 
-            return match (Auth::user()->role) {
+            return match ($user->role) {
                 'admin' => redirect()->route('admin.dashboard'),
                 'teacher' => redirect()->route('teacher.dashboard'),
                 'student' => redirect()->route('student.dashboard'),

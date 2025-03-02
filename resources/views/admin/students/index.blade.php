@@ -15,17 +15,7 @@
         </div>
     @endif
 
-    <!-- Import Students via Excel -->
-    <h2>Import Students via Excel</h2>
-    <form action="{{ route('students.import') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <div class="form-group">
-            <label for="file">Upload Excel File</label>
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <input type="file" name="file" class="form-control" required>
-        </div>
-        <button type="submit" class="btn btn-success mt-2">Import</button>
-    </form>
+    
 <br>
 <!-- Table, Search, and Buttons in One Row -->
 <div class="card">

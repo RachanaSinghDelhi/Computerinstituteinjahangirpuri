@@ -157,7 +157,7 @@
             
                 <!-- Logout -->
                 <li class="nav-item">
-                    <a href="{{ route('livewire.logout') }}" class="nav-link">
+                    <a href="{{ route('user.logout') }}" class="nav-link">
                         <i class="nav-icon fas fa-sign-out-alt"></i>
                         <p>Logout</p>
                     </a>

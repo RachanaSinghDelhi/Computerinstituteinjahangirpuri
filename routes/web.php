@@ -20,6 +20,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Teacher\TeacherController;
+use App\Http\Controllers\Teacher\StudentController as TeacherStudentController;
 use App\Http\Controllers\Student\StudentDashboardController;
 use App\Http\Controllers\Admin\StudentController as AdminStudentController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
@@ -34,7 +35,7 @@ use App\Livewire\Auth\Logout;
 
 //Route::get('/logout', Logout::class)->name('logout');
 
-Route::get('/livewire-logout', Logout::class)->name('livewire.logout');
+Route::get('/user-logout', Logout::class)->name('user.logout');
 
 // Livewire Login Page
 Route::get('/login', Login::class)->name('login');
@@ -268,10 +269,39 @@ Route::resource('admin/expenses', AdminExpensesController::class);
   
 });
 
+
+Route::middleware(['auth', 'role:admin'])->get('/admin', function () {
+  return view('admin.index');
+})->name('admin.dashboard');
+
+// Admin Routes
+Route::middleware(['auth', 'role:teacher'])->group(function () {
+  Route::get('/teacher', [TeacherController::class, 'index'])->name('teacher.dashboard');
+  Route::patch('/teacher/students/bulk-update-status', [TeacherStudentController::class, 'bulkUpdateStatus'])
+  ->name('teacher.students.bulkUpdateStatus');
+
+  // Individual status update
+Route::patch('teacher/students/update-status/{student}', [TeacherStudentController::class, 'updateStatus'])
+->name('teacher.students.updateStatus');
+
+Route::get('teacher/students/search', [TeacherStudentController::class, 'search'])->name('teacher.students.search');
+// Add Student Routes
+Route::get('/teacher/students/add', [TeacherStudentController::class, 'create'])
+->name('teacher.students.add');
+Route::post('/teacher/students/add', [TeacherStudentController::class, 'store'])
+->name('teacher.students.store');
+ // Student Management Routes (TeacherStudentController)
+ Route::get('/teacher/students', [TeacherStudentController::class, 'index'])
+ ->name('teacher.students.index');
+
+
+ // Edit Student Route
+ Route::get('/teacher/students/edit_student/{student}', [TeacherStudentController::class, 'edit'])
+ ->name('teacher.students.edit');
+Route::put('/teacher/students/edit_student/{student}', [TeacherStudentController::class, 'update'])
+ ->name('teacher.students.update');
+});
 // Teacher Routes
-Route::middleware(['auth', 'role:teacher'])->get('/teacher', function () {
-    return view('teacher.index');
-})->name('teacher.dashboard');
 
 // Student Routes
 Route::middleware(['auth', 'role:student'])->get('/student', function () {
