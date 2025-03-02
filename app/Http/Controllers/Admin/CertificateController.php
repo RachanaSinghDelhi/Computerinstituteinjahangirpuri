@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Log; // Import the Log facade
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class CertificateController extends Controller
-{public function index(Request $request)
+{
+    public function index(Request $request)
     {
         // Fetch data only for students with status = 'completed'
         $certificatesData = DB::table('students')
@@ -82,7 +83,6 @@ class CertificateController extends Controller
             ->select('certificates.*')
             ->distinct()
             ->orderBy('certificates.student_id', 'desc')
-            ->limit(10)
             ->get();
     
         // Return the certificates to the view

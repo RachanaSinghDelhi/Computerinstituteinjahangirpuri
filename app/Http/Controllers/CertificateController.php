@@ -82,7 +82,6 @@ class CertificateController extends Controller
             ->select('certificates.*')
             ->distinct()
             ->orderBy('certificates.student_id', 'desc')
-            ->limit(10)
             ->get();
     
         // Return the certificates to the view
