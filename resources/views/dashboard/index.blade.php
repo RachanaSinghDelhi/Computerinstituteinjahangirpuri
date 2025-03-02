@@ -16,7 +16,9 @@
                 <b>Student:</b> {{ $fee->student_name }} (ID: {{ $fee->student_id }})<br>
                 <b>Due Date:</b> {{ \Carbon\Carbon::parse($fee->due_date)->format('d M Y') }}<br>
                 <b>Pending Amount:</b> ₹{{ number_format($fee->fees_due, 2) }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
         @endforeach
     </div>
