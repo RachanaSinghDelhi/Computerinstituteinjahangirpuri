@@ -16,15 +16,14 @@
      <div class="card-body">
 <table id="certificateTable" class="table table-bordered display nowrap" style="width:100%">
     <thead>
-        <tr>
+    <tr>
             <th>Student ID</th>
             <th>Name</th>
             <th>Father's Name</th>
             <th>DOA</th>
-            <th>Completion Date</th>
+            <th>ISSUE Dt.</th>
             <th>Course</th>
             <th>Photo</th>
-          
             <th>Grade</th>
             <th>Action</th>
         </tr>
@@ -42,8 +41,12 @@
             <td>
                 <img src="{{ asset('storage/students/' . $certificate->photo) }}" width="50" alt="Photo">
             </td>
-          
-            <td>{{ $certificate->grade }}</td> <a href="{{ route('admin.certificates.downloadSingle', $certificate->student_id) }}" class="btn btn-success btn-sm">Download</a> <td>{{ $certificate->code }}</td>
+        
+            <td>{{ $certificate->grade }}</td>
+            <td>
+            <a href="{{ route('certificates.downloadSingle', $certificate->student_id) }}" class="btn btn-success btn-sm">Download</a>
+</td>
+
         </tr>
         @endforeach
     </tbody>
