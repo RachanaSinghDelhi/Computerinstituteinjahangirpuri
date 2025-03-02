@@ -44,7 +44,7 @@
         
             <td>{{ $certificate->grade }}</td>
             <td>
-            <a href="{{ route('certificates.downloadSingle', $certificate->student_id) }}" class="btn btn-success btn-sm">Download</a>
+            <a href="{{ route('admin.certificates.downloadSingle', $certificate->student_id) }}" class="btn btn-success btn-sm">Download</a>
 </td>
 
         </tr>
