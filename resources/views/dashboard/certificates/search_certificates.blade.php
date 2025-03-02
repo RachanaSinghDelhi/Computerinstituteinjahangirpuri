@@ -1,5 +1,4 @@
-
-@foreach ($allCertificates as $certificate)
+@foreach ($certificates as $certificate)
 <tr >
     <td>{{ $certificate->student_id }}</td>
     <td>{{ $certificate->name }}</td>
@@ -13,7 +12,8 @@
 
     <td>{{ $certificate->grade }}</td>
     <td>
-    <a href="{{ route('certificates.downloadSingle', $certificate->student_id) }}" class="btn btn-success btn-sm">Download</a>
+    <a href="{{ route('admin.certificates.downloadSingle', $certificate->student_id) }}" class="btn btn-success btn-sm">Download</a>
 </td>
 
 </tr>
+        @endforeach
