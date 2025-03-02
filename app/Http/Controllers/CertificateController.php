@@ -24,7 +24,7 @@ class CertificateController extends Controller
                 'students.father_name as father',
                 'students.doa as dt',
                 DB::raw('DATE_ADD(students.doa, INTERVAL courses.duration MONTH) as date'),
-                'courses.course_title as course',
+                'courses.course_name as course',
                 'students.photo',
                 'certificate_types.certificate_type',
                 'certificate_types.duration',
