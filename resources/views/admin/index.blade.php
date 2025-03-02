@@ -159,5 +159,11 @@ var completedLeftChart = new Chart(completedLeftCtx, {
     }
 });
 
+
+$(document).ready(function(){
+    $('.alert .btn-close').click(function(){
+        $(this).closest('.alert').fadeOut();
+    });
+});
 </script>
 @endpush
