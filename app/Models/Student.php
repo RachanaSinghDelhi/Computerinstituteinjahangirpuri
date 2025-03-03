@@ -21,6 +21,7 @@ class Student extends Model
         'contact_number',
         'status',
         'added_by', // Ensure this field is mass assignable
+        'is_active',
     ];
 
     protected $primaryKey = 'student_id'; // Set the correct primary key

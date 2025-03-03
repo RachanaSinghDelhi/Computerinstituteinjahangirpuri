@@ -56,17 +56,19 @@ class StudentController extends Controller
     $addedBy = auth()->check() ? auth()->user()->name : 'super_admin';
 
         // Save student data
-        Student::create([
-            'student_id' => $request->student_id,
-            'name' => $request->name,
-            'father_name' => $fatherName,
-            'doa' => $doa,
-            'course_id' => $request->course,
-            'batch' => $batch,
-            'photo' => $fileName, // Ensure photo is saved
-            'contact_number' => $contactNumber,
-            'added_by' => $addedBy, // Save the authenticated user's name
+        StudentVersion::create([
+            'student_id' => $student->id,
+            'name' => $validatedData['name'],
+            'father_name' => $validatedData['father_name'],
+            'doa' => $validatedData['doa'],
+            'course_id' => $validatedData['course_id'],
+            'batch' => $validatedData['batch'],
+            'contact_number' => $validatedData['contact_number'],
+            'photo' => $photoFileName,
+            'added_by' => auth()->check() ? auth()->user()->name : 'super_admin',
+           'status' => 'pending', // New student request needs admin approval
         ]);
+    
     
         return redirect()->route('teacher.students.index')->with('success', 'Student added successfully.');
     }
@@ -131,13 +133,18 @@ public function update(Request $request, $id)
     // Get the logged-in user or default to 'super_admin'
     $updatedBy = auth()->check() ? auth()->user()->name : 'super_admin';
     // Update student information
-    $student->name = $validatedData['name'];
-    $student->father_name = $validatedData['father_name'];
-    $student->doa = $validatedData['doa'];
-    $student->course_id = $validatedData['course_id'];
-    $student->batch = $validatedData['batch'];
-    $student->contact_number = $validatedData['contact_number'];
-    $student->added_by = $updatedBy; // Track who updated the student
+    StudentVersion::create([
+        'student_id' => $student->id,
+        'name' => $validatedData['name'],
+        'father_name' => $validatedData['father_name'],
+        'doa' => $validatedData['doa'],
+        'course_id' => $validatedData['course_id'],
+        'batch' => $validatedData['batch'],
+        'contact_number' => $validatedData['contact_number'],
+        'photo' => $photoFileName,
+        'added_by' => auth()->check() ? auth()->user()->name : 'super_admin',
+        'status' => 'pending', // Set status as pending
+    ]);
     // Handle cropped image if provided
     if ($request->filled('cropped_photo')) {
         $croppedImage = $request->input('cropped_photo'); // Get Base64 string
