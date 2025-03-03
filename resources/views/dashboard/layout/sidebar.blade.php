@@ -173,13 +173,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('expenses.index') }}" class="nav-link">
+                            <a href="{{ route('superadmin.expenses.index') }}" class="nav-link">
                                 <i class="fas fa-list nav-icon"></i>
                                 <p>Manage Expenses</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('expenses.create') }}" class="nav-link">
+                            <a href="{{ route('superadmin.expenses.create') }}" class="nav-link">
                                 <i class="fas fa-plus-circle nav-icon"></i>
                                 <p>Add Expenses</p>
                             </a>

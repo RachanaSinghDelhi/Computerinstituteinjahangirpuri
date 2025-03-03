@@ -12,7 +12,7 @@
         <h3 class="card-title">Update Expense</h3>
     </div>
     <div class="card-body">
-        <form action="{{ route('expenses.update', $expense->id) }}" method="POST">
+        <form action="{{ route('superadmin.expenses.update', $expense->id) }}" method="POST">
             @csrf
             @method('PUT')
 
@@ -57,7 +57,7 @@
             </div>
 
             <button type="submit" class="btn btn-success">Update Expense</button>
-            <a href="{{ route('expenses.index') }}" class="btn btn-secondary">Cancel</a>
+            <a href="{{ route('superadmin.expenses.index') }}" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
 </div>

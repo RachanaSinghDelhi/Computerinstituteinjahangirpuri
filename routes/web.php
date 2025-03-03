@@ -26,7 +26,7 @@ use App\Http\Controllers\Admin\StudentController as AdminStudentController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\FeeController as AdminFeeController;
 use App\Http\Controllers\Admin\CertificateController as AdminCertificateController;
-use App\Http\Controllers\Admin\ExpensesController as AdminExpensesController;
+use App\Http\Controllers\Admin\ExpenseController as AdminExpenseController;
 use App\Http\Controllers\ExpenseController;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Logout;
@@ -78,6 +78,8 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
 
     // Dashboard Prefix Routes
     Route::prefix('dashboard')->group(function () {
+
+
         // Fees Routes
         Route::get('/fees', [FeeController::class, 'index'])->name('fees.index');
         Route::get('/fees/{student_id}', [FeeController::class, 'show'])->name('fees.show');
@@ -168,8 +170,15 @@ Route::put('fees/{fee}', [FeeController::class, 'update'])->name('fees.update');
     Route::post('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])->name('users.destroy');
    
-Route::resource('expenses', ExpenseController::class);
-
+    Route::resource('expenses', ExpenseController::class)->names([
+      'index' => 'superadmin.expenses.index',
+      'create' => 'superadmin.expenses.create',
+      'store' => 'superadmin.expenses.store',
+      'edit' => 'superadmin.expenses.edit',
+      'update' => 'superadmin.expenses.update',
+      'destroy' => 'superadmin.expenses.destroy',
+      'show' => 'superadmin.expenses.show',
+  ]);
    
 
 });
@@ -181,7 +190,8 @@ Route::middleware(['auth', 'role:admin'])->get('/admin', function () {
 
 // Admin Routes
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+  
+    Route::get('/admin-admin', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::patch('/admin/students/bulk-update-status', [AdminStudentController::class, 'bulkUpdateStatus'])
     ->name('admin.students.bulkUpdateStatus');
 
@@ -264,7 +274,15 @@ Route::put('admin/fees/{fee}', [AdminFeeController::class, 'update'])->name('adm
   Route::get('admin/certificates/download/{student_id}', [AdminCertificateController::class, 'downloadSingle'])->name('admin.certificates.downloadSingle');
 //expenses
 
-Route::resource('admin/expenses', AdminExpensesController::class);
+Route::resource('admin/expenses', AdminExpenseController::class)->names([
+  'index' => 'admin.expenses.index',
+  'create' => 'admin.expenses.create',
+  'store' => 'admin.expenses.store',
+  'edit' => 'admin.expenses.edit',
+  'update' => 'admin.expenses.update',
+  'destroy' => 'admin.expenses.destroy',
+  'show' => 'admin.expenses.show',
+]);
   
   
 });

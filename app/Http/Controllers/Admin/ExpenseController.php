@@ -5,7 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Expense;
 
-class ExpensesController extends Controller
+class ExpenseController extends Controller
 {
     public function index()
     {
@@ -30,13 +30,13 @@ class ExpensesController extends Controller
 
         Expense::create($request->all());
 
-        return redirect()->route('expenses.index')->with('success', 'Expense added successfully.');
+        return redirect()->route('admin.expenses.index')->with('success', 'Expense added successfully.');
     }
 
     public function edit($id)
     {
         $expense = Expense::findOrFail($id);
-        return view('dashboard.expenses.edit', compact('expense'));
+        return view('admin.expenses.edit', compact('expense'));
     }
 
     public function update(Request $request, $id)
@@ -52,7 +52,7 @@ class ExpensesController extends Controller
         $expense = Expense::findOrFail($id);
         $expense->update($request->all());
 
-        return redirect()->route('expenses.index')->with('success', 'Expense updated successfully.');
+        return redirect()->route('admin.expenses.index')->with('success', 'Expense updated successfully.');
     }
 
     public function destroy($id)
@@ -60,6 +60,6 @@ class ExpensesController extends Controller
         $expense = Expense::findOrFail($id);
         $expense->delete();
 
-        return redirect()->route('expenses.index')->with('success', 'Expense deleted successfully.');
+        return redirect()->route('admin.expenses.index')->with('success', 'Expense deleted successfully.');
     }
 }

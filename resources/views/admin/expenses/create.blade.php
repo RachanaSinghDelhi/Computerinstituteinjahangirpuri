@@ -13,7 +13,7 @@
     </div>
 
     <div class="card-body">
-        <form action="{{ route('expenses.store') }}" method="POST">
+        <form action="{{ route('admin.expenses.store') }}" method="POST">
             @csrf
 
             <div class="form-group">
@@ -51,7 +51,7 @@
 
             <div class="mt-3">
                 <button type="submit" class="btn btn-success">Save Expense</button>
-                <a href="{{ route('expenses.index') }}" class="btn btn-secondary">Back to List</a>
+                <a href="{{ route('admin.expenses.index') }}" class="btn btn-secondary">Back to List</a>
             </div>
         </form>
     </div>

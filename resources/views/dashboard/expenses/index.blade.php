@@ -9,7 +9,7 @@
 @section('content')
 <div class="card">
     <div class="card-header">
-        <a href="{{ route('expenses.create') }}" class="btn btn-primary">Add New Expense</a>
+        <a href="{{ route('superadmin.expenses.create') }}" class="btn btn-primary">Add New Expense</a>
     </div>
 
     <div class="card-body">
@@ -35,8 +35,8 @@
                         <td>{{ $expense->description }}</td>
                         <td>{{ $expense->expense_date }}</td>
                         <td>
-                            <a href="{{ route('expenses.edit', $expense->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{ route('expenses.destroy', $expense->id) }}" method="POST" style="display:inline;">
+                            <a href="{{ route('superadmin.expenses.edit', $expense->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            <form action="{{ route('superadmin.expenses.destroy', $expense->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this expense?');">Delete</button>

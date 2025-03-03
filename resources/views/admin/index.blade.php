@@ -2,15 +2,14 @@
 
 @section('title', 'Admin Dashboard')
 
-
 @section('content_header')
     <h1>Dashboard Overview</h1>
 @stop
 
 @section('content')
 <div class="container-fluid">
+ 
 
-<h1>Admin Dashboard</h1>
     @if(isset($overdueFees) && count($overdueFees) > 0)
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
         @foreach($overdueFees as $fee)
@@ -161,11 +160,5 @@ var completedLeftChart = new Chart(completedLeftCtx, {
     }
 });
 
-
-$(document).ready(function(){
-    $('.alert .btn-close').click(function(){
-        $(this).closest('.alert').fadeOut();
-    });
-});
 </script>
 @endpush
