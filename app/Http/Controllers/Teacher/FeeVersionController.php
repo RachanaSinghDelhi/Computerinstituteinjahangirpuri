@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Http\Request;
 use App\Models\FeeVersion;
 use App\Models\Fee;
 use App\Models\Student;
 use App\Models\Course;
+use App\Models\StudentFeesStatus;
 
 class FeeVersionController extends Controller
 {
@@ -33,33 +36,59 @@ if (!$course) {
     $nextInstallmentNo = $lastInstallment + 1;
     $lastReceipt = FeeVersion::max('receipt_number') ?? 1000;
     $nextReceiptNumber = $lastReceipt + 1;
-
-    return view('teacher.fees.add_fees', compact('student','course', 'nextInstallmentNo', 'nextReceiptNumber'));
+ // Fetch the student fee status details
+ $studentFeesStatus = StudentFeesStatus::where('student_id', $student_id)->first();
+    return view('teacher.fees.add_fees', compact('student','studentFeesStatus','course', 'nextInstallmentNo', 'nextReceiptNumber'));
 }
 
     // Store fees in pending_fees table
     public function store(Request $request)
     {
-        $request->validate([
-            'student_id' => 'required|exists:students,id',
-            'course_id' => 'required|exists:courses,id',
-            'amount_paid' => 'required|numeric',
-            'installment_no' => 'required|numeric',
-            'payment_date' => 'required|date',
-            'receipt_number' => 'required|numeric',
-            'balances' => 'nullable|numeric',
-        ]);
-    dd($request);
-        $data = $request->all();
-        $data['added_by'] = auth()->user()->id; // Assign logged-in user ID
-        $data['receipt_image'] = $request->receipt_number . '.jpg'; // Set receipt image name
-    
-        FeeVersion::create($data);
-    
-        return redirect()->route('teacher.fees.index')->with('success', 'Fee submitted for approval.');
-    }
-    
-
+            try {
+                \Log::info('Request Data: ', $request->all());
+        
+                // Retrieve student
+                $student = Student::find($request->student_id);
+                if (!$student) {
+                    return redirect()->back()->with('error', 'Invalid student ID.');
+                }
+        
+                // Retrieve course
+                $course = Course::find($student->course_id);
+                if (!$course) {
+                    return redirect()->back()->with('error', 'Invalid course.');
+                }
+        
+                // Get the next installment number
+                $lastInstallment = FeeVersion::where('student_id', $request->student_id)->max('installment_no');
+                $nextInstallmentNo = $lastInstallment ? $lastInstallment + 1 : 1;
+        
+                // Set fee status
+                $feeStatus = ($request->balances > 0) ? 'Unpaid' : 'Paid';
+        
+                // Store in fee_version (Pending Approval)
+                $feeVersion = new FeeVersion();
+                $feeVersion->student_id = $student->id;
+                $feeVersion->course_id = $course->id;
+                $feeVersion->amount_paid = $request->amount_paid;
+                $feeVersion->payment_date = $request->payment_date;
+                $feeVersion->due_date = $request->due_date;
+                $feeVersion->balances = $request->balances;
+                $feeVersion->receipt_number = $request->receipt_number;
+                $feeVersion->receipt_image = $request->receipt_image ?? 'default.jpg';
+                $feeVersion->installment_no = $nextInstallmentNo;
+                $feeVersion->added_by = Auth::id();
+                $feeVersion->status = $feeStatus;
+                $feeVersion->approved = 0; // Set as pending
+                $feeVersion->save();
+        
+                return redirect()->route('fees.pending')->with('success', 'Fee record added for approval.');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'Error: ' . $e->getMessage());
+            }
+        }
+        
+        
     // Display all fees (approved + pending)
     public function index()
     {

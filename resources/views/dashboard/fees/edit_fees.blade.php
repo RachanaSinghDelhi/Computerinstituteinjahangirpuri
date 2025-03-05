@@ -42,8 +42,8 @@
                 </div>
                 <div class="mb-3">
                     <label for="blanaces" class="form-label">Balances</label>
-                    <input type="number" class="form-control" id="Balance" name="Balance" 
-                           value="{{ old('balances', $fee->Balances) }}" required>
+                    <input type="number" class="form-control" id="balances" name="balances" 
+                           value="{{ old('balances', $fee->Balances) }}">
                 </div>
 
                 <div class="mb-3">

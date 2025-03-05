@@ -20,7 +20,9 @@ class FeeVersion extends Model
         'receipt_number',
         'receipt_image',
         'status',
-        'installment_no'
+        'installment_no',
+        'added_by', // Missing field added
+        'approved' // Missing field added
     ];
 
     public function student()
