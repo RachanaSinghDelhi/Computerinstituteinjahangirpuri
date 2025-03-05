@@ -74,13 +74,11 @@
             @endif
         </td>
         <td>
-        @if(!empty($studentData['student_id']))
-    <a href="{{ route('teacher.fees.create', ['student_id' => $studentData['student_id']]) }}" class="btn btn-primary">Add Fees</a>
-@else
-    <span class="text-danger">No ID</span>
-@endif
+   
+   <a href="{{ route('teacher.fees.create', $student->student->student_id) }}" class="btn btn-primary">Add Fees</a>
 
-        </td>
+
+   </td>
         <td>
             @if(!empty($studentData['photo']))
                 <img src="{{ asset('storage/students/' . $studentData['photo']) }}" alt="Student Photo" width="50">

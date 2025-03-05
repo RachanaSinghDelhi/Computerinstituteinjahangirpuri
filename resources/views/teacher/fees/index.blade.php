@@ -14,11 +14,11 @@
             @endif
 
             <h4>Pending Fees</h4>
-            <table class="table table-bordered">
+            <table id="feesTablePending" class="table table-bordered">
                 <thead>
                     <tr>
                         <th>Student</th>
-                        <th>Student Id</th>
+                        <th>Student ID</th>
                         <th>Course</th>
                         <th>Amount Paid</th>
                         <th>Installment</th>
@@ -32,27 +32,22 @@
                     <tr>
                         <td>{{ $fee->student->name }}</td>
                         <td>{{ $fee->student->student_id }}</td>
-                        <td>{{ $fee->course->name ?? 'N/A' }}</td> <!-- Fix here -->
+                        <td>{{ $fee->course->course_name ?? 'N/A' }}</td>
                         <td>{{ $fee->amount_paid }}</td>
                         <td>{{ $fee->installment_no }}</td>
                         <td>{{ $fee->payment_date }}</td>
                         <td><span class="badge bg-warning">Pending</span></td>
                         <td>
                             <a href="{{ route('teacher.fees.edit', $fee->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="{{ route('teacher.fees.create', $fee->student->student_id) }}" class="btn btn-sm btn-primary">Add Fees</a>
                         </td>
-                        <td>
-   
-        <a href="{{ route('teacher.fees.create', $fee->id) }}" class="btn btn-primary">Add Fees</a>
-
-
-        </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
 
             <h4>Approved Fees</h4>
-            <table class="table table-bordered">
+            <table id="feesTableApproved" class="table table-bordered">
                 <thead>
                     <tr>
                         <th>Student</th>
@@ -62,6 +57,7 @@
                         <th>Installment</th>
                         <th>Payment Date</th>
                         <th>Status</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,17 +65,14 @@
                     <tr>
                         <td>{{ $fee->student->name }}</td>
                         <td>{{ $fee->student->student_id }}</td>
-                        <td>{{ $fee->course->title }}</td>
+                        <td>{{ $fee->course->course_name ?? 'N/A' }}</td>
                         <td>{{ $fee->amount_paid }}</td>
                         <td>{{ $fee->installment_no }}</td>
                         <td>{{ $fee->payment_date }}</td>
                         <td><span class="badge bg-success">Approved</span></td>
                         <td>
-  
-        <a href="{{ route('teacher.fees.create', $fee->student->student_id ) }}" class="btn btn-primary">Add Fees</a>
-
-
-        </td>
+                            <a href="{{ route('teacher.fees.create', $fee->student->student_id) }}" class="btn btn-sm btn-primary">Add Fees</a>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -89,3 +82,34 @@
     </div>
 </div>
 @endsection
+
+@push('css')
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+@endpush
+
+@push('js')
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
+    <script>
+    $(function () {
+        $('#feesTablePending').DataTable({
+            responsive: true,
+            paging: true,
+            searching: true,
+            ordering: true,
+            info: true
+        });
+
+        $('#feesTableApproved').DataTable({
+            responsive: true,
+            paging: true,
+            searching: true,
+            ordering: true,
+            info: true
+        });
+    });
+    </script>
+@endpush

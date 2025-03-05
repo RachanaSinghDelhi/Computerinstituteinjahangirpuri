@@ -43,7 +43,7 @@ Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->group(function (
   Route::get('/fees', [TeacherFeeVersionController::class, 'index'])->name('teacher.fees.index');
   Route::get('/pending-fees', [TeacherFeeVersionController::class, 'pendingFees'])->name('teacher.fees.pending');
   Route::get('/fees/edit/{id}', [TeacherFeeVersionController::class, 'edit'])->name('teacher.fees.edit');
-  Route::post('/fees/update/{id}', [TeacherFeeVersionController::class, 'update'])->name('teacher.fees.update');
+  Route::put('/fees/update/{id}', [TeacherFeeVersionController::class, 'update'])->name('teacher.fees.update');
   Route::post('/fees/approve/{id}', [TeacherFeeVersionController::class, 'approve'])->name('teacher.fees.approve');
 });
 

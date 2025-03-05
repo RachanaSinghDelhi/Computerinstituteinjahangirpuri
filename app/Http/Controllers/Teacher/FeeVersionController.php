@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Http\Request;
 use App\Models\FeeVersion;
 use App\Models\Fee;
 use App\Models\Student;
 use App\Models\Course;
 use App\Models\StudentFeesStatus;
+use Carbon\Carbon;
 
 class FeeVersionController extends Controller
 {
@@ -41,6 +41,7 @@ if (!$course) {
     return view('teacher.fees.add_fees', compact('student','studentFeesStatus','course', 'nextInstallmentNo', 'nextReceiptNumber'));
 }
 
+
     // Store fees in pending_fees table
     public function store(Request $request)
     {
@@ -68,7 +69,7 @@ if (!$course) {
         
                 // Store in fee_version (Pending Approval)
                 $feeVersion = new FeeVersion();
-                $feeVersion->student_id = $student->id;
+                $feeVersion->student_id = $student->student_id;
                 $feeVersion->course_id = $course->id;
                 $feeVersion->amount_paid = $request->amount_paid;
                 $feeVersion->payment_date = $request->payment_date;
@@ -82,7 +83,7 @@ if (!$course) {
                 $feeVersion->approved = 0; // Set as pending
                 $feeVersion->save();
         
-                return redirect()->route('fees.pending')->with('success', 'Fee record added for approval.');
+                return redirect()->route('teacher.fees.index')->with('success', 'Fee record added for approval.');
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', 'Error: ' . $e->getMessage());
             }
@@ -92,8 +93,9 @@ if (!$course) {
     // Display all fees (approved + pending)
     public function index()
     {
-        $approvedFees = Fee::with('course')->get();
-        $pendingFees = FeeVersion::with('student', 'course')->get(); // Ensure eager loading
+        $pendingFees = FeeVersion::with(['student', 'course'])->get();
+        $approvedFees = Fee::with(['student', 'course'])->get();
+        
     
         return view('teacher.fees.index', compact('approvedFees', 'pendingFees'));
     }
@@ -101,8 +103,8 @@ if (!$course) {
     // Show edit form for pending fees
     public function edit($id)
     {
-        $pendingFee = FeeVersion::findOrFail($id);
-        return view('teacher.fees.edit', compact('pendingFee'));
+        $fee = FeeVersion::findOrFail($id);
+        return view('teacher.fees.edit_fees', compact('fee'));
     }
 
     // Update pending fee

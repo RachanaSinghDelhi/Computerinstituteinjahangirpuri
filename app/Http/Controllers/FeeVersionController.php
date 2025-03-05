@@ -36,7 +36,7 @@ class FeeVersionController extends Controller
         // Mark as approved
         $pendingFee->delete();
 
-        return redirect()->route('pending.fees.index')->with('success', 'Fee approved successfully.');
+        return redirect()->route('approve.fees.index')->with('success', 'Fee approved successfully.');
     }
 
     // Reject fee and delete from pending table
@@ -45,6 +45,6 @@ class FeeVersionController extends Controller
         $pendingFee = FeeVersion::findOrFail($id);
         $pendingFee->delete();
 
-        return redirect()->route('pending.fees.index')->with('error', 'Fee entry rejected.');
+        return redirect()->route('approve.fees.index')->with('error', 'Fee entry rejected.');
     }
 }
