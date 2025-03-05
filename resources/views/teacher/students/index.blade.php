@@ -35,44 +35,69 @@
 <br>
             <!-- Responsive Table -->
             <div class="table-responsive">
-                <table class="table table-bordered table-striped" id="studentTable">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Student ID</th>
-                            <th>Name</th>
-                            <th class="d-none d-md-table-cell">Father's Name</th>
-                            <th class="d-none d-md-table-cell">Date of Admission</th>
-                            <th>Course</th>
-                            <th class="d-none d-md-table-cell">Batch</th>
-                            <th>Photo</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($students as $student)
-                        <tr>
-                            <td>{{ $student->id }}</td>
-                            <td>{{ $student->student_id }}</td>
-                            <td>{{ $student->name }}</td>
-                            <td class="d-none d-md-table-cell">{{ $student->father_name }}</td>
-                            <td class="d-none d-md-table-cell">{{ \Carbon\Carbon::parse($student->doa)->format('d-m-Y') }}</td>
-                            <td>{{ $student->course->course_title ?? 'N/A' }}</td>
-                            <td class="d-none d-md-table-cell">{{ $student->batch }}</td>
-                            <td>
-                                @if($student->photo)
-                                    <img src="{{ asset('storage/students/' . $student->photo) }}" alt="Student Photo" width="50">
-                                @else
-                                    No Photo
-                                @endif
-                            </td>
-                            <td>
-                                <a href="{{ route('teacher.students.edit', $student->student_id) }}" class="btn btn-primary btn-sm">Edit</a>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+            <table class="table table-bordered table-striped" id="studentTable">
+    <thead>
+        <tr>
+            <th>Student ID</th>
+            <th>Name</th>
+            <th class="d-none d-md-table-cell">Father's Name</th>
+            <th class="d-none d-md-table-cell">Date of Admission</th>
+            <th>Course</th>
+            <th class="d-none d-md-table-cell">Batch</th>
+            <th>Status</th>
+            <th>Fees</th>
+            <th>Photo</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach($students as $student)
+    @php
+    $studentData = is_array($student->new_data) ? $student->new_data : json_decode($student->new_data, true);
+    @endphp
+    <tr>
+        <td>{{ $studentData['student_id'] ?? 'N/A' }}</td>
+        <td>{{ $studentData['name'] ?? 'N/A' }}</td>
+        <td class="d-none d-md-table-cell">{{ $studentData['father_name'] ?? 'N/A' }}</td>
+        <td class="d-none d-md-table-cell">{{ $studentData['doa'] ?? 'N/A' }}</td>
+        {{-- ✅ Display Correct Course Name --}}
+        <td>{{ $student->course_name ?? 'N/A' }}</td>
+        <td class="d-none d-md-table-cell">{{ $studentData['batch'] ?? 'N/A' }}</td>
+        
+        <td>
+            @if($student->status == 'approved')
+                <span class="badge badge-success">Approved</span>
+            @elseif($student->status == 'pending')
+                <span class="badge badge-warning">Pending</span>
+            @else
+                <span class="badge badge-danger">Rejected</span>
+            @endif
+        </td>
+        <td>
+        @if(!empty($studentData['student_id']))
+    <a href="{{ route('teacher.fees.create', ['student_id' => $studentData['student_id']]) }}" class="btn btn-primary">Add Fees</a>
+@else
+    <span class="text-danger">No ID</span>
+@endif
+
+        </td>
+        <td>
+            @if(!empty($studentData['photo']))
+                <img src="{{ asset('storage/students/' . $studentData['photo']) }}" alt="Student Photo" width="50">
+            @else
+                No Photo
+            @endif
+        </td>
+
+        <td>
+            <a href="{{ route('teacher.students.edit', ['student' => $student->student_id]) }}" class="btn btn-primary btn-sm">Edit</a>
+        </td>
+    </tr>
+@endforeach
+
+    </tbody>
+</table>
+
             </div>
         </div>
     </div>

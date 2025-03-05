@@ -1,4 +1,4 @@
-@extends('admin.layout.adminlte')
+@extends('teacher.layout.adminlte')
 
 @section('title', 'Add Fees')
 
@@ -9,7 +9,7 @@
             <h3 class="card-title">Pay Fees for {{ $student->name }}</h3>
         </div>
         <div class="card-body">
-            <h4>Course: {{ $course->title }}</h4>
+       
 
             @if(session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
@@ -17,13 +17,13 @@
                 <div class="alert alert-danger">{{ session('error') }}</div>
             @endif
 
-            <form action="{{ route('admin.save_student_fee') }}" method="POST">
+            <form action="{{ route('teacher.fees.store') }}" method="POST">
                 @csrf
                 <input type="hidden" name="student_id" value="{{ $student->student_id }}">
                 <input type="hidden" name="course_id" value="{{ $course->id }}">
-                <input type="hidden" id="course_fee" value="{{ $studentFeesStatus->total_fees }}">
+               
                 <input type="hidden" id="installments" value="{{ $course->installments }}">
-                <input type="hidden" id="course_type" value="{{ $course->course_title }}">
+                <input type="hidden" id="course_type" value="{{ $course->course_name }}">
 
                 <div class="form-group">
                     <label for="admission_date">Admission Date</label>
@@ -65,7 +65,7 @@
 
                 <div class="form-group">
                     <label for="receipt_number">Receipt Number</label>
-                    <input type="number" class="form-control" id="receipt_number" name="receipt_number" value="{{ $nextReceiptNumber }}" required>
+                    <input type="number" class="form-control" id="receipt_number" name="receipt_number" value="{{ $nextReceiptNumber }}" readonly >
                 </div>
 
                 <button type="submit" class="btn btn-success">Submit Payment</button>

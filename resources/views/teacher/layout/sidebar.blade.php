@@ -15,6 +15,16 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Dashboard -->
 <li class="nav-header">TEACHER'S WORKSPACE</li>
+
+
+
+<li class="nav-item">
+    <a href="{{ route('teacher.dashboard') }}" class="nav-link">
+        <i class="nav-icon fas fa-tachometer-alt"></i>
+        <p>Dashboard</p>
+    </a>
+</li>
+
    <!-- Students -->
    <li class="nav-header">MANAGE STUDENTS</li> 
    <li class="nav-item has-treeview">
@@ -39,17 +49,28 @@
            
        </ul>
    </li>
+   <li class="nav-header">MANAGE FEES</li> 
+   <li class="nav-item has-treeview">
+       <a href="#" class="nav-link">
+           <i class="nav-icon fas fa-money-bill-alt"></i>
+           <p>Fee List<i class="right fas fa-angle-left"></i></p>
+       </a>
+       <ul class="nav nav-treeview">
+           
+           <li class="nav-item">
+               <a href="{{ route('teacher.fees.index') }}" class="nav-link">
+                   <i class="fas fa-list nav-icon"></i>
+                   <p>Fee List</p>
+               </a>
+           </li>
+           
+       </ul>
+   </li>
 
 
 
 
 
-<li class="nav-item">
-    <a href="{{ route('teacher.dashboard') }}" class="nav-link">
-        <i class="nav-icon fas fa-tachometer-alt"></i>
-        <p>Dashboard</p>
-    </a>
-</li>
 
 
 <!-- Logout -->

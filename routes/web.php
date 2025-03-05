@@ -28,8 +28,30 @@ use App\Http\Controllers\Admin\FeeController as AdminFeeController;
 use App\Http\Controllers\Admin\CertificateController as AdminCertificateController;
 use App\Http\Controllers\Admin\ExpenseController as AdminExpenseController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\StudentVersionController;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Logout;
+use App\Http\Controllers\FeeVersionController; 
+use App\Http\Controllers\Teacher\FeeVersionController as TeacherFeeVersionController;
+
+
+
+
+Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->group(function (){
+  Route::get('/fees/create/{student_id}', [TeacherFeeVersionController::class, 'create'])->name('teacher.fees.create');
+  Route::post('/fees/store', [TeacherFeeVersionController::class, 'store'])->name('teacher.fees.store');
+  Route::get('/fees', [TeacherFeeVersionController::class, 'index'])->name('teacher.fees.index');
+  Route::get('/pending-fees', [TeacherFeeVersionController::class, 'pendingFees'])->name('teacher.fees.pending');
+  Route::get('/fees/edit/{id}', [TeacherFeeVersionController::class, 'edit'])->name('teacher.fees.edit');
+  Route::post('/fees/update/{id}', [TeacherFeeVersionController::class, 'update'])->name('teacher.fees.update');
+  Route::post('/fees/approve/{id}', [TeacherFeeVersionController::class, 'approve'])->name('teacher.fees.approve');
+});
+
+Route::middleware(['auth', 'role:super_admin'])->prefix('dashboard')->group(function () {
+    Route::get('/pending-fees', [FeeVersionController::class, 'index'])->name('approve.fees.index');
+    Route::post('/approve-fee/{id}', [FeeVersionController::class, 'approve'])->name('pending.fees.approve');
+    Route::delete('/reject-fee/{id}', [FeeVersionController::class, 'reject'])->name('pending.fees.reject');
+});
 
 
 
@@ -75,11 +97,14 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
     })->name('superadmin.dashboard');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
-
+    
+  
     // Dashboard Prefix Routes
-    Route::prefix('dashboard')->group(function () {
-
-
+    Route::middleware(['auth', 'role:super_admin'])->prefix('dashboard')->group(function () {
+      // Students Routes
+      Route::get('/super_admin/student-approvals', [StudentVersionController::class, 'index'])->name('super_admin.student-approvals');
+      Route::post('/super_admin/student-approvals/{id}/approve', [StudentVersionController::class, 'approve'])->name('super_admin.student-approve');
+      Route::post('/super_admin/student-approvals/{id}/reject', [StudentVersionController::class, 'reject'])->name('super_admin.student-reject');
         // Fees Routes
         Route::get('/fees', [FeeController::class, 'index'])->name('fees.index');
         Route::get('/fees/{student_id}', [FeeController::class, 'show'])->name('fees.show');
@@ -314,7 +339,7 @@ Route::post('/teacher/students/add', [TeacherStudentController::class, 'store'])
 
 
  // Edit Student Route
- Route::get('/teacher/students/edit_student/{student}', [TeacherStudentController::class, 'edit'])
+ Route::get('/teacher/students/{student}/edit', [TeacherStudentController::class, 'edit'])
  ->name('teacher.students.edit');
 Route::put('/teacher/students/edit_student/{student}', [TeacherStudentController::class, 'update'])
  ->name('teacher.students.update');

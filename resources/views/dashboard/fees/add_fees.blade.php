@@ -36,7 +36,7 @@
                 </div>
                 <div class="form-group">
                     <label for="Balance">Balance</label>
-                    <input type="number" class="form-control" id="Balance" name="Balance">
+                    <input type="number" class="form-control" id="balances" name="balances">
                 </div>
 
                 <div class="form-group">

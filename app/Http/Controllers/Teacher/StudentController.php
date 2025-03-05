@@ -7,6 +7,8 @@ use App\Models\Student;
 use App\Models\Course;
 use PDF;
 use Illuminate\Support\Facades\Storage;
+use App\Models\StudentVersion;
+use Illuminate\Support\Facades\Auth;
 use App\Imports\StudentsImport;
 use App\Exports\StudentsExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -22,10 +24,16 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'student_id' => 'required|unique:students,student_id',
-            'name' => 'required|string|max:255',
-            'course' => 'required|exists:courses,id',
+            'student_id'     => 'required|string|max:50|unique:students,student_id',
+            'name'           => 'required|string|max:255',
+            'father_name'    => 'required|string|max:255',
+            'doa'            => 'required|date',
+            'course'         => 'required|exists:courses,id',
+            'batch'          => 'required|string|max:100',
+            'contact_number' => 'required|string|regex:/^[0-9]{10}$/', // 10-digit mobile number validation
+            'cropped_photo'  => 'required|string', // Required base64 image
         ]);
+        
     
         // Handle optional fields
         $fatherName = $request->father_name ?? null;
@@ -57,50 +65,79 @@ class StudentController extends Controller
 
         // Save student data
         StudentVersion::create([
-            'student_id' => $student->id,
-            'name' => $validatedData['name'],
-            'father_name' => $validatedData['father_name'],
-            'doa' => $validatedData['doa'],
-            'course_id' => $validatedData['course_id'],
-            'batch' => $validatedData['batch'],
-            'contact_number' => $validatedData['contact_number'],
-            'photo' => $photoFileName,
-            'added_by' => auth()->check() ? auth()->user()->name : 'super_admin',
-           'status' => 'pending', // New student request needs admin approval
+            'student_id' => $request->student_id,
+            'old_data' => json_encode([]),
+            'new_data' => json_encode([
+                'student_id' => $request->student_id,
+                'name' => $request->name,
+                'father_name' => $request->father_name ,
+                'doa' => $request->doa,
+                'course_id' => $request->course,
+                'batch' => $request->batch ?? null,
+                'contact_number' => $request->contact_number,
+                'photo' => $fileName,
+              'updated_by' => Auth::check() ? Auth::user()->id : 1, // Assuming 1 is super_admin's ID
+            ]),
+            'status' => 'pending', // Waiting for approval
+          'updated_by' => Auth::check() ? Auth::user()->id : 1, // Assuming 1 is super_admin's ID
         ]);
     
     
-        return redirect()->route('teacher.students.index')->with('success', 'Student added successfully.');
+        return redirect()->route('teacher.students.index')->with('success', 'Student added successfully.Approval Pending');
     }
     
     
 // Display Paginated Students
 public function index()
 {
-     // Fetch all students with their related courses
-     $students = Student::with('course')
-     ->orderBy('student_id', 'desc') // Order by `id` in descending order
-     ->where('status','active')
-     ->get(); // Fetch all records instead of paginating
-    $courses = Course::all();
-    // Pass the students to the view
-    return view('teacher.students.index', compact('students','courses'));
+    $teacherId = auth()->id();
+
+    // Fetch all courses and store them in an associative array [id => course_name]
+    $courses = Course::pluck('course_name', 'id')->toArray();
+
+    // Fetch students added by the teacher
+    $students = StudentVersion::where('updated_by', $teacherId)->get();
+
+    // Decode new_data and attach the correct course name
+    foreach ($students as $student) {
+        $student->new_data = json_decode($student->new_data, true); // Decode JSON
+        $courseId = $student->new_data['course_id'] ?? null; // Extract course_id from JSON
+
+        // Attach course name if course_id exists
+        $student->course_name = $courses[$courseId] ?? 'N/A';
+    }
+
+    return view('teacher.students.index', compact('students'));
 }
 
+
 // Show the form for editing the specified student.
-public function edit($id)
+public function edit($id) 
 {
-    // Find the student by their ID
+    // Find the latest student version record
+    $studentVersion = StudentVersion::where('student_id', $id)->latest()->first();
+
+    // Check if student data exists in student_version table
+    if (!$studentVersion) {
+        return redirect()->back()->with('error', 'Student record not found.');
+    }
+
+    // Check if the student's status is pending
+    if ($studentVersion->status !== 'approved') {
+        return redirect()->back()->with('error', 'Approval pending for student data.');
+    }
+
+    // Find the student from the main students table
     $student = Student::findOrFail($id);
 
     // Get all courses to populate the dropdown
     $courses = Course::all();
 
-
-   
-    // Return the 'edit' view with the student and courses data
+    // Return the edit view
     return view('teacher.students.edit_student', compact('student', 'courses'));
 }
+
+
 
 public function update(Request $request, $id)
 {
@@ -111,78 +148,88 @@ public function update(Request $request, $id)
         'doa' => 'required|date',
         'course_id' => 'nullable|exists:courses,id',
         'batch' => 'required|string|max:255',
-        'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Validate uploaded image
-        'cropped_photo' => 'nullable|string', // Validate cropped image Base64 string
-        'contact_number' => 'required|string|max:15', // Validate contact number
-       
+        'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'cropped_photo' => 'nullable|string',
+        'contact_number' => 'required|string|max:15',
     ]);
 
     // Find the student by ID
     $student = Student::findOrFail($id);
-
-
+    
     // Get the logged-in user
     $user = auth()->user();
 
     // Ensure only teachers have the edit limit restriction
-    if ($user->role === 'teacher') {
-        if ($student->edit_count >= 2) {
-            return redirect()->back()->with('error', 'You can only edit this student twice.');
-        }
+    if ($user->role === 'teacher' && $student->edit_count >= 2) {
+        return redirect()->back()->with('error', 'You can only edit this student twice.');
     }
-    // Get the logged-in user or default to 'super_admin'
-    $updatedBy = auth()->check() ? auth()->user()->name : 'super_admin';
-    // Update student information
-    StudentVersion::create([
-        'student_id' => $student->id,
+
+    // Get the logged-in user ID or default to 1
+    $updatedBy = auth()->check() ? auth()->user()->id : 1;
+
+    // Get old data before changes
+    $oldData = [
+        'name' => $student->name,
+        'father_name' => $student->father_name,
+        'doa' => $student->doa,
+        'course_id' => $student->course_id,
+        'batch' => $student->batch,
+        'contact_number' => $student->contact_number,
+        'photo' => $student->photo, // Preserve the old photo
+    ];
+
+    // Prepare new data with changes
+    $newData = [
+        'student_id' => $id, // Ensure student_id is included
         'name' => $validatedData['name'],
         'father_name' => $validatedData['father_name'],
         'doa' => $validatedData['doa'],
         'course_id' => $validatedData['course_id'],
         'batch' => $validatedData['batch'],
         'contact_number' => $validatedData['contact_number'],
-        'photo' => $photoFileName,
-        'added_by' => auth()->check() ? auth()->user()->name : 'super_admin',
-        'status' => 'pending', // Set status as pending
-    ]);
+        'photo' => $oldData['photo'], // Preserve the existing photo if not updated
+    ];
+
     // Handle cropped image if provided
     if ($request->filled('cropped_photo')) {
-        $croppedImage = $request->input('cropped_photo'); // Get Base64 string
-        $imageData = explode(',', $croppedImage)[1]; // Extract the Base64 data
-        $decodedImage = base64_decode($imageData); // Decode the Base64 string
-
-        // Generate a unique file name for the cropped image
-        $fileName = $id.'.jpg';
-
-        // Define the storage path
-        $path = 'storage/students/' . $fileName;
-
-        // Save the cropped image to storage
-        file_put_contents(public_path($path), $decodedImage);
-
-        // Update the student's photo field with the path to the cropped image
-        $student->photo = $fileName;
+        $croppedImage = base64_decode(explode(',', $request->cropped_photo)[1]);
+        $fileName = $id . '.jpg';
+        Storage::disk('public')->put('students/' . $fileName, $croppedImage);
+        $newData['photo'] = $fileName;
     } elseif ($request->hasFile('photo')) {
-        // Handle the uploaded file if no cropped image is provided
         $fileName = $request->file('photo')->getClientOriginalName();
         $photoPath = $request->file('photo')->storeAs('students', $fileName, 'public');
-        $student->photo = $fileName;
+        $newData['photo'] = $fileName;
     }
 
-    // Increment the edit count for the student
-    // Increment edit count only if the user is a teacher
-    if ($user->role === 'teacher') {
-        $student->edit_count += 1;
-    }
-    // Save the updated student data to the database
-    $student->save();
+    // Check if a StudentVersion record already exists
+    $studentVersion = StudentVersion::where('student_id', $id)->first();
 
-    // Redirect to a success page or back to the student list with a success message
-    return redirect()->route('teacher.students.index')->with('success', 'Student updated successfully.');
+    if ($studentVersion) {
+        // Merge old new_data with new changes
+        $existingNewData = json_decode($studentVersion->new_data, true);
+        $mergedNewData = array_merge($existingNewData ?? [], $newData);
+
+        // Update the existing record
+        $studentVersion->update([
+            'old_data' => json_encode($oldData),
+            'new_data' => json_encode($mergedNewData),
+            'status' => 'pending', // Requires admin approval
+            'updated_by' => $updatedBy,
+        ]);
+    } else {
+        // Create a new record
+        StudentVersion::create([
+            'student_id' => $id,
+            'old_data' => json_encode($oldData),
+            'new_data' => json_encode($newData),
+            'status' => 'pending',
+            'updated_by' => $updatedBy,
+        ]);
+    }
+
+    return redirect()->route('teacher.students.index')->with('success', 'Update request submitted for approval.');
 }
-
-
-
 
 
 

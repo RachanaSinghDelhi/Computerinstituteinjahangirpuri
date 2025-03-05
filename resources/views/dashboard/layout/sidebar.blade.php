@@ -85,6 +85,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ route('super_admin.student-approvals') }}" class="nav-link">
+                                <i class="fas fa-plus-circle nav-icon"></i>
+                                <p>Approve Student</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ route('student.index') }}" class="nav-link">
                                 <i class="fas fa-list nav-icon"></i>
                                 <p>Ajax Student</p>
@@ -123,6 +129,12 @@
                             <a href="{{ route('receipts.index') }}" class="nav-link">
                                 <i class="fas fa-list nav-icon"></i>
                                 <p>Receipts</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('approve.fees.index') }}" class="nav-link">
+                            <i class="fas fa-list nav-icon"></i>
+                                <p>Approve Fees</p>
                             </a>
                         </li>
                         <li class="nav-item">

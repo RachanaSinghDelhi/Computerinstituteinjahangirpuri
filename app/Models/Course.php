@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use app\models\student;
+use app\models\Student;
 
 class Course extends Model
 {
@@ -48,6 +48,9 @@ public function fees()
     }
 
 
-
+    public function feeVersions()
+    {
+        return $this->hasMany(FeeVersion::class, 'course_id', 'id');
+    }
    
 }
