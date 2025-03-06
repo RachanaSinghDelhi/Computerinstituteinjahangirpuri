@@ -111,6 +111,10 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
   
     // Dashboard Prefix Routes
     Route::middleware(['auth', 'role:super_admin'])->prefix('dashboard')->group(function () {
+      
+      Route::post('/students/update-course-status', [StudentController::class, 'updateCourseStatus'])->name('students.update_course_status');
+
+
       // Students Routes
       Route::get('/super_admin/student-approvals', [StudentVersionController::class, 'index'])->name('super_admin.student-approvals');
       Route::post('/super_admin/student-approvals/{id}/approve', [StudentVersionController::class, 'approve'])->name('super_admin.student-approve');

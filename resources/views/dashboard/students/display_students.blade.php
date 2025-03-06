@@ -75,7 +75,7 @@
             <thead>
                 <tr>
                     <th>Select</th>
-                    <th>ID</th>
+                
                     <th>Student ID</th>
                     <th>Name</th>
                     <th class="d-none d-md-table-cell">Father's Name</th>
@@ -83,6 +83,7 @@
                     <th>Course</th>
                     <th class="d-none d-md-table-cell">Batch</th>
                     <th>Photo</th>
+                    <th>Course status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -92,7 +93,7 @@
         <td>
             <input type="checkbox" name="student_ids[]" value="{{ $student->student_id }}" class="student-checkbox">
         </td>
-        <td>{{ $student->id }}</td>
+      
         <td>{{ $student->student_id }}</td>
         <td>{{ $student->name }}</td>
         <td class="d-none d-md-table-cell">{{ $student->father_name }}</td>
@@ -106,6 +107,13 @@
                 No Photo
             @endif
         </td>
+        <td>
+    <select name="course_status" class="form-control form-control-sm course-status" data-student-id="{{ $student->student_id }}">
+        <option value="ongoing" {{ $student->course_status === 'ongoing' ? 'selected' : '' }}>Ongoing</option>
+        <option value="completed" {{ $student->course_status === 'completed' ? 'selected' : '' }}>Completed</option>
+        <option value="dropped" {{ $student->course_status === 'dropped' ? 'selected' : '' }}>Dropped</option>
+    </select>
+</td>
         <td>
             <select name="status" class="form-control form-control-sm student-status" data-student-id="{{ $student->student_id }}">
                 <option value="Active" {{ strtoupper(trim($student->status)) === 'ACTIVE' ? 'selected' : '' }}>Active</option>
@@ -295,5 +303,38 @@
                 });
             });
         });
+
+
+
+
+
+
+        
+    
+        $('.course-status').change(function() {
+            var studentId = $(this).data('student-id');
+            var courseStatus = $(this).val();
+
+            $.ajax({
+                url: "{{ route('students.update_course_status') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    student_id: studentId,
+                    course_status: courseStatus
+                },
+                success: function(response) {
+                    alert(response.message);
+                },
+                error: function(xhr) {
+                    alert('Error updating course status');
+                }
+            });
+        });
+    
+
+
+
+
     </script>
 @endpush

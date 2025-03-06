@@ -352,4 +352,18 @@ public function search(Request $request)
             ->header('Content-Disposition', 'attachment; filename="students.sql"');
     }
 
+    public function updateCourseStatus(Request $request)
+    {
+        $student = Student::where('student_id', $request->student_id)->first();
+    
+        if ($student) {
+            $student->course_status = $request->course_status;
+            $student->save();
+    
+            return response()->json(['message' => 'Course status updated successfully']);
+        } else {
+            return response()->json(['message' => 'Student not found'], 404);
+        }
+    }
+
 }
