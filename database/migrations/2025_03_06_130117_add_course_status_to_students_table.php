@@ -5,17 +5,17 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    public function up(): void
+    public function up()
     {
         Schema::table('students', function (Blueprint $table) {
-            $table->boolean('is_active')->default(1)->after('id'); // 1 means active
+            $table->enum('course_status', ['ongoing', 'completed', 'dropped'])->default('ongoing')->after('status');
         });
     }
 
-    public function down(): void
+    public function down()
     {
         Schema::table('students', function (Blueprint $table) {
-            $table->dropColumn('is_active');
+            $table->dropColumn('course_status');
         });
     }
 };

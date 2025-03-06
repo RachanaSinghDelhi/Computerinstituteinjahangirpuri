@@ -33,6 +33,16 @@ use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Logout;
 use App\Http\Controllers\FeeVersionController; 
 use App\Http\Controllers\Teacher\FeeVersionController as TeacherFeeVersionController;
+use App\Http\Controllers\Teacher\AttendanceController as TeacherAttendanceController;
+
+
+
+
+ // Student Attendance Routes
+Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->group(function () {
+    Route::get('/attendance', [TeacherAttendanceController::class, 'index'])->name('teacher.attendance.index');
+    Route::post('/attendance/mark', [TeacherAttendanceController::class, 'markAttendance'])->name('teacher.attendance.mark');
+});
 
 
 

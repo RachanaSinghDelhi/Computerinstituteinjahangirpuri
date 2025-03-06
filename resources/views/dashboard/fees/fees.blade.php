@@ -45,23 +45,24 @@
 
         
         <div class="card-body">
-    <div class="mt-4">
+    <div class="mt-4 table-responsive" >
         <table id="feesTable" class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>Student ID</th>
                     <th>Student Name</th>
-                    <th>Admission Date</th>
+                    <th>DOA</th>
                     <th>Course Name</th>
                
-                    <th  class="d-none d-md-table-cell">Total Fees</th>
-                    <th  class="d-none d-md-table-cell">Installments</th>
-                    <th>Installments Paid</th>
+                    <th  class="d-none d-md-table-cell">Update & Calculate Total Fees</th>
+                    <th  class="d-none d-md-table-cell">Ins.</th>
+                    <th>Ins. Paid</th>
                     <th  class="d-none d-md-table-cell">Fees Paid</th>
                     <th  class="d-none d-md-table-cell">Fees Due</th>
                  
                     <th>Status</th>
                     <th>Actions</th>
+               
                 </tr>
             </thead>
             <tbody>
@@ -150,6 +151,7 @@
 
 
                         </td>
+                    
                     </tr>
                 @endforeach
             </tbody>
@@ -178,11 +180,12 @@
             lengthChange: true,
             pageLength: 10,
             lengthMenu: [5, 10, 15, 20],
-            responsive: true,
-            autoWidth: false,
-            order: [[9, 'desc']],
+         
+           
+            order: [[11, 'desc']], // Order by the 12th column (index 11) in descending order
             columnDefs: [
                 { targets: 7, type: 'date' },
+                
                 { targets: [7], visible: false }
             ],
             language: {
