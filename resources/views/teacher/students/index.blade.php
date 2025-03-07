@@ -47,7 +47,7 @@
             <th>Status</th>
             <th>Fees</th>
             <th>Photo</th>
-            <th>Actions</th>
+        
         </tr>
     </thead>
     <tbody>
@@ -73,12 +73,7 @@
                 <span class="badge badge-danger">Rejected</span>
             @endif
         </td>
-        <td>
-   
-   <a href="{{ route('teacher.fees.create', $student->student->student_id) }}" class="btn btn-primary">Add Fees</a>
-
-
-   </td>
+      
         <td>
             @if(!empty($studentData['photo']))
                 <img src="{{ asset('storage/students/' . $studentData['photo']) }}" alt="Student Photo" width="50">

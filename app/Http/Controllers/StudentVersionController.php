@@ -33,32 +33,42 @@ class StudentVersionController extends Controller
         $originalTeacher = User::find($studentVersion->updated_by);
     
         // Get the role and name
-        $role = $originalTeacher->role ?? 'Unknown Role'; // Adjust based on your role column
+        $role = $originalTeacher->role ?? 'Unknown Role';
         $name = $originalTeacher->name ?? 'Unknown User';
     
         // Store the formatted role with name
         $addedByFormatted = "{$role} ({$name})";
     
-        // Find or create the student in the main students table
-        $student = Student::updateOrCreate(
-            ['student_id' => $studentVersion->student_id], // Find student by ID
-            [
-                'name'          => $newData['name'] ?? null,
-                'father_name'   => $newData['father_name'] ?? null,
+        // Find the student by ID
+        $student = Student::where('student_id', $studentVersion->student_id)->first();
+    
+        // If the student doesn't exist, create a new record
+        if (!$student) {
+            $student = Student::create([
+                'student_id'    => $studentVersion->student_id,
+                'name'          => $newData['name'] ?? 'Unknown',
+                'father_name'   => $newData['father_name'] ?? 'Unknown',
                 'doa'           => $newData['doa'] ?? null,
                 'batch'         => $newData['batch'] ?? null,
                 'photo'         => $newData['photo'] ?? null,
                 'course_id'     => $newData['course_id'] ?? null,
                 'contact_number'=> $newData['contact_number'] ?? null,
-                'added_by'      => $addedByFormatted, // ✅ Store "Role (Name)" format
-            ]
-        );
+                'added_by'      => $addedByFormatted,
+            ]);
+        } else {
+            // If only batch is updated by a teacher, keep other values unchanged
+            if ($role === 'Teacher' && isset($newData['batch'])) {
+                $student->batch = $newData['batch'];
+                $student->save();
+            }
+        }
     
-        // Update the student_version status to approved
+        // Approve the student update request
         $studentVersion->update(['status' => 'approved']);
     
         return redirect()->back()->with('success', 'Student approved successfully.');
     }
+    
     
 
     
@@ -73,4 +83,42 @@ class StudentVersionController extends Controller
 
         return redirect()->back()->with('error', 'Student update rejected.');
     }
+
+    public function getNotifications()
+    {
+        // Fetch pending approval requests
+        $notifications = StudentVersion::where('status', 'pending')->orderBy('updated_at', 'desc')->get();
+    
+        $formattedNotifications = $notifications->map(function ($notification) {
+            $oldData = json_decode($notification->old_data, true);
+            $newData = json_decode($notification->new_data, true);
+    
+            // Determine notification type
+            if (empty($oldData)) {
+                $type = 'New Student Added';
+                $message = "New Student Added (ID: {$notification->student_id})";
+            } elseif (isset($oldData['batch']) && isset($newData['batch']) && $oldData['batch'] !== $newData['batch']) {
+                $type = 'Batch Change';
+                $message = "Batch Change for Student ID: {$notification->student_id}";
+            } else {
+                $type = 'Student Update';
+                $message = "Update Request for Student ID: {$notification->student_id}";
+            }
+    
+            return [
+                'id' => $notification->id,
+                'student_id' => $notification->student_id,
+                'message' => $message,
+                'type' => $type,
+                'updated_at' => $notification->updated_at->diffForHumans()
+            ];
+        });
+    
+        return response()->json([
+            'count' => $formattedNotifications->count(),
+            'notifications' => $formattedNotifications
+        ]);
+    }
+    
+
 }

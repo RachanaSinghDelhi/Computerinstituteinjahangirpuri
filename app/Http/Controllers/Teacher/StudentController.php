@@ -92,23 +92,37 @@ public function index()
 {
     $teacherId = auth()->id();
 
-    // Fetch all courses and store them in an associative array [id => course_name]
+    // Fetch all courses in an associative array [id => course_name]
     $courses = Course::pluck('course_name', 'id')->toArray();
 
-    // Fetch students added by the teacher
+    // Fetch students added or updated by the logged-in teacher
     $students = StudentVersion::where('updated_by', $teacherId)->get();
 
-    // Decode new_data and attach the correct course name
-    foreach ($students as $student) {
-        $student->new_data = json_decode($student->new_data, true); // Decode JSON
-        $courseId = $student->new_data['course_id'] ?? null; // Extract course_id from JSON
+    // Filter out batch-only updates
+    $filteredStudents = $students->filter(function ($student) {
+        $oldData = json_decode($student->old_data, true) ?? [];
+        $newData = json_decode($student->new_data, true) ?? [];
 
-        // Attach course name if course_id exists
+        // Check if the only changed field is 'batch'
+        if (count($newData) === 1 && isset($newData['batch'])) {
+            return false; // Exclude batch-only updates
+        }
+
+        return true; // Include all other records
+    });
+
+    // Attach course names
+    foreach ($filteredStudents as $student) {
+        $student->new_data = json_decode($student->new_data, true) ?? [];
+        $courseId = $student->new_data['course_id'] ?? null;
         $student->course_name = $courses[$courseId] ?? 'N/A';
     }
 
-    return view('teacher.students.index', compact('students'));
+    return view('teacher.students.index', ['students' => $filteredStudents]);
 }
+
+
+
 
 
 // Show the form for editing the specified student.

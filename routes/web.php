@@ -40,6 +40,8 @@ use App\Http\Controllers\Teacher\AttendanceController as TeacherAttendanceContro
 
  // Student Attendance Routes
 Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->group(function () {
+  Route::patch('/attendance/update-batch', [TeacherAttendanceController::class, 'updateBatch'])->name('attendance.update_batch');
+
     Route::get('/attendance', [TeacherAttendanceController::class, 'index'])->name('teacher.attendance.index');
     Route::post('/attendance/mark', [TeacherAttendanceController::class, 'markAttendance'])->name('teacher.attendance.mark');
 });
@@ -111,6 +113,9 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
   
     // Dashboard Prefix Routes
     Route::middleware(['auth', 'role:super_admin'])->prefix('dashboard')->group(function () {
+
+      Route::get('/notifications', [StudentVersionController::class, 'getNotifications'])->name('notifications');
+
       
       Route::post('/students/update-course-status', [StudentController::class, 'updateCourseStatus'])->name('students.update_course_status');
 

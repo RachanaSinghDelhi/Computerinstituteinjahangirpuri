@@ -15,8 +15,26 @@
         @foreach($pendingUpdates as $update)
             <div class="col-md-12 mb-4">
                 <div class="card shadow-sm">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">Update Request for Student ID: {{ $update->student_id }}</h5>
+                     
+                @php
+                        $oldData = json_decode($update->old_data, true);
+                        $newData = json_decode($update->new_data, true);
+
+                        // Check if old data is empty (new student)
+                        $isNewStudent = empty($oldData);
+
+                        // Check if only the batch is changed
+                        $batchChanged = array_key_exists('batch', $newData) && count($newData) === 1;
+                    @endphp
+                    
+                    <div class="card-header text-white {{ $isNewStudent ? 'bg-primary' : 'bg-warning' }}">
+                        @if ($isNewStudent)
+                            <h5 class="mb-0">Update Request for Student ID: {{ $update->student_id }}</h5>
+                        @elseif ($batchChanged)
+                            <h5 class="mb-0">Batch Change Request for Student ID: {{ $update->student_id }}</h5>
+                        @else
+                            <h5 class="mb-0">Student Information Update for Student ID: {{ $update->student_id }}</h5>
+                        @endif
                     </div>
                     <div class="card-body">
                         <div class="row">
