@@ -24,91 +24,92 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($students as $student)
-                            <tr>
-                                <td>{{ $student->student_id }}</td>
-                                <td>{{ $student->name }}</td>
-                             
-                                <td>
-                                @php
-                                // Fetch batch directly from students table
-    $currentBatch = $student->batch ?? 'Not Assigned';
+    @php
+        $previousBatch = null;
+    @endphp
+    @foreach($students->sortBy('batch') as $student)
+        @php
+            // Fetch batch details
+            $currentBatch = $student->batch ?? 'Not Assigned';
 
-    // Fetch the latest student_version entry for this student_id
-    $studentVersion = \App\Models\StudentVersion::where('student_id', $student->student_id)
-        ->latest('created_at')
-        ->first();
+            $studentVersion = \App\Models\StudentVersion::where('student_id', $student->student_id)
+                ->latest('created_at')
+                ->first();
 
-    // Initialize variables
-    $pendingBatch = null;
-    $batchStatus = null;
+            $pendingBatch = $studentVersion ? optional(json_decode($studentVersion->new_data, true))['batch'] : null;
+            $batchStatus = $studentVersion->status ?? 'pending';
+        @endphp
 
-    // If a student version record exists, decode new_data
-    if ($studentVersion) {
-        $newData = json_decode($studentVersion->new_data, true) ?? [];
-        $pendingBatch = $newData['batch'] ?? null;
-        $batchStatus = $studentVersion->status ?? 'pending'; // Use status from the table
-    }
-@endphp
-
-
-    <select name="batch" class="form-control form-control-sm batch-select" data-student-id="{{ $student->student_id }}">
-        <option value="">Select Batch</option> {{-- Default option --}}
-        @for ($hour = 8; $hour <= 20; $hour++)
+        {{-- Show batch separator --}}
+        @if ($currentBatch !== $previousBatch)
+            <tr class="table-info">
+                <td colspan="6" class="text-center fw-bold">
+                    🕒 Batch Time: {{ $currentBatch }}
+                </td>
+            </tr>
             @php
-                $time = ($hour < 12) ? $hour.':00 AM' : (($hour == 12) ? '12:00 PM' : ($hour - 12).':00 PM');
+                $previousBatch = $currentBatch;
             @endphp
-            <option value="{{ $time }}" {{ trim($currentBatch) == trim($time) ? 'selected' : '' }}>
-                {{ $time }}
-            </option>
-        @endfor
-    </select>
+        @endif
 
-    {{-- Show current batch with pending update in brackets --}}
-    <span>
-    <strong>Current Batch:</strong> {{ $currentBatch }}
-    @if($pendingBatch)
-        <strong class="batch-status" style="color: {{ $batchStatus == 'approved' ? 'green' : 'orange' }};">
-            ({{ ucfirst($batchStatus) }}: {{ $pendingBatch }})
-        </strong>
-    @endif
-</span>
-</td>
+        <tr>
+            <td>{{ $student->student_id }}</td>
+            <td>{{ $student->name }}</td>
+            <td>
+                <select name="batch" class="form-control form-control-sm batch-select" data-student-id="{{ $student->student_id }}">
+                    <option value="">Select Batch</option>
+                    @for ($hour = 8; $hour <= 20; $hour++)
+                        @php
+                            $time = ($hour < 12) ? $hour.':00 AM' : (($hour == 12) ? '12:00 PM' : ($hour - 12).':00 PM');
+                        @endphp
+                        <option value="{{ $time }}" {{ trim($currentBatch) == trim($time) ? 'selected' : '' }}>
+                            {{ $time }}
+                        </option>
+                    @endfor
+                </select>
+                <span>
+                    <strong>Current Batch:</strong> {{ $currentBatch }}
+                    @if($pendingBatch)
+                        <strong class="batch-status" style="color: {{ $batchStatus == 'approved' ? 'green' : 'orange' }};">
+                            ({{ ucfirst($batchStatus) }}: {{ $pendingBatch }})
+                        </strong>
+                    @endif
+                </span>
+            </td>
+            <td>
+                @php
+                    $attendance = $student->attendances->first();
+                @endphp
+                @if($attendance)
+                    <span class="badge bg-success">{{ $attendance->status }}</span>
+                @else
+                    <span class="badge bg-danger">Not Marked</span>
+                @endif
+            </td>
+            <td>{{ $attendance->user->name ?? 'N/A' }}</td>
+            <td>
+                @if(!$attendance)
+                <form class="attendance-form" action="{{ route('teacher.attendance.mark') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="student_id" value="{{ $student->id }}">
+                    <input type="hidden" name="batch" value="{{ $student->batch }}">
+                    <div class="d-flex">
+                        <select name="status" class="form-control form-select me-2" required>
+                            <option value="Present">Present</option>
+                            <option value="Absent">Absent</option>
+                            <option value="Late">Late</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary">Mark</button>
+                    </div>
+                </form>
+                @else
+                    <button class="btn btn-success" disabled>✔ Marked</button>
+                @endif
+            </td>
+        </tr>
+    @endforeach
+</tbody>
 
-
-                                <td>
-                                    @php
-                                        $attendance = $student->attendances->first();
-                                    @endphp
-                                    @if($attendance)
-                                        <span class="badge bg-success">{{ $attendance->status }}</span>
-                                    @else
-                                        <span class="badge bg-danger">Not Marked</span>
-                                    @endif
-                                </td>
-                                <td>{{ $attendance->user->name ?? 'N/A' }}</td>
-                                <td>
-                                    @if(!$attendance)
-                                    <form class="attendance-form" action="{{ route('teacher.attendance.mark') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="student_id" value="{{ $student->id }}">
-                                        <input type="hidden" name="batch" value="{{ $student->batch }}">
-                                        <div class="d-flex">
-                                            <select name="status" class="form-control form-select me-2" required>
-                                                <option value="Present">Present</option>
-                                                <option value="Absent">Absent</option>
-                                                <option value="Late">Late</option>
-                                            </select>
-                                            <button type="submit" class="btn btn-primary">Mark</button>
-                                        </div>
-                                    </form>
-                                    @else
-                                        <button class="btn btn-success" disabled>✔ Marked</button>
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
                 </table>
             </div>
         </div>
@@ -116,37 +117,18 @@
 </div>
 @endsection
 
-@push('css')
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
-
-    <!-- Custom Push.css (If available) -->
-    <link rel="stylesheet" href="{{ asset('css/push.css') }}">
-@endpush
 
 @push('js')
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- DataTables JS -->
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+   
 
     <!-- Push.js for Notifications -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/1.0.12/push.min.js"></script>
 
     <script>
-        $(document).ready(function() {
-            // Initialize DataTable
-            $('#attendanceTable').DataTable({
-                "paging": true,
-                "searching": true,
-                "ordering": true,
-                "lengthMenu": [10, 25, 50, 100],
-                "language": {
-                    "search": "Search Student:",
-                    "lengthMenu": "Show _MENU_ entries per page"
-                }
-            });
+       
 
             // Attendance Marking Notification
             $('.attendance-form').on('submit', function(event) {
