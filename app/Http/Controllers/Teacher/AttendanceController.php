@@ -26,6 +26,10 @@ class AttendanceController extends Controller
     // Get students
     $students = $studentsQuery->get();
 
+
+    // Get paginated students
+    $students = $studentsQuery->orderBy('batch')->paginate(10); // 10 records per page
+
     // Get all unique batches for filtering dropdown
     $batches = Student::where('course_status', 'ongoing')
         ->pluck('batch')
@@ -122,6 +126,15 @@ class AttendanceController extends Controller
     }
     
     
+    public function filter(Request $request)
+    {
+        $batch = $request->batch;
+ 
+        $students = Student::when($batch, function ($query) use ($batch) {
+            return $query->where('batch', $batch);
+        })->get();
     
+        return view('teacher.attendance.filter', compact('students'))->render();
+    }  
     
 }

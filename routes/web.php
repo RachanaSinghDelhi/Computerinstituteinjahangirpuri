@@ -40,6 +40,8 @@ use App\Http\Controllers\Teacher\AttendanceController as TeacherAttendanceContro
 
  // Student Attendance Routes
 Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->group(function () {
+  Route::get('/students/filter', [TeacherAttendanceController::class, 'filter'])->name('attendance.filter');
+
   Route::patch('/attendance/update-batch', [TeacherAttendanceController::class, 'updateBatch'])->name('attendance.update_batch');
 
     Route::get('/attendance', [TeacherAttendanceController::class, 'index'])->name('teacher.attendance.index');

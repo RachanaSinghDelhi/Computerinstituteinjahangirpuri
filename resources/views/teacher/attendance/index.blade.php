@@ -7,11 +7,23 @@
     <div class="card shadow-lg">
         <div class="card-header bg-primary text-white">
             <h3 class="mb-0">Attendance</h3>
+            <div class="d-flex">
+                <input type="text" id="searchInput" class="form-control me-2" placeholder="Search Student...">
+                <select id="batchFilter" class="form-control">
+                <option value="">Filter by Batch</option>
+                        @for ($hour = 8; $hour <= 20; $hour++)
+                            @php
+                                $time = ($hour < 12) ? $hour.':00 AM' : (($hour == 12) ? '12:00 PM' : ($hour - 12).':00 PM');
+                            @endphp
+                            <option value="{{ $time }}">{{ $time }}</option>
+                        @endfor
+</select>
+
+            </div>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table id="attendanceTable" class="table table-striped table-bordered">
-                
+        <div class="table-responsive">
+        <table id="attendanceTable" class="table table-striped table-bordered">
 
                     <thead>
                         <tr>
@@ -23,11 +35,28 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="filterbatch">
     @php
         $previousBatch = null;
     @endphp
-    @foreach($students->sortBy('batch') as $student)
+    @php
+    $sortedStudents = $students->sortBy(function($student) {
+        // Extract hour from batch time (e.g., "8:00 AM" → 8, "2:00 PM" → 14)
+        if (preg_match('/(\d+):00\s(AM|PM)/', $student->batch, $matches)) {
+            $hour = (int) $matches[1];
+            if ($matches[2] == 'PM' && $hour != 12) {
+                $hour += 12; // Convert PM times (except 12 PM) to 24-hour format
+            } elseif ($matches[2] == 'AM' && $hour == 12) {
+                $hour = 0; // Convert 12 AM to 0 for sorting
+            }
+            return $hour;
+        }
+        return 99; // Default for missing batch times
+    });
+@endphp
+
+@foreach($sortedStudents as $student)
+
         @php
             // Fetch batch details
             $currentBatch = $student->batch ?? 'Not Assigned';
@@ -56,26 +85,28 @@
             <td>{{ $student->student_id }}</td>
             <td>{{ $student->name }}</td>
             <td>
-                <select name="batch" class="form-control form-control-sm batch-select" data-student-id="{{ $student->student_id }}">
-                    <option value="">Select Batch</option>
-                    @for ($hour = 8; $hour <= 20; $hour++)
-                        @php
-                            $time = ($hour < 12) ? $hour.':00 AM' : (($hour == 12) ? '12:00 PM' : ($hour - 12).':00 PM');
-                        @endphp
-                        <option value="{{ $time }}" {{ trim($currentBatch) == trim($time) ? 'selected' : '' }}>
-                            {{ $time }}
-                        </option>
-                    @endfor
-                </select>
-                <span>
-                    <strong>Current Batch:</strong> {{ $currentBatch }}
-                    @if($pendingBatch)
-                        <strong class="batch-status" style="color: {{ $batchStatus == 'approved' ? 'green' : 'orange' }};">
-                            ({{ ucfirst($batchStatus) }}: {{ $pendingBatch }})
-                        </strong>
-                    @endif
-                </span>
-            </td>
+    <select name="batch" class="form-control form-control-sm batch-select" data-student-id="{{ $student->student_id }}">
+        <option value="">Select Batch</option>
+        @for ($hour = 8; $hour <= 20; $hour++)
+            @php
+                $time = ($hour < 12) ? $hour.':00 AM' : (($hour == 12) ? '12:00 PM' : ($hour - 12).':00 PM');
+                $selectedBatch = $pendingBatch ? trim($pendingBatch) : trim($currentBatch); // Use pendingBatch if available
+            @endphp
+            <option value="{{ $time }}" {{ trim($selectedBatch) == trim($time) ? 'selected' : '' }}>
+                {{ $time }}
+            </option>
+        @endfor
+    </select>
+    <span>
+        <strong>Current Batch:</strong> {{ $currentBatch }}
+        @if($pendingBatch)
+            <strong class="batch-status" style="color: {{ $batchStatus == 'approved' ? 'green' : 'orange' }};">
+                ({{ ucfirst($batchStatus) }}: {{ $pendingBatch }})
+            </strong>
+        @endif
+    </span>
+</td>
+
             <td>
                 @php
                     $attendance = $student->attendances->first();
@@ -111,6 +142,9 @@
 </tbody>
 
                 </table>
+                <div class="d-flex justify-content-center mt-3">
+                    {{ $students->links('pagination::bootstrap-4') }}
+                </div>
             </div>
         </div>
     </div>
@@ -131,6 +165,63 @@
        
 
             // Attendance Marking Notification
+            $(document).ready(function() {
+
+                $('#searchInput').on('keyup', function() {
+            var value = $(this).val().toLowerCase();
+            $('#attendanceTable tbody tr').filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+
+    
+   
+      
+        $('#batchFilter').on('change', function () {
+        var batch = $(this).val()?.trim() || "";
+
+        $.ajax({
+            url: "{{ route('attendance.filter') }}", // Change to your actual route
+            type: "GET",
+            data: { batch:batch },
+            
+            success: function (response) {
+                $('#filterbatch').html(response); // Update table with new data
+               
+            },
+            error: function (xhr, status, error) {
+            console.error("AJAX Error:", xhr.responseText);
+           
+        }
+        });
+    });
+/*
+
+    $('#batchFilter').change(function () {
+        var selectedBatch = $(this).val()?.trim() || ""; // Get selected batch
+
+        $('#attendanceTable tbody tr').each(function () {
+            var rowBatch = $(this).find('td select.batch-select option:selected').val(); // Get batch from row
+
+            if (typeof rowBatch !== "undefined" && rowBatch !== null) {
+                rowBatch = rowBatch.trim(); // Only trim if not undefined/null
+            } else {
+                rowBatch = ""; // Default to empty string if undefined
+            }
+
+            console.log("Row Batch:", rowBatch, "| Selected Batch:", selectedBatch); // Debugging
+
+            // Show row if batch matches or filter is empty
+            $(this).toggle(selectedBatch === "" || rowBatch === selectedBatch);
+        });
+    });
+
+
+*/
+
+
+            // Mark attendance on form submission
+            // Remove this line in actual use and replace it with a real form submission event
             $('.attendance-form').on('submit', function(event) {
                 event.preventDefault(); // Prevent default form submission for testing
                 let studentName = $(this).closest('tr').find('td:nth-child(2)').text();
@@ -150,7 +241,7 @@
                 // Simulate form submission (Remove this line in actual use)
                 setTimeout(() => event.target.submit(), 1000);
             });
-        });
+       
 
         $('.batch-select').change(function() {
     var studentId = $(this).data('student-id');
@@ -188,7 +279,7 @@
 });
 
 
-
+            });
 
     </script>
 @endpush
