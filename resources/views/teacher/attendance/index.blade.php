@@ -29,9 +29,9 @@
                         <tr>
                             <th>Student ID</th>
                             <th>Student</th>
-                            <th>Batch Time</th>
+                            <th class="d-none d-md-table-cell">Batch Time</th>
                             <th>Attendance</th>
-                            <th>Marked By</th>
+                            <th class="d-none d-md-table-cell">Marked By</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -84,7 +84,7 @@
         <tr>
             <td>{{ $student->student_id }}</td>
             <td>{{ $student->name }}</td>
-            <td>
+            <td class="d-none d-md-table-cell">
     <select name="batch" class="form-control form-control-sm batch-select" data-student-id="{{ $student->student_id }}">
         <option value="">Select Batch</option>
         @for ($hour = 8; $hour <= 20; $hour++)
@@ -117,7 +117,7 @@
                     <span class="badge bg-danger">Not Marked</span>
                 @endif
             </td>
-            <td>{{ $attendance->user->name ?? 'N/A' }}</td>
+            <td class="d-none d-md-table-cell">{{ $attendance->user->name ?? 'N/A' }}</td>
             <td>
                 @if(!$attendance)
                 <form class="attendance-form" action="{{ route('teacher.attendance.mark') }}" method="POST">
