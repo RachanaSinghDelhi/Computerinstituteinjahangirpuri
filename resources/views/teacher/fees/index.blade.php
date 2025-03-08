@@ -14,13 +14,14 @@
             @endif
 
             <h4>Pending Fees</h4>
+            <div class="table-responsive">
             <table id="feesTablePending" class="table table-bordered">
                 <thead>
                     <tr>
                         <th>Student</th>
                         <th>Student ID</th>
                         <th>Course</th>
-                        <th>Amount Paid</th>
+                    
                         <th>Installment</th>
                         <th>Payment Date</th>
                         <th>Status</th>
@@ -33,9 +34,10 @@
                         <td>{{ $fee->student->name }}</td>
                         <td>{{ $fee->student->student_id }}</td>
                         <td>{{ $fee->course->course_name ?? 'N/A' }}</td>
-                        <td>{{ $fee->amount_paid }}</td>
+                       
                         <td>{{ $fee->installment_no }}</td>
-                        <td>{{ $fee->payment_date }}</td>
+                        <td>{{ \Carbon\Carbon::parse($fee->payment_date)->format('d M Y') }}</td>
+
                         <td><span class="badge bg-warning">Pending</span></td>
                         <td>
                             <a href="{{ route('teacher.fees.edit', $fee->id) }}" class="btn btn-sm btn-warning">Edit</a>
@@ -45,15 +47,17 @@
                     @endforeach
                 </tbody>
             </table>
+</div>
 
             <h4>Approved Fees</h4>
-            <table id="feesTableApproved" class="table table-bordered">
+            <div class="table-responsive">
+            <table id="feesTableApproved" class="table table-bordered" >
                 <thead>
                     <tr>
                         <th>Student</th>
                         <th>Student ID</th>
                         <th>Course</th>
-                        <th>Amount Paid</th>
+                      
                         <th>Installment</th>
                         <th>Payment Date</th>
                         <th>Status</th>
@@ -66,9 +70,10 @@
                         <td>{{ $fee->student->name }}</td>
                         <td>{{ $fee->student->student_id }}</td>
                         <td>{{ $fee->course->course_name ?? 'N/A' }}</td>
-                        <td>{{ $fee->amount_paid }}</td>
+                     
                         <td>{{ $fee->installment_no }}</td>
-                        <td>{{ $fee->payment_date }}</td>
+                        <td>{{ \Carbon\Carbon::parse($fee->payment_date)->format('d M Y') }}</td>
+
                         <td><span class="badge bg-success">Approved</span></td>
                         <td>
                             <a href="{{ route('teacher.fees.create', $fee->student->student_id) }}" class="btn btn-sm btn-primary">Add Fees</a>
@@ -77,7 +82,7 @@
                     @endforeach
                 </tbody>
             </table>
-
+</div>
         </div>
     </div>
 </div>
@@ -96,19 +101,25 @@
     <script>
     $(function () {
         $('#feesTablePending').DataTable({
-            responsive: true,
+      
             paging: true,
             searching: true,
             ordering: true,
-            info: true
+            info: true,
+            columnDefs: [
+            { targets: [3, 4, 5], visible: false, responsivePriority: 2 }, // Hide specific columns on small screens
+        ]
         });
 
         $('#feesTableApproved').DataTable({
-            responsive: true,
+          
             paging: true,
             searching: true,
             ordering: true,
-            info: true
+            info: true,
+            columnDefs: [
+            { targets: [3, 4, 5], visible: false, responsivePriority: 2 }, // Hide specific columns on small screens
+        ]
         });
     });
     </script>
