@@ -106,9 +106,8 @@
             searching: true,
             ordering: true,
             info: true,
-            columnDefs: [
-            { targets: [3, 4, 5], visible: false, responsivePriority: 2 }, // Hide specific columns on small screens
-        ]
+          
+
         });
 
         $('#feesTableApproved').DataTable({
@@ -117,9 +116,8 @@
             searching: true,
             ordering: true,
             info: true,
-            columnDefs: [
-            { targets: [3, 4, 5], visible: false, responsivePriority: 2 }, // Hide specific columns on small screens
-        ]
+            
+
         });
     });
     </script>
