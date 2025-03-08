@@ -20,7 +20,7 @@
                         <th>Student</th>
                         <th>Student ID</th>
                         <th>Course</th>
-                        <th>Amount Paid</th>
+                     
                         <th>Installment</th>
                         <th>Payment Date</th>
                         <th>Status</th>
@@ -33,9 +33,10 @@
                         <td>{{ $fee->student->name }}</td>
                         <td>{{ $fee->student->student_id }}</td>
                         <td>{{ $fee->course->course_name ?? 'N/A' }}</td>
-                        <td>{{ $fee->amount_paid }}</td>
+                       
                         <td>{{ $fee->installment_no }}</td>
-                        <td>{{ $fee->payment_date }}</td>
+                        <td>{{ \Carbon\Carbon::parse($fee->payment_date)->format('d-m-Y') }}</td>
+
                         <td><span class="badge bg-warning">Pending</span></td>
                         <td>
                             <a href="{{ route('teacher.fees.edit', $fee->id) }}" class="btn btn-sm btn-warning">Edit</a>
@@ -53,7 +54,7 @@
                         <th>Student</th>
                         <th>Student ID</th>
                         <th>Course</th>
-                        <th>Amount Paid</th>
+                      
                         <th>Installment</th>
                         <th>Payment Date</th>
                         <th>Status</th>
@@ -66,9 +67,10 @@
                         <td>{{ $fee->student->name }}</td>
                         <td>{{ $fee->student->student_id }}</td>
                         <td>{{ $fee->course->course_name ?? 'N/A' }}</td>
-                        <td>{{ $fee->amount_paid }}</td>
+                     
                         <td>{{ $fee->installment_no }}</td>
-                        <td>{{ $fee->payment_date }}</td>
+                        <td>{{ \Carbon\Carbon::parse($fee->payment_date)->format('d-m-Y') }}</td>
+
                         <td><span class="badge bg-success">Approved</span></td>
                         <td>
                             <a href="{{ route('teacher.fees.create', $fee->student->student_id) }}" class="btn btn-sm btn-primary">Add Fees</a>
