@@ -52,6 +52,7 @@
                     <th>Student ID</th>
                     <th>Student Name</th>
                     <th>DOA</th>
+                    <th>Admission Date </th>
                     <th>Course Name</th>
                
                     <th  class="d-none d-md-table-cell">Update & Calculate Total Fees</th>
@@ -59,6 +60,7 @@
                     <th>Ins. Paid</th>
                     <th  class="d-none d-md-table-cell">Fees Paid</th>
                     <th  class="d-none d-md-table-cell">Fees Due</th>
+                    <th  class="d-none d-md-table-cell">Updated at</th>
                  
                     <th>Status</th>
                     <th>Actions</th>
@@ -71,6 +73,7 @@
                         <td>{{ $fee->student_id }}</td>
                         <td>{{ $fee->student_name }}</td>
                         <td>{{ \Carbon\Carbon::parse($fee->admission_date)->format('d') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($fee->admission_date)->format('d-m-y') }}</td>
                         <td>
                             <form action="{{ route('fees.updateCourse', $fee->student_id) }}" method="POST">
                                 @csrf
@@ -92,13 +95,13 @@
         <div class="input-group">
             <input type="number" id="total_fees_{{ $fee->student_id }}" name="total_fees" 
                    value="{{ $fee->student_total_fees }}" class="form-control" required>
-            
-        </div>
-        <button type="button" class="btn btn-secondary calculate-btn" 
+                   <button type="button" class="btn btn-secondary calculate-btn" 
                     data-target="#total_fees_{{ $fee->student_id }}">
                 🧮
             </button>
         <button type="submit" class="btn btn-sm btn-primary mt-2">Update Fees</button>
+        </div>
+        
     </form>
 </td>
 
@@ -107,6 +110,7 @@
                         <td>{{ $fee->installments_paid }}</td> <!-- Display number of paid installments -->
                         <td  class="d-none d-md-table-cell">{{ $fee->fees_paid }}</td>
                         <td  class="d-none d-md-table-cell">{{ $fee->fees_due }}</td>
+                        <td  class="d-none d-md-table-cell">{{ \Carbon\Carbon::parse( $fee->last_updated)->format('d-m-y') }}</td>
                      
                         @php
     $displayStatus = $fee->status == 'Paid but Pending Next Month' ? 'Paid but Pending' : $fee->status;
@@ -117,8 +121,8 @@
     <span class="badge {{ $statusClass }}">{{ $displayStatus }}</span>
 </td>
                         <td>
-                            <a href="{{ route('add_fees', $fee->student_id) }}" class="btn btn-primary btn-sm">Pay Now</a>
-                            <a href="{{ route('fees.show', $fee->student_id) }}" class="btn btn-info btn-sm">View Details</a>
+                            <a href="{{ route('add_fees', $fee->student_id) }}" class="btn btn-primary btn-sm">Pay</a>
+                            <a href="{{ route('fees.show', $fee->student_id) }}" class="btn btn-info btn-sm">View</a>
                             
                             @php
     // Fetch student's WhatsApp number from the students table
@@ -144,7 +148,7 @@
 <a href="https://wa.me/{{ $whatsappNumber }}?text={{ urlencode($message) }}" 
    target="_blank"
    class="btn btn-success btn-sm">
-   📲 WhatsApp Payment Reminder
+   📲 WhatsApp
 </a>
 
 
@@ -162,42 +166,39 @@
 @endsection
 
 @push('css')
+    <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
 @endpush
 
 @push('js')
+    <!-- jQuery (Ensure it's loaded) -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-
 <script>
     $(document).ready(function() {
-
         $('#feesTable').DataTable({
+            responsive:true,
             paging: true,
             searching: true,
             lengthChange: true,
             pageLength: 10,
-            lengthMenu: [5, 10, 15, 20],
-         
-           
-            order: [[11, 'desc']], // Order by the 12th column (index 11) in descending order
-            columnDefs: [
-                { targets: 7, type: 'date' },
-                
-                { targets: [7], visible: false }
-            ],
+            lengthMenu: [5, 10, 15, 20, 50],
+            order: [[0, 'desc']],
+            
             language: {
-                searchPlaceholder: "Search records...",
+                searchPlaceholder: "Search courses...",
                 lengthMenu: "Show _MENU_ entries",
-                paginate: {
-                    next: "Next",
-                    previous: "Previous"
-                }
+                paginate: { next: "Next", previous: "Previous" }
             }
         });
- 
+    
+
+
+
         $('.calculate-btn').click(function () {
             let targetInput = $(this).data('target');
 

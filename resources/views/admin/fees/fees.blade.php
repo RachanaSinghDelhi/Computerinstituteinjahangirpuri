@@ -32,6 +32,7 @@
                 <tr>
                     <th>Student ID</th>
                     <th>Student Name</th>
+                    <th>DOA</th>
                     <th>Admission Date</th>
                     <th>Course Name</th>
                
@@ -51,6 +52,7 @@
                         <td>{{ $fee->student_id }}</td>
                         <td>{{ $fee->student_name }}</td>
                         <td>{{ \Carbon\Carbon::parse($fee->admission_date)->format('d') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($fee->admission_date)->format('d-m-y') }}</td>
                         <td>
                             <form action="{{ route('admin.fees.updateCourse', $fee->student_id) }}" method="POST">
                                 @csrf
