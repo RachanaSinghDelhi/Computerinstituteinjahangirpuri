@@ -43,7 +43,7 @@ class Student extends Model
         return $this->hasMany(Attendance::class, 'student_id', 'id');
     }
     
-    
+   
     
 }
 

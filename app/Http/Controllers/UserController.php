@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Student;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -90,5 +92,36 @@ class UserController extends Controller
 
         $user->delete();
         return redirect()->route('users.index')->with('success', 'User deleted successfully!');
+    }
+
+
+    public function addActiveStudentsToUsers()
+    {
+        // ✅ Fetch students with "ongoing" course_status
+        $ongoingStudents = Student::where('course_status', 'ongoing')->get();
+    
+        foreach ($ongoingStudents as $student) {
+            // Generate a random 5-digit number for email if needed
+            $randomNumber = rand(10000, 99999);
+            $email = $student->email ?? "nice{$randomNumber}{$student->student_id}@nicewebtechnologies.com";
+    
+            // ✅ Use updateOrCreate to prevent duplicates
+            User::updateOrCreate(
+                ['student_id' => $student->student_id], // Ensure uniqueness
+                [
+                    'name' => $student->name,
+                    'email' => $email,
+                    'password' => bcrypt('defaultPassword123'),
+                    'role' => 'student',
+                    'updated_at' => now(),
+                ]
+            );
+        }
+    
+        // ✅ Remove students from users table if course_status is NOT "ongoing"
+        $nonOngoingStudentIds = Student::where('course_status', '!=', 'ongoing')->pluck('student_id')->toArray();
+        User::whereIn('student_id', $nonOngoingStudentIds)->delete(); // Remove users if status changes
+    
+        return redirect()->back()->with('success', 'Student records synchronized successfully.');
     }
 }

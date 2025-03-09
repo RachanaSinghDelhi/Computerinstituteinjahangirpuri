@@ -221,6 +221,12 @@
                                 <p>Add Users</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('students.addActive') }}" class="nav-link">
+                                <i class="fas fa-plus-circle nav-icon"></i>
+                                <p>Add Active Students</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 @endif

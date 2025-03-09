@@ -34,9 +34,18 @@ use App\Livewire\Auth\Logout;
 use App\Http\Controllers\FeeVersionController; 
 use App\Http\Controllers\Teacher\FeeVersionController as TeacherFeeVersionController;
 use App\Http\Controllers\Teacher\AttendanceController as TeacherAttendanceController;
+use App\Http\Controllers\Teacher\AssignmentController as TeacherAssignmentController;
 
 
 
+Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->group(function () {
+    Route::get('/assignments', [TeacherAssignmentController::class, 'index'])->name('teacher.assignments.index');
+    Route::get('/assignments/add', [TeacherAssignmentController::class, 'create'])->name('teacher.assignments.add');
+    Route::post('/assignments/store', [TeacherAssignmentController::class, 'store'])->name('teacher.assignments.store');
+    Route::get('/assignments/edit/{id}', [TeacherAssignmentController::class, 'edit'])->name('teacher.assignments.edit');
+    Route::put('/assignments/update/{id}', [TeacherAssignmentController::class, 'update'])->name('teacher.assignments.update');
+    Route::delete('/assignments/delete/{id}', [TeacherAssignmentController::class, 'destroy'])->name('teacher.assignments.delete');
+});
 
  // Student Attendance Routes
 Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->group(function () {
@@ -215,7 +224,9 @@ Route::put('fees/{fee}', [FeeController::class, 'update'])->name('fees.update');
     Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
     Route::post('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])->name('users.destroy');
-   
+    Route::get('/add-active-students', [UserController::class, 'addActiveStudentsToUsers'])
+    ->name('students.addActive');
+
     Route::resource('expenses', ExpenseController::class)->names([
       'index' => 'superadmin.expenses.index',
       'create' => 'superadmin.expenses.create',
