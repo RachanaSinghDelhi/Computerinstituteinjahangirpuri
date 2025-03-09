@@ -62,7 +62,7 @@
             "paging": true,
             "searching": true,
             "lengthMenu": [5, 10, 25, 50],
-            "pageLength": 10
+            "pageLength": 10,
             "order": [[0, "desc"]] // Order by STUDENT ID in ascending order
         });
     });
