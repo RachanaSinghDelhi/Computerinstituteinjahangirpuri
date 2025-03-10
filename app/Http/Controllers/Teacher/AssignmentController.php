@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Assignment;
 use App\Models\Course;
+use App\Models\Student;
 use App\Models\user;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,8 +22,8 @@ class AssignmentController extends Controller
     // Show Create Form
     public function create()
     {
-        $courses = Course::all();
-        $students = User::where('role', 'student')->get(); // Fetch students from the users table
+        $courses = Course::all(); 
+        $students = Student::all(); // Get all students initially
     
         return view('teacher.assignments.add', compact('courses', 'students'));
     }
@@ -35,7 +36,7 @@ class AssignmentController extends Controller
         'title' => 'required|string|max:255',
         'description' => 'required',
         'course_id' => 'required|exists:courses,id',
-        'student_id' => 'required|exists:students,student_id', // Validate student_id
+      'student_id' => 'required|exists:users,student_id',
         'file' => 'nullable|mimes:pdf,doc,docx,zip|max:2048',
         'due_date' => 'required|date',
         'status' => 'required|in:active,inactive',
@@ -52,7 +53,7 @@ class AssignmentController extends Controller
         'title' => $request->title,
         'description' => $request->description,
         'course_id' => $request->course_id,
-        'student_id' => $request->student_id,
+        'student_id' => 'required|exists:users,student_id', // Corrected table name
         'file_name' => $fileName,
         'due_date' => $request->due_date,
         'status' => $request->status,

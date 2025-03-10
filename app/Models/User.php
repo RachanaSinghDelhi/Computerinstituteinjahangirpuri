@@ -21,6 +21,7 @@ class User extends Authenticatable
         'student_id',
         'name',
         'email',
+        'username',
         'password',
         'role',
     ];

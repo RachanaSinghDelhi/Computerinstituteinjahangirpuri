@@ -9,7 +9,8 @@
 
     <form wire:submit.prevent="login">
         <div class="input-group mb-3">
-            <input type="email" wire:model="email" class="form-control" placeholder="Email" required>
+        <input type="text" wire:model="email" class="form-control" placeholder="Email or Username" required>
+
             <div class="input-group-append">
                 <div class="input-group-text">
                     <span class="fa fa-envelope"></span>

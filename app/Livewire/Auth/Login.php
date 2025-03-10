@@ -13,14 +13,16 @@ class Login extends Component
     public function login()
     {
         $this->validate([
-            'email' => 'required|email',
+            'email' => 'required|string',
             'password' => 'required|min:6',
             'role' => 'required|in:admin,teacher,student',
         ]);
 
-        // Find the user with the provided email
-        $user = User::where('email', $this->email)->first();
-
+         // Find user by email or username
+    $user = User::where('email', $this->email)
+    ->orWhere('username', $this->email) // Check username as well
+    ->first();
+    
         // Check if user exists and verify password
         if ($user && Hash::check($this->password, $user->password)) {
             // Check if the role matches
