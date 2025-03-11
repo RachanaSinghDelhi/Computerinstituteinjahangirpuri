@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Teacher;
 use App\Http\Controllers\Controller; // Correct import for the base Controller class
 use App\Models\Student;
+use App\Models\Course;
 use Illuminate\Http\Request;
 
 class TeacherController extends Controller
