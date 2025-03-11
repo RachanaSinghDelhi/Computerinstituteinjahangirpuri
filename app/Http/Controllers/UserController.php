@@ -67,21 +67,31 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
-
+    
         $request->validate([
+            'username' => 'required|string|max:255|unique:users,username,' . $id,
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
             'role' => 'required|in:admin,teacher,student',
+            'password' => 'nullable|min:6|confirmed', // Password confirmation required
         ]);
-
-        $user->update([
+    
+        $data = [
+            'username' => $request->username,
             'name' => $request->name,
             'email' => $request->email,
             'role' => $request->role,
-        ]);
-
+        ];
+    
+        if ($request->filled('password')) {
+            $data['password'] = bcrypt($request->password);
+        }
+    
+        $user->update($data);
+    
         return redirect()->route('users.index')->with('success', 'User updated successfully!');
     }
+    
 
     /**
      * Remove the specified user from the database.
