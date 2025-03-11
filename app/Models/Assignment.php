@@ -8,33 +8,51 @@ class Assignment extends Model
 {
     use HasFactory;
 
+    protected $table = 'assignments'; // Ensure correct table name
+
     protected $fillable = [
-        'title', 
-        'description', 
-        'course_id', 
-        'file_name', // Changed from file_path to file_name
-        'due_date', 
-        'status', 
-        'student_id', // Directly linking to a student
-        'added_by', 
-        'updated_by'
+        'title',
+        'description',
+        'deadline',
+        'status',
+        'file_name',
+        'student_id',
+        'course_id',
+        'added_by',
+        'updated_by',
     ];
 
-    public function student()
-    {
-        return $this->belongsTo(Student::class, 'student_id', 'student_id');
-    }
+    protected $casts = [
+        'deadline' => 'date', // Ensure 'deadline' is treated as a date
+    ];
 
+    /**
+     * Get the course associated with the assignment.
+     */
     public function course()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Course::class, 'course_id');
     }
 
+    /**
+     * Get the student associated with the assignment.
+     */
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'student_id');
+    }
+
+    /**
+     * Get the user who added the assignment.
+     */
     public function addedBy()
     {
         return $this->belongsTo(User::class, 'added_by');
     }
 
+    /**
+     * Get the user who last updated the assignment.
+     */
     public function updatedBy()
     {
         return $this->belongsTo(User::class, 'updated_by');

@@ -31,38 +31,39 @@ class AssignmentController extends Controller
 
     // Store New Assignment
     public function store(Request $request)
-{
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'description' => 'required',
-        'course_id' => 'required|exists:courses,id',
-      'student_id' => 'required|exists:users,student_id',
-        'file' => 'nullable|mimes:pdf,doc,docx,zip|max:2048',
-        'due_date' => 'required|date',
-        'status' => 'required|in:active,inactive',
-    ]);
-
-    $fileName = null;
-    if ($request->hasFile('file')) {
-        $file = $request->file('file');
-        $fileName = time() . '_' . $file->getClientOriginalName();
-        $file->storeAs('assignments', $fileName, 'public'); // Store file in 'storage/app/public/assignments'
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required',
+            'course_id' => 'required|exists:courses,id',
+            'student_id' => 'required|exists:students,student_id', // Ensuring student exists
+            'file' => 'nullable|mimes:pdf,doc,docx,zip|max:2048',
+            'deadline' => 'required|date', // Updated to match the table field
+            'status' => 'required|in:active,inactive',
+        ]);
+    
+        $fileName = null;
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('assignments', $fileName, 'public'); // Store file
+        }
+    
+        Assignment::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'course_id' => $request->course_id,
+            'student_id' => $request->student_id, 
+            'file_name' => $fileName,
+            'deadline' => $request->deadline, // Corrected field name
+            'status' => $request->status,
+            'added_by' => auth()->id(),
+            'updated_by' => auth()->id(),
+        ]);
+    
+        return redirect()->route('teacher.assignments.index')->with('success', 'Assignment created successfully.');
     }
-
-    Assignment::create([
-        'title' => $request->title,
-        'description' => $request->description,
-        'course_id' => $request->course_id,
-        'student_id' => 'required|exists:users,student_id', // Corrected table name
-        'file_name' => $fileName,
-        'due_date' => $request->due_date,
-        'status' => $request->status,
-        'added_by' => auth()->id(),
-        'updated_by' => auth()->id(),
-    ]);
-
-    return redirect()->route('teacher.assignments.index')->with('success', 'Assignment created successfully.');
-}
+    
 
     // Show Edit Form
     public function edit($id)

@@ -119,24 +119,31 @@
             </td>
             <td class="d-none d-md-table-cell">{{ $attendance->user->name ?? 'N/A' }}</td>
             <td>
-                @if(!$attendance)
-                <form class="attendance-form" action="{{ route('teacher.attendance.mark') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="student_id" value="{{ $student->id }}">
-                    <input type="hidden" name="batch" value="{{ $student->batch }}">
-                    <div class="d-flex">
-                        <select name="status" class="form-control form-select me-2" required>
-                            <option value="Present">Present</option>
-                            <option value="Absent">Absent</option>
-                            <option value="Late">Late</option>
-                        </select>
-                        <button type="submit" class="btn btn-primary">Mark</button>
-                    </div>
-                </form>
-                @else
-                    <button class="btn btn-success" disabled>✔ Marked</button>
-                @endif
-            </td>
+    @php
+        $attendance = \App\Models\Attendance::where('student_id', $student->student_id)
+            ->whereDate('attendance_date', now()->toDateString())
+            ->first();
+    @endphp
+
+    @if(!$attendance)
+        <form class="attendance-form" action="{{ route('teacher.attendance.mark') }}" method="POST">
+            @csrf
+            <input type="hidden" name="student_id" value="{{ $student->student_id }}">
+            <input type="hidden" name="batch" value="{{ $student->batch }}">
+            <div class="d-flex">
+                <select name="status" class="form-control form-select me-2" required>
+                    <option value="Present">Present</option>
+                    <option value="Absent">Absent</option>
+                    <option value="Late">Late</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Mark</button>
+            </div>
+        </form>
+    @else
+        <button class="btn btn-success" disabled>✔ Marked</button>
+    @endif
+</td>
+
         </tr>
     @endforeach
 </tbody>
@@ -230,7 +237,7 @@
                 // Show Push Notification
                 Push.create("Attendance Marked", {
                     body: studentName + " is marked as " + status,
-                    icon: "{{ asset('images/attendance-icon.png') }}", // Use an actual icon
+                 
                     timeout: 4000,
                     onClick: function () {
                         window.focus();

@@ -50,6 +50,7 @@ Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->group(function (
  // Student Attendance Routes
 Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->group(function () {
   Route::get('/students/filter', [TeacherAttendanceController::class, 'filter'])->name('attendance.filter');
+  Route::get('/attendance/batchwise', [TeacherAttendanceController::class, 'batchWiseAttendanceReport'])->name('attendance.batchwiseReport');
 
   Route::patch('/attendance/update-batch', [TeacherAttendanceController::class, 'updateBatch'])->name('attendance.update_batch');
 

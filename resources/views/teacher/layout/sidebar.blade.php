@@ -80,11 +80,16 @@
                    <p>Attendance List</p>
                </a>
            </li>
+           <li class="nav-item">
+               <a href="{{ route('attendance.batchwiseReport') }}" class="nav-link">
+                   <i class="fas fa-list nav-icon"></i>
+                   <p>Attendance Report</p>
+               </a>
+           </li>
            
        </ul>
    </li>
 
-   <li class="nav-header">MANAGE ATTENDANCE</li> 
 
 
    <li class="nav-header">MANAGE ASSIGNMENTS</li>

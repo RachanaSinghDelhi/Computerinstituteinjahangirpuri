@@ -38,9 +38,12 @@ class UserController extends Controller
             'password' => 'required|min:6',
             'role' => 'required|in:admin,teacher,student',
         ]);
-
+ // Generate username: name + random 5-digit number
+ $randomNumber = rand(10000, 99999);
+ $username = strtolower(str_replace(' ', '_', $request->name)) . $randomNumber;
         User::create([
             'name' => $request->name,
+            'username'=>$username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
@@ -105,13 +108,15 @@ class UserController extends Controller
             $randomNumber = rand(10000, 99999);
             $email = $student->email ?? "nice{$randomNumber}{$student->student_id}@nicewebtechnologies.com";
     
+
+            $password = bcrypt("{$student->name}@{$randomNumber}");
             // ✅ Use updateOrCreate to prevent duplicates
             User::updateOrCreate(
                 ['student_id' => $student->student_id], // Ensure uniqueness
                 [
                     'name' => $student->name,
                     'email' => $email,
-                    'password' => bcrypt('defaultPassword123'),
+                    'password' =>  $password,
                     'role' => 'student',
                     'updated_at' => now(),
                 ]
