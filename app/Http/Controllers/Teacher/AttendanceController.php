@@ -11,8 +11,7 @@ use App\Models\StudentVersion;
 use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
-{
-    public function index(Request $request)
+{public function index(Request $request)
     {
         $batch = $request->query('batch');
         $studentsQuery = Student::where('course_status', 'ongoing');
@@ -21,14 +20,30 @@ class AttendanceController extends Controller
             $studentsQuery->where('batch', $batch);
         }
     
-        $students = $studentsQuery->paginate(30);
+        // Fetch all students without pagination
+        $students = $studentsQuery->get();
     
         // Fetch attendance records for today
         $attendances = Attendance::where('attendance_date', now()->toDateString())->get()->keyBy('student_id');
     
         $batches = Student::where('course_status', 'ongoing')->pluck('batch')->unique();
     
-        return view('teacher.attendance.index', compact('students', 'batches', 'attendances'));
+        // Custom sorting of students based on batch time
+        $sortedStudents = $students->sortBy(function ($student) {
+            if (preg_match('/(\d+):00\s(AM|PM)/', $student->batch, $matches)) {
+                $hour = (int) $matches[1];
+    
+                if ($matches[2] == 'PM' && $hour != 12) {
+                    $hour += 12; // Convert PM times (except 12 PM) to 24-hour format
+                } elseif ($matches[2] == 'AM' && $hour == 12) {
+                    $hour = 0; // Convert 12 AM to 0
+                }
+                return $hour;
+            }
+            return 99; // Default sorting value for invalid/missing batch times
+        });
+    
+        return view('teacher.attendance.index', compact('sortedStudents', 'batches', 'attendances'));
     }
     
 
