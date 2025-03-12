@@ -94,19 +94,19 @@
 
    <li class="nav-header">MANAGE ASSIGNMENTS</li>
 <li class="nav-item has-treeview">
-    <a href="#" class="nav-link">
+    <a href="#" class="nav-link" readonly>
         <i class="nav-icon fas fa-tasks"></i>
         <p>Assignments<i class="right fas fa-angle-left"></i></p>
     </a>
     <ul class="nav nav-treeview">
         <li class="nav-item">
-            <a href="{{ route('teacher.assignments.add') }}" class="nav-link">
+            <a href="{{ route('teacher.assignments.add') }}" class="nav-link" readonly>
                 <i class="fas fa-plus-circle nav-icon"></i>
                 <p>Add Assignment</p>
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('teacher.assignments.index') }}" class="nav-link">
+            <a href="{{ route('teacher.assignments.index') }}" class="nav-link" readonly>
                 <i class="fas fa-list nav-icon"></i>
                 <p>Assignment List</p>
             </a>
@@ -120,7 +120,7 @@
 
 <!-- Logout -->
 <li class="nav-item">
-    <a href="{{ route('user.logout') }}" class="nav-link">
+    <a href="{{ route('user.logout') }}" class="nav-link" >
         <i class="nav-icon fas fa-sign-out-alt"></i>
         <p>Logout</p>
     </a>
