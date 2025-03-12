@@ -119,16 +119,19 @@ $sortedStudents = $students->sortBy(function($student) {
     </span>
 </td>
 
-            <td>
-                @php
-                    $attendance = $student->attendances->first();
-                @endphp
-                @if($attendance)
-                    <span class="badge bg-success">{{ $attendance->status }}</span>
-                @else
-                    <span class="badge bg-danger">Not Marked</span>
-                @endif
-            </td>
+<td>
+    @php
+        // Ensure we're checking attendance for today's date
+        $attendance = $student->attendances->where('attendance_date', now()->toDateString())->first();
+    @endphp
+
+    @if($attendance)
+        <span class="badge bg-success">{{ $attendance->status }}</span>
+    @else
+        <span class="badge bg-danger">Not Marked</span>
+    @endif
+</td>
+
             <td class="d-none d-md-table-cell">{{ $attendance->user->name ?? 'N/A' }}</td>
             <td>
     @php

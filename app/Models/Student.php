@@ -40,7 +40,7 @@ class Student extends Model
     
     public function attendances()
     {
-        return $this->hasMany(Attendance::class, 'student_id', 'id');
+        return $this->hasMany(Attendance::class, 'student_id', 'student_id');
     }
     
    

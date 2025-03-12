@@ -15,17 +15,21 @@ class AttendanceController extends Controller
     public function index(Request $request)
     {
         $batch = $request->query('batch');
-        $studentsQuery = Student::where('course_status', 'ongoing');
+    
+        // Fetch only the students with the applied filter
+        $students = Student::where('course_status', 'ongoing');
     
         if ($batch) {
-            $studentsQuery->where('batch', $batch);
+            $students->where('batch', $batch);
         }
     
-        $students = $studentsQuery->get(); // Removed paginate()
+        // ✅ Ensure we also load attendances & user relation while fetching students
+        $students = $students->with(['attendances.user'])->get();
     
-        // Fetch attendance records for today
+        // ✅ Fetch attendance records for today
         $attendances = Attendance::where('attendance_date', now()->toDateString())->get()->keyBy('student_id');
     
+        // ✅ Get unique ongoing batches
         $batches = Student::where('course_status', 'ongoing')->pluck('batch')->unique();
     
         return view('teacher.attendance.index', compact('students', 'batches', 'attendances'));
