@@ -21,7 +21,7 @@ class AttendanceController extends Controller
             $studentsQuery->where('batch', $batch);
         }
     
-        $students = $studentsQuery->orderBy('batch')->paginate(10);
+        $students = $studentsQuery->paginate(30);
     
         // Fetch attendance records for today
         $attendances = Attendance::where('attendance_date', now()->toDateString())->get()->keyBy('student_id');
