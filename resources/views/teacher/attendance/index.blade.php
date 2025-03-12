@@ -43,20 +43,24 @@
         $previousBatch = null;
     @endphp
     @php
-    $sortedStudents = $students->sortBy(function($student) {
-        // Extract hour from batch time (e.g., "8:00 AM" → 8, "2:00 PM" → 14)
-        if (preg_match('/(\d+):00\s(AM|PM)/', $student->batch, $matches)) {
-            $hour = (int) $matches[1];
-            if ($matches[2] == 'PM' && $hour != 12) {
-                $hour += 12; // Convert PM times (except 12 PM) to 24-hour format
-            } elseif ($matches[2] == 'AM' && $hour == 12) {
-                $hour = 0; // Convert 12 AM to 0 for sorting
-            }
-            return $hour;
+$sortedStudents = $students->sortBy(function($student) {
+    if (preg_match('/(\d+):00\s(AM|PM)/', $student->batch, $matches)) {
+        $hour = (int) $matches[1];
+
+        // Convert to 24-hour format
+        if ($matches[2] == 'PM' && $hour != 12) {
+            $hour += 12;
+        } elseif ($matches[2] == 'AM' && $hour == 12) {
+            $hour = 0;
         }
-        return 99; // Default for missing batch times
-    });
+
+        // Return time in HHMM format for proper sorting
+        return sprintf('%02d00', $hour);
+    }
+    return '9999'; // Ensure missing or invalid batch times appear last
+});
 @endphp
+
 
 @foreach($sortedStudents as $student)
 
