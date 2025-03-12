@@ -10,14 +10,18 @@
             <div class="d-flex">
                 <input type="text" id="searchInput" class="form-control me-2" placeholder="Search Student...">
                 <select id="batchFilter" class="form-control">
-                <option value="">Filter by Batch</option>
-                        @for ($hour = 8; $hour <= 20; $hour++)
-                            @php
-                                $time = ($hour < 12) ? $hour.':00 AM' : (($hour == 12) ? '12:00 PM' : ($hour - 12).':00 PM');
-                            @endphp
-                            <option value="{{ $time }}">{{ $time }}</option>
-                        @endfor
+    <option value="">Filter by Batch</option>
+    @for ($hour = 8; $hour <= 20; $hour++)
+        @php
+            // Format hours with leading zero for consistency (08:00 AM instead of 8:00 AM)
+            $formattedHour = str_pad(($hour <= 12 ? $hour : $hour - 12), 2, '0', STR_PAD_LEFT);
+            $suffix = ($hour < 12) ? 'AM' : 'PM';
+            $time = ($hour == 12) ? "12:00 PM" : "{$formattedHour}:00 {$suffix}";
+        @endphp
+        <option value="{{ $time }}">{{ $time }}</option>
+    @endfor
 </select>
+
 
             </div>
         </div>
@@ -89,18 +93,23 @@
             <td>{{ $student->student_id }}</td>
             <td>{{ $student->name }}</td>
             <td class="d-none d-md-table-cell">
-    <select name="batch" class="form-control form-control-sm batch-select" data-student-id="{{ $student->student_id }}">
-        <option value="">Select Batch</option>
-        @for ($hour = 8; $hour <= 20; $hour++)
-            @php
-                $time = ($hour < 12) ? $hour.':00 AM' : (($hour == 12) ? '12:00 PM' : ($hour - 12).':00 PM');
-                $selectedBatch = $pendingBatch ? trim($pendingBatch) : trim($currentBatch); // Use pendingBatch if available
-            @endphp
-            <option value="{{ $time }}" {{ trim($selectedBatch) == trim($time) ? 'selected' : '' }}>
-                {{ $time }}
-            </option>
-        @endfor
-    </select>
+            <select name="batch" class="form-control form-control-sm batch-select" data-student-id="{{ $student->student_id }}">
+    <option value="">Select Batch</option>
+    @for ($hour = 8; $hour <= 20; $hour++)
+        @php
+            // Format hours with leading zero for consistency (08:00 AM instead of 8:00 AM)
+            $formattedHour = str_pad(($hour <= 12 ? $hour : $hour - 12), 2, '0', STR_PAD_LEFT);
+            $suffix = ($hour < 12) ? 'AM' : 'PM';
+            $time = ($hour == 12) ? "12:00 PM" : "{$formattedHour}:00 {$suffix}";
+
+            $selectedBatch = $pendingBatch ? trim($pendingBatch) : trim($currentBatch); // Use pendingBatch if available
+        @endphp
+        <option value="{{ $time }}" {{ trim($selectedBatch) == trim($time) ? 'selected' : '' }}>
+            {{ $time }}
+        </option>
+    @endfor
+</select>
+
     <span>
         <strong>Current Batch:</strong> {{ $currentBatch }}
         @if($pendingBatch)
