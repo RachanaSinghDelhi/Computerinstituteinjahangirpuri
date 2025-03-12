@@ -41,18 +41,22 @@
     @endphp
     @php
     $sortedStudents = $students->sortBy(function($student) {
-        // Extract hour from batch time (e.g., "8:00 AM" → 8, "2:00 PM" → 14)
-        if (preg_match('/(\d+):00\s(AM|PM)/', $student->batch, $matches)) {
-            $hour = (int) $matches[1];
-            if ($matches[2] == 'PM' && $hour != 12) {
-                $hour += 12; // Convert PM times (except 12 PM) to 24-hour format
-            } elseif ($matches[2] == 'AM' && $hour == 12) {
-                $hour = 0; // Convert 12 AM to 0 for sorting
-            }
-            return $hour;
+    if (preg_match('/^(\d+):00\s(AM|PM)$/', trim($student->batch), $matches)) {
+        $hour = (int) $matches[1];
+
+        // Ensure 12 AM is 0 and 12 PM remains 12
+        if ($matches[2] == 'AM' && $hour == 12) {
+            $hour = 0;
+        } elseif ($matches[2] == 'PM' && $hour != 12) {
+            $hour += 12;
         }
-        return 99; // Default for missing batch times
-    });
+        
+        // Ensuring all values are two-digit format (08 instead of 8)
+        return str_pad($hour, 2, '0', STR_PAD_LEFT);
+    }
+    return '99'; // Default high value for missing batch times
+});
+
 @endphp
 
 @foreach($sortedStudents as $student)
