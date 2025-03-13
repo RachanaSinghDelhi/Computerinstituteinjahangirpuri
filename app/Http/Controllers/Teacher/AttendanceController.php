@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Models\Student;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Models\StudentVersion;
@@ -127,13 +128,16 @@ class AttendanceController extends Controller
     public function filter(Request $request)
     {
         $batch = $request->batch;
- 
+    
         $students = Student::when($batch, function ($query) use ($batch) {
-            return $query->where('batch', $batch);
-        })->get();
+                return $query->where('batch', $batch);
+            })
+            ->where('course_status', 'ongoing') // Filter students where course_status is ongoing
+            ->get();
     
         return view('teacher.attendance.filter', compact('students'))->render();
-    }  
+    }
+    
     
     public function batchWiseAttendanceReport()
     {

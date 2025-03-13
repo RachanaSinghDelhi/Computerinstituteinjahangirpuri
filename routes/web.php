@@ -35,6 +35,13 @@ use App\Http\Controllers\FeeVersionController;
 use App\Http\Controllers\Teacher\FeeVersionController as TeacherFeeVersionController;
 use App\Http\Controllers\Teacher\AttendanceController as TeacherAttendanceController;
 use App\Http\Controllers\Teacher\AssignmentController as TeacherAssignmentController;
+use App\Http\Controllers\Teacher\ProfileController as TeacherProfileController;
+
+
+Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->group(function () {
+    Route::get('/profile', [TeacherProfileController::class, 'show'])->name('profile.show');
+    Route::put('/profile/update/{id}', [TeacherProfileController::class, 'update'])->name('profile.update');
+});
 
 
 
