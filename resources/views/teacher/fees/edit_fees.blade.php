@@ -43,7 +43,7 @@
                 <div class="mb-3">
                     <label for="blanaces" class="form-label">Balances</label>
                     <input type="number" class="form-control" id="balances" name="balances" 
-                           value="{{ old('balances', $fee->Balances) }}">
+                           value="{{ old('balances', $fee->balances) }}">
                 </div>
                 @php
     use Carbon\Carbon;
@@ -60,23 +60,7 @@
                            value="{{ old('receipt_number', $fee->receipt_number) }}" required>
                 </div>
 
-                <div class="mb-3">
-                    <label for="receipt_image" class="form-label">Receipt Image</label>
-                    <input type="file" class="form-control" id="receipt_image" name="receipt_image">
-                    @if($fee->receipt_image)
-                        <div class="mt-2">
-                            <small>Current: {{ $fee->receipt_image }}</small>
-                        </div>
-                    @endif
-                </div>
-
-                <div class="mb-3">
-                    <label for="status" class="form-label">Status</label>
-                    <select class="form-select" id="status" name="status">
-                        <option value="Paid" {{ $fee->status === 'Paid' ? 'selected' : '' }}>Paid</option>
-                        <option value="Unpaid" {{ $fee->status === 'Unpaid' ? 'selected' : '' }}>Unpaid</option>
-                    </select>
-                </div>
+            
 
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-save"></i> Update Fee

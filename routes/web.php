@@ -46,6 +46,8 @@ Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->group(function (
 
 
 Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->group(function () {
+
+  
     Route::get('/assignments', [TeacherAssignmentController::class, 'index'])->name('teacher.assignments.index');
     Route::get('/assignments/add', [TeacherAssignmentController::class, 'create'])->name('teacher.assignments.add');
     Route::post('/assignments/store', [TeacherAssignmentController::class, 'store'])->name('teacher.assignments.store');
@@ -69,11 +71,14 @@ Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->group(function (
 
 
 Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->group(function (){
+  Route::get('/teacher/fees', [TeacherFeeVersionController::class, 'fees'])->name('teacher.fees');
+  Route::get('/fees/details/{student_id}', [TeacherFeeVersionController::class, 'feesDetails'])->name('teacher.fees.detail');
   Route::get('/fees/create/{student_id}', [TeacherFeeVersionController::class, 'create'])->name('teacher.fees.create');
   Route::post('/fees/store', [TeacherFeeVersionController::class, 'store'])->name('teacher.fees.store');
   Route::get('/fees', [TeacherFeeVersionController::class, 'index'])->name('teacher.fees.index');
   Route::get('/pending-fees', [TeacherFeeVersionController::class, 'pendingFees'])->name('teacher.fees.pending');
   Route::get('/fees/edit/{id}', [TeacherFeeVersionController::class, 'edit'])->name('teacher.fees.edit');
+
   Route::put('/fees/update/{id}', [TeacherFeeVersionController::class, 'update'])->name('teacher.fees.update');
   Route::post('/fees/approve/{id}', [TeacherFeeVersionController::class, 'approve'])->name('teacher.fees.approve');
 });

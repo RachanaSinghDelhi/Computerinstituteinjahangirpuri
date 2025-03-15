@@ -60,9 +60,9 @@ if (!$course) {
                     return redirect()->back()->with('error', 'Invalid course.');
                 }
         
-                // Get the next installment number
-                $lastInstallment = FeeVersion::where('student_id', $request->student_id)->max('installment_no');
-                $nextInstallmentNo = $lastInstallment ? $lastInstallment + 1 : 1;
+               // Get the next installment number (allow user input, fallback to default)
+$lastInstallment = FeeVersion::where('student_id', $request->student_id)->max('installment_no');
+$nextInstallmentNo = $request->installment_no ?? ($lastInstallment ? $lastInstallment + 1 : 1);
         
                 // Set fee status
                 $feeStatus = ($request->balances > 0) ? 'Unpaid' : 'Paid';
@@ -76,14 +76,14 @@ if (!$course) {
                 $feeVersion->due_date = $request->due_date;
                 $feeVersion->balances = $request->balances;
                 $feeVersion->receipt_number = $request->receipt_number;
-                $feeVersion->receipt_image = $request->receipt_image ?? 'default.jpg';
+                $feeVersion->receipt_image = "{$request->receipt_number}.jpg"; // Just inserting the name
                 $feeVersion->installment_no = $nextInstallmentNo;
                 $feeVersion->added_by = Auth::id();
                 $feeVersion->status = $feeStatus;
                 $feeVersion->approved = 0; // Set as pending
                 $feeVersion->save();
         
-                return redirect()->route('teacher.fees.index')->with('success', 'Fee record added for approval.');
+                return redirect()->route('teacher.fees.fees')->with('success', 'Fee record added for approval.');
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', 'Error: ' . $e->getMessage());
             }
@@ -97,28 +97,115 @@ if (!$course) {
         $approvedFees = Fee::with(['student', 'course'])->get();
         
     
-        return view('teacher.fees.index', compact('approvedFees', 'pendingFees'));
+        return view('teacher.fees.fees', compact('approvedFees', 'pendingFees'));
     }
     
     // Show edit form for pending fees
     public function edit($id)
     {
-        $fee = FeeVersion::findOrFail($id);
+        $fee = FeeVersion::find($id); // Fetch by unique ID
+    
+        if (!$fee) {
+            return redirect()->back()->with('error', 'Fee record not found.');
+        }
+    
         return view('teacher.fees.edit_fees', compact('fee'));
     }
+    
 
     // Update pending fee
     public function update(Request $request, $id)
     {
         $request->validate([
+            'installment_no' => 'required|integer',
             'amount_paid' => 'required|numeric',
-            'installment_no' => 'required|numeric',
+            'balances' => 'nullable|numeric',
             'payment_date' => 'required|date',
+            'receipt_number' => 'required|string|max:255',
         ]);
-
-        $pendingFee = FeeVersion::findOrFail($id);
-        $pendingFee->update($request->all());
-
-        return redirect()->route('teacher.fees.index')->with('success', 'Pending fee updated.');
+    
+        // Find the record by unique ID
+        $feeVersion = FeeVersion::findOrFail($id);
+    
+        // Check if the new installment number already exists for this student (excluding the current record)
+        $existingInstallment = FeeVersion::where('student_id', $feeVersion->student_id)
+            ->where('installment_no', $request->installment_no)
+            ->where('id', '!=', $id)
+            ->exists();
+    
+        if ($existingInstallment) {
+            return redirect()->back()->with('error', 'This installment number already exists for this student.');
+        }
+    
+        // Check if the receipt number already exists (excluding the current record)
+        $existingReceipt = FeeVersion::where('receipt_number', $request->receipt_number)
+            ->where('id', '!=', $id)
+            ->exists();
+    
+        if ($existingReceipt) {
+            return redirect()->back()->with('error', 'This receipt number is already used.');
+        }
+    
+        // Update the FeesVersion record
+        $feeVersion->update([
+            'installment_no' => $request->installment_no,
+            'amount_paid' => $request->amount_paid,
+            'balances' => $request->balances,
+            'payment_date' => $request->payment_date,
+            'receipt_number' => $request->receipt_number,
+        ]);
+    
+        return redirect()->back()->with('success', 'Fee record updated successfully.');
     }
+    
+
+    public function fees()
+    {
+        // Get Pending Fees: Students in `fees` but NOT in `fees_version`
+        $pendingFees = FeeVersion::with('student', 'course')
+        ->where('approved', 0) // Only fetch records where approved is 0 (not yet approved)
+        ->get();
+    
+         
+
+
+        // Get Approved Fees: All students from `student_fees_status`
+        $approvedFees = StudentFeesStatus::with(['student', 'course'])
+            ->get()
+            ->map(function ($status) {
+                // Get max installment number from fees table, default to 0 if null
+                $maxInstallment = Fee::where('student_id', $status->student_id)->max('installment_no') ?? 0;
+    
+
+             // Calculate total balance for the student
+             $totalBalance = Fee::where('student_id', $status->student_id)->sum('balances');
+                return (object) [
+                    'student_id' => $status->student_id,
+                    'student_name' => $status->student->name,
+                    'course_title' => $status->course->course_title ?? 'N/A',
+                    'installment_no' => $maxInstallment,
+                    'total_balance' => $totalBalance ?? 0, // If null, set to 0
+                    'status' => 'Approved',
+                    'doa' => $status->doa, // Date of Admission
+                ];
+            });
+    
+        return view('teacher.fees.fees', compact('approvedFees', 'pendingFees'));
+    }
+    
+
+
+    public function feesDetails($student_id)
+    {
+        // Get student details
+        $student = Student::findOrFail($student_id);
+    
+        // Get fee details from the fees table for the given student
+        $fees = Fee::where('student_id', $student_id)->get();
+    
+        return view('teacher.fees.fees_detail', compact('student', 'fees'));
+    }
+    
+
+
 }

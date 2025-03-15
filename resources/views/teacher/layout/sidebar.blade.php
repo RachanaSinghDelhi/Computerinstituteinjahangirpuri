@@ -63,10 +63,16 @@
                         <p>Fee List<i class="right fas fa-angle-left"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
+                       <!-- <li class="nav-item">
                             <a href="{{ route('teacher.fees.index') }}" class="nav-link">
                                 <i class="fas fa-list nav-icon"></i>
                                 <p>Fee List</p>
+                            </a>
+                        </li>-->
+                        <li class="nav-item">
+                            <a href="{{ route('teacher.fees') }}" class="nav-link">
+                                <i class="fas fa-list nav-icon"></i>
+                                <p>Manage Fees</p>
                             </a>
                         </li>
                     </ul>
