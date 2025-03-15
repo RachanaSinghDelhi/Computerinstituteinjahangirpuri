@@ -169,9 +169,12 @@ $nextInstallmentNo = $request->installment_no ?? ($lastInstallment ? $lastInstal
          
 
 
-        // Get Approved Fees: All students from `student_fees_status`
-        $approvedFees = StudentFeesStatus::with(['student', 'course'])
-            ->get()
+        $approvedFees = StudentFeesStatus::with([
+            'student' => function ($query) {
+                $query->where('status', 'active'); // Fetch only active students
+            },
+            'course'
+        ])->get()
             ->map(function ($status) {
                 // Get max installment number from fees table, default to 0 if null
                 $maxInstallment = Fee::where('student_id', $status->student_id)->max('installment_no') ?? 0;

@@ -16,7 +16,7 @@
                             <th>Student ID</th>
                             <th>Name</th>
                             <th>Course</th>
-                            <th>Total Bal.</th>
+                            <th>Balance</th>
                             <th>Installment No</th>
                             <th>Date of Admission</th>
                             <th>Status</th>
