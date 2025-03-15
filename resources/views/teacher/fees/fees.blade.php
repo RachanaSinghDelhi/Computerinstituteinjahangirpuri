@@ -111,6 +111,9 @@
             "info": true, // Shows table info
             "lengthMenu": [10, 25, 50, 100], // Page length options
             "order": [[6, "desc"]], // Sort by last updated column (index 5)
+            "columnDefs": [
+            { "type": "date-eu", "targets": 5 } // Sorts dd-mm-yyyy properly
+        ],
             "language": {
                 "search": "Search Fees:"
             }
