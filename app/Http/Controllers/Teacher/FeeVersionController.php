@@ -169,28 +169,36 @@ $nextInstallmentNo = $request->installment_no ?? ($lastInstallment ? $lastInstal
          
 
 
-        // Get Approved Fees: All students from `student_fees_status`
-        $approvedFees = StudentFeesStatus::with(['student', 'course'])
-            ->get()
-            ->map(function ($status) {
-                // Get max installment number from fees table, default to 0 if null
-                $maxInstallment = Fee::where('student_id', $status->student_id)->max('installment_no') ?? 0;
+        $approvedFees = StudentFeesStatus::with([
+            'student' => function ($query) {
+                $query->where('status', 'active'); // Fetch only active students
+            },
+            'course'
+        ])
+        ->get()
+        ->filter(function ($status) {
+            return $status->student !== null; // Ensure only records with active students are included
+        })
+        ->map(function ($status) {
+            // Get max installment number from the fees table, default to 0 if null
+            $maxInstallment = Fee::where('student_id', $status->student_id)->max('installment_no') ?? 0;
     
-
-             // Calculate total balance for the student
-             $totalBalance = Fee::where('student_id', $status->student_id)->sum('balances');
-                return (object) [
-                    'student_id' => $status->student_id,
-                    'student_name' => $status->student->name,
-                    'course_title' => $status->course->course_title ?? 'N/A',
-                    'installment_no' => $maxInstallment,
-                    'total_balance' => $totalBalance ?? 0, // If null, set to 0
-                    'status' => 'Approved',
-                    'doa' => $status->doa, // Date of Admission
-                ];
-            });
+            // Calculate total balance for the student
+            $totalBalance = Fee::where('student_id', $status->student_id)->sum('balances') ?? 0;
     
-        return view('teacher.fees.fees', compact('approvedFees', 'pendingFees'));
+            return (object) [
+                'student_id' => $status->student_id,
+                'student_name' => $status->student->name,
+                'course_title' => $status->course->course_title ?? 'N/A',
+                'installment_no' => $maxInstallment,
+                'total_balance' => $totalBalance,
+                'status' => 'Approved',
+                'doa' => $status->doa, // Date of Admission
+            ];
+        });
+    
+    return view('teacher.fees.fees', compact('approvedFees', 'pendingFees'));
+    
     }
     
 
