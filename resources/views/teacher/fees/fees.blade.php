@@ -19,6 +19,7 @@
                             <th>Balance</th>
                             <th>Installment No</th>
                             <th>Date of Admission</th>
+                            <th>Last Update</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -32,6 +33,16 @@
                                 <td>₹{{ number_format($fee->total_balance, 2) }}</td>
                                 <td>{{ $fee->installment_no }}</td>
                                 <td>{{ \Carbon\Carbon::parse($fee->doa)->format('d M Y') }}</td>
+                                <td>
+    @if (!empty($fee->last_updated) && strtotime($fee->last_updated))
+        {{ \Carbon\Carbon::parse($fee->last_updated)->format('d-m-y') }}
+    @else
+        N/A
+    @endif
+</td>
+
+
+
                                 <td><span class="badge bg-success">Approved</span></td>
                                 <td>
                                     <a href="{{ route('teacher.fees.create', $fee->student_id) }}" class="btn btn-sm btn-primary">Add Fees</a>
@@ -99,6 +110,7 @@
             "ordering": true, // Enables sorting
             "info": true, // Shows table info
             "lengthMenu": [10, 25, 50, 100], // Page length options
+            "order": [[6, "desc"]], // Sort by last updated column (index 5)
             "language": {
                 "search": "Search Fees:"
             }

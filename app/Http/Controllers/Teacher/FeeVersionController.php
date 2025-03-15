@@ -185,7 +185,14 @@ $nextInstallmentNo = $request->installment_no ?? ($lastInstallment ? $lastInstal
     
             // Calculate total balance for the student
             $totalBalance = Fee::where('student_id', $status->student_id)->sum('balances') ?? 0;
+
+             // Calculate total balance for the student
+         // Get last updated timestamp
+         $lastUpdatedTimestamp = Fee::where('student_id', $status->student_id)
+         ->latest('updated_at')
+         ->value('updated_at') ?? 'N/A';
     
+         
             return (object) [
                 'student_id' => $status->student_id,
                 'student_name' => $status->student->name,
@@ -194,6 +201,7 @@ $nextInstallmentNo = $request->installment_no ?? ($lastInstallment ? $lastInstal
                 'total_balance' => $totalBalance,
                 'status' => 'Approved',
                 'doa' => $status->doa, // Date of Admission
+                'last_updated' => $lastUpdatedTimestamp, // Last updated timestamp
             ];
         });
     
