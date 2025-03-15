@@ -99,12 +99,17 @@
 
 @push('js')
 <!-- Include DataTables CSS & JS -->
+<!-- Include DataTables & Responsive Extensions CSS & JS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
 
 <script>
     $(document).ready(function() {
         $('#approvedFeesTable, #pendingFeesTable').DataTable({
+            responsive: true, // Enables responsive design
             "paging": true,   // Enables pagination
             "searching": true, // Enables search
             "ordering": true, // Enables sorting
