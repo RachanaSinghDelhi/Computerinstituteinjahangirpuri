@@ -175,6 +175,7 @@ $nextInstallmentNo = $request->installment_no ?? ($lastInstallment ? $lastInstal
             },
             'course'
         ])
+        
         ->get()
         ->filter(function ($status) {
             return $status->student !== null; // Ensure only records with active students are included

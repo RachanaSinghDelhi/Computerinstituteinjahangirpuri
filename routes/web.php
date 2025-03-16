@@ -36,11 +36,37 @@ use App\Http\Controllers\Teacher\FeeVersionController as TeacherFeeVersionContro
 use App\Http\Controllers\Teacher\AttendanceController as TeacherAttendanceController;
 use App\Http\Controllers\Teacher\AssignmentController as TeacherAssignmentController;
 use App\Http\Controllers\Teacher\ProfileController as TeacherProfileController;
+use App\Http\Controllers\Teacher\NotificationController as TeacherNotificationController ;
+use App\Http\Controllers\Students\ProfileController as StudentsProfileController;
+
+
+Route::middleware(['auth', 'role:student'])->prefix('student')->group(function () {
+Route::get('/profile', [StudentsProfileController::class, 'profile'])->name('student.profile');
+//Route::post('/batch-change/{student_id}', [StudentsProfileController::class, 'requestBatchChange'])->name('batch.change.request');
+
+
+Route::post('/batch/change/request/{studentId}', [StudentsProfileController::class, 'requestBatchChange'])->name('batch.change.request');
+Route::get('/admin/batch-change-requests', [AdminController::class, 'viewBatchRequests'])->name('batch.requests');
+Route::get('/batch/approve/{id}', [AdminController::class, 'approveBatchChange'])->name('batch.approve');
+Route::get('/batch/reject/{id}', [AdminController::class, 'rejectBatchChange'])->name('batch.reject');
+
+});
 
 
 Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->group(function () {
+  
     Route::get('/profile', [TeacherProfileController::class, 'show'])->name('profile.show');
     Route::put('/profile/update/{id}', [TeacherProfileController::class, 'update'])->name('profile.update');
+});
+Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->group(function () {
+  
+
+
+      Route::get('/teacher/notifications', [TeacherNotificationController ::class, 'getNotifications'])->name('teacher.notifications');
+      Route::post('/teacher/notifications/markAsRead', [TeacherNotificationController ::class, 'markAsRead'])->name('teacher.notifications.markAsRead');
+      Route::get('/teacher/notifications/index', [TeacherNotificationController ::class, 'index'])->name('teacher.notifications.index');
+
+  
 });
 
 
@@ -137,6 +163,9 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
   
     // Dashboard Prefix Routes
     Route::middleware(['auth', 'role:super_admin'])->prefix('dashboard')->group(function () {
+
+      Route::get('/admin/batch-change-requests', [StudentVersionController::class, 'viewBatchRequests'])->name('batch.requests');
+      
 
       Route::get('/notifications', [StudentVersionController::class, 'getNotifications'])->name('notifications');
 

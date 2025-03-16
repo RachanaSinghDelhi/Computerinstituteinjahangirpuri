@@ -3,6 +3,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\StudentVersion;
+use App\Notifications\BatchChangeApproved;
+
 use App\Models\Student;
 use App\Models\User;
 
@@ -57,6 +59,12 @@ class StudentVersionController extends Controller
     // Mark the version as approved
     $studentVersion->status = 'approved';
     $studentVersion->save();
+
+    // **Notify All Teachers**
+    $teachers = User::where('role', 'teacher')->get();
+    foreach ($teachers as $teacher) {
+        $teacher->notify(new BatchChangeApproved($student));
+    }
 
     return redirect()->route('super_admin.student-approvals')->with('success', 'Student update approved.');
 }

@@ -1,8 +1,7 @@
-<html>
 
-<p>Welcome Students</p>
-<form action="{{ route('logout') }}" method="POST">
-    @csrf
-    <button type="submit" class="btn btn-danger">Logout</button>
-</form>
-</html>
+@extends('students.layout.adminlte')
+@section('title', 'Welcome')
+@section('content')
+
+<h1>Welcome Students</h1> 
+@endsection

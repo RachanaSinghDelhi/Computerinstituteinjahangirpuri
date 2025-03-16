@@ -118,13 +118,16 @@ class UserController extends Controller
             $randomNumber = rand(10000, 99999);
             $email = $student->email ?? "nice{$randomNumber}{$student->student_id}@nicewebtechnologies.com";
     
-
-            $password = bcrypt("{$student->name}@{$randomNumber}");
+            $username = strtolower(str_replace(' ', '_', $student->name)) . $randomNumber;
+           // ✅ Use student's contact_number as the password and hash it
+        $password = bcrypt($student->contact_number);
             // ✅ Use updateOrCreate to prevent duplicates
             User::updateOrCreate(
                 ['student_id' => $student->student_id], // Ensure uniqueness
                 [
                     'name' => $student->name,
+                     'username' => $username,
+                  
                     'email' => $email,
                     'password' =>  $password,
                     'role' => 'student',
