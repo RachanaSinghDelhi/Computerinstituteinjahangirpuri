@@ -41,26 +41,21 @@
                 </li>
 
                 <!-- Students -->
-                <li class="nav-header">MANAGE STUDENTS</li>
+                <li class="nav-header">PAYMENT HISTORY</li>
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-user-graduate"></i>
-                        <p>Students<i class="right fas fa-angle-left"></i></p>
+                        <p>Fees<i class="right fas fa-angle-left"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('teacher.students.add') }}" class="nav-link">
-                                <i class="fas fa-plus-circle nav-icon"></i>
-                                <p>Add Student</p>
+                            <a href="{{ route('student.fees') }}" class="nav-link">
+                                <i class="fas fa-list nav-icon"></i>
+                                <p>Fees Details</p>
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a href="{{ route('teacher.students.index') }}" class="nav-link">
-                                <i class="fas fa-list nav-icon"></i>
-                                <p>Student List</p>
-                            </a>
-                        </li>
+                        
                     </ul>
                 </li>
 

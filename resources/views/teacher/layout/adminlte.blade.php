@@ -45,51 +45,71 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-    function loadNotifications() {
+  function loadNotifications() {
     $.ajax({
         url: "{{ route('teacher.notifications') }}",
         type: "GET",
         success: function (response) {
-            console.log("Notifications Response:", response); // ✅ Debugging Line
-
             $("#notificationCount").text(response.count);
 
             let notificationList = $("#notificationList");
             notificationList.empty();
 
             if (response.count > 0) {
-                $("#notificationHeader").text("You have " + response.count + " new notifications");
+                // Display first notification message in the header
+                $("#notificationHeader").text(response.notifications[0].message);
 
                 response.notifications.forEach(function (notification) {
                     let iconClass = "fas fa-bell text-info"; // Default icon
-                    let message = notification.data.message;
 
-                    if (notification.type.includes("BatchChangeApproved")) {
+                    // Fix: Get the correct message
+                    let message = notification.message;
+
+                    // Fix: Convert timestamp to "5 minutes ago"
+                    let timeAgo = moment(notification.created_at, "YYYY-MM-DD HH:mm:ss").fromNow();
+
+                    if (notification.type && notification.type.includes("BatchChangeApproved")) {
                         iconClass = "fas fa-clock text-warning";
                     }
 
-                    let item = `<a href="{{ route('teacher.notifications.index') }}" class="dropdown-item">
+                    let item = `<a href="#" class="list-group-item list-group-item-action">
                                     <i class="${iconClass}"></i> ${message}
-                                    <span class="float-right text-muted text-sm">${notification.created_at}</span>
+                                    <span class="float-right text-muted text-sm">${timeAgo}</span>
                                 </a>`;
                     notificationList.append(item);
                 });
-
-                // ✅ Show bell icon when notifications exist
-                $("#notificationBell").addClass("text-danger");
             } else {
                 $("#notificationHeader").text("No New Notifications");
-                $("#notificationBell").removeClass("text-danger");
             }
+        },
+        error: function () {
+            console.error("Failed to load notifications.");
         }
     });
 }
 
-// ✅ Call function every 10 seconds
-setInterval(loadNotifications, 10000);
-loadNotifications();
 
+
+
+    // Mark notifications as read when dropdown is clicked
+    $('#markasread').click(function () {
+        $.ajax({
+            url: "{{ route('teacher.notifications.markAsRead') }}",
+            type: "POST",
+            data: {
+                _token: "{{ csrf_token() }}"
+            },
+            success: function () {
+                $("#notificationCount").text("0");
+            }
+        });
+    });
+
+    // Load notifications every 10 seconds
+    setInterval(loadNotifications, 10000);
+    loadNotifications();
 </script>
+
 
 
     @stack('js')

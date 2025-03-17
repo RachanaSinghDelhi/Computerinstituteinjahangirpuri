@@ -38,13 +38,15 @@ use App\Http\Controllers\Teacher\AssignmentController as TeacherAssignmentContro
 use App\Http\Controllers\Teacher\ProfileController as TeacherProfileController;
 use App\Http\Controllers\Teacher\NotificationController as TeacherNotificationController ;
 use App\Http\Controllers\Students\ProfileController as StudentsProfileController;
+use App\Http\Controllers\Students\FeesController as StudentsFeesController;
+
+Route::middleware(['auth', 'role:student'])->prefix('student')->group(function () {
+    Route::get('/fees', [StudentsFeesController::class, 'index'])->name('student.fees');
+});
 
 
 Route::middleware(['auth', 'role:student'])->prefix('student')->group(function () {
 Route::get('/profile', [StudentsProfileController::class, 'profile'])->name('student.profile');
-//Route::post('/batch-change/{student_id}', [StudentsProfileController::class, 'requestBatchChange'])->name('batch.change.request');
-
-
 Route::post('/batch/change/request/{studentId}', [StudentsProfileController::class, 'requestBatchChange'])->name('batch.change.request');
 Route::get('/admin/batch-change-requests', [AdminController::class, 'viewBatchRequests'])->name('batch.requests');
 Route::get('/batch/approve/{id}', [AdminController::class, 'approveBatchChange'])->name('batch.approve');

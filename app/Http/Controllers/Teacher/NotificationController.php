@@ -19,17 +19,28 @@ class NotificationController extends Controller
 
     /**
      * Fetch unread notifications for the navbar dropdown.
-     */
-    public function getNotifications()
-    {
-        $user = Auth::user();
-        $unreadNotifications = $user->unreadNotifications()->take(5)->get();
-        
-        return response()->json([
-            'count' => $unreadNotifications->count(),
-            'notifications' => $unreadNotifications
-        ]);
-    }
+     */public function getNotifications()
+{
+    $user = Auth::user();
+    
+    // Fetch unread notifications
+    $unreadNotifications = $user->unreadNotifications()->take(5)->get();
+
+    // Format notifications properly
+    $notificationsData = $unreadNotifications->map(function ($notification) {
+        return [
+            'id' => $notification->id,
+            'message' => $notification->data['message'] ?? 'No message', // Ensure message is not missing
+            'created_at' => $notification->created_at->diffForHumans() // Convert timestamp to "5 mins ago" format
+        ];
+    });
+
+    return response()->json([
+        'count' => $unreadNotifications->count(),
+        'notifications' => $notificationsData
+    ]);
+}
+
 
     /**
      * Mark notifications as read when the user clicks the dropdown.

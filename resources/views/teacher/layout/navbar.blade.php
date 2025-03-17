@@ -18,7 +18,7 @@
                 <div class="dropdown-divider"></div>
                 <div id="notificationList"></div>
                 <div class="dropdown-divider"></div>
-                <a href="{{ route('teacher.notifications.index') }}" class="dropdown-item dropdown-footer">View All</a>
+                <a href="" id="markasread" class="dropdown-item dropdown-footer">Mark As Read</a>
             </div>
         </li>
 
