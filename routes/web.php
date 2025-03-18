@@ -32,6 +32,7 @@ use App\Http\Controllers\StudentVersionController;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Logout;
 use App\Http\Controllers\FeeVersionController; 
+use App\Http\Controllers\PaymentController; 
 use App\Http\Controllers\Teacher\FeeVersionController as TeacherFeeVersionController;
 use App\Http\Controllers\Teacher\AttendanceController as TeacherAttendanceController;
 use App\Http\Controllers\Teacher\AssignmentController as TeacherAssignmentController;
@@ -42,6 +43,16 @@ use App\Http\Controllers\Students\FeesController as StudentsFeesController;
 
 Route::middleware(['auth', 'role:student'])->prefix('student')->group(function () {
     Route::get('/fees', [StudentsFeesController::class, 'index'])->name('student.fees');
+    Route::get('/pay_fees', [StudentsFeesController::class, 'payfees'])->name('student.pay.fees');
+    Route::post('/store_payment', [StudentsFeesController::class, 'storePayment'])->name('student.store.payment');
+
+});
+
+
+//payment details submit by students
+Route::middleware(['auth', 'role:super_admin'])->prefix('dashboard')->group(function () {
+  Route::get('/payments', [PaymentController::class, 'index'])->name('list.payments');
+    Route::put('/payments/approve/{id}', [PaymentController::class, 'approve'])->name('admin.approve.payment');
 });
 
 
@@ -111,11 +122,13 @@ Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->group(function (
   Route::post('/fees/approve/{id}', [TeacherFeeVersionController::class, 'approve'])->name('teacher.fees.approve');
 });
 
+//receipt detail submit by reachers
 Route::middleware(['auth', 'role:super_admin'])->prefix('dashboard')->group(function () {
     Route::get('/pending-fees', [FeeVersionController::class, 'index'])->name('approve.fees.index');
     Route::post('/approve-fee/{id}', [FeeVersionController::class, 'approve'])->name('pending.fees.approve');
     Route::delete('/reject-fee/{id}', [FeeVersionController::class, 'reject'])->name('pending.fees.reject');
 });
+
 
 
 

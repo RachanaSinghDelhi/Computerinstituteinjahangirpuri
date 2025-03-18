@@ -149,6 +149,12 @@
                                 <p>Fees Pending</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('list.payments') }}" class="nav-link">
+                                <i class="fas fa-list nav-icon"></i>
+                                <p>Manage Payments</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 

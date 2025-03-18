@@ -54,34 +54,18 @@
                                 <p>Fees Details</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('student.pay.fees') }}" class="nav-link">
+                                <i class="fas fa-list nav-icon"></i>
+                                <p>Pay Pending Fees</p>
+                            </a>
+                        </li>
 
                         
                     </ul>
                 </li>
 
-                <!-- Fees -->
-                <li class="nav-header">MANAGE FEES</li>
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-money-bill-alt"></i>
-                        <p>Fee List<i class="right fas fa-angle-left"></i></p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                       <!-- <li class="nav-item">
-                            <a href="{{ route('teacher.fees.index') }}" class="nav-link">
-                                <i class="fas fa-list nav-icon"></i>
-                                <p>Fee List</p>
-                            </a>
-                        </li>-->
-                        <li class="nav-item">
-                            <a href="{{ route('teacher.fees') }}" class="nav-link">
-                                <i class="fas fa-list nav-icon"></i>
-                                <p>Manage Fees</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
+             
                 <!-- Attendance -->
                 <li class="nav-header">MANAGE ATTENDANCE</li>
                 <li class="nav-item has-treeview">
