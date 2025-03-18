@@ -26,7 +26,7 @@
     <ul>
         <li>Users may need to register for certain services.</li>
         <li>Payment for courses must be made in full before enrollment is confirmed.</li>
-        <li>Fees once paid are non-refundable unless explicitly mentioned in our refund policy.</li>
+        <li>Fees once paid are non-refundable.</li>
     </ul>
 
     <h2>4. User Responsibilities</h2>
