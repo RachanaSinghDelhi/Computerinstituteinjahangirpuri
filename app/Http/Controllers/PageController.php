@@ -64,6 +64,19 @@ class PageController extends Controller
 
         return view('privacy_policy', compact('latestPosts', 'breadcrumbs'));
     }
+    public function terms()
+    {
+        // Fetch the latest posts for sidebar
+        $latestPosts = Post::latest()->take(5)->get();
+
+        // Define breadcrumbs for Privacy Policy page
+        $breadcrumbs = [
+            ['name' => 'Home', 'url' => url('/')],
+            ['name' => 'Privacy Policy', 'url' => route('terms')],
+        ];
+
+        return view('terms_and_conditions', compact('latestPosts', 'breadcrumbs'));
+    }
 
 
     public function showIntroductionPage()

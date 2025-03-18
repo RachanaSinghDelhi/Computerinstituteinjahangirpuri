@@ -140,6 +140,8 @@ Route::get('/courses_list', [PageController::class, 'courses'])->name('courses')
 Route::get('/courses', [PageController::class, 'list'])->name('courses.list');
 Route::get('/courses/{course_url}', [CourseController::class, 'show'])->name('courses.show');
 Route::get('/privacy-policy', [PageController::class, 'privacyPolicy'])->name('privacy-policy');
+Route::get('/terms-and-conditions', [PageController::class, 'terms'])->name('terms');
+
 Route::get('/introduction', [PageController::class, 'showIntroductionPage'])->name('introduction.page');
 // Single Post Route
 Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');

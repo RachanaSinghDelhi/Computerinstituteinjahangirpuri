@@ -29,6 +29,7 @@
                     <p>No recent posts available.</p>
                 @endforelse
                 <p><a href="{{ url('/privacy-policy') }}" class="footer-link">Privacy Policy</a></p>
+                <p><a href="{{ route('terms') }}" class="footer-link">Terms and Conditions</a></p>
                 <p><a href="{{ route('login') }}" class="footer-link">Login</a></p>
             </div>
             <!-- Ongoing Classes Section -->
