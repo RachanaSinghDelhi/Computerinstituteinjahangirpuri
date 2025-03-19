@@ -1,4 +1,4 @@
-@extends('admin.layout.adminlte')
+@extends('dashboard.layout.adminlte')
 @section('title', 'Payments List')
 
 @section('content')
@@ -29,7 +29,8 @@
             @foreach($payments as $key => $payment)
             <tr>
                 <td>{{ $key + 1 }}</td>
-                <td>{{ $payment->student->name }}</td>
+                <td>{{ $payment->student ? $payment->student->name : 'N/A' }}</td>
+
                 <td>{{ $payment->transaction_id }}</td>
                 <td>₹{{ number_format($payment->amount, 2) }}</td>
                 <td>{{ ucfirst($payment->method) }}</td>

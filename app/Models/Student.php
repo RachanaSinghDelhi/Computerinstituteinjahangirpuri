@@ -43,7 +43,15 @@ class Student extends Model
         return $this->hasMany(Attendance::class, 'student_id', 'student_id');
     }
     
-   
+    public function payments()
+    {
+        return $this->hasMany(Payment::class, 'student_id','student_id');
+    }
     
+    public function user()
+{
+    return $this->belongsTo(User::class, 'student_id', 'student_id');
+}
+
 }
 

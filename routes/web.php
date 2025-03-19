@@ -53,6 +53,7 @@ Route::middleware(['auth', 'role:student'])->prefix('student')->group(function (
 Route::middleware(['auth', 'role:super_admin'])->prefix('dashboard')->group(function () {
   Route::get('/payments', [PaymentController::class, 'index'])->name('list.payments');
     Route::put('/payments/approve/{id}', [PaymentController::class, 'approve'])->name('admin.approve.payment');
+    Route::get('/payment-notifications', [PaymentController::class, 'getPaymentNotifications'])->name('payment.notifications');
 });
 
 

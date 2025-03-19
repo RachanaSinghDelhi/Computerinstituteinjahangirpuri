@@ -50,41 +50,58 @@
 
   
 
-<script>
-    function loadNotifications() {
-    $.ajax({
-        url: "{{ route('notifications') }}",
-        type: "GET",
-        success: function (response) {
-            $("#notificationCount").text(response.count);
+    <script>
+function loadNotifications() {
+    // Fetch both student and payment notifications
+    $.when(
+        $.ajax({ url: "{{ route('notifications') }}", type: "GET" }),
+        $.ajax({ url: "{{ route('payment.notifications') }}", type: "GET" })
+    ).done(function (studentResponse, paymentResponse) {
+        let totalCount = studentResponse[0].count + paymentResponse[0].count;
 
-            let notificationList = $("#notificationList");
-            notificationList.empty();
+        $("#notificationCount").text(totalCount);
+        let notificationList = $("#notificationList");
+        notificationList.empty();
 
-            if (response.count > 0) {
-                $("#notificationHeader").text("You have " + response.count + " pending approvals");
+        if (totalCount > 0) {
+            $("#notificationHeader").text("You have " + totalCount + " pending approvals");
 
-                response.notifications.forEach(function (notification) {
-                    let iconClass = "fas fa-user-edit text-info"; // Default icon
-                    let message = notification.message;
+            // Process student notifications
+            studentResponse[0].notifications.forEach(function (notification) {
+                let iconClass = "fas fa-user-edit text-info"; // Default icon
+                let message = notification.message;
+                let link = "{{ route('super_admin.student-approvals') }}";
 
-                    if (notification.type === "New Student Added") {
-                        iconClass = "fas fa-user-plus text-success";
-                    } else if (notification.type === "Batch Change") {
-                        iconClass = "fas fa-users text-warning";
-                    } else if (notification.type === "Student Update") {
-                        iconClass = "fas fa-user-edit text-primary";
-                    }
+                if (notification.type === "New Student Added") {
+                    iconClass = "fas fa-user-plus text-success";
+                } else if (notification.type === "Batch Change") {
+                    iconClass = "fas fa-users text-warning";
+                } else if (notification.type === "Student Update") {
+                    iconClass = "fas fa-user-edit text-primary";
+                }
 
-                    let item = `<a href="{{ route('super_admin.student-approvals') }}" class="dropdown-item">
-                                    <i class="${iconClass}"></i> ${message}
-                                    <span class="float-right text-muted text-sm">${notification.updated_at}</span>
-                                </a>`;
-                    notificationList.append(item);
-                });
-            } else {
-                $("#notificationHeader").text("No New Notifications");
-            }
+                let item = `<a href="${link}" class="dropdown-item">
+                                <i class="${iconClass}"></i> ${message}
+                                <span class="float-right text-muted text-sm">${notification.updated_at}</span>
+                            </a>`;
+                notificationList.append(item);
+            });
+
+            // Process payment notifications
+            paymentResponse[0].notifications.forEach(function (notification) {
+                let iconClass = "fas fa-money-bill-wave text-danger";
+                let message = notification.message;
+                let link = "{{ route('list.payments') }}";
+
+                let item = `<a href="${link}" class="dropdown-item">
+                                <i class="${iconClass}"></i> ${message}
+                                <span class="float-right text-muted text-sm">${notification.updated_at}</span>
+                            </a>`;
+                notificationList.append(item);
+            });
+
+        } else {
+            $("#notificationHeader").text("No New Notifications");
         }
     });
 }
@@ -92,7 +109,6 @@
 // Load notifications every 10 seconds
 setInterval(loadNotifications, 10000);
 loadNotifications();
-
 </script>
 
 @stack('js')
