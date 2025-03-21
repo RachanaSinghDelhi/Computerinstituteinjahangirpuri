@@ -26,7 +26,7 @@
                 <li class="nav-header">STUDENT'S  PANEL</li>
 
                 <li class="nav-item">
-                    <a href="{{ route('teacher.dashboard') }}" class="nav-link">
+                    <a href="{{ route('student.dashboard') }}" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
                     </a>
@@ -92,15 +92,15 @@
                 <!-- Assignments -->
                 <li class="nav-header">MANAGE ASSIGNMENTS</li>
                 <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link disabled">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-tasks"></i>
                         <p>Assignments<i class="right fas fa-angle-left"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('teacher.assignments.add') }}" class="nav-link disabled">
+                            <a href="{{ route('student.assignments.index') }}" class="nav-link ">
                                 <i class="fas fa-plus-circle nav-icon"></i>
-                                <p>Add Assignment</p>
+                                <p>Assignments</p>
                             </a>
                         </li>
                         <li class="nav-item">

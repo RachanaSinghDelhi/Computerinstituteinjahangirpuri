@@ -25,7 +25,7 @@ class BatchChangeApproved extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'message' => "Batch time updated for student: " . $this->student->name,
+            'message' => "Batch time Approved: " . $this->student->name,
             'url' => route('teacher.notifications.index'),
         ];
     }

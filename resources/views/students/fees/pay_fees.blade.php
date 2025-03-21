@@ -13,6 +13,20 @@
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
+    <!-- Fetch latest payment status -->
+    @php
+        $latestPayment = \App\Models\Payment::where('student_id', auth()->user()->student_id)
+                                            ->latest()
+                                            ->first();
+    @endphp
+
+    <!-- Show Pending Approval Message -->
+    @if($latestPayment && $latestPayment->status == 'pending')
+        <div class="alert alert-warning text-center">
+            Your payment of <strong>₹{{ $latestPayment->amount }}</strong> is pending approval by the admin.
+        </div>
+    @endif
+
     <!-- UPI Payment -->
     <div class="card mt-4">
         <div class="card-body">

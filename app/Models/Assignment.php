@@ -4,57 +4,40 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Assignment extends Model
-{
+class Assignment extends Model {
     use HasFactory;
-
-    protected $table = 'assignments'; // Ensure correct table name
 
     protected $fillable = [
         'title',
         'description',
+        'course_id',
+        'student_id',
+        'questions',
         'deadline',
         'status',
-        'file_name',
-        'student_id',
-        'course_id',
         'added_by',
-        'updated_by',
     ];
 
     protected $casts = [
-        'deadline' => 'date', // Ensure 'deadline' is treated as a date
+        'questions' => 'array', // Convert questions to an array automatically
     ];
 
-    /**
-     * Get the course associated with the assignment.
-     */
-    public function course()
-    {
-        return $this->belongsTo(Course::class, 'course_id');
+    public function course() {
+        return $this->belongsTo(Course::class);
     }
 
-    /**
-     * Get the student associated with the assignment.
-     */
-    public function student()
-    {
-        return $this->belongsTo(Student::class, 'student_id');
-    }
+   // public function student() {
+     //   return $this->belongsTo(Student::class, 'student_id');
+    //}
+    
 
-    /**
-     * Get the user who added the assignment.
-     */
-    public function addedBy()
-    {
-        return $this->belongsTo(User::class, 'added_by');
+    // ✅ Add the missing relationship for 'added_by' (user who created the assignment)
+    public function addedBy() {
+        return $this->belongsTo(User::class, 'added_by'); // Assuming 'User' model
     }
-
-    /**
-     * Get the user who last updated the assignment.
-     */
-    public function updatedBy()
-    {
-        return $this->belongsTo(User::class, 'updated_by');
-    }
+// Define Many-to-Many Relationship with Students
+public function students() {
+    return $this->belongsToMany(Student::class, 'assignment_student', 'assignment_id', 'student_id');
+}
+    
 }

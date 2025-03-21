@@ -40,6 +40,14 @@ use App\Http\Controllers\Teacher\ProfileController as TeacherProfileController;
 use App\Http\Controllers\Teacher\NotificationController as TeacherNotificationController ;
 use App\Http\Controllers\Students\ProfileController as StudentsProfileController;
 use App\Http\Controllers\Students\FeesController as StudentsFeesController;
+use App\Http\Controllers\Students\AssignmentController as StudentAssignmentController;
+
+Route::middleware(['auth', 'role:student'])->prefix('student')->group(function () {
+  Route::get('/student/assignments', [StudentAssignmentController::class, 'index'])->name('student.assignments.index');
+  Route::get('/student/assignments/{id}/submit', [StudentAssignmentController::class, 'create'])->name('student.assignments.create');
+  Route::post('/student/assignments/{id}/submit', [StudentAssignmentController::class, 'store'])->name('student.assignments.store');
+
+});
 
 Route::middleware(['auth', 'role:student'])->prefix('student')->group(function () {
     Route::get('/fees', [StudentsFeesController::class, 'index'])->name('student.fees');
@@ -90,7 +98,7 @@ Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->group(function (
   
     Route::get('/assignments', [TeacherAssignmentController::class, 'index'])->name('teacher.assignments.index');
     Route::get('/assignments/add', [TeacherAssignmentController::class, 'create'])->name('teacher.assignments.add');
-    Route::post('/assignments/store', [TeacherAssignmentController::class, 'store'])->name('teacher.assignments.store');
+    Route::post('/assignments/store', [TeacherAssignmentController::class, 'store1'])->name('teacher.assignments.store');
     Route::get('/assignments/edit/{id}', [TeacherAssignmentController::class, 'edit'])->name('teacher.assignments.edit');
     Route::put('/assignments/update/{id}', [TeacherAssignmentController::class, 'update'])->name('teacher.assignments.update');
     Route::delete('/assignments/delete/{id}', [TeacherAssignmentController::class, 'destroy'])->name('teacher.assignments.delete');

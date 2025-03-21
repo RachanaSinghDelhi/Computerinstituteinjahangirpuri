@@ -53,5 +53,10 @@ class Student extends Model
     return $this->belongsTo(User::class, 'student_id', 'student_id');
 }
 
+public function assignments() {
+    return $this->belongsToMany(Assignment::class, 'assignment_student');
+}
+
+
 }
 
