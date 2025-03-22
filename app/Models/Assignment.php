@@ -36,8 +36,12 @@ class Assignment extends Model {
         return $this->belongsTo(User::class, 'added_by'); // Assuming 'User' model
     }
 // Define Many-to-Many Relationship with Students
-public function students() {
-    return $this->belongsToMany(Student::class, 'assignment_student', 'assignment_id', 'student_id');
+public function students()
+{
+    return $this->belongsToMany(Student::class, 'assignment_student', 'assignment_id', 'student_id')
+        ->withPivot('answers');
 }
+
+
     
 }

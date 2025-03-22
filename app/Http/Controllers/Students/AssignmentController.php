@@ -8,47 +8,79 @@ use App\Models\Assignment;
 use App\Models\Course;
 use App\Models\Student;
 use App\Models\user;
+use Illuminate\Support\Facades\DB; // ✅ Add this line
 
 use Illuminate\Support\Facades\Auth;
 
 class AssignmentController extends Controller
 {
-    // View Assignments for Students
+    // Show assignments assigned to the logged-in student
     public function index()
     {
-        $studentId = Auth::user()->student_id; // Get student_id from users table
-        $assignments = Assignment::where('student_id', $studentId)->get(); // Fetch assignments for this student
+        $userId = Auth::id(); // Get logged-in user ID (e.g., 71)
+    
+        // Fetch student_id from users table
+        $student = DB::table('users')->where('id', $userId)->first();
+    
+        if (!$student) {
+            return back()->with('error', 'User not found.');
+        }
+    
+        $studentId = $student->student_id; // Now we have the student_id
+    
+        // Fetch assignments assigned to this student_id
+        $assignments = Assignment::join('assignment_student', 'assignments.id', '=', 'assignment_student.assignment_id')
+            ->where('assignment_student.student_id', $studentId)
+            ->select('assignments.*') // Select only assignment columns
+            ->get();
+    
+        
     
         return view('students.assignments.index', compact('assignments'));
     }
 
-    // Submit Assignment Form
-    public function create($id)
+    // Show assignment details & allow answering
+    public function show($id)
     {
-        $assignment = Assignment::findOrFail($id);
-        return view('students.assignments.submit', compact('assignment'));
+        $assignment = Assignment::with('course')->findOrFail($id);
+
+        // Decode JSON questions
+        $questions = json_decode($assignment->questions, true);
+
+        return view('students.assignments.show', compact('assignment', 'questions'));
     }
 
-    // Store Submitted Assignment
-    public function store(Request $request, $id)
-    {
-        $request->validate([
-            'file' => 'required|mimes:pdf,doc,docx|max:2048',
-        ]);
+    // Submit assignment answers
+    public function submit(Request $request, $id)
+{
+    $assignment = Assignment::findOrFail($id);
+   $userId = Auth::id(); // Get logged-in user ID (e.g., 71)
+    
+        // Fetch student_id from users table
+        $student = DB::table('users')->where('id', $userId)->first();
+    
+        if (!$student) {
+            return back()->with('error', 'User not found.');
+        }
+    
+        $studentId = $student->student_id; // Now we have the student_id
+    // Validate answers
+    $validatedData = $request->validate([
+        'answers' => 'required|array',
+        'answers.*' => 'string|min:2',
+    ]);
 
-        $assignment = Assignment::findOrFail($id);
-        $filePath = $request->file('file')->store('assignments');
-
-        // Save submitted assignment with student_id
-        $submittedAssignment = new Assignment();
-        $submittedAssignment->title = $assignment->title;
-        $submittedAssignment->description = $assignment->description;
-        $submittedAssignment->deadline = $assignment->deadline;
-        $submittedAssignment->file_name = $filePath;
-        $submittedAssignment->student_id = Auth::id();
-        $submittedAssignment->added_by = $assignment->added_by;
-        $submittedAssignment->save();
-
-        return redirect()->route('student.assignments.index')->with('success', 'Assignment submitted successfully!');
+    // Check if student is already assigned
+    if ($assignment->students()->wherePivot('student_id', $studentId)->exists()) {
+        // Update answers
+        $assignment->students()->updateExistingPivot($studentId, ['answers' => json_encode($validatedData['answers'])]);
+    } else {
+        // Attach if entry doesn't exist
+        $assignment->students()->attach($studentId, ['answers' => json_encode($validatedData['answers'])]);
     }
+
+    return redirect()->route('student.assignments.index')->with('success', 'Assignment submitted successfully.');
+}
+
+
 }

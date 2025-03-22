@@ -14,7 +14,8 @@
                 <th>Deadline</th>
                 <th>Course</th>
                 <th>Status</th>
-                <th>Student</th>
+                <th>Students</th>
+                <th>Submission Status</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -28,13 +29,21 @@
                     <td>{{ $assignment->course->course_name ?? 'N/A' }}</td>
                     <td>{{ ucfirst($assignment->status) }}</td>
                     <td>
-            @foreach ($assignment->students as $student)
-                {{ $student->name }} ({{ $student->student_id }})<br>
-            @endforeach
-        </td>
-              
-
+                        @foreach ($assignment->students as $student)
+                            {{ $student->name }} ({{ $student->student_id }})<br>
+                        @endforeach
+                    </td>
                     <td>
+                        @if ($assignment->students->isEmpty())
+                            <span class="badge bg-danger">Not Submitted</span>
+                        @else
+                            <span class="badge bg-success">Submitted</span>
+                        @endif
+                    </td>
+                    <td>
+                        <a href="{{ route('teacher.assignments.submissions', $assignment->id) }}" class="btn btn-info btn-sm">
+                            View Answers
+                        </a>
                         <a href="{{ route('teacher.assignments.edit', $assignment->id) }}" class="btn btn-primary btn-sm">Edit</a>
                     </td>
                 </tr>

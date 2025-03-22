@@ -1,31 +1,32 @@
 @extends('students.layout.adminlte')
 @section('title', 'Assignments')
-
 @section('content')
-<div class="container">
-    <h2>Assignments</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Deadline</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($assignments as $assignment)
-                <tr>
-                    <td>{{ $assignment->title }}</td>
-                    <td>{{ $assignment->description }}</td>
-                    <td>{{ \Carbon\Carbon::parse($assignment->deadline)->diffForHumans() }}</td>
+<div class="container mt-4">
+    <h2 class="mb-4">Your Assignments</h2>
 
-                    <td>
-                        <a href="{{ route('student.assignments.create', $assignment->id) }}" class="btn btn-primary">Submit</a>
-                    </td>
-                </tr>
+    @if($assignments->isEmpty())
+        <div class="alert alert-info">No assignments assigned yet.</div>
+    @else
+        <div class="row">
+            @foreach($assignments as $assignment)
+                <div class="col-md-6">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $assignment->title }}</h5>
+                            <p class="card-text"><strong>Course:</strong> {{ $assignment->course->name }}</p>
+                            <p class="card-text"><strong>Description:</strong> {{ $assignment->description }}</p>
+                            <p class="card-text"><strong>Deadline:</strong> {{ date('d M, Y', strtotime($assignment->deadline)) }}</p>
+                            <p class="card-text"><strong>Status:</strong> 
+                                <span class="badge {{ $assignment->status == 'active' ? 'bg-success' : 'bg-danger' }}">
+                                    {{ ucfirst($assignment->status) }}
+                                </span>
+                            </p>
+                            <a href="{{ route('student.assignments.show', $assignment->id) }}" class="btn btn-primary">View & Submit</a>
+                        </div>
+                    </div>
+                </div>
             @endforeach
-        </tbody>
-    </table>
+        </div>
+    @endif
 </div>
 @endsection

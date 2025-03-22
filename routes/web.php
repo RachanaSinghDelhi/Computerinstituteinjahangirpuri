@@ -44,8 +44,8 @@ use App\Http\Controllers\Students\AssignmentController as StudentAssignmentContr
 
 Route::middleware(['auth', 'role:student'])->prefix('student')->group(function () {
   Route::get('/student/assignments', [StudentAssignmentController::class, 'index'])->name('student.assignments.index');
-  Route::get('/student/assignments/{id}/submit', [StudentAssignmentController::class, 'create'])->name('student.assignments.create');
-  Route::post('/student/assignments/{id}/submit', [StudentAssignmentController::class, 'store'])->name('student.assignments.store');
+  Route::get('/student/assignments/{id}', [StudentAssignmentController::class, 'show'])->name('student.assignments.show');
+  Route::post('/student/assignments/{id}/submit', [StudentAssignmentController::class, 'submit'])->name('student.assignments.submit');
 
 });
 
@@ -102,6 +102,8 @@ Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->group(function (
     Route::get('/assignments/edit/{id}', [TeacherAssignmentController::class, 'edit'])->name('teacher.assignments.edit');
     Route::put('/assignments/update/{id}', [TeacherAssignmentController::class, 'update'])->name('teacher.assignments.update');
     Route::delete('/assignments/delete/{id}', [TeacherAssignmentController::class, 'destroy'])->name('teacher.assignments.delete');
+    Route::get('/teacher/assignments/{assignmentId}/submissions', [TeacherAssignmentController::class, 'viewSubmissions'])->name('teacher.assignments.submissions');
+
 });
 
  // Student Attendance Routes

@@ -86,44 +86,53 @@ public function store1(Request $request) {
     
         return view('teacher.assignments.edit', compact('assignment', 'courses', 'students', 'assigned_students'));
     }
-    
     public function update(Request $request, $id)
+{
+    $assignment = Assignment::findOrFail($id);
+
+    // Validate request data
+    $validatedData = $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'deadline' => 'required|date',
+        'questions' => 'required|array', // Match insertion
+        'questions.*' => 'string|min:5',
+        'course_id' => 'required|integer|exists:courses,id',
+        'status' => 'required|in:active,inactive',
+        'student_id' => 'required|array', // Match insertion
+        'student_id.*' => 'exists:students,student_id', // Validate student IDs
+    ]);
+
+    // Convert questions to JSON (same as insertion)
+    $validatedData['questions'] = json_encode($validatedData['questions']);
+
+    // Update assignment
+    $assignment->update([
+        'title' => $validatedData['title'],
+        'description' => $validatedData['description'],
+        'deadline' => $validatedData['deadline'],
+        'questions' => $validatedData['questions'],
+        'course_id' => $validatedData['course_id'],
+        'status' => $validatedData['status'],
+        'added_by' => $assignment->added_by ?? auth()->id(), 
+        'updated_by' => auth()->id(),
+    ]);
+
+    // **Fix**: Use `student_id` instead of `student_ids`
+    $assignment->students()->sync($validatedData['student_id']);
+
+    return redirect()->back()->with('success', 'Assignment updated successfully!');
+}
+
+
+    public function viewSubmissions($assignmentId)
     {
-        $assignment = Assignment::findOrFail($id);
-    
-        // Validate the request
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'deadline' => 'required|date',
-            'questions' => 'nullable|array',
-            'course_id' => 'required|integer|exists:courses,id',
-            'status' => 'required|in:active,inactive',
-            'updated_by' => 'nullable|integer|exists:users,id',
-            'student_ids' => 'nullable|array|exists:students,id' // Ensure student_ids exist in the students table
-        ]);
-    
-        // Ensure questions are stored as JSON
-        $questions = json_encode($request->questions);
-    
-        // Update assignment fields
-        $assignment->update([
-            'title' => $request->title,
-            'description' => $request->description,
-            'deadline' => $request->deadline,
-            'questions' => $questions,
-            'course_id' => $request->course_id,
-            'status' => $request->status,
-            'added_by' => $assignment->added_by ?? auth()->id(), // Keep existing or set to current user
-            'updated_by' => auth()->id() // Automatically set to the current user
-        ]);
-    
-        // ✅ Store student IDs in `assignment_student` pivot table
-        if ($request->has('student_ids')) {
-            $assignment->students()->sync($request->student_ids);
-        }
-    
-        return redirect()->back()->with('success', 'Assignment updated successfully!');
+     
+        $assignment = Assignment::with(['students' => function ($query) {
+            $query->select('students.student_id', 'students.name', 'assignment_student.answers');
+        }])->findOrFail($assignmentId);
+
+        return view('teacher.assignments.submission', compact('assignment'));
     }
-            
+         
 }
