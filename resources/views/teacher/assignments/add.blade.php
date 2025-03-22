@@ -62,7 +62,7 @@
             <div class="form-check student-option" data-course="{{ $student->course_id }}">
                 <input class="form-check-input student-checkbox" type="checkbox" name="student_id[]" value="{{ $student->student_id }}" id="student_{{ $student->id }}">
                 <label class="form-check-label" for="student_{{ $student->id }}">
-                    {{ $student->name }} (ID: {{ $student->id }})
+                    {{ $student->name }} (ID: {{ $student->student_id }})
                 </label>
             </div>
         @endforeach

@@ -15,13 +15,14 @@ class AssignmentController extends Controller
 {
     
     // Show Create Form
-public function create()
-{
-    $courses = Course::all(); 
-    $students = Student::all(); // Get all students initially
-
-    return view('teacher.assignments.add', compact('courses', 'students'));
-}
+    public function create()
+    {
+        $courses = Course::all(); 
+        $students = Student::where('course_status', 'ongoing')->get(); // Get only ongoing students
+    
+        return view('teacher.assignments.add', compact('courses', 'students'));
+    }
+    
 
 // Store New Assignment
 public function store1(Request $request) {
@@ -76,7 +77,7 @@ public function store1(Request $request) {
     {
         $assignment = Assignment::findOrFail($id);
         $courses = Course::all();
-        $students = Student::all();
+        $students = Student::where('course_status', 'ongoing')->get(); // Get only ongoing students
     
         // Fetch assigned students for this assignment
         $assigned_students = DB::table('assignment_student')
